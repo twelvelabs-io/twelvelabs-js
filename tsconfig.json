@@ -1,0 +1,22 @@
+{
+  "include": ["src", "examples"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    // "target": "es6",
+    // "module": "commonjs",
+    // "strict": true,
+    // "esModuleInterop": true,
+    // "outDir": "./dist",
+    // "rootDir": "./src",
+    "target": "es2020",
+    "lib": ["es2020"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "twelvelabs/*": ["src/*"],
+      "twelvelabs": ["src/index.ts"]
+    }
+  }
+}
