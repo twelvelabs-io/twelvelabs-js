@@ -5,8 +5,7 @@ import { CreateIndexParams, ListIndexParams } from './interfaces';
 
 export class Index extends APIClient {
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.Index> {
-    const endpoint = `indexes/${id}`;
-    const res = await this._get<Models.IndexResponse>(endpoint, {}, options);
+    const res = await this._get<Models.IndexResponse>(`indexes/${id}`, {}, options);
     return new Models.Index(this, res);
   }
 

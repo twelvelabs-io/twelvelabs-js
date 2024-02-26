@@ -1,12 +1,10 @@
-export interface ListIndexParams {
+import { PageOptions } from '../../interfaces';
+
+export interface ListIndexParams extends PageOptions {
   id?: string;
   name?: string;
   engineOptions?: string[];
   engineFamily?: 'marengo' | 'pegasus';
-  page?: number;
-  pageLimit?: number;
-  sortBy?: 'created_at' | 'updated_at';
-  sortOption?: 'asc' | 'desc';
 }
 
 export interface CreateIndexParams {
