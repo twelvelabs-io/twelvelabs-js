@@ -10,7 +10,7 @@ interface ClientOptions {
 export class TwelveLabs extends APIClient {
   engine: Resources.Engine;
   index: Resources.Index;
-  // task: Resources.Task;
+  task: Resources.Task;
   // search: Resources.Search;
   // generate: Resources.Generate;
 
@@ -34,7 +34,7 @@ export class TwelveLabs extends APIClient {
 
     this.engine = new Resources.Engine(this);
     this.index = new Resources.Index(this);
-    // this.task = new Resources.Task(this);
+    this.task = new Resources.Task(this);
     // this.search = new Resources.Search(this);
     // this.generate = new Resources.Generate(this);
   }

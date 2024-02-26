@@ -1,4 +1,5 @@
 import fetch, { RequestInit, Response } from 'node-fetch';
+import FormData from 'form-data';
 import { API_KEY_HEADER } from './constants';
 import * as Errors from './error';
 import { convertKeysToCamelCase } from './util';
@@ -31,15 +32,23 @@ export class APIClient {
     }
 
     const headers = {
-      'Content-Type': 'application/json',
       [API_KEY_HEADER]: this.apiKey,
+      ['Content-Type']: 'application/json',
       ...options.headers,
     };
+    if (body instanceof FormData) {
+      headers['Content-Type'] = 'multipart/form-data';
+    }
 
     const config: RequestInit = {
       method,
       headers,
-      body: body ? JSON.stringify(body) : undefined,
+      body:
+        body ?
+          body instanceof FormData ?
+            body
+          : JSON.stringify(body)
+        : undefined,
       ...options,
     };
 

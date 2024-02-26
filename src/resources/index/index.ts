@@ -10,11 +10,12 @@ export class Index extends APIClient {
   }
 
   async list(
-    { name, ...restParams }: ListIndexParams = {},
+    { id, name, ...restParams }: ListIndexParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Index[]> {
     const _params = convertKeysToSnakeCase({
       ...restParams,
+      _id: id,
       indexName: name,
     });
     const res = await this._get<{ data: Models.IndexResponse[] }>(
