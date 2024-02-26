@@ -46,18 +46,27 @@ export function convertKeysToCamelCase(obj: any): any {
 }
 
 // Convert keys of an object from camelCase to snake_case, always applying deeply
-export function convertKeysToSnakeCase(obj: any): any {
+export function convertKeysToSnakeCase<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    return obj.map((item) => convertKeysToSnakeCase(item)); // Recursively apply to array elements
+    return obj.map((item) => convertKeysToSnakeCase(item)) as T; // Recursively apply to array elements
   } else if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
-    return Object.keys(obj).reduce(
-      (acc, key) => {
-        const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
-        acc[snakeKey] = convertKeysToSnakeCase(obj[key]); // Recursively apply to nested objects
-        return acc;
-      },
-      {} as Record<string, any>,
-    );
+    return Object.keys(obj).reduce((acc, key) => {
+      const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+      acc[snakeKey] = convertKeysToSnakeCase(obj[key]); // Recursively apply to nested objects
+      return acc;
+    }, {} as T);
   }
   return obj;
+}
+
+export function removeUndefinedValues(obj: Record<string, any>): Record<string, any> {
+  return Object.entries(obj).reduce(
+    (acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, any>,
+  );
 }

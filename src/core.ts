@@ -4,7 +4,7 @@ import * as Errors from './error';
 import { convertKeysToCamelCase } from './util';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-export type RequestOptions = RequestInit & { json?: any; params?: Record<string, any> };
+export type RequestOptions = RequestInit & { params?: Record<string, any> };
 
 interface APIClientOptions {
   baseUrl: string;
@@ -23,7 +23,7 @@ export class APIClient {
   private async request(
     method: HttpMethod,
     endpoint: string,
-    { params, json, ...options }: RequestOptions = {},
+    { params, body, ...options }: RequestOptions = {},
   ): Promise<any> {
     const url = new URL(endpoint, this.baseUrl);
     if (params) {
@@ -39,7 +39,7 @@ export class APIClient {
     const config: RequestInit = {
       method,
       headers,
-      body: json ? JSON.stringify(json) : undefined,
+      body: body ? JSON.stringify(body) : undefined,
       ...options,
     };
 
@@ -67,7 +67,7 @@ export class APIClient {
         }
       }
       if (error instanceof Error) {
-        throw new Errors.APIError(error.message);
+        throw error;
       } else {
         throw new Errors.APIError('An unknown error occurred');
       }
@@ -79,15 +79,15 @@ export class APIClient {
   }
 
   async _post<T>(endpoint: string, data?: any, options: RequestOptions = {}) {
-    return (await this.request('POST', endpoint, { ...options, json: data })) as T;
+    return (await this.request('POST', endpoint, { ...options, body: data })) as T;
   }
 
   async _patch<T>(endpoint: string, data?: any, options: RequestOptions = {}) {
-    return (await this.request('PATCH', endpoint, { ...options, json: data })) as T;
+    return (await this.request('PATCH', endpoint, { ...options, body: data })) as T;
   }
 
   async _put<T>(endpoint: string, data?: any, options: RequestOptions = {}) {
-    return (await this.request('PUT', endpoint, { ...options, json: data })) as T;
+    return (await this.request('PUT', endpoint, { ...options, body: data })) as T;
   }
 
   async _delete<T>(endpoint: string, options: RequestOptions = {}) {
