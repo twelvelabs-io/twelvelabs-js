@@ -1,16 +1,19 @@
+import { RequestInit } from 'node-fetch';
 export class TwelveLabsError extends Error {}
 
 export class APIError extends Error {
   status: number | undefined;
   body: any;
   headers: Headers | undefined;
+  request?: RequestInit;
 
-  constructor(message: string, status?: number, body?: any, headers?: Headers) {
+  constructor(message: string, status?: number, body?: any, headers?: Headers, request?: RequestInit) {
     super(message);
     this.name = this.constructor.name;
     this.status = status;
     this.body = body;
     this.headers = headers;
+    this.request = request;
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }

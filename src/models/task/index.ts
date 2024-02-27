@@ -43,15 +43,16 @@ export class Task {
   }
 
   async delete(options: RequestOptions = {}): Promise<void> {
-    await this._resource.delete(this.id);
+    await this._resource.delete(this.id, options);
   }
 
   async waitForDone(sleepInterval: number = 5000, callback?: (task: Task) => void): Promise<Task> {
+    const isDone = () => this.status === 'ready' || this.status === 'failed';
     if (sleepInterval <= 0) {
       throw new Error('sleepInterval must be greater than 0');
     }
 
-    let done = this.status === 'ready' || this.status === 'failed';
+    let done = isDone();
 
     while (!done) {
       await this.sleep(sleepInterval);
@@ -61,6 +62,8 @@ export class Task {
       this.status = task.status;
       this.metadata = task.metadata;
       this.process = task.process;
+
+      done = isDone();
 
       if (callback) {
         callback(this);

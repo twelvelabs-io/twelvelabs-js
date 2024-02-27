@@ -1,9 +1,19 @@
-import { APIClient, RequestOptions } from '../../core';
+import { TwelveLabs } from '../..';
+import { RequestOptions } from '../../core';
 import * as Models from '../../models';
+import { APIResource } from '../../resource';
 import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
+import { Video as VideoResource } from '../video';
 import { CreateIndexParams, ListIndexParams } from './interfaces';
 
-export class Index extends APIClient {
+export class Index extends APIResource {
+  video: VideoResource;
+
+  constructor(client: TwelveLabs) {
+    super(client);
+    this.video = new VideoResource(client);
+  }
+
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.Index> {
     const res = await this._get<Models.IndexResponse>(`indexes/${id}`, {}, options);
     return new Models.Index(this, res);

@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
-import { TwelveLabs } from 'twelvelabs';
+import { TwelveLabs, Task } from 'twelvelabs';
 
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
@@ -18,7 +18,9 @@ import { TwelveLabs } from 'twelvelabs';
 
   console.log(`Created task: id=${task.id} status=${task.status}`);
 
-  await task.waitForDone();
+  await task.waitForDone(500, (task: Task) => {
+    console.log(`  Status=${task.status}`);
+  });
 
   if (task.status !== 'ready') {
     throw new Error(`Indexing failed with status ${task.status}`);
@@ -31,8 +33,6 @@ import { TwelveLabs } from 'twelvelabs';
   tasks.forEach((task) => {
     console.log(`  id=${task.id} status=${task.status}`);
   });
-
-  // Handling next pages would depend on your pagination implementation
 
   const status = await client.task.status(index.id);
   console.log(

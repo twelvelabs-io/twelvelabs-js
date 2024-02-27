@@ -1,12 +1,13 @@
 import path from 'path';
 import FormData from 'form-data';
-import { APIClient, RequestOptions } from '../../core';
+import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
 import { CreateTaskParams, ListTaskParams } from './interfaces';
 import { createReadStream } from 'fs';
+import { APIResource } from '../../resource';
 
-export class Task extends APIClient {
+export class Task extends APIResource {
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.Task> {
     const res = await this._get<Models.TaskResponse>(`tasks/${id}`, {}, options);
     return new Models.Task(this, res);

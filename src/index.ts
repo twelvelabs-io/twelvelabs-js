@@ -2,7 +2,7 @@ import { APIClient } from './core';
 import * as Resources from './resources';
 import { BASE_URL, DEFAULT_API_VERSION } from './constants';
 
-interface ClientOptions {
+export interface ClientOptions {
   apiKey: string;
   version?: 'v1.1' | 'v1.2';
 }
@@ -11,8 +11,8 @@ export class TwelveLabs extends APIClient {
   engine: Resources.Engine;
   index: Resources.Index;
   task: Resources.Task;
-  // search: Resources.Search;
-  // generate: Resources.Generate;
+  search: Resources.Search;
+  generate: Resources.Generate;
 
   baseUrl: string;
   apiKey: string;
@@ -35,7 +35,42 @@ export class TwelveLabs extends APIClient {
     this.engine = new Resources.Engine(this);
     this.index = new Resources.Index(this);
     this.task = new Resources.Task(this);
-    // this.search = new Resources.Search(this);
-    // this.generate = new Resources.Generate(this);
+    this.search = new Resources.Search(this);
+    this.generate = new Resources.Generate(this);
   }
 }
+
+export {
+  Engine,
+  Index,
+  Task,
+  SearchResult,
+  GenerateGistResult,
+  GenerateSummarizeResult,
+  GenerateOpenEndedTextResult,
+} from './models';
+
+export {
+  CreateIndexParams,
+  CreateTaskParams,
+  ListIndexParams,
+  ListTaskParams,
+  ListVideoParams,
+  SearchOptions,
+  UpdateVideoParams,
+  VideoFilterOptions,
+} from './resources';
+
+export {
+  TwelveLabsError,
+  APIConnectionError,
+  APITimeoutError,
+  BadRequestError,
+  ConflictError,
+  ForbiddenError,
+  MethodNotAllowedError,
+  NotFoundError,
+  TooManyRequestsError,
+  UnauthorizedError,
+  InternalServerError,
+} from './error';

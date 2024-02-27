@@ -18,9 +18,9 @@ import { TwelveLabs } from 'twelvelabs';
 
   const indexes = await client.index.list();
   console.log('All Indexes: ');
-  for (const index of indexes) {
+  indexes.forEach((index) => {
     console.log(`  id=${index.id} name=${index.name}`);
-  }
+  });
 
   await client.index.update(index.id, indexName.concat('-updated'));
   index = await client.index.retrieve(index.id);

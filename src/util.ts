@@ -17,11 +17,15 @@
 // 4. Processing arrays of objects:
 //    Input: [{"user_name": "johndoe"}, {"user_name": "janedoe"}]
 //    Output: [{"userName": "johndoe"}, {"userName": "janedoe"}]
-export function convertKeysToCamelCase(obj: any): any {
+export function convertKeysToCamelCase(obj: any, skipKeys?: string[]): any {
   if (Array.isArray(obj)) {
     return obj.map((v) => convertKeysToCamelCase(v));
   } else if (obj !== null && obj.constructor === Object) {
     return Object.keys(obj).reduce((result, key) => {
+      // Skip converting keys by `skipKeys`
+      if (skipKeys?.includes(key)) {
+        return { ...result, [key]: obj[key] };
+      }
       // Check if key starts with "_"
       if (key.startsWith('_')) {
         // If so, remove the underscore and use the rest of the key as is
