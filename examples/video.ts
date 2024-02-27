@@ -1,4 +1,4 @@
-import { TwelveLabs } from 'twelvelabs';
+import { TwelveLabs, Video } from 'twelvelabs';
 
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
@@ -15,6 +15,22 @@ import { TwelveLabs } from 'twelvelabs';
   await client.index.video.update(index.id, video.id, { metadata: { from_sdk: true } });
   video = await client.index.video.retrieve(index.id, videos[0].id);
   console.log(`Updated first video's metadata`, video.metadata);
+
+  console.log('Videos with pagination:');
+  const pagination = await client.index.video.listPagination(index.id);
+  pagination.data.forEach((video: Video) => {
+    console.log(`  filename=${video.metadata.filename} duration=${video.metadata.duration}`);
+  });
+  while (true) {
+    const nextPageData = await pagination.next();
+    if (!nextPageData) {
+      console.log('  no more pages');
+      break;
+    }
+    nextPageData.forEach((video: Video) => {
+      console.log(`  filename=${video.metadata.filename} duration=${video.metadata.duration}`);
+    });
+  }
 
   const transcriptions = await client.index.video.transcription(index.id, video.id, { start: 0, end: 30 });
   console.log(`There are ${transcriptions.length} transcriptions`);

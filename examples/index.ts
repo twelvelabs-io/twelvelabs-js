@@ -1,4 +1,4 @@
-import { TwelveLabs } from 'twelvelabs';
+import { Index, TwelveLabs } from 'twelvelabs';
 
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
@@ -25,4 +25,20 @@ import { TwelveLabs } from 'twelvelabs';
   await client.index.update(index.id, indexName.concat('-updated'));
   index = await client.index.retrieve(index.id);
   console.log(`Updated index name to ${index.name}`);
+
+  console.log('Indexes with pagination:');
+  const pagination = await client.index.listPagination();
+  pagination.data.forEach((index: Index) => {
+    console.log(`  id=${index.id} name=${index.name}`);
+  });
+  while (true) {
+    const nextPageData = await pagination.next();
+    if (!nextPageData) {
+      console.log('  no more pages');
+      break;
+    }
+    nextPageData.forEach((index: Index) => {
+      console.log(`  id=${index.id} name=${index.name}`);
+    });
+  }
 })();

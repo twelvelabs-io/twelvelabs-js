@@ -4,7 +4,7 @@ import { API_KEY_HEADER } from './constants';
 import * as Errors from './error';
 import { convertKeysToCamelCase } from './util';
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type RequestOptions = RequestInit & { params?: Record<string, any>; skipCamelKeys?: string[] };
 
 export interface APIClientOptions {
@@ -21,7 +21,7 @@ export class APIClient {
     this.apiKey = apiKey;
   }
 
-  private async request(
+  private async _request(
     method: HttpMethod,
     endpoint: string,
     { params, body, skipCamelKeys, ...options }: RequestOptions = {},
@@ -87,23 +87,23 @@ export class APIClient {
   }
 
   async _get<T>(endpoint: string, params?: Record<string, any>, options: RequestOptions = {}) {
-    return (await this.request('GET', endpoint, { ...options, params })) as T;
+    return (await this._request('GET', endpoint, { ...options, params })) as T;
   }
 
   async _post<T>(endpoint: string, data?: any, options: RequestOptions = {}) {
-    return (await this.request('POST', endpoint, { ...options, body: data })) as T;
+    return (await this._request('POST', endpoint, { ...options, body: data })) as T;
   }
 
   async _patch<T>(endpoint: string, data?: any, options: RequestOptions = {}) {
-    return (await this.request('PATCH', endpoint, { ...options, body: data })) as T;
+    return (await this._request('PATCH', endpoint, { ...options, body: data })) as T;
   }
 
   async _put<T>(endpoint: string, data?: any, options: RequestOptions = {}) {
-    return (await this.request('PUT', endpoint, { ...options, body: data })) as T;
+    return (await this._request('PUT', endpoint, { ...options, body: data })) as T;
   }
 
   async _delete<T>(endpoint: string, options: RequestOptions = {}) {
-    return (await this.request('DELETE', endpoint, options)) as T;
+    return (await this._request('DELETE', endpoint, options)) as T;
   }
 }
 

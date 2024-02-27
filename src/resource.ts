@@ -1,7 +1,7 @@
 import { TwelveLabs } from '.';
-import { RequestOptions } from './core';
+import { APIClient, RequestOptions } from './core';
 
-export class APIResource {
+export class APIResource extends APIClient {
   readonly _client: TwelveLabs;
   readonly _get: <T>(endpoint: string, params?: Record<string, any>, options?: RequestOptions) => Promise<T>;
   readonly _post: <T>(endpoint: string, data?: any, options?: RequestOptions) => Promise<T>;
@@ -10,6 +10,7 @@ export class APIResource {
   readonly _delete: <T>(endpoint: string, options?: RequestOptions) => Promise<T>;
 
   constructor(client: TwelveLabs) {
+    super(client);
     this._client = client;
     this._get = client._get;
     this._post = client._post;

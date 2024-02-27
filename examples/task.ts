@@ -34,6 +34,22 @@ import { TwelveLabs, Task } from 'twelvelabs';
     console.log(`  id=${task.id} status=${task.status}`);
   });
 
+  console.log('Tasks with pagination:');
+  const pagination = await client.task.listPagination();
+  pagination.data.forEach((task: Task) => {
+    console.log(`  id=${task.id} status=${task.status}`);
+  });
+  while (true) {
+    const nextPageData = await pagination.next();
+    if (!nextPageData) {
+      console.log('  no more pages');
+      break;
+    }
+    nextPageData.forEach((task: Task) => {
+      console.log(`  id=${task.id} status=${task.status}`);
+    });
+  }
+
   const status = await client.task.status(index.id);
   console.log(
     `Tasks by status: ready=${status.ready} validating=${status.validating} pending=${status.pending} failed=${status.failed} totalResult=${status.totalResult}`,

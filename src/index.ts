@@ -43,11 +43,17 @@ export class TwelveLabs extends APIClient {
 export {
   Engine,
   Index,
+  IndexListWithPagination,
+  Video,
+  VideoListWithPagination,
   Task,
+  TaskListWithPagination,
+  TaskStatus,
   SearchResult,
   GenerateGistResult,
   GenerateSummarizeResult,
   GenerateOpenEndedTextResult,
+  PageInfo,
 } from './models';
 
 export {
@@ -59,6 +65,8 @@ export {
   SearchOptions,
   UpdateVideoParams,
   VideoFilterOptions,
+  GenerateGistType,
+  GenerateSummarizeType,
 } from './resources';
 
 export {

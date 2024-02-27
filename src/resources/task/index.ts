@@ -22,7 +22,7 @@ export class Task extends APIResource {
       _id: id,
     });
     const res = await this._get<{ data: Models.TaskResponse[] }>(
-      'indexes',
+      'tasks',
       removeUndefinedValues(_params),
       options,
     );
@@ -39,7 +39,7 @@ export class Task extends APIResource {
       _id: id,
     });
     const res = await this._get<{ data: Models.TaskResponse[]; pageInfo: Models.PageInfo }>(
-      'indexes',
+      'tasks',
       removeUndefinedValues(_params),
       options,
     );
