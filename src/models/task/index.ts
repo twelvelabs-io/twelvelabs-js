@@ -1,5 +1,6 @@
 import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
+import { PageInfo } from '../interfaces';
 
 export interface TaskResponse {
   id: string;
@@ -75,6 +76,36 @@ export class Task {
 
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+}
+
+export class TaskListWithPagination {
+  private readonly _resource: Resources.Task;
+  private readonly _originParams: Resources.ListTaskParams;
+  data: Task[];
+  pageInfo: PageInfo;
+
+  constructor(
+    resource: Resources.Task,
+    originParams: Resources.ListTaskParams,
+    data: TaskResponse[],
+    pageInfo: PageInfo,
+  ) {
+    this._resource = resource;
+    this._originParams = originParams;
+    this.data = data.map((v) => new Task(resource, v));
+    this.pageInfo = pageInfo;
+  }
+
+  async next(): Promise<Task[] | null> {
+    if (this.pageInfo.page >= this.pageInfo.totalPage) {
+      return null;
+    }
+    const params = { ...this._originParams };
+    params.page = this.pageInfo.page + 1;
+    const res = await this._resource.listPagination(params);
+    this.pageInfo = res.pageInfo;
+    return res.data;
   }
 }
 

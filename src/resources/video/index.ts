@@ -14,7 +14,11 @@ export class Video extends APIResource {
     return new Models.Video(this, indexId, res);
   }
 
-  async list(indexId: string, { id, ...restParams }: ListVideoParams = {}, options: RequestOptions = {}) {
+  async list(
+    indexId: string,
+    { id, ...restParams }: ListVideoParams = {},
+    options: RequestOptions = {},
+  ): Promise<Models.Video[]> {
     const _params = convertKeysToSnakeCase({
       ...restParams,
       _id: id,
@@ -25,6 +29,24 @@ export class Video extends APIResource {
       { ...options, skipCamelKeys: ['metadata'] },
     );
     return res.data.map((v) => new Models.Video(this, indexId, v));
+  }
+
+  async listPagination(
+    indexId: string,
+    { id, ...restParams }: ListVideoParams = {},
+    options: RequestOptions = {},
+  ): Promise<Models.VideoListWithPagination> {
+    const originParams = { id, ...restParams };
+    const _params = convertKeysToSnakeCase({
+      ...restParams,
+      _id: id,
+    });
+    const res = await this._get<{ data: Models.VideoResponse[]; pageInfo: Models.PageInfo }>(
+      `indexes/${indexId}/videos`,
+      removeUndefinedValues(_params),
+      { ...options, skipCamelKeys: ['metadata'] },
+    );
+    return new Models.VideoListWithPagination(this, originParams, indexId, res.data, res.pageInfo);
   }
 
   async update(

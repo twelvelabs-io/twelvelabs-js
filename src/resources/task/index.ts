@@ -29,6 +29,23 @@ export class Task extends APIResource {
     return res.data.map((v) => new Models.Task(this, v));
   }
 
+  async listPagination(
+    { id, ...restParams }: ListTaskParams = {},
+    options: RequestOptions = {},
+  ): Promise<Models.TaskListWithPagination> {
+    const originParams = { id, ...restParams };
+    const _params = convertKeysToSnakeCase({
+      ...restParams,
+      _id: id,
+    });
+    const res = await this._get<{ data: Models.TaskResponse[]; pageInfo: Models.PageInfo }>(
+      'indexes',
+      removeUndefinedValues(_params),
+      options,
+    );
+    return new Models.TaskListWithPagination(this, originParams, res.data, res.pageInfo);
+  }
+
   async create(body: CreateTaskParams, options: RequestOptions = {}): Promise<Models.Task> {
     if (!body.file && !body.url) {
       throw new Error('Either file or url must be provided');

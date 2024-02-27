@@ -1,3 +1,4 @@
+export * from './interfaces';
 export * from './engine';
 export * from './index/';
 export * from './task';

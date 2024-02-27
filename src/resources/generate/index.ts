@@ -2,11 +2,12 @@ import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
 import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
+import { GenerateGistType, GenerateSummarizeType } from './interfaces';
 
 export class Generate extends APIResource {
   async gist(
     videoId: string,
-    types: ('topic' | 'hashtag' | 'title')[],
+    types: GenerateGistType[],
     options: RequestOptions = {},
   ): Promise<Models.GenerateGistResult> {
     const _body = convertKeysToSnakeCase({
@@ -19,7 +20,7 @@ export class Generate extends APIResource {
 
   async summarize(
     videoId: string,
-    type: 'summary' | 'chapter' | 'highlight',
+    type: GenerateSummarizeType,
     prompt?: string,
     options: RequestOptions = {},
   ): Promise<Models.GenerateSummarizeResult> {

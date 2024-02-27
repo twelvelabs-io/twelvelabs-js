@@ -9,3 +9,4 @@ export * from './index/interfaces';
 export * from './search/interfaces';
 export * from './task/interfaces';
 export * from './video/interfaces';
+export * from './generate/interfaces';

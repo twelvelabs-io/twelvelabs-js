@@ -17,6 +17,16 @@ export class SearchResult {
     this.data = data.data;
     this.pageInfo = data.pageInfo;
   }
+
+  async next(): Promise<SearchData[] | null> {
+    const { nextPageToken } = this.pageInfo;
+    if (!nextPageToken) {
+      return null;
+    }
+    const res = await this._resource.byPageToken(nextPageToken);
+    this.pageInfo = res.pageInfo;
+    return res.data;
+  }
 }
 
 interface SearchData {

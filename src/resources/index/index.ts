@@ -36,6 +36,24 @@ export class Index extends APIResource {
     return res.data.map((v) => new Models.Index(this, v));
   }
 
+  async listPagination(
+    { id, name, ...restParams }: ListIndexParams = {},
+    options: RequestOptions = {},
+  ): Promise<Models.IndexListWithPagination> {
+    const originParams = { id, name, ...restParams };
+    const _params = convertKeysToSnakeCase({
+      ...restParams,
+      _id: id,
+      indexName: name,
+    });
+    const res = await this._get<{ data: Models.IndexResponse[]; pageInfo: Models.PageInfo }>(
+      'indexes',
+      removeUndefinedValues(_params),
+      options,
+    );
+    return new Models.IndexListWithPagination(this, originParams, res.data, res.pageInfo);
+  }
+
   async create(
     { name, engines, addons }: CreateIndexParams,
     options: RequestOptions = {},
