@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+rm -rf dist; mkdir dist
+cp -rp src README.md dist
+
+npm exec tsc-multi && echo "✅ Built successfully."
+
+# link to use package locally
+cp package.json dist
+cd dist; yarn unlink; yarn link
+echo "✅ Linked successfully."

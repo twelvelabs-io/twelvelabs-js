@@ -3,13 +3,18 @@
   "version": "0.1",
   "description": "Official TwelveLabs SDK for Javascript",
   "author": "TwelveLabs",
-  "main": "dist/index.js",
-  "type": "commonjs",
   "repository": "github:twelvelabs-io/twelvelabs-js",
   "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "lint": "eslint --ext ts,js .",
-    "fix": "eslint --fix --ext ts,js ."
+    "fix": "eslint --fix --ext ts,js .",
+    "build-local": "bash build-local"
   },
   "dependencies": {
     "form-data": "^4.0.0",
