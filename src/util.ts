@@ -52,7 +52,7 @@ export function convertKeysToCamelCase(obj: any, skipKeys?: string[]): any {
 // Convert keys of an object from camelCase to snake_case, always applying deeply
 export function convertKeysToSnakeCase<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    return obj.map((item) => convertKeysToSnakeCase(item)) as T; // Recursively apply to array elements
+    return obj.map((item) => convertKeysToSnakeCase(item)) as unknown as T; // Recursively apply to array elements
   } else if (obj !== null && typeof obj === 'object' && !(obj instanceof Date)) {
     return Object.keys(obj).reduce((acc, key) => {
       const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
