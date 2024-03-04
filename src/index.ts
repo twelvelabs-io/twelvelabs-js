@@ -50,6 +50,8 @@ export {
   TaskListWithPagination,
   TaskStatus,
   SearchResult,
+  SearchData,
+  GroupByVideoSearchData,
   GenerateGistResult,
   GenerateSummarizeResult,
   GenerateOpenEndedTextResult,
