@@ -9,7 +9,7 @@ export interface SearchResultResponse {
 export class SearchResult {
   private readonly _resource: Resources.Search;
   pool: SearchPool;
-  data: SearchData[];
+  data: SearchData[] | GroupByVideoSearchData[];
   pageInfo: SearchPageInfo;
   constructor(resource: Resources.Search, data: SearchResultResponse) {
     this._resource = resource;
@@ -18,7 +18,7 @@ export class SearchResult {
     this.pageInfo = data.pageInfo;
   }
 
-  async next(): Promise<SearchData[] | null> {
+  async next(): Promise<SearchData[] | GroupByVideoSearchData[] | null> {
     const { nextPageToken } = this.pageInfo;
     if (!nextPageToken) {
       return null;
@@ -29,7 +29,7 @@ export class SearchResult {
   }
 }
 
-interface SearchData {
+export interface SearchData {
   score: number;
   start: number;
   end: number;
@@ -38,6 +38,11 @@ interface SearchData {
   confidence: string;
   thumbnailUrl?: string;
   moduleConfidence?: Record<string, any>;
+}
+
+export interface GroupByVideoSearchData {
+  clips?: SearchData[];
+  id: string;
 }
 
 interface SearchPool {
