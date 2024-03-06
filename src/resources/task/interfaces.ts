@@ -19,4 +19,5 @@ export interface CreateTaskParams {
   transcriptionFile?: Buffer | NodeJS.ReadableStream | string;
   transcriptionUrl?: string;
   language?: string;
+  disableVideoStream?: boolean;
 }
