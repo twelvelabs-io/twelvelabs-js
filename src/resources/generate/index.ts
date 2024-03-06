@@ -22,12 +22,14 @@ export class Generate extends APIResource {
     videoId: string,
     type: GenerateSummarizeType,
     prompt?: string,
+    temperature?: number,
     options: RequestOptions = {},
   ): Promise<Models.GenerateSummarizeResult> {
     const _body = convertKeysToSnakeCase({
       videoId,
       type,
       prompt,
+      temperature,
     });
     const res = await this._post<Models.GenerateSummarizeResult>(
       'summarize',
@@ -40,11 +42,13 @@ export class Generate extends APIResource {
   async text(
     videoId: string,
     prompt: string,
+    temperature?: number,
     options: RequestOptions = {},
   ): Promise<Models.GenerateOpenEndedTextResult> {
     const _body = convertKeysToSnakeCase({
       videoId,
       prompt,
+      temperature,
     });
     const res = await this._post<Models.GenerateOpenEndedTextResult>('generate', _body, options);
     return res;
