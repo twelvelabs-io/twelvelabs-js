@@ -71,13 +71,18 @@ export class Video {
   async generateSummarize(
     type: Resources.GenerateSummarizeType,
     prompt?: string,
+    temperature?: number,
     options: RequestOptions = {},
   ): Promise<GenerateGistResult> {
-    return await this._resource._client.generate.summarize(this.id, type, prompt, options);
+    return await this._resource._client.generate.summarize(this.id, type, prompt, temperature, options);
   }
 
-  async generateText(prompt: string, options: RequestOptions = {}): Promise<GenerateOpenEndedTextResult> {
-    return await this._resource._client.generate.text(this.id, prompt, options);
+  async generateText(
+    prompt: string,
+    temperature?: number,
+    options: RequestOptions = {},
+  ): Promise<GenerateOpenEndedTextResult> {
+    return await this._resource._client.generate.text(this.id, prompt, temperature, options);
   }
 }
 
