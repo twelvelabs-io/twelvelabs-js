@@ -2,7 +2,7 @@ import { TwelveLabs } from '../..';
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
-import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
+import { convertKeysToSnakeCase, handleComparisonParams, removeUndefinedValues } from '../../util';
 import { Video as VideoResource } from '../video';
 import { CreateIndexParams, ListIndexParams } from './interfaces';
 
@@ -20,7 +20,7 @@ export class Index extends APIResource {
   }
 
   async list(
-    { id, name, ...restParams }: ListIndexParams = {},
+    { id, name, createdAt, updatedAt, ...restParams }: ListIndexParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Index[]> {
     const _params = convertKeysToSnakeCase({
@@ -28,6 +28,8 @@ export class Index extends APIResource {
       _id: id,
       indexName: name,
     });
+    handleComparisonParams(_params, 'createdAt', createdAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.IndexResponse[] }>(
       'indexes',
       removeUndefinedValues(_params),
@@ -37,7 +39,7 @@ export class Index extends APIResource {
   }
 
   async listPagination(
-    { id, name, ...restParams }: ListIndexParams = {},
+    { id, name, createdAt, updatedAt, ...restParams }: ListIndexParams = {},
     options: RequestOptions = {},
   ): Promise<Models.IndexListWithPagination> {
     const originParams = { id, name, ...restParams };
@@ -46,6 +48,8 @@ export class Index extends APIResource {
       _id: id,
       indexName: name,
     });
+    handleComparisonParams(_params, 'createdAt', createdAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.IndexResponse[]; pageInfo: Models.PageInfo }>(
       'indexes',
       removeUndefinedValues(_params),

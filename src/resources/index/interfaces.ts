@@ -5,6 +5,8 @@ export interface ListIndexParams extends PageOptions {
   name?: string;
   engineOptions?: string[];
   engineFamily?: 'marengo' | 'pegasus';
+  createdAt?: string | Record<string, string>;
+  updatedAt?: string | Record<string, string>;
 }
 
 export interface CreateIndexParams {

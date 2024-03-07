@@ -7,8 +7,8 @@ export interface ListTaskParams extends PageOptions {
   duration?: number;
   width?: number;
   height?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: string | Record<string, string>;
+  updatedAt?: string | Record<string, string>;
   estimatedTime?: number;
 }
 

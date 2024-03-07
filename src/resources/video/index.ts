@@ -1,7 +1,7 @@
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
-import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
+import { convertKeysToSnakeCase, handleComparisonParams, removeUndefinedValues } from '../../util';
 import { ListVideoParams, UpdateVideoParams, VideoFilterOptions } from './interfaces';
 
 export class Video extends APIResource {
@@ -16,13 +16,32 @@ export class Video extends APIResource {
 
   async list(
     indexId: string,
-    { id, ...restParams }: ListVideoParams = {},
+    {
+      id,
+      size,
+      width,
+      height,
+      duration,
+      fps,
+      createdAt,
+      updatedAt,
+      indexedAt,
+      ...restParams
+    }: ListVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Video[]> {
     const _params = convertKeysToSnakeCase({
       ...restParams,
       _id: id,
     });
+    handleComparisonParams(_params, 'size', size);
+    handleComparisonParams(_params, 'width', width);
+    handleComparisonParams(_params, 'height', height);
+    handleComparisonParams(_params, 'duration', duration);
+    handleComparisonParams(_params, 'fps', fps);
+    handleComparisonParams(_params, 'createdAt', createdAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.VideoResponse[] }>(
       `indexes/${indexId}/videos`,
       removeUndefinedValues(_params),
@@ -33,7 +52,18 @@ export class Video extends APIResource {
 
   async listPagination(
     indexId: string,
-    { id, ...restParams }: ListVideoParams = {},
+    {
+      id,
+      size,
+      width,
+      height,
+      duration,
+      fps,
+      createdAt,
+      updatedAt,
+      indexedAt,
+      ...restParams
+    }: ListVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.VideoListWithPagination> {
     const originParams = { id, ...restParams };
@@ -41,6 +71,14 @@ export class Video extends APIResource {
       ...restParams,
       _id: id,
     });
+    handleComparisonParams(_params, 'size', size);
+    handleComparisonParams(_params, 'width', width);
+    handleComparisonParams(_params, 'height', height);
+    handleComparisonParams(_params, 'duration', duration);
+    handleComparisonParams(_params, 'fps', fps);
+    handleComparisonParams(_params, 'createdAt', createdAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.VideoResponse[]; pageInfo: Models.PageInfo }>(
       `indexes/${indexId}/videos`,
       removeUndefinedValues(_params),
