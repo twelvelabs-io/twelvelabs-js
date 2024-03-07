@@ -74,3 +74,21 @@ export function removeUndefinedValues(obj: Record<string, any>): Record<string, 
     {} as Record<string, any>,
   );
 }
+
+export function handleComparisonParams(
+  params: Record<string, any>,
+  key: string,
+  value: any | Record<string, any>,
+): void {
+  if (typeof value === 'object') {
+    for (const op in value) {
+      if (value.hasOwnProperty(op)) {
+        const paramKey = `${key}[${op}]`;
+        params[paramKey] = value[op];
+      }
+    }
+    params[key] = undefined;
+  } else {
+    params[key] = value;
+  }
+}

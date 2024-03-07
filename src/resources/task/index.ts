@@ -2,7 +2,7 @@ import path from 'path';
 import FormData from 'form-data';
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
-import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
+import { convertKeysToSnakeCase, handleComparisonParams, removeUndefinedValues } from '../../util';
 import { CreateTaskParams, ListTaskParams } from './interfaces';
 import { createReadStream } from 'fs';
 import { APIResource } from '../../resource';
@@ -14,13 +14,15 @@ export class Task extends APIResource {
   }
 
   async list(
-    { id, ...restParams }: ListTaskParams = {},
+    { id, createdAt, updatedAt, ...restParams }: ListTaskParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Task[]> {
     const _params = convertKeysToSnakeCase({
       ...restParams,
       _id: id,
     });
+    handleComparisonParams(_params, 'createdAt', createdAt);
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.TaskResponse[] }>(
       'tasks',
       removeUndefinedValues(_params),
@@ -30,7 +32,7 @@ export class Task extends APIResource {
   }
 
   async listPagination(
-    { id, ...restParams }: ListTaskParams = {},
+    { id, createdAt, updatedAt, ...restParams }: ListTaskParams = {},
     options: RequestOptions = {},
   ): Promise<Models.TaskListWithPagination> {
     const originParams = { id, ...restParams };
@@ -38,6 +40,7 @@ export class Task extends APIResource {
       ...restParams,
       _id: id,
     });
+    handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.TaskResponse[]; pageInfo: Models.PageInfo }>(
       'tasks',
       removeUndefinedValues(_params),
