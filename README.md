@@ -7,7 +7,7 @@ This SDK provides a convenient way to interact with the Twelve Labs Video Unders
 
 Ensure that the following prerequisites are met before using the SDK:
 
--  [Node.js](https://nodejs.org/) 20 or newer must be installed on your machine.
+-  [Node.js](https://nodejs.org/) 14 or newer must be installed on your machine.
 -  You have an API key. If you don't have an account, please [sign up](https://api.twelvelabs.io/) for a free account. Then, to retrieve your API key, go to the [Dashboard](https://api.twelvelabs.io/dashboard) page, and select the **Copy** icon to the right of the key to copy it to your clipboard.
 
 # Install the SDK
@@ -41,14 +41,6 @@ To get started with the SDK, follow these basic steps:
 1. Create an index.
 2. Upload videos.
 3. Perform downstream tasks, such as searching or generating text from video.
-
-> Note: The SDK uses asynchronous methods to interact with the platform. Place your code within an immediately invoked function expression (IIFE), as shown below:
-
-```js
-(async () => {
-  // Your code
-})();
-```
 
 ## Create an index
 
