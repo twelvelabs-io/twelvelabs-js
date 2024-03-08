@@ -14,25 +14,25 @@ Ensure that the following prerequisites are met before using the SDK:
 
 Install the `twelvelabs-js` package:
 
- ```sh
+```sh
 yarn add twelvelabs-js # or npm i twelvelabs-js
- ```
+```
 
 # Initialize the SDK
 
 1. Import the required packages into your application:
 
-   ```js
+  ```js
   import { TwelveLabs, SearchData, Task } from 'twelvelabs-js';
   import { promises as fsPromises } from 'fs';
   import * as path from 'path';
-   ```
+  ```
 
-1.  Instantiate the SDK client with your API key. This example code assumes that your API key is stored in an environment variable named `TL_API_KEY`:
+2. Instantiate the SDK client with your API key. This example code assumes that your API key is stored in an environment variable named `TL_API_KEY`:
 
-    ```js
-    const client = new TwelveLabs({ apiKey: '<YOUR_API_KEY>' });
-    ```
+  ```js
+  const client = new TwelveLabs({ apiKey: '<YOUR_API_KEY>' });
+  ```
 
 # Use the SDK
 
