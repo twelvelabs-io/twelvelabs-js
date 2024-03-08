@@ -6,7 +6,7 @@ import { TwelveLabs } from 'twelvelabs';
   const engines = await client.engine.list();
   console.log('Available engines: ');
   engines.forEach((engine) => {
-    console.log(`  id=${engine.id} allowedIndexOptions=${engine.allowedIndexOptions}`);
+    console.log(`  id=${engine.id} allowedEngineOptions=${engine.allowedEngineOptions}`);
   });
 
   const pegasus = await client.engine.retrieve('pegasus1');
