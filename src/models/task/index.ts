@@ -22,7 +22,8 @@ export class Task {
   estimatedTime?: string;
   status: string;
   metadata: Record<string, any>;
-  process?: Record<string, any>;
+  process?: TaskProcess;
+  hls?: TaskHLS;
   createdAt: string;
   updatedAt?: string;
 
@@ -116,4 +117,16 @@ export interface TaskStatus {
   pending: number;
   failed: number;
   totalResult: number;
+}
+
+export interface TaskHLS {
+  videoUrl?: string;
+  thumbnailUrls?: string[];
+  status?: string;
+  updatedAt: string;
+}
+
+export interface TaskProcess {
+  percentage?: number;
+  remainSeconds?: number;
 }
