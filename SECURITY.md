@@ -6,7 +6,7 @@ Twelve Labs takes the security of our products and services seriously, and we we
 
 Please do not report security issues through public GitHub issues, discussions, or pull requests.
 
-Instead, use the [Report a vulnerability](https://github.com/twelvelabs-io/twelvelabs-python/security/advisories/new) page to report a security issue. In your report, include at least the following information:
+Instead, use the [Report a vulnerability](https://github.com/twelvelabs-io/twelvelabs-js/security/advisories/new) page to report a security issue. In your report, include at least the following information:
 - A clear description of the issue.
 - The steps to reproduce the issue.
 - The affected versions of the SDK.
