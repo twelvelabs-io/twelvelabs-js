@@ -6,6 +6,7 @@ import { PageInfo } from '../interfaces';
 export interface VideoResponse {
   id: string;
   metadata: VideoMetadata;
+  hls?: VideoHLS;
   createdAt: string;
   updatedAt?: string;
 }
@@ -15,6 +16,7 @@ export class Video {
   private readonly _indexId: string;
   id: string;
   metadata: VideoMetadata & Record<string, any>;
+  hls?: VideoHLS;
   createdAt: string;
   updatedAt?: string;
 
@@ -23,6 +25,7 @@ export class Video {
     this._indexId = indexId;
     this.id = data.id;
     this.metadata = data.metadata;
+    this.hls = data.hls;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
@@ -126,6 +129,13 @@ interface VideoMetadata {
   width: number;
   height: number;
   size: number;
+}
+
+export interface VideoHLS {
+  videoUrl?: string;
+  thumbnailUrls?: string[];
+  status?: string;
+  updatedAt: string;
 }
 
 export interface VideoValue {
