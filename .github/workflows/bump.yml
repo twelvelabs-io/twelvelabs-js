@@ -1,4 +1,4 @@
-name: JS SDK Version Bump
+name: Version Bump and Create PR
 
 on:
   workflow_dispatch:
