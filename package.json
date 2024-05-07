@@ -14,7 +14,8 @@
   "scripts": {
     "lint": "eslint --ext ts,js .",
     "fix": "eslint --fix --ext ts,js .",
-    "build-local": "bash build-local"
+    "build-local": "bash build-local",
+    "build": "bash build"
   },
   "dependencies": {
     "form-data": "^4.0.0",

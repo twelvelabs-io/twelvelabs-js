@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+mkdir dist
+cp -rp src README.md dist
+
+npm exec tsc-multi && echo "✅ Built successfully."
