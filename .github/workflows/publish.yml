@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Project
         run: |
-          npm run build  # Assuming you have a 'build' script in package.json
+          npm run build
 
       - name: Publish to npm
         run: npm publish
