@@ -31,7 +31,7 @@ jobs:
       - name: Configure Git
         run: |
           git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions@github.com"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump Version and Create Tag
         run: |
