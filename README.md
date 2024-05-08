@@ -1,4 +1,5 @@
 # TwelveLabs JavaScript SDK
+[![NPM version](https://img.shields.io/npm/v/twelvelabs-js.svg)](https://npmjs.org/package/twelvelabs-js)
 
 This SDK provides a convenient way to interact with the Twelve Labs Video Understanding Platform from an application written in JavaScript or TypeScript language. The SDK equips you with a set of intuitive methods that streamline the process of interacting with the platform, minimizing the need for boilerplate code.
 
