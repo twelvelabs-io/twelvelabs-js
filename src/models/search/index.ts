@@ -1,16 +1,17 @@
 import * as Resources from '../../resources';
+import { TokenPageInfo } from '../interfaces';
 
 export interface SearchResultResponse {
   searchPool: SearchPool;
   data: SearchData[];
-  pageInfo: SearchPageInfo;
+  pageInfo: TokenPageInfo;
 }
 
 export class SearchResult {
   private readonly _resource: Resources.Search;
   pool: SearchPool;
   data: SearchData[] | GroupByVideoSearchData[];
-  pageInfo: SearchPageInfo;
+  pageInfo: TokenPageInfo;
   constructor(resource: Resources.Search, data: SearchResultResponse) {
     this._resource = resource;
     this.pool = data.searchPool;
@@ -55,12 +56,4 @@ interface SearchPool {
   totalCount: number;
   totalDuration: number;
   indexId: string;
-}
-
-interface SearchPageInfo {
-  limitPerPage: number;
-  totalResults: number;
-  pageExpiredAt: string;
-  nextPageToken?: string;
-  prevPageToken?: string;
 }
