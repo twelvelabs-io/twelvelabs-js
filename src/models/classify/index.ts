@@ -40,9 +40,9 @@ export class ClassifyPageResult {
 }
 
 export interface ClassifyDetailedScore {
-  maxScore: string;
-  avgScore: string;
-  normalizedScore: string;
+  maxScore: number;
+  avgScore: number;
+  normalizedScore: number;
 }
 
 export interface ClassifyClip {
@@ -57,12 +57,12 @@ export interface ClassifyClip {
 
 export interface ClassifyClass {
   name: string;
-  score: string;
-  durationRatio: string;
-  clips: ClassifyClip[];
+  score: number;
+  durationRatio: number;
+  clips?: ClassifyClip[];
 }
 
 export interface ClassifyVideoData {
   videoId: string;
-  classes: ClassifyClass;
+  classes: ClassifyClass[];
 }

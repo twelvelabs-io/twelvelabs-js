@@ -3,7 +3,7 @@ import { TwelveLabs } from 'twelvelabs';
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
 
-  const index = await client.index.retrieve('65a75560efa0814ef2edc77a');
+  const index = await client.index.retrieve('<YOUR_INDEX_ID>');
   const videos = await client.index.video.list(index.id);
   if (videos.length === 0) {
     throw new Error(`No videos in index ${index.id}, exit`);
