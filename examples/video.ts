@@ -3,7 +3,7 @@ import { TwelveLabs, Video } from 'twelvelabs';
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
 
-  const index = await client.index.retrieve('65a75560efa0814ef2edc77a');
+  const index = await client.index.retrieve('<YOUR_INDEX_ID>');
 
   console.log(`Videos in index id=${index.id}`);
   const videos = await client.index.video.list(index.id);

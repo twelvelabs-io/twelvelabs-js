@@ -12,6 +12,7 @@ export class TwelveLabs extends APIClient {
   index: Resources.Index;
   task: Resources.Task;
   search: Resources.Search;
+  classify: Resources.Classify;
   generate: Resources.Generate;
 
   baseUrl: string;
@@ -36,6 +37,7 @@ export class TwelveLabs extends APIClient {
     this.index = new Resources.Index(this);
     this.task = new Resources.Task(this);
     this.search = new Resources.Search(this);
+    this.classify = new Resources.Classify(this);
     this.generate = new Resources.Generate(this);
   }
 }
