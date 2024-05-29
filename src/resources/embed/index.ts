@@ -26,10 +26,10 @@ export class EmbedTask extends APIResource {
 
     formData.append('engine_name', engineName);
     if (url) formData.append('video_url', url);
-    if (startOffsetSec) formData.append('video_start_offset_sec', url);
-    if (endOffsetSec) formData.append('video_end_offset_sec', url);
-    if (clipLength) formData.append('video_clip_length', url);
-    if (scopes) formData.append('video_embedding_scope', url);
+    if (startOffsetSec) formData.append('video_start_offset_sec', startOffsetSec);
+    if (endOffsetSec) formData.append('video_end_offset_sec', endOffsetSec);
+    if (clipLength) formData.append('video_clip_length', clipLength);
+    if (scopes) formData.append('video_embedding_scope', scopes);
 
     if (typeof file === 'string') {
       const filePath = path.resolve(file);
