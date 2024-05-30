@@ -1,3 +1,6 @@
+import { RequestOptions } from '../../core';
+import * as Resources from '../../resources';
+
 export interface Embedding {
   float: number[];
 }
@@ -50,15 +53,52 @@ export interface EmbeddingsTaskResponse {
 }
 
 export class EmbeddingsTask {
+  private readonly _resource: Resources.EmbedTask;
   id: string;
   engineName: string;
   status: string;
   videoEmbeddings?: VideoEmbedding[];
 
-  constructor(data: EmbeddingsTaskResponse) {
+  constructor(resource: Resources.EmbedTask, data: EmbeddingsTaskResponse) {
+    this._resource = resource;
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
     this.videoEmbeddings = data.videoEmbeddings;
+  }
+
+  async retrieve(options: RequestOptions = {}): Promise<string> {
+    const { status } = await this._resource.status(this.id, options);
+    this.status = status;
+    return this.status;
+  }
+
+  async updateStatus(options: RequestOptions = {}): Promise<EmbeddingsTask> {
+    return await this._resource.retrieve(this.id, options);
+  }
+
+  async waitForDone(
+    sleepInterval: number = 5000,
+    callback?: (task: EmbeddingsTask) => void,
+  ): Promise<string> {
+    const isDone = () => this.status === 'ready' || this.status === 'failed';
+    if (sleepInterval <= 0) {
+      throw new Error('sleepInterval must be greater than 0');
+    }
+
+    while (!isDone()) {
+      await this.sleep(sleepInterval);
+      await this.updateStatus();
+
+      if (callback) {
+        callback(this);
+      }
+    }
+
+    return this.status;
+  }
+
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

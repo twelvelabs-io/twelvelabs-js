@@ -54,9 +54,7 @@ export class Task {
       throw new Error('sleepInterval must be greater than 0');
     }
 
-    let done = isDone();
-
-    while (!done) {
+    while (!isDone()) {
       await this.sleep(sleepInterval);
       const task = await this.retrieve();
 
@@ -64,8 +62,6 @@ export class Task {
       this.status = task.status;
       this.metadata = task.metadata;
       this.process = task.process;
-
-      done = isDone();
 
       if (callback) {
         callback(this);

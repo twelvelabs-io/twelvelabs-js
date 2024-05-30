@@ -10,14 +10,14 @@ import { createReadStream } from 'fs';
 export class EmbedTask extends APIResource {
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.EmbeddingsTask> {
     const res = await this._get<Models.EmbeddingsTask>(`embed/tasks/${id}`, {}, options);
-    return new Models.EmbeddingsTask(res);
+    return new Models.EmbeddingsTask(this, res);
   }
 
   async create(
     engineName: string,
     { file, url, startOffsetSec, endOffsetSec, clipLength, scopes }: CreateEmbeddingsTaskVideoParams,
     options: RequestOptions = {},
-  ): Promise<string> {
+  ): Promise<Models.EmbeddingsTask> {
     if (!file && !url) {
       throw new Error('Either video file or url must be provided');
     }
@@ -40,25 +40,26 @@ export class EmbedTask extends APIResource {
       formData.append('video_file', file);
     }
 
-    const res = await this._post<{ id: string }>('embed/tasks', formData, options);
-    return res.id;
+    const { id } = await this._post<{ id: string }>('embed/tasks', formData, options);
+    const task = await this.retrieve(id);
+    return task;
   }
 
   async createBulk(
     engineName: string,
     videos: CreateEmbeddingsTaskVideoParams[],
     options: RequestOptions = {},
-  ): Promise<string[]> {
-    const taskIds: string[] = [];
+  ): Promise<Models.EmbeddingsTask[]> {
+    const tasks: Models.EmbeddingsTask[] = [];
     for (const videoParams of videos) {
       try {
-        const taskId = await this.create(engineName, videoParams, options);
-        taskIds.push(taskId);
+        const task = await this.create(engineName, videoParams, options);
+        tasks.push(task);
       } catch (e) {
         console.error(`Error creating task with video: ${e}`);
       }
     }
-    return taskIds;
+    return tasks;
   }
 
   async status(taskId: string, options: RequestOptions = {}): Promise<Models.EmbeddingsTaskStatus> {
