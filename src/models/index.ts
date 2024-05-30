@@ -6,3 +6,4 @@ export * from './video';
 export * from './search';
 export * from './generate';
 export * from './classify';
+export * from './embed';

@@ -14,6 +14,7 @@ export class TwelveLabs extends APIClient {
   search: Resources.Search;
   classify: Resources.Classify;
   generate: Resources.Generate;
+  embed: Resources.Embed;
 
   baseUrl: string;
   apiKey: string;
@@ -39,6 +40,7 @@ export class TwelveLabs extends APIClient {
     this.search = new Resources.Search(this);
     this.classify = new Resources.Classify(this);
     this.generate = new Resources.Generate(this);
+    this.embed = new Resources.Embed(this);
   }
 }
 
@@ -57,6 +59,9 @@ export {
   GenerateGistResult,
   GenerateSummarizeResult,
   GenerateOpenEndedTextResult,
+  EmbeddingsTask,
+  EmbeddingsTaskStatus,
+  CreateEmbeddingsResult,
   PageInfo,
 } from './models';
 
@@ -71,6 +76,8 @@ export {
   VideoFilterOptions,
   GenerateGistType,
   GenerateSummarizeType,
+  CreateEmbedParams,
+  CreateEmbeddingsTaskVideoParams,
 } from './resources';
 
 export {
