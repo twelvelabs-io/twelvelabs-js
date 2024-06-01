@@ -1,7 +1,7 @@
 export interface CreateEmbedParams {
   engineName: string;
   text: string;
-  textTruncate: 'none' | 'start' | 'end';
+  textTruncate?: 'none' | 'start' | 'end';
 }
 
 export interface CreateEmbeddingsTaskVideoParams {

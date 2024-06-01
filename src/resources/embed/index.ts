@@ -84,7 +84,7 @@ export class Embed extends APIResource {
 
     formData.append('engine_name', engineName);
     formData.append('text', text);
-    formData.append('text_truncate', textTruncate);
+    if (textTruncate) formData.append('text_truncate', textTruncate);
 
     const res = await this._post<Models.CreateEmbeddingsResult>('embed', formData, options);
     return new Models.CreateEmbeddingsResult(res);
