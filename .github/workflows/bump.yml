@@ -33,14 +33,14 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Bump Version and Create Tag
+      - name: Bump Version
         run: |
           git checkout -b version-bump-${{ github.run_id }}
           npm version ${{ github.event.inputs.versionType }} -m "Bump version to %s"
 
-      - name: Push Changes and Tags
+      - name: Push Changes
         run: |
-          git push --set-upstream origin version-bump-${{ github.run_id }} --follow-tags
+          git push --set-upstream origin version-bump-${{ github.run_id }}
 
       - name: Create Pull Request
         run: |
