@@ -8,17 +8,17 @@ export class Classify extends APIResource {
   async videos(
     { conversationOption = 'semantic', ...restBody }: ClassifyVideosOptions,
     options: RequestOptions = {},
-  ): Promise<Models.ClassifyResult> {
+  ): Promise<Models.ClassifyPageResult> {
     const _body = convertKeysToSnakeCase({
       ...restBody,
       conversationOption,
     });
-    const res = await this._post<Models.ClassifyResultResponse>(
+    const res = await this._post<Models.ClassifyPageResultResponse>(
       'classify',
       removeUndefinedValues(_body),
       options,
     );
-    return new Models.ClassifyResult(res);
+    return new Models.ClassifyPageResult(this, res);
   }
 
   async index(
