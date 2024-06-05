@@ -4,8 +4,7 @@ import * as Models from '../../models';
 import { APIResource } from '../../resource';
 import { TwelveLabs } from '../..';
 import { CreateEmbedParams, CreateEmbeddingsTaskVideoParams } from './interfaces';
-import path from 'path';
-import { createReadStream } from 'fs';
+import { attachFormFile } from '../../util';
 
 export class EmbedTask extends APIResource {
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.EmbeddingsTask> {
@@ -17,7 +16,7 @@ export class EmbedTask extends APIResource {
     engineName: string,
     { file, url, startOffsetSec, endOffsetSec, clipLength, scopes }: CreateEmbeddingsTaskVideoParams,
     options: RequestOptions = {},
-  ): Promise<Models.EmbeddingsTask> {
+  ): Promise<Models.EmbeddingsTask | undefined> {
     if (!file && !url) {
       throw new Error('Either video file or url must be provided');
     }
@@ -29,15 +28,11 @@ export class EmbedTask extends APIResource {
     if (startOffsetSec) formData.append('video_start_offset_sec', startOffsetSec);
     if (endOffsetSec) formData.append('video_end_offset_sec', endOffsetSec);
     if (clipLength) formData.append('video_clip_length', clipLength);
-    if (scopes) formData.append('video_embedding_scope', scopes);
 
-    if (typeof file === 'string') {
-      const filePath = path.resolve(file);
-      const fileStream = createReadStream(filePath);
-      const fileName = path.basename(filePath);
-      formData.append('video_file', fileStream, fileName);
-    } else if (file) {
-      formData.append('video_file', file);
+    try {
+      if (file) attachFormFile(formData, 'video_file', file);
+    } catch (err) {
+      throw err;
     }
 
     const { id } = await this._post<{ id: string }>('embed/tasks', formData, options);

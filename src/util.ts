@@ -1,3 +1,7 @@
+import * as fs from 'fs';
+import FormData from 'form-data';
+import path from 'path';
+
 // Converts object keys from snake_case or leading underscore format to camelCase.
 // This function is recursive, so it works on nested objects and arrays of objects as well.
 //
@@ -90,5 +94,27 @@ export function handleComparisonParams(
     params[key] = undefined;
   } else {
     params[key] = value;
+  }
+}
+
+export function attachFormFile(
+  formData: FormData,
+  formKey: string,
+  file: Buffer | NodeJS.ReadableStream | string,
+): void {
+  if (typeof file === 'string') {
+    const filePath = path.resolve(file);
+    if (!fs.existsSync(filePath)) {
+      throw new Error('File does not exist');
+    }
+    const fileStream = fs.createReadStream(filePath);
+    const fileName = path.basename(filePath);
+    formData.append(formKey, fileStream, fileName);
+  } else if (file instanceof fs.ReadStream) {
+    const filePath = file.path;
+    if (!fs.existsSync(filePath)) {
+      throw new Error('File does not exist');
+    }
+    formData.append(formKey, file);
   }
 }
