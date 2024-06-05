@@ -1,17 +1,6 @@
 import * as Resources from '../../resources';
 import { TokenPageInfo } from '../interfaces';
 
-export interface ClassifyResultResponse {
-  data: ClassifyVideoData[];
-}
-
-export class ClassifyResult {
-  data: ClassifyVideoData[];
-  constructor(data: ClassifyResultResponse) {
-    this.data = data.data;
-  }
-}
-
 export interface ClassifyPageResultResponse {
   data: ClassifyVideoData[];
   pageInfo: TokenPageInfo;

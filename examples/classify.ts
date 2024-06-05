@@ -118,6 +118,17 @@ const CLASSES = [
     });
   });
 
+  let nextIndexPage = await resultIndex.next();
+  while (nextIndexPage !== null) {
+    nextIndexPage.forEach((data) => {
+      console.log(`video_id=${data.videoId}`);
+      data.classes.forEach((cl) => {
+        console.log(`  name=${cl.name} score=${cl.score} durationRatio=${cl.durationRatio}`);
+      });
+    });
+    nextIndexPage = await resultIndex.next();
+  }
+
   console.log('Classify by videos');
   const resultVideos = await client.classify.videos({
     videoIds: videoIds,
@@ -131,4 +142,15 @@ const CLASSES = [
       console.log(`  name=${cl.name} score=${cl.score} durationRatio=${cl.durationRatio}`);
     });
   });
+
+  let nextVideosPage = await resultVideos.next();
+  while (nextVideosPage !== null) {
+    nextVideosPage.forEach((data) => {
+      console.log(`video_id=${data.videoId}`);
+      data.classes.forEach((cl) => {
+        console.log(`  name=${cl.name} score=${cl.score} durationRatio=${cl.durationRatio}`);
+      });
+    });
+    nextVideosPage = await resultVideos.next();
+  }
 })();
