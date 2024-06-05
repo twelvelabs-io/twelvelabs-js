@@ -1,10 +1,13 @@
-import path from 'path';
 import FormData from 'form-data';
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
-import { convertKeysToSnakeCase, handleComparisonParams, removeUndefinedValues } from '../../util';
+import {
+  attachFormFile,
+  convertKeysToSnakeCase,
+  handleComparisonParams,
+  removeUndefinedValues,
+} from '../../util';
 import { CreateTaskParams, ListTaskParams } from './interfaces';
-import { createReadStream } from 'fs';
 import { APIResource } from '../../resource';
 
 export class Task extends APIResource {
@@ -62,24 +65,14 @@ export class Task extends APIResource {
     if (body.language) formData.append('language', body.language);
     if (body.disableVideoStream) formData.append('disable_video_stream', body.disableVideoStream);
 
-    if (typeof body.file === 'string') {
-      const filePath = path.resolve(body.file);
-      const fileStream = createReadStream(filePath);
-      const fileName = path.basename(filePath);
-      formData.append('video_file', fileStream, fileName);
-    } else if (body.file) {
-      formData.append('video_file', body.file);
-    }
-
-    if (typeof body.transcriptionFile === 'string') {
-      const filePath = path.resolve(body.transcriptionFile);
-      const fileStream = createReadStream(filePath);
-      const fileName = path.basename(filePath);
-      formData.append('transcription_file', fileStream, fileName);
-      formData.append('provide_transcription', true);
-    } else if (body.transcriptionFile) {
-      formData.append('transcription_file', body.transcriptionFile);
-      formData.append('provide_transcription', true);
+    try {
+      if (body.file) attachFormFile(formData, 'video_file', body.file);
+      if (body.transcriptionFile) {
+        attachFormFile(formData, 'transcription_file', body.transcriptionFile);
+        formData.append('provide_transcription', true);
+      }
+    } catch (err) {
+      throw err;
     }
 
     const res = await this._post<{ id: string }>('tasks', formData, options);
