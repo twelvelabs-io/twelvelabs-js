@@ -10,7 +10,7 @@ import { TwelveLabs, SearchData, GroupByVideoSearchData } from 'twelvelabs';
   console.log('Search: ');
   const result = await client.search.query({
     indexId: index.id,
-    query: 'A man talking',
+    queryText: 'A man talking',
     options: ['visual', 'conversation'],
   });
   (result.data as SearchData[]).forEach((clip) => {
