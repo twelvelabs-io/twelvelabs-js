@@ -5,7 +5,7 @@ import { TwelveLabs, SearchData, GroupByVideoSearchData } from 'twelvelabs';
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
 
-  const index = await client.index.retrieve('6641cdb6c4d48cd286d3abd9');
+  const index = await client.index.retrieve('<YOUR_INDEX_ID>');
 
   console.log('Search: ');
   const result = await client.search.query({
