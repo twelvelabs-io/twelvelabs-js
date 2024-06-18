@@ -139,7 +139,7 @@ To perform a search request, use the example code below, replacing the following
 ```js
 let searchResults = await client.search.query({
   indexId: '<YOUR_INDEX_ID>'
-  query: '<YOUR_QUERY>',
+  queryText: '<YOUR_QUERY>',
   options: ['<YOUR_SEARCH_OPTIONS>'],
 });
 printPage(searchResults.data);
