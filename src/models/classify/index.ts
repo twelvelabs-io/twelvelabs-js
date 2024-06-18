@@ -40,8 +40,7 @@ export interface ClassifyClip {
   score: number;
   option: string;
   prompt: string;
-  thumbnail_url?: string;
-  detailed_scores?: ClassifyDetailedScore;
+  thumbnailUrl?: string;
 }
 
 export interface ClassifyClass {
@@ -49,6 +48,7 @@ export interface ClassifyClass {
   score: number;
   durationRatio: number;
   clips?: ClassifyClip[];
+  detailedScores?: ClassifyDetailedScore;
 }
 
 export interface ClassifyVideoData {
