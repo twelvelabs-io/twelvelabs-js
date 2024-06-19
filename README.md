@@ -198,7 +198,7 @@ To generate topics, titles, and hashtags, use the example code below, replacing 
 - **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
 - **`[<TYPES>]`**: with an array of strings representing the type of text the platform should generate. Example: `["title", "topic", "hashtag"]`.
 
-```py
+```js
 const gist = await client.generate.gist('<YOUR_VIDEO_ID>', ['<TYPES>']);
 console.log(`Title: ${gist.title}\nTopics=${gist.topics}\nHashtags=${gist.hashtags}`);
 ```
@@ -227,7 +227,7 @@ To generate open-ended texts, use the example code below, replacing the followin
 - **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
 - **`<YOUR_PROMPT>`**: with a string that guides the model on the desired format or content. The maximum length of the prompt is 500 tokens or roughly 350 words. Example:  "I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks."
 
-```py
+```js
 const text = await client.generate.text('<YOUR_VIDEO_ID>', '<YOUR_PROMPT>');
 console.log(`Open-ended Text: ${text.data}`);
 ```
