@@ -8,7 +8,7 @@ import { Index, TwelveLabs } from 'twelvelabs';
     name: indexName,
     engines: [
       {
-        name: 'marengo2.5',
+        name: 'marengo2.6',
         options: ['visual', 'conversation', 'text_in_video'],
       },
     ],
