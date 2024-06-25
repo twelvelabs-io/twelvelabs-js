@@ -1,8 +1,8 @@
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
-import { convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
-import { GenerateGistType, GenerateSummarizeType } from './interfaces';
+import { convertKeysToSnakeCase, removeUndefinedValues, trackStream } from '../../util';
+import { GenerateGistType, GenerateSummarizeType, GenerateTextStreamParams } from './interfaces';
 
 export class Generate extends APIResource {
   async gist(
@@ -50,7 +50,29 @@ export class Generate extends APIResource {
       prompt,
       temperature,
     });
-    const res = await this._post<Models.GenerateOpenEndedTextResult>('generate', _body, options);
+    const res = await this._post<Models.GenerateOpenEndedTextResult>(
+      'generate',
+      removeUndefinedValues(_body),
+      options,
+    );
     return res;
+  }
+
+  async textStream(
+    { videoId, prompt, temperature }: GenerateTextStreamParams,
+    options: RequestOptions = {},
+  ): Promise<Models.GenerateTextStreamResult> {
+    const _body = convertKeysToSnakeCase({
+      videoId,
+      prompt,
+      temperature,
+      stream: true,
+    });
+    const res = await this._post<AsyncIterable<Uint8Array>>(
+      'generate',
+      removeUndefinedValues(_body),
+      options,
+    );
+    return new Models.GenerateTextStreamResult(trackStream(res, 64 * 1024));
   }
 }
