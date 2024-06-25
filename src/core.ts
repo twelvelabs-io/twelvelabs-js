@@ -1,4 +1,4 @@
-import fetch, { RequestInit, Response } from 'node-fetch';
+import fetch from 'cross-fetch';
 import FormData from 'form-data';
 import { API_KEY_HEADER } from './constants';
 import * as Errors from './error';
@@ -71,12 +71,11 @@ export class APIClient {
 
       return body;
     } catch (error) {
-      if (error instanceof fetch.FetchError) {
-        if (error.code === 'ENOTFOUND') {
-          throw new Errors.APIConnectionError('API Connection Error', error);
-        } else if (error.type === 'request-timeout') {
-          throw new Errors.APITimeoutError('API Timeout Error', error);
-        }
+      if (error.code === 'ENOTFOUND') {
+        throw new Errors.APIConnectionError('API Connection Error', error);
+      }
+      if (error.type === 'request-timeout') {
+        throw new Errors.APITimeoutError('API Timeout Error', error);
       }
       if (error instanceof Error) {
         throw error;

@@ -1,4 +1,3 @@
-import { RequestInit } from 'node-fetch';
 export class TwelveLabsError extends Error {}
 
 export class APIError extends Error {
