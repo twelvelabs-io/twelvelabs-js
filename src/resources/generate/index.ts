@@ -73,6 +73,6 @@ export class Generate extends APIResource {
       removeUndefinedValues(_body),
       options,
     );
-    return new Models.GenerateTextStreamResult(trackStream(res, 32 * 1024));
+    return new Models.GenerateTextStreamResult(trackStream(res));
   }
 }

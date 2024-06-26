@@ -146,7 +146,9 @@ const readBytes = async function* (iterable: AsyncIterable<Uint8Array>, chunkSiz
 };
 
 // Tracks the stream and processes it in smaller chunks.
-export const trackStream = (stream: AsyncIterable<Uint8Array>, chunkSize: number) => {
+// The default chunk size is set to 32KB (32 * 1024 bytes). This chunk size is chosen
+// to balance between memory usage and processing efficiency.
+export const trackStream = (stream: AsyncIterable<Uint8Array>, chunkSize: number = 32 * 1024) => {
   const iterator = readBytes(stream, chunkSize);
 
   return new ReadableStream<Uint8Array>({
