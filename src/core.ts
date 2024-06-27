@@ -58,9 +58,12 @@ export class APIClient {
     try {
       const response = await fetch(url, config);
       const contentType = response.headers.get('Content-Type');
+      const transferEncoding = response.headers.get('Transfer-Encoding');
       let body = null;
 
-      if (contentType && contentType.includes('application/json')) {
+      if (transferEncoding === 'chunked') {
+        body = response.body;
+      } else if (contentType && contentType.includes('application/json')) {
         const rawBody = await response.json();
         body = convertKeysToCamelCase(rawBody, skipCamelKeys);
       } else {

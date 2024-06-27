@@ -118,3 +118,52 @@ export function attachFormFile(
     formData.append(formKey, file);
   }
 }
+
+// Splits a chunk into smaller chunks of a specified size.
+const streamChunk = function* (chunk: Uint8Array, chunkSize: number) {
+  let len = chunk.byteLength;
+
+  if (!chunkSize || len < chunkSize) {
+    yield chunk;
+    return;
+  }
+
+  let pos = 0;
+  let end: number;
+
+  while (pos < len) {
+    end = pos + chunkSize;
+    yield chunk.slice(pos, end);
+    pos = end;
+  }
+};
+
+// Reads bytes from an AsyncIterable and splits them into smaller chunks.
+const readBytes = async function* (iterable: AsyncIterable<Uint8Array>, chunkSize: number) {
+  for await (const chunk of iterable) {
+    yield* streamChunk(chunk, chunkSize);
+  }
+};
+
+// Tracks the stream and processes it in smaller chunks.
+// The default chunk size is set to 32KB (32 * 1024 bytes). This chunk size is chosen
+// to balance between memory usage and processing efficiency.
+export const trackStream = (stream: AsyncIterable<Uint8Array>, chunkSize: number = 32 * 1024) => {
+  const iterator = readBytes(stream, chunkSize);
+
+  return new ReadableStream<Uint8Array>({
+    type: 'bytes',
+
+    async pull(controller) {
+      // Read the next chunk from the iterator
+      const { done, value } = await iterator.next();
+      if (done) {
+        // If the iterator is done, close the stream
+        controller.close();
+        return;
+      }
+      // Enqueue the chunk into the stream
+      controller.enqueue(new Uint8Array(value || []));
+    },
+  });
+};
