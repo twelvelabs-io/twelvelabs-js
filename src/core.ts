@@ -44,6 +44,7 @@ export class APIClient {
     }
 
     const config: RequestInit = {
+      ...options,
       method,
       headers,
       body:
@@ -52,7 +53,6 @@ export class APIClient {
             body
           : JSON.stringify(body)
         : undefined,
-      ...options,
     };
 
     try {
