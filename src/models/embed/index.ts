@@ -88,7 +88,12 @@ export class EmbeddingsTask {
 
     while (!isDone()) {
       await this.sleep(sleepInterval);
-      await this.updateStatus();
+      try {
+        await this.updateStatus({ headers: { 'Cache-Control': 'no-cache' } });
+      } catch (err) {
+        console.warn(`Retrieving status failed: ${err.message}, retrying..`);
+        continue;
+      }
 
       if (callback) {
         callback(this);
