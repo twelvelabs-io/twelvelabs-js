@@ -57,7 +57,7 @@ export class Task {
     while (!isDone()) {
       await this.sleep(sleepInterval);
       try {
-        const task = await this.retrieve({ headers: { 'Cache-Control': 'no-cache' } });
+        const task = await this.retrieve();
         this.estimatedTime = task.estimatedTime;
         this.status = task.status;
         this.metadata = task.metadata;
