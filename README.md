@@ -1,15 +1,15 @@
 # TwelveLabs JavaScript SDK
+
 [![NPM version](https://img.shields.io/npm/v/twelvelabs-js.svg)](https://npmjs.org/package/twelvelabs-js)
 
 This SDK provides a convenient way to interact with the Twelve Labs Video Understanding Platform from an application written in JavaScript or TypeScript language. The SDK equips you with a set of intuitive methods that streamline the process of interacting with the platform, minimizing the need for boilerplate code.
-
 
 # Prerequisites
 
 Ensure that the following prerequisites are met before using the SDK:
 
--  [Node.js](https://nodejs.org/) 14 or newer must be installed on your machine.
--  You have an API key. If you don't have an account, please [sign up](https://api.twelvelabs.io/) for a free account. Then, to retrieve your API key, go to the [Dashboard](https://api.twelvelabs.io/dashboard) page, and select the **Copy** icon to the right of the key to copy it to your clipboard.
+- [Node.js](https://nodejs.org/) 14 or newer must be installed on your machine.
+- You have an API key. If you don't have an account, please [sign up](https://api.twelvelabs.io/) for a free account. Then, to retrieve your API key, go to the [Dashboard](https://api.twelvelabs.io/dashboard) page, and select the **Copy** icon to the right of the key to copy it to your clipboard.
 
 # Install the SDK
 
@@ -23,17 +23,17 @@ yarn add twelvelabs-js # or npm i twelvelabs-js
 
 1. Import the required packages into your application:
 
-  ```js
-  import { TwelveLabs, SearchData, Task } from 'twelvelabs-js';
-  import { promises as fsPromises } from 'fs';
-  import * as path from 'path';
-  ```
+```js
+import { TwelveLabs, SearchData, Task } from 'twelvelabs-js';
+import { promises as fsPromises } from 'fs';
+import * as path from 'path';
+```
 
 2. Instantiate the SDK client with your API key. This example code assumes that your API key is stored in an environment variable named `TL_API_KEY`:
 
-  ```js
-  const client = new TwelveLabs({ apiKey: '<YOUR_API_KEY>' });
-  ```
+```js
+const client = new TwelveLabs({ apiKey: '<YOUR_API_KEY>' });
+```
 
 # Use the SDK
 
@@ -56,7 +56,7 @@ let index = await client.index.create({
       options: ['visual', 'conversation', 'text_in_video'],
     },
     {
-      name: 'pegasus1',
+      name: 'pegasus1.1',
       options: ['visual', 'conversation'],
     },
   ],
@@ -66,30 +66,30 @@ console.log(`Created index: id=${index.id} name=${index.name} engines=${JSON.str
 ```
 
 Note the following about this example:
+
 - The platform provides two distinct engine types - embedding and generative, each serving unique purposes in multimodal video understanding.
   - **Embedding engines (Marengo)**: These engines are proficient at performing tasks such as search and classification, enabling enhanced video understanding.
   - **Generative engines (Pegasus)**: These engines generate text based on your videos.
-  For your index, both Marengo and Pegasus are enabled.
+    For your index, both Marengo and Pegasus are enabled.
 - The `engines.options` fields specify the types of information each video understanding engine will process. For details, see the [Engine options](https://docs.twelvelabs.io/v1.2/docs/engine-options) page.
 - The engines and the engine options specified when you create an index apply to all the videos you upload to that index and cannot be changed. For details, see the [Engine options](https://docs.twelvelabs.io/v1.2/docs/engine-options) page.
 
 The output should look similar to the following:
 
 ```
-Created index: id=65e71802bb29f13bdd6f38d8 name=2024-03-05T13:02:57.938Z engines=[{"name":"pegasus1","options":["visual","conversation"]},{"name":"marengo2.6","options":["visual","conversation","text_in_video"]}]
+Created index: id=65e71802bb29f13bdd6f38d8 name=2024-03-05T13:02:57.938Z engines=[{"name":"pegasus1.1","options":["visual","conversation"]},{"name":"marengo2.6","options":["visual","conversation","text_in_video"]}]
 ```
 
 Note that the API returns, among other information, a field named `id`, representing the unique identifier of your new index.
 
 For a description of each field in the request and response, see the [Create an index](https://docs.twelvelabs.io/v1.2/reference/create-index) page.
 
-
 ## Upload videos
 
 Before you upload a video to the platform, ensure that it meets the following requirements:
 
 - **Video resolution**: Must be greater or equal than 360p and less or equal than 4K.
-- **Video and audio formats**:  The video files you wish to upload must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at [support@twelvelabs.io](mailto:support@twelvelabs.io).
+- **Video and audio formats**: The video files you wish to upload must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at [support@twelvelabs.io](mailto:support@twelvelabs.io).
 - **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 20 minutes (1200s).
 - **File size**: Must not exceed 2 GB. If you require different options, send us an email at support@twelvelabs.io.
 - **Audio track**: If the `conversation` [engine option](https://docs.twelvelabs.io/v1.2/docs/engine-options) is selected, the video you're uploading must contain an audio track.
@@ -98,7 +98,6 @@ To upload videos, use the example code below, replacing the following:
 
 - **`<YOUR_VIDEO_PATH>`**: with a string representing the path to the directory containing the video files you wish to upload.
 - **`<YOUR_INDEX_ID>`**: with a string representing the unique identifier of the index to which you want to upload your video.
-
 
 ```js
 const files = await fsPromises.readdir('YOUR_VIDEO_PATH');
@@ -175,6 +174,7 @@ The results are returned one page at a time, with a default limit of 10 results 
 ```
 
 Note that the response contains, among other information, the following fields:
+
 - `videoId`: The unique identifier of the video that matched your search terms.
 - `score`: A quantitative value determined by the AI engine representing the level of confidence that the results match your search terms.
 - `start`: The start time of the matching video clip, expressed in seconds.
@@ -184,7 +184,6 @@ Note that the response contains, among other information, the following fields:
   - `medium`
   - `low`
   - `extremely low`
-
 
 For a description of each field in the request and response, see the [Make a search request](https://docs.twelvelabs.io/v1.2/reference/make-search-request) page.
 
@@ -203,9 +202,10 @@ let searchResults = await client.search.query({
   indexId: '<YOUR_INDEX_ID>',
   queryMediaType: 'image',
   queryMediaFile: '<YOUR_FILE_PATH>', // Use queryMediaUrl instead to provide a file from a publicly accessible URL.
-  options: ['visual']
+  options: ['visual'],
 });
 ```
+
 The response is similar to that received when using text queries.
 
 ### Generate text from video
@@ -213,6 +213,7 @@ The response is similar to that received when using text queries.
 The Twelve Labs Video Understanding Platform offers three distinct endpoints tailored to meet various requirements. Each endpoint has been designed with specific levels of flexibility and customization to accommodate different needs.
 
 Note the following about using these endpoints:
+
 - The Pegasus video understanding engine must be enabled for the index to which your video has been uploaded.
 - Your prompts must be instructive or descriptive, and you should not phrase them as questions.
 - The maximum length of a prompt is 300 characters.
@@ -237,8 +238,7 @@ To generate summaries, chapters, and highlights, use the example code below, rep
 
 - **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
 - **`<TYPE>`**: with a string representing the type of text the platform should generate. This parameter can take one of the following values: "summary", "chapter", or "highlight".
-- _(Optional)_ **`<YOUR_PROMPT>`**: with a string that provides context for the summarization task, such as the target audience, style, tone of voice, and purpose. Example:  "Generate a summary in no more than 5 bullet points."
-
+- _(Optional)_ **`<YOUR_PROMPT>`**: with a string that provides context for the summarization task, such as the target audience, style, tone of voice, and purpose. Example: "Generate a summary in no more than 5 bullet points."
 
 ```js
 const summary = await client.generate.summarize('<YOUR_VIDEO_ID>', '<TYPE>');
@@ -250,8 +250,9 @@ For a description of each field in the request and response, see the [Summaries,
 #### Open-ended texts
 
 To generate open-ended texts, use the example code below, replacing the following:
+
 - **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
-- **`<YOUR_PROMPT>`**: with a string that guides the model on the desired format or content. The maximum length of the prompt is 500 tokens or roughly 350 words. Example:  "I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks."
+- **`<YOUR_PROMPT>`**: with a string that guides the model on the desired format or content. The maximum length of the prompt is 500 tokens or roughly 350 words. Example: "I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks."
 
 ```js
 const text = await client.generate.text('<YOUR_VIDEO_ID>', '<YOUR_PROMPT>');
@@ -262,16 +263,16 @@ console.log(`Open-ended Text: ${text.data}`);
 
 The SDK includes a set of exceptions that are mapped to specific HTTP status codes, as shown in the table below:
 
-| Exception | HTTP Status Code |
-|----------|----------|
-| BadRequestError| 400 |
-| AuthenticationError | 401 |
-| PermissionDeniedError  | 403 |
-| NotFoundError | 404 |
-| ConflictError | 409 |
-| UnprocessableEntityError | 422 |
-| RateLimitError | 429 |
-| InternalServerError | 5xx |
+| Exception                | HTTP Status Code |
+| ------------------------ | ---------------- |
+| BadRequestError          | 400              |
+| AuthenticationError      | 401              |
+| PermissionDeniedError    | 403              |
+| NotFoundError            | 404              |
+| ConflictError            | 409              |
+| UnprocessableEntityError | 422              |
+| RateLimitError           | 429              |
+| InternalServerError      | 5xx              |
 
 The following example shows how you can handle specific HTTP errors in your application:
 

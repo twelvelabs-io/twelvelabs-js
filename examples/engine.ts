@@ -9,6 +9,6 @@ import { TwelveLabs } from 'twelvelabs';
     console.log(`  id=${engine.id} allowedEngineOptions=${engine.allowedEngineOptions}`);
   });
 
-  const pegasus = await client.engine.retrieve('pegasus1');
+  const pegasus = await client.engine.retrieve('pegasus1.1');
   console.log(pegasus);
 })();
