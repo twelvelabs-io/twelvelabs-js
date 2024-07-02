@@ -56,12 +56,16 @@ export class Task {
 
     while (!isDone()) {
       await this.sleep(sleepInterval);
-      const task = await this.retrieve();
-
-      this.estimatedTime = task.estimatedTime;
-      this.status = task.status;
-      this.metadata = task.metadata;
-      this.process = task.process;
+      try {
+        const task = await this.retrieve();
+        this.estimatedTime = task.estimatedTime;
+        this.status = task.status;
+        this.metadata = task.metadata;
+        this.process = task.process;
+      } catch (err) {
+        console.warn(`Retrieving task failed: ${err.message}, retrying..`);
+        continue;
+      }
 
       if (callback) {
         callback(this);
