@@ -67,14 +67,13 @@ export class EmbeddingsTask {
     this.videoEmbeddings = data.videoEmbeddings;
   }
 
-  async retrieve(options: RequestOptions = {}): Promise<string> {
-    const { status } = await this._resource.status(this.id, options);
-    this.status = status;
-    return this.status;
+  async retrieve(options: RequestOptions = {}): Promise<EmbeddingsTask> {
+    return await this._resource.retrieve(this.id, options);
   }
 
-  async updateStatus(options: RequestOptions = {}): Promise<EmbeddingsTask> {
-    return await this._resource.retrieve(this.id, options);
+  async getStatus(options: RequestOptions = {}): Promise<string> {
+    const { status } = await this._resource.status(this.id, options);
+    return status;
   }
 
   async waitForDone(
@@ -88,7 +87,12 @@ export class EmbeddingsTask {
 
     while (!isDone()) {
       await this.sleep(sleepInterval);
-      await this.updateStatus();
+      try {
+        this.status = await this.getStatus();
+      } catch (err) {
+        console.warn(`Retrieving status failed: ${err.message}, retrying..`);
+        continue;
+      }
 
       if (callback) {
         callback(this);
