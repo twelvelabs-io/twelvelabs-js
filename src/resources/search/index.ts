@@ -22,6 +22,7 @@ export class Search extends APIResource {
       filter,
       pageLimit,
       sortOption,
+      adjustConfidenceLevel,
     }: SearchOptions,
     options: RequestOptions = {},
   ): Promise<Models.SearchResult> {
@@ -46,6 +47,7 @@ export class Search extends APIResource {
           filter,
           pageLimit,
           sortOption,
+          adjustConfidenceLevel,
         });
         const res = await this._post<Models.SearchResultResponse>(
           'search',
@@ -79,6 +81,7 @@ export class Search extends APIResource {
     if (filter) formData.append('filter', JSON.stringify(filter));
     if (pageLimit) formData.append('page_limit', pageLimit);
     if (sortOption) formData.append('sort_option', sortOption);
+    if (adjustConfidenceLevel) formData.append('adjust_confidence_level', adjustConfidenceLevel);
 
     try {
       if (queryMediaFile) attachFormFile(formData, 'query_media_file', queryMediaFile);
