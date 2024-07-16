@@ -13,4 +13,5 @@ export interface SearchOptions {
   filter?: Record<string, any>;
   pageLimit?: number;
   sortOption?: 'score' | 'clip_count';
+  adjustConfidenceLevel?: number;
 }
