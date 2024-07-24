@@ -8,6 +8,7 @@ export interface VideoResponse {
   metadata: VideoMetadata;
   hls?: VideoHLS;
   source?: VideoSource;
+  indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
 }
@@ -19,6 +20,7 @@ export class Video {
   metadata: VideoMetadata & Record<string, any>;
   hls?: VideoHLS;
   source?: VideoSource;
+  indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
 
@@ -29,6 +31,7 @@ export class Video {
     this.metadata = data.metadata;
     this.hls = data.hls;
     this.source = data.source;
+    this.indexedAt = data.indexedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
