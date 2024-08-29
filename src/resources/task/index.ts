@@ -63,7 +63,7 @@ export class Task extends APIResource {
     if (body.url) formData.append('video_url', body.url);
     if (body.transcriptionUrl) formData.append('transcription_url', body.transcriptionUrl);
     if (body.language) formData.append('language', body.language);
-    if (body.disableVideoStream) formData.append('disable_video_stream', body.disableVideoStream);
+    if (body.disableVideoStream) formData.append('disable_video_stream', String(body.disableVideoStream));
 
     try {
       if (body.file) attachFormFile(formData, 'video_file', body.file);
