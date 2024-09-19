@@ -60,6 +60,7 @@ export {
   GenerateSummarizeResult,
   GenerateOpenEndedTextResult,
   EmbeddingsTask,
+  EmbeddingsTaskListWithPagination,
   EmbeddingsTaskStatus,
   CreateEmbeddingsResult,
   PageInfo,
@@ -78,6 +79,7 @@ export {
   GenerateSummarizeType,
   CreateEmbedParams,
   CreateEmbeddingsTaskVideoParams,
+  ListEmbeddingsTaskParams,
 } from './resources';
 
 export {
