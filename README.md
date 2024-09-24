@@ -32,7 +32,7 @@ import * as path from 'path';
 2. Instantiate the SDK client with your API key. This example code assumes that your API key is stored in an environment variable named `TL_API_KEY`:
 
 ```js
-const client = new TwelveLabs({ apiKey: '<YOUR_API_KEY>' });
+const client = new TwelveLabs({ apiKey: process.env.TL_API_KEY});
 ```
 
 # Use the SDK
