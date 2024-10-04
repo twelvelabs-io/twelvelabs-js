@@ -5,6 +5,14 @@ import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
 
+  const embedTasks = await client.embed.task.list();
+  embedTasks.forEach((task) => {
+    console.log(`Embedding task: id=${task.id} status=${task.status} createdAt=${task.createdAt}`);
+    if (!!task.metadata) {
+      console.table(task.metadata);
+    }
+  });
+
   const printVideoEmbeddings = async (id: string) => {
     const task = await client.embed.task.retrieve(id);
     if (task.videoEmbeddings) {

@@ -71,6 +71,7 @@ export {
   CreateTaskParams,
   ListIndexParams,
   ListTaskParams,
+  RetrieveVideoParams,
   ListVideoParams,
   SearchOptions,
   UpdateVideoParams,

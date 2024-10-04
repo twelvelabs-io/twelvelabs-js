@@ -29,26 +29,26 @@ export class CreateEmbeddingsResult {
   }
 }
 
-export interface EmbeddingVideoMetadata {
-  videoUrl?: string;
-  videoFilename?: string;
-  videoClipLength: number;
-  videoEmbeddingScope: string[];
-  duration: number;
+export interface EmbeddingMetadata {
+  url?: string;
+  filename?: string;
+  videoClipLength?: number;
+  videoEmbeddingScope?: string[];
+  duration?: number;
 }
 
 export interface EmbeddingsTaskStatusResponse {
   id: string;
   engineName: string;
   status: string;
-  metadata?: EmbeddingVideoMetadata;
+  metadata?: EmbeddingMetadata;
 }
 
 export class EmbeddingsTaskStatus {
   id: string;
   engineName: string;
   status: string;
-  metadata?: EmbeddingVideoMetadata;
+  metadata?: EmbeddingMetadata;
 
   constructor(data: EmbeddingsTaskStatusResponse) {
     this.id = data.id;
@@ -71,7 +71,7 @@ export interface EmbeddingsTaskResponse {
   status: string;
   videoEmbeddings?: VideoEmbedding[];
   createdAt?: string;
-  metadata?: EmbeddingVideoMetadata;
+  metadata?: EmbeddingMetadata;
 }
 
 export class EmbeddingsTask {
@@ -82,7 +82,7 @@ export class EmbeddingsTask {
   videoEmbeddings?: VideoEmbedding[];
 
   createdAt?: string;
-  metadata?: EmbeddingVideoMetadata;
+  metadata?: EmbeddingMetadata;
 
   constructor(resource: Resources.EmbedTask, data: EmbeddingsTaskResponse) {
     this._resource = resource;

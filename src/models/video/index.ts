@@ -1,5 +1,6 @@
 import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
+import { Embedding } from '../embed';
 import { GenerateGistResult, GenerateOpenEndedTextResult } from '../generate';
 import { PageInfo } from '../interfaces';
 
@@ -23,6 +24,7 @@ export class Video {
   indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
+  embedding?: Embedding;
 
   constructor(resource: Resources.Video, indexId: string, data: VideoResponse) {
     this._resource = resource;

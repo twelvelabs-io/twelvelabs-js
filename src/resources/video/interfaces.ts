@@ -1,5 +1,9 @@
 import { PageOptions } from '../../interfaces';
 
+export interface RetrieveVideoParams {
+  embed?: boolean;
+}
+
 export interface ListVideoParams extends PageOptions {
   id?: string;
   filename?: string;

@@ -23,7 +23,7 @@ export interface CreateEmbeddingsTaskVideoParams {
 }
 
 export interface ListEmbeddingsTaskParams extends PageOptions {
-  startedAt: string;
-  endedAt: string;
-  status?: string;
+  startedAt?: string;
+  endedAt?: string;
+  status?: 'processing' | 'ready' | 'failed';
 }

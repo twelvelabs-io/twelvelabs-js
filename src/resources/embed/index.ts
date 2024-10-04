@@ -13,7 +13,7 @@ export class EmbedTask extends APIResource {
   }
 
   async list(
-    params: ListEmbeddingsTaskParams,
+    params: ListEmbeddingsTaskParams = {},
     options: RequestOptions = {},
   ): Promise<Models.EmbeddingsTask[]> {
     const _params = convertKeysToSnakeCase(params);
@@ -26,7 +26,7 @@ export class EmbedTask extends APIResource {
   }
 
   async listPagination(
-    params: ListEmbeddingsTaskParams,
+    params: ListEmbeddingsTaskParams = {},
     options: RequestOptions = {},
   ): Promise<Models.EmbeddingsTaskListWithPagination> {
     const _params = convertKeysToSnakeCase(params);
