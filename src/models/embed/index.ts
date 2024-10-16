@@ -23,7 +23,6 @@ export interface SegmentEmbedding {
 
 export interface AudioEmbedding {
   segments?: SegmentEmbedding[];
-
   isSuccess: boolean;
   errorMessage?: string;
   metadata?: EmbeddingMediaMetadata;
