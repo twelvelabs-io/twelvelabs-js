@@ -2,10 +2,31 @@ import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
 import { PageInfo } from '../interfaces';
 
+export interface EmbeddingMediaMetadata {
+  inputUrl?: string;
+  inputFilename?: string;
+}
+
 export interface Embedding {
   float?: number[];
   isSuccess: boolean;
   errorMessage?: string;
+  metadata?: EmbeddingMediaMetadata;
+}
+
+export interface SegmentEmbedding {
+  float?: number[];
+  startOffsetSec: number;
+  endOffsetSec?: number;
+  embeddingScope?: string;
+}
+
+export interface AudioEmbedding {
+  segments?: SegmentEmbedding[];
+
+  isSuccess: boolean;
+  errorMessage?: string;
+  metadata?: EmbeddingMediaMetadata;
 }
 
 export interface CreateEmbeddingsResultResponse {
@@ -13,6 +34,7 @@ export interface CreateEmbeddingsResultResponse {
   textEmbedding?: Embedding;
   imageEmbedding?: Embedding;
   videoEmbedding?: Embedding;
+  audioEmbedding?: AudioEmbedding;
 }
 
 export class CreateEmbeddingsResult {
@@ -20,12 +42,14 @@ export class CreateEmbeddingsResult {
   textEmbedding?: Embedding;
   imageEmbedding?: Embedding;
   videoEmbedding?: Embedding;
+  audioEmbedding?: AudioEmbedding;
 
   constructor(data: CreateEmbeddingsResultResponse) {
     this.engineName = data.engineName;
     this.textEmbedding = data.textEmbedding;
     this.imageEmbedding = data.imageEmbedding;
     this.videoEmbedding = data.videoEmbedding;
+    this.audioEmbedding = data.audioEmbedding;
   }
 }
 

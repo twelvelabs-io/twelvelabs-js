@@ -8,6 +8,7 @@ export interface CreateEmbedParams {
   // audio params
   audioUrl?: string;
   audioFile?: Buffer | NodeJS.ReadableStream | string;
+  audioStartOffsetSec?: number;
   // image params
   imageUrl?: string;
   imageFile?: Buffer | NodeJS.ReadableStream | string;

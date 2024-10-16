@@ -105,9 +105,22 @@ export class Embed extends APIResource {
   }
 
   async create(
-    { engineName, text, textTruncate, audioUrl, audioFile, imageUrl, imageFile }: CreateEmbedParams,
+    {
+      engineName,
+      text,
+      textTruncate,
+      audioUrl,
+      audioFile,
+      audioStartOffsetSec,
+      imageUrl,
+      imageFile,
+    }: CreateEmbedParams,
     options: RequestOptions = {},
   ): Promise<Models.CreateEmbeddingsResult> {
+    if (!text && !audioUrl && !audioFile && !imageUrl && !imageFile) {
+      throw new Error('At least one of text, audioUrl, audioFile, imageUrl, imageFile must be provided');
+    }
+
     const formData = new FormData();
 
     formData.append('engine_name', engineName);
@@ -117,6 +130,7 @@ export class Embed extends APIResource {
     if (imageUrl) formData.append('image_url', imageUrl);
     if (audioFile) attachFormFile(formData, 'audio_file', audioFile);
     if (imageFile) attachFormFile(formData, 'image_file', imageFile);
+    if (audioStartOffsetSec) formData.append('audio_start_offset_sec', audioStartOffsetSec);
 
     const res = await this._post<Models.CreateEmbeddingsResultResponse>('embed', formData, options);
     return new Models.CreateEmbeddingsResult(res);
