@@ -60,6 +60,7 @@ export {
   GenerateSummarizeResult,
   GenerateOpenEndedTextResult,
   EmbeddingsTask,
+  EmbeddingsTaskListWithPagination,
   EmbeddingsTaskStatus,
   CreateEmbeddingsResult,
   PageInfo,
@@ -70,6 +71,7 @@ export {
   CreateTaskParams,
   ListIndexParams,
   ListTaskParams,
+  RetrieveVideoParams,
   ListVideoParams,
   SearchOptions,
   UpdateVideoParams,
@@ -78,6 +80,7 @@ export {
   GenerateSummarizeType,
   CreateEmbedParams,
   CreateEmbeddingsTaskVideoParams,
+  ListEmbeddingsTaskParams,
 } from './resources';
 
 export {

@@ -1,7 +1,17 @@
+import { PageOptions } from '../../interfaces';
+
 export interface CreateEmbedParams {
   engineName: string;
-  text: string;
+  // text params
+  text?: string;
   textTruncate?: 'none' | 'start' | 'end';
+  // audio params
+  audioUrl?: string;
+  audioFile?: Buffer | NodeJS.ReadableStream | string;
+  audioStartOffsetSec?: number;
+  // image params
+  imageUrl?: string;
+  imageFile?: Buffer | NodeJS.ReadableStream | string;
 }
 
 export interface CreateEmbeddingsTaskVideoParams {
@@ -11,4 +21,10 @@ export interface CreateEmbeddingsTaskVideoParams {
   endOffsetSec?: number;
   clipLength?: number;
   scopes?: Array<'clip' | 'video'>;
+}
+
+export interface ListEmbeddingsTaskParams extends PageOptions {
+  startedAt?: string;
+  endedAt?: string;
+  status?: 'processing' | 'ready' | 'failed';
 }
