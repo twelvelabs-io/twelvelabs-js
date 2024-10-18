@@ -55,13 +55,14 @@ export class APIClient {
         : undefined,
     };
 
+    const isStreamRequest = (params && params.stream === true) || (body && (body as any).stream === true);
+
     try {
       const response = await fetch(url, config);
       const contentType = response.headers.get('Content-Type');
-      const transferEncoding = response.headers.get('Transfer-Encoding');
       let body = null;
 
-      if (transferEncoding === 'chunked') {
+      if (isStreamRequest) {
         body = response.body;
       } else if (contentType && contentType.includes('application/json')) {
         const rawBody = await response.json();
