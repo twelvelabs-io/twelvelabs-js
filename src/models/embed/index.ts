@@ -85,7 +85,7 @@ export interface VideoEmbedding {
   startOffsetSec: number;
   endOffsetSec: number;
   embeddingScope: string;
-  embedding: Embedding;
+  float?: number[];
 }
 
 export interface EmbeddingsTaskResponse {
@@ -103,7 +103,6 @@ export class EmbeddingsTask {
   engineName: string;
   status: string;
   videoEmbeddings?: VideoEmbedding[];
-
   createdAt?: string;
   metadata?: EmbeddingMetadata;
 
