@@ -148,7 +148,7 @@ export class Video extends APIResource {
 
   async thumbnail(indexId: string, id: string, time?: number, options: RequestOptions = {}): Promise<string> {
     const res = await this._get<{ thumbnail: string }>(
-      `indexes/${indexId}/videos/${id}/transcription`,
+      `indexes/${indexId}/videos/${id}/thumbnail`,
       removeUndefinedValues({ time }),
       options,
     );
