@@ -13,6 +13,7 @@ export interface IndexResponse {
   totalDuration: number;
   createdAt: string;
   updatedAt?: string;
+  expiresAt?: string;
 }
 
 export class Index {
@@ -119,6 +120,7 @@ interface IndexEngineResponse {
   engineName: string;
   engineOptions: string[];
   addons?: string[];
+  finetuned?: boolean;
 }
 
 class IndexEngine {
@@ -126,10 +128,12 @@ class IndexEngine {
   name: string;
   options: string[];
   addons?: string[];
+  finetuned?: boolean;
   constructor(res: IndexEngineResponse) {
     this.id = res.id;
     this.name = res.engineName;
     this.options = res.engineOptions;
     this.addons = res.addons;
+    this.finetuned = res.finetuned;
   }
 }
