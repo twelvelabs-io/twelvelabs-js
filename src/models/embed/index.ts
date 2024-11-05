@@ -1,22 +1,75 @@
 import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
+import { PageInfo } from '../interfaces';
 
-export interface Embedding {
-  float: number[];
+export interface EmbeddingMediaMetadata {
+  inputUrl?: string;
+  inputFilename?: string;
+  videoClipLength?: number;
+  videoEmbeddingScope?: string[];
+  duration?: number;
+}
+
+export interface EmbeddingResponse {
+  segments?: SegmentEmbeddingResponse[];
+  errorMessage?: string;
+  metadata?: EmbeddingMediaMetadata;
+}
+
+export class Embedding {
+  segments?: SegmentEmbedding[];
+  errorMessage?: string;
+  metadata?: EmbeddingMediaMetadata;
+
+  constructor(data: EmbeddingResponse) {
+    this.segments = data.segments?.map((v) => new SegmentEmbedding(v));
+    this.errorMessage = data.errorMessage;
+    this.metadata = data.metadata;
+  }
+}
+
+export interface SegmentEmbeddingResponse {
+  float?: number[];
+  startOffsetSec?: number;
+  endOffsetSec?: number;
+  embeddingScope?: string;
+}
+
+export class SegmentEmbedding {
+  embeddingsFloat?: number[];
+  startOffsetSec?: number;
+  endOffsetSec?: number;
+  embeddingScope?: string;
+
+  constructor(data: SegmentEmbeddingResponse) {
+    this.embeddingsFloat = data.float;
+    this.startOffsetSec = data.startOffsetSec;
+    this.endOffsetSec = data.endOffsetSec;
+    this.embeddingScope = data.embeddingScope;
+  }
 }
 
 export interface CreateEmbeddingsResultResponse {
   engineName: string;
-  textEmbedding: Embedding;
+  textEmbedding?: EmbeddingResponse;
+  imageEmbedding?: EmbeddingResponse;
+  videoEmbedding?: EmbeddingResponse;
+  audioEmbedding?: EmbeddingResponse;
 }
 
 export class CreateEmbeddingsResult {
   engineName: string;
-  textEmbedding: Embedding;
+  textEmbedding?: Embedding;
+  imageEmbedding?: Embedding;
+  videoEmbedding?: Embedding;
+  audioEmbedding?: Embedding;
 
   constructor(data: CreateEmbeddingsResultResponse) {
     this.engineName = data.engineName;
-    this.textEmbedding = data.textEmbedding;
+    this.textEmbedding = data.textEmbedding ? new Embedding(data.textEmbedding) : undefined;
+    this.imageEmbedding = data.imageEmbedding ? new Embedding(data.imageEmbedding) : undefined;
+    this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
+    this.audioEmbedding = data.audioEmbedding ? new Embedding(data.audioEmbedding) : undefined;
   }
 }
 
@@ -24,32 +77,29 @@ export interface EmbeddingsTaskStatusResponse {
   id: string;
   engineName: string;
   status: string;
+  videoEmbedding?: EmbeddingResponse;
 }
 
 export class EmbeddingsTaskStatus {
   id: string;
   engineName: string;
   status: string;
+  videoEmbedding?: Embedding;
 
   constructor(data: EmbeddingsTaskStatusResponse) {
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
+    this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
   }
-}
-
-export interface VideoEmbedding {
-  startOffsetSec: number;
-  endOffsetSec: number;
-  embeddingScope: string;
-  embedding: Embedding;
 }
 
 export interface EmbeddingsTaskResponse {
   id: string;
   engineName: string;
   status: string;
-  videoEmbeddings?: VideoEmbedding[];
+  videoEmbedding?: EmbeddingResponse;
+  createdAt?: string;
 }
 
 export class EmbeddingsTask {
@@ -57,14 +107,16 @@ export class EmbeddingsTask {
   id: string;
   engineName: string;
   status: string;
-  videoEmbeddings?: VideoEmbedding[];
+  videoEmbedding?: Embedding;
+  createdAt?: string;
 
   constructor(resource: Resources.EmbedTask, data: EmbeddingsTaskResponse) {
     this._resource = resource;
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
-    this.videoEmbeddings = data.videoEmbeddings;
+    this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
+    this.createdAt = data.createdAt;
   }
 
   async retrieve(options: RequestOptions = {}): Promise<EmbeddingsTask> {
@@ -104,5 +156,35 @@ export class EmbeddingsTask {
 
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+}
+
+export class EmbeddingsTaskListWithPagination {
+  private readonly _resource: Resources.EmbedTask;
+  private readonly _originParams: Resources.ListEmbeddingsTaskParams;
+  data: EmbeddingsTask[];
+  pageInfo: PageInfo;
+
+  constructor(
+    resource: Resources.EmbedTask,
+    originParams: Resources.ListEmbeddingsTaskParams,
+    data: EmbeddingsTaskResponse[],
+    pageInfo: PageInfo,
+  ) {
+    this._resource = resource;
+    this._originParams = originParams;
+    this.data = data.map((v) => new EmbeddingsTask(resource, v));
+    this.pageInfo = pageInfo;
+  }
+
+  async next(): Promise<EmbeddingsTask[] | null> {
+    if (this.pageInfo.page >= this.pageInfo.totalPage) {
+      return null;
+    }
+    const params = { ...this._originParams };
+    params.page = this.pageInfo.page + 1;
+    const res = await this._resource.listPagination(params);
+    this.pageInfo = res.pageInfo;
+    return res.data;
   }
 }

@@ -1,21 +1,61 @@
 import * as fs from 'fs';
 import path from 'path';
-import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
+import { TwelveLabs, EmbeddingsTask, SegmentEmbedding } from 'twelvelabs';
 
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
 
+  const printSegments = (segments: SegmentEmbedding[]) => {
+    segments.forEach((segment) => {
+      console.log(
+        `embeddingScope=${segment.embeddingScope} startOffsetSec=${segment.startOffsetSec} endOffsetSec=${segment.endOffsetSec}`,
+      );
+      console.log('embeddings: ', segment.embeddingsFloat);
+    });
+  };
+
+  const embedTasks = await client.embed.task.list();
+  embedTasks.forEach((task) => {
+    console.log(`Embedding task: id=${task.id} status=${task.status} createdAt=${task.createdAt}`);
+    if (task.videoEmbedding) {
+      if (task.videoEmbedding.segments) {
+        printSegments(task.videoEmbedding.segments);
+      }
+    }
+  });
+
   const engineName = 'Marengo-retrieval-2.6';
-  const embedding = await client.embed.create({
+
+  let res = await client.embed.create({
     engineName,
     text: 'man walking across the street',
     textTruncate: 'start',
   });
-  console.log(`Created embedding: engineName=${embedding.engineName}`);
+  console.log(`Created text embedding: engineName=${res.engineName}`);
+  if (res.textEmbedding?.segments) {
+    printSegments(res.textEmbedding.segments);
+  }
 
-  const videoPath = path.join(__dirname, 'assets/example.mp4');
+  res = await client.embed.create({
+    engineName,
+    imageFile: fs.createReadStream(path.join(__dirname, 'assets/search_sample.png')),
+  });
+  console.log(`Created image embedding: engineName=${res.engineName}`);
+  if (res.imageEmbedding?.segments) {
+    printSegments(res.imageEmbedding.segments);
+  }
+
+  res = await client.embed.create({
+    engineName,
+    audioFile: fs.createReadStream(path.join(__dirname, 'assets/audio_sample.mp3')),
+  });
+  console.log(`Created audio embedding: engineName=${res.engineName}`);
+  if (res.audioEmbedding?.segments) {
+    printSegments(res.audioEmbedding.segments);
+  }
+
   let task = await client.embed.task.create(engineName, {
-    file: fs.createReadStream(videoPath),
+    file: fs.createReadStream(path.join(__dirname, 'assets/example.mp4')),
   });
   console.log(`Created task: id=${task.id} engineName=${task.engineName} status=${task.status}`);
 
@@ -24,13 +64,10 @@ import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
   });
   console.log(`Embedding done: ${status}`);
 
-  task = await client.embed.task.retrieve(task.id);
-  if (task.videoEmbeddings) {
-    for (const v of task.videoEmbeddings) {
-      console.log(
-        `embeddingScope=${v.embeddingScope} startOffsetSec=${v.startOffsetSec} endOffsetSec=${v.endOffsetSec}`,
-      );
-      console.log(`embeddings: ${v.embedding.float.join(', ')}`);
+  task = await task.retrieve();
+  if (task.videoEmbedding) {
+    if (task.videoEmbedding.segments) {
+      printSegments(task.videoEmbedding.segments);
     }
   }
 })();

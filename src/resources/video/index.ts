@@ -2,13 +2,19 @@ import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
 import { convertKeysToSnakeCase, handleComparisonParams, removeUndefinedValues } from '../../util';
-import { ListVideoParams, UpdateVideoParams, VideoFilterOptions } from './interfaces';
+import { ListVideoParams, RetrieveVideoParams, UpdateVideoParams, VideoFilterOptions } from './interfaces';
 
 export class Video extends APIResource {
-  async retrieve(indexId: string, id: string, options: RequestOptions = {}): Promise<Models.Video> {
+  async retrieve(
+    indexId: string,
+    id: string,
+    { embed }: RetrieveVideoParams,
+    options: RequestOptions = {},
+  ): Promise<Models.Video> {
+    const _params = convertKeysToSnakeCase({ embed });
     const res = await this._get<Models.VideoResponse>(
       `indexes/${indexId}/videos/${id}`,
-      {},
+      removeUndefinedValues(_params),
       { ...options, skipCamelKeys: ['metadata'] },
     );
     return new Models.Video(this, indexId, res);

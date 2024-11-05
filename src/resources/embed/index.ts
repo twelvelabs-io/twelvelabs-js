@@ -3,13 +3,39 @@ import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
 import { TwelveLabs } from '../..';
-import { CreateEmbedParams, CreateEmbeddingsTaskVideoParams } from './interfaces';
-import { attachFormFile } from '../../util';
+import { CreateEmbedParams, CreateEmbeddingsTaskVideoParams, ListEmbeddingsTaskParams } from './interfaces';
+import { attachFormFile, removeUndefinedValues, convertKeysToSnakeCase } from '../../util';
 
 export class EmbedTask extends APIResource {
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.EmbeddingsTask> {
-    const res = await this._get<Models.EmbeddingsTask>(`embed/tasks/${id}`, {}, options);
+    const res = await this._get<Models.EmbeddingsTaskResponse>(`embed/tasks/${id}`, {}, options);
     return new Models.EmbeddingsTask(this, res);
+  }
+
+  async list(
+    params: ListEmbeddingsTaskParams = {},
+    options: RequestOptions = {},
+  ): Promise<Models.EmbeddingsTask[]> {
+    const _params = convertKeysToSnakeCase(params);
+    const res = await this._get<{ data: Models.EmbeddingsTaskResponse[] }>(
+      'embed/tasks',
+      removeUndefinedValues(_params),
+      options,
+    );
+    return res.data.map((v) => new Models.EmbeddingsTask(this, v));
+  }
+
+  async listPagination(
+    params: ListEmbeddingsTaskParams = {},
+    options: RequestOptions = {},
+  ): Promise<Models.EmbeddingsTaskListWithPagination> {
+    const _params = convertKeysToSnakeCase(params);
+    const res = await this._get<{ data: Models.EmbeddingsTaskResponse[]; pageInfo: Models.PageInfo }>(
+      'embed/tasks',
+      removeUndefinedValues(_params),
+      options,
+    );
+    return new Models.EmbeddingsTaskListWithPagination(this, params, res.data, res.pageInfo);
   }
 
   async create(
@@ -28,6 +54,9 @@ export class EmbedTask extends APIResource {
     if (startOffsetSec) formData.append('video_start_offset_sec', startOffsetSec);
     if (endOffsetSec) formData.append('video_end_offset_sec', endOffsetSec);
     if (clipLength) formData.append('video_clip_length', clipLength);
+    if (scopes) {
+      scopes.forEach((scope) => formData.append('video_embedding_scope', scope));
+    }
 
     try {
       if (file) attachFormFile(formData, 'video_file', file);
@@ -58,7 +87,11 @@ export class EmbedTask extends APIResource {
   }
 
   async status(taskId: string, options: RequestOptions = {}): Promise<Models.EmbeddingsTaskStatus> {
-    const res = await this._get<Models.EmbeddingsTaskStatus>(`embed/tasks/${taskId}/status`, {}, options);
+    const res = await this._get<Models.EmbeddingsTaskStatusResponse>(
+      `embed/tasks/${taskId}/status`,
+      {},
+      options,
+    );
     return new Models.EmbeddingsTaskStatus(res);
   }
 }
@@ -72,16 +105,34 @@ export class Embed extends APIResource {
   }
 
   async create(
-    { engineName, text, textTruncate }: CreateEmbedParams,
+    {
+      engineName,
+      text,
+      textTruncate,
+      audioUrl,
+      audioFile,
+      audioStartOffsetSec,
+      imageUrl,
+      imageFile,
+    }: CreateEmbedParams,
     options: RequestOptions = {},
   ): Promise<Models.CreateEmbeddingsResult> {
+    if (!text && !audioUrl && !audioFile && !imageUrl && !imageFile) {
+      throw new Error('At least one of text, audioUrl, audioFile, imageUrl, imageFile must be provided');
+    }
+
     const formData = new FormData();
 
     formData.append('engine_name', engineName);
-    formData.append('text', text);
+    if (text) formData.append('text', text);
     if (textTruncate) formData.append('text_truncate', textTruncate);
+    if (audioUrl) formData.append('audio_url', audioUrl);
+    if (imageUrl) formData.append('image_url', imageUrl);
+    if (audioFile) attachFormFile(formData, 'audio_file', audioFile);
+    if (imageFile) attachFormFile(formData, 'image_file', imageFile);
+    if (audioStartOffsetSec) formData.append('audio_start_offset_sec', audioStartOffsetSec);
 
-    const res = await this._post<Models.CreateEmbeddingsResult>('embed', formData, options);
+    const res = await this._post<Models.CreateEmbeddingsResultResponse>('embed', formData, options);
     return new Models.CreateEmbeddingsResult(res);
   }
 }
