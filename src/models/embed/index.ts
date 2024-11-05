@@ -10,25 +10,51 @@ export interface EmbeddingMediaMetadata {
   duration?: number;
 }
 
-export interface Embedding {
-  segments?: SegmentEmbedding[];
+export interface EmbeddingResponse {
+  segments?: SegmentEmbeddingResponse[];
   errorMessage?: string;
   metadata?: EmbeddingMediaMetadata;
 }
 
-export interface SegmentEmbedding {
+export class Embedding {
+  segments?: SegmentEmbedding[];
+  errorMessage?: string;
+  metadata?: EmbeddingMediaMetadata;
+
+  constructor(data: EmbeddingResponse) {
+    this.segments = data.segments?.map((v) => new SegmentEmbedding(v));
+    this.errorMessage = data.errorMessage;
+    this.metadata = data.metadata;
+  }
+}
+
+export interface SegmentEmbeddingResponse {
   float?: number[];
   startOffsetSec?: number;
   endOffsetSec?: number;
   embeddingScope?: string;
 }
 
+export class SegmentEmbedding {
+  embeddingFloat?: number[];
+  startOffsetSec?: number;
+  endOffsetSec?: number;
+  embeddingScope?: string;
+
+  constructor(data: SegmentEmbeddingResponse) {
+    this.embeddingFloat = data.float;
+    this.startOffsetSec = data.startOffsetSec;
+    this.endOffsetSec = data.endOffsetSec;
+    this.embeddingScope = data.embeddingScope;
+  }
+}
+
 export interface CreateEmbeddingsResultResponse {
   engineName: string;
-  textEmbedding?: Embedding;
-  imageEmbedding?: Embedding;
-  videoEmbedding?: Embedding;
-  audioEmbedding?: Embedding;
+  textEmbedding?: EmbeddingResponse;
+  imageEmbedding?: EmbeddingResponse;
+  videoEmbedding?: EmbeddingResponse;
+  audioEmbedding?: EmbeddingResponse;
 }
 
 export class CreateEmbeddingsResult {
@@ -40,10 +66,10 @@ export class CreateEmbeddingsResult {
 
   constructor(data: CreateEmbeddingsResultResponse) {
     this.engineName = data.engineName;
-    this.textEmbedding = data.textEmbedding;
-    this.imageEmbedding = data.imageEmbedding;
-    this.videoEmbedding = data.videoEmbedding;
-    this.audioEmbedding = data.audioEmbedding;
+    this.textEmbedding = data.textEmbedding ? new Embedding(data.textEmbedding) : undefined;
+    this.imageEmbedding = data.imageEmbedding ? new Embedding(data.imageEmbedding) : undefined;
+    this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
+    this.audioEmbedding = data.audioEmbedding ? new Embedding(data.audioEmbedding) : undefined;
   }
 }
 
@@ -51,7 +77,7 @@ export interface EmbeddingsTaskStatusResponse {
   id: string;
   engineName: string;
   status: string;
-  videoEmbedding?: Embedding;
+  videoEmbedding?: EmbeddingResponse;
 }
 
 export class EmbeddingsTaskStatus {
@@ -64,7 +90,7 @@ export class EmbeddingsTaskStatus {
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
-    this.videoEmbedding = data.videoEmbedding;
+    this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
   }
 }
 
@@ -72,7 +98,7 @@ export interface EmbeddingsTaskResponse {
   id: string;
   engineName: string;
   status: string;
-  videoEmbedding?: Embedding;
+  videoEmbedding?: EmbeddingResponse;
   createdAt?: string;
 }
 
@@ -89,7 +115,7 @@ export class EmbeddingsTask {
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
-    this.videoEmbedding = data.videoEmbedding;
+    this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
     this.createdAt = data.createdAt;
   }
 
