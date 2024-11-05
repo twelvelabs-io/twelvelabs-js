@@ -36,13 +36,13 @@ export interface SegmentEmbeddingResponse {
 }
 
 export class SegmentEmbedding {
-  embeddingFloat?: number[];
+  embeddingsFloat?: number[];
   startOffsetSec?: number;
   endOffsetSec?: number;
   embeddingScope?: string;
 
   constructor(data: SegmentEmbeddingResponse) {
-    this.embeddingFloat = data.float;
+    this.embeddingsFloat = data.float;
     this.startOffsetSec = data.startOffsetSec;
     this.endOffsetSec = data.endOffsetSec;
     this.embeddingScope = data.embeddingScope;

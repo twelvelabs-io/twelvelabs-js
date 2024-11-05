@@ -10,7 +10,7 @@ import { TwelveLabs, EmbeddingsTask, SegmentEmbedding } from 'twelvelabs';
       console.log(
         `embeddingScope=${segment.embeddingScope} startOffsetSec=${segment.startOffsetSec} endOffsetSec=${segment.endOffsetSec}`,
       );
-      console.log('embeddings: ', segment.embeddingFloat);
+      console.log('embeddings: ', segment.embeddingsFloat);
     });
   };
 
