@@ -1,15 +1,26 @@
 import * as fs from 'fs';
 import path from 'path';
-import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
+import { TwelveLabs, EmbeddingsTask, SegmentEmbedding } from 'twelvelabs';
 
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
 
+  const printSegments = (segments: SegmentEmbedding[]) => {
+    segments.forEach((segment) => {
+      console.log(
+        `embeddingScope=${segment.embeddingScope} startOffsetSec=${segment.startOffsetSec} endOffsetSec=${segment.endOffsetSec}`,
+      );
+      console.log('embeddings: ', segment.float);
+    });
+  };
+
   const embedTasks = await client.embed.task.list();
   embedTasks.forEach((task) => {
     console.log(`Embedding task: id=${task.id} status=${task.status} createdAt=${task.createdAt}`);
-    if (task.metadata) {
-      console.table(task.metadata);
+    if (task.videoEmbedding) {
+      if (task.videoEmbedding.segments) {
+        printSegments(task.videoEmbedding.segments);
+      }
     }
   });
 
@@ -21,8 +32,8 @@ import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
     textTruncate: 'start',
   });
   console.log(`Created text embedding: engineName=${res.engineName}`);
-  if (res.textEmbedding) {
-    console.log(`  embeddings: ${res.textEmbedding.float.join(', ')}`);
+  if (res.textEmbedding?.segments) {
+    printSegments(res.textEmbedding.segments);
   }
 
   res = await client.embed.create({
@@ -30,8 +41,8 @@ import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
     imageFile: fs.createReadStream(path.join(__dirname, 'assets/search_sample.png')),
   });
   console.log(`Created image embedding: engineName=${res.engineName}`);
-  if (res.imageEmbedding) {
-    console.log(`  embeddings: ${res.imageEmbedding.float.join(', ')}`);
+  if (res.imageEmbedding?.segments) {
+    printSegments(res.imageEmbedding.segments);
   }
 
   res = await client.embed.create({
@@ -40,12 +51,7 @@ import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
   });
   console.log(`Created audio embedding: engineName=${res.engineName}`);
   if (res.audioEmbedding?.segments) {
-    res.audioEmbedding.segments.forEach((segment) => {
-      console.log(
-        `  embeddingScope=${segment.embeddingScope} startOffsetSec=${segment.startOffsetSec} endOffsetSec=${segment.endOffsetSec}`,
-      );
-      console.log(`  embeddings: ${segment.float.join(', ')}`);
-    });
+    printSegments(res.audioEmbedding.segments);
   }
 
   let task = await client.embed.task.create(engineName, {
@@ -59,12 +65,9 @@ import { TwelveLabs, EmbeddingsTask } from 'twelvelabs';
   console.log(`Embedding done: ${status}`);
 
   task = await task.retrieve();
-  if (task.videoEmbeddings) {
-    for (const v of task.videoEmbeddings) {
-      console.log(
-        `embeddingScope=${v.embeddingScope} startOffsetSec=${v.startOffsetSec} endOffsetSec=${v.endOffsetSec}`,
-      );
-      console.log(`embeddings: ${v.float.join(', ')}`);
+  if (task.videoEmbedding) {
+    if (task.videoEmbedding.segments) {
+      printSegments(task.videoEmbedding.segments);
     }
   }
 })();

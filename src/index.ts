@@ -63,6 +63,8 @@ export {
   EmbeddingsTaskListWithPagination,
   EmbeddingsTaskStatus,
   CreateEmbeddingsResult,
+  Embedding,
+  SegmentEmbedding,
   PageInfo,
 } from './models';
 
