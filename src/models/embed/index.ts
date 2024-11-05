@@ -5,27 +5,22 @@ import { PageInfo } from '../interfaces';
 export interface EmbeddingMediaMetadata {
   inputUrl?: string;
   inputFilename?: string;
+  videoClipLength?: number;
+  videoEmbeddingScope?: string[];
+  duration?: number;
 }
 
 export interface Embedding {
-  float?: number[];
-  isSuccess: boolean;
+  segments?: SegmentEmbedding[];
   errorMessage?: string;
   metadata?: EmbeddingMediaMetadata;
 }
 
 export interface SegmentEmbedding {
   float?: number[];
-  startOffsetSec: number;
+  startOffsetSec?: number;
   endOffsetSec?: number;
   embeddingScope?: string;
-}
-
-export interface AudioEmbedding {
-  segments?: SegmentEmbedding[];
-  isSuccess: boolean;
-  errorMessage?: string;
-  metadata?: EmbeddingMediaMetadata;
 }
 
 export interface CreateEmbeddingsResultResponse {
@@ -33,7 +28,7 @@ export interface CreateEmbeddingsResultResponse {
   textEmbedding?: Embedding;
   imageEmbedding?: Embedding;
   videoEmbedding?: Embedding;
-  audioEmbedding?: AudioEmbedding;
+  audioEmbedding?: Embedding;
 }
 
 export class CreateEmbeddingsResult {
@@ -41,7 +36,7 @@ export class CreateEmbeddingsResult {
   textEmbedding?: Embedding;
   imageEmbedding?: Embedding;
   videoEmbedding?: Embedding;
-  audioEmbedding?: AudioEmbedding;
+  audioEmbedding?: Embedding;
 
   constructor(data: CreateEmbeddingsResultResponse) {
     this.engineName = data.engineName;
@@ -52,49 +47,33 @@ export class CreateEmbeddingsResult {
   }
 }
 
-export interface EmbeddingMetadata {
-  url?: string;
-  filename?: string;
-  videoClipLength?: number;
-  videoEmbeddingScope?: string[];
-  duration?: number;
-}
-
 export interface EmbeddingsTaskStatusResponse {
   id: string;
   engineName: string;
   status: string;
-  metadata?: EmbeddingMetadata;
+  videoEmbedding?: Embedding;
 }
 
 export class EmbeddingsTaskStatus {
   id: string;
   engineName: string;
   status: string;
-  metadata?: EmbeddingMetadata;
+  videoEmbedding?: Embedding;
 
   constructor(data: EmbeddingsTaskStatusResponse) {
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
-    this.metadata = data.metadata;
+    this.videoEmbedding = data.videoEmbedding;
   }
-}
-
-export interface VideoEmbedding {
-  startOffsetSec: number;
-  endOffsetSec: number;
-  embeddingScope: string;
-  float?: number[];
 }
 
 export interface EmbeddingsTaskResponse {
   id: string;
   engineName: string;
   status: string;
-  videoEmbeddings?: VideoEmbedding[];
+  videoEmbedding?: Embedding;
   createdAt?: string;
-  metadata?: EmbeddingMetadata;
 }
 
 export class EmbeddingsTask {
@@ -102,18 +81,16 @@ export class EmbeddingsTask {
   id: string;
   engineName: string;
   status: string;
-  videoEmbeddings?: VideoEmbedding[];
+  videoEmbedding?: Embedding;
   createdAt?: string;
-  metadata?: EmbeddingMetadata;
 
   constructor(resource: Resources.EmbedTask, data: EmbeddingsTaskResponse) {
     this._resource = resource;
     this.id = data.id;
     this.engineName = data.engineName;
     this.status = data.status;
-    this.videoEmbeddings = data.videoEmbeddings;
+    this.videoEmbedding = data.videoEmbedding;
     this.createdAt = data.createdAt;
-    this.metadata = data.metadata;
   }
 
   async retrieve(options: RequestOptions = {}): Promise<EmbeddingsTask> {
