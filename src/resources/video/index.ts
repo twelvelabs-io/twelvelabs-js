@@ -8,7 +8,7 @@ export class Video extends APIResource {
   async retrieve(
     indexId: string,
     id: string,
-    { embed }: RetrieveVideoParams,
+    { embed }: RetrieveVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Video> {
     const _params = convertKeysToSnakeCase({ embed });
