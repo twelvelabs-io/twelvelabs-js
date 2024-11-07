@@ -12,6 +12,7 @@ export interface VideoResponse {
   indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
+  embedding?: Embedding;
 }
 
 export class Video {
@@ -36,6 +37,7 @@ export class Video {
     this.indexedAt = data.indexedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    this.embedding = data.embedding;
   }
 
   // Video related methods
