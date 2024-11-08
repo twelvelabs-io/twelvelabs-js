@@ -158,6 +158,6 @@ export interface VideoValue {
 
 export interface VideoSource {
   type: string;
-  name: string;
+  name?: string;
   url?: string;
 }
