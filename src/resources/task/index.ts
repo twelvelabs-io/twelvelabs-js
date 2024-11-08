@@ -7,10 +7,56 @@ import {
   handleComparisonParams,
   removeUndefinedValues,
 } from '../../util';
-import { CreateTaskParams, ListTaskParams } from './interfaces';
+import { CreateTaskParams, ListTaskParams, TransferImportParams } from './interfaces';
 import { APIResource } from '../../resource';
+import { TwelveLabs } from '../..';
+
+export class TaskTransfer extends APIResource {
+  async importVideos(
+    { integrationId, ...restParams }: TransferImportParams,
+    options: RequestOptions = {},
+  ): Promise<Models.TransferImportResponse> {
+    const _params = convertKeysToSnakeCase(restParams);
+    const res = await this._post<Models.TransferImportResponse>(
+      `tasks/transfers/import/${integrationId}`,
+      removeUndefinedValues(_params),
+      options,
+    );
+    return res;
+  }
+
+  async importStatus(
+    integrationId: string,
+    indexId: string,
+    options: RequestOptions = {},
+  ): Promise<Models.TransferImportStatusResponse> {
+    const _params = convertKeysToSnakeCase({ indexId });
+    const res = await this._get<Models.TransferImportStatusResponse>(
+      `tasks/transfers/import/${integrationId}/status`,
+      removeUndefinedValues(_params),
+      options,
+    );
+    return res;
+  }
+
+  async importLogs(integrationId: string, options: RequestOptions = {}): Promise<Models.TransferImportLog[]> {
+    const res = await this._get<{ data: Models.TransferImportLog[] }>(
+      `tasks/transfers/import/${integrationId}/logs`,
+      {},
+      options,
+    );
+    return res.data || [];
+  }
+}
 
 export class Task extends APIResource {
+  transfers: TaskTransfer;
+
+  constructor(client: TwelveLabs) {
+    super(client);
+    this.transfers = new TaskTransfer(client);
+  }
+
   async retrieve(id: string, options: RequestOptions = {}): Promise<Models.Task> {
     const res = await this._get<Models.TaskResponse>(`tasks/${id}`, {}, options);
     return new Models.Task(this, res);

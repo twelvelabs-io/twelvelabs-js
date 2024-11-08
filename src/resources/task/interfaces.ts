@@ -21,3 +21,11 @@ export interface CreateTaskParams {
   language?: string;
   disableVideoStream?: boolean;
 }
+
+export interface TransferImportParams {
+  integrationId: string;
+  indexId: string;
+  userMetadata?: Record<string, any>;
+  incrementalImport?: boolean;
+  retryFailed?: boolean;
+}
