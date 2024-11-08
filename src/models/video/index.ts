@@ -1,6 +1,6 @@
 import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
-import { Embedding } from '../embed';
+import { CreateEmbeddingsResult, CreateEmbeddingsResultResponse } from '../embed';
 import { GenerateGistResult, GenerateOpenEndedTextResult } from '../generate';
 import { PageInfo } from '../interfaces';
 
@@ -12,6 +12,7 @@ export interface VideoResponse {
   indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
+  embedding?: CreateEmbeddingsResultResponse;
 }
 
 export class Video {
@@ -24,7 +25,7 @@ export class Video {
   indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
-  embedding?: Embedding;
+  embedding?: CreateEmbeddingsResult;
 
   constructor(resource: Resources.Video, indexId: string, data: VideoResponse) {
     this._resource = resource;
@@ -36,6 +37,9 @@ export class Video {
     this.indexedAt = data.indexedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    if (data.embedding) {
+      this.embedding = new CreateEmbeddingsResult(data.embedding);
+    }
   }
 
   // Video related methods
