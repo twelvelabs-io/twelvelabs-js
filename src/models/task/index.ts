@@ -130,3 +130,63 @@ export interface TaskProcess {
   percentage?: number;
   remainSeconds?: number;
 }
+
+export interface TransferImportVideo {
+  videoId: string;
+  filename: string;
+}
+
+export interface TransferImportFailedFile {
+  filename: string;
+  errorMessage: string;
+}
+
+export interface TransferImportResponse {
+  videos: TransferImportVideo[];
+  failedFiles?: TransferImportFailedFile[];
+}
+
+export interface TransferImportStatusVideoInfo {
+  videoId: string;
+  filename: string;
+  createdAt?: string;
+}
+
+export interface TransferImportStatusFailedVideoInfo {
+  filename: string;
+  createdAt?: string;
+  errorMessage: string;
+}
+
+export interface TransferImportStatusResponse {
+  notImported: string[];
+  ready: TransferImportStatusVideoInfo[];
+  validating: TransferImportStatusVideoInfo[];
+  pending: TransferImportStatusVideoInfo[];
+  indexing: TransferImportStatusVideoInfo[];
+  failed: TransferImportStatusFailedVideoInfo[];
+  queued: TransferImportStatusVideoInfo[];
+}
+
+export interface TransferImportLogVideoStatus {
+  ready: number;
+  validating: number;
+  pending: number;
+  indexing: number;
+  failed: number;
+  queued: number;
+}
+
+export interface TransferImportLogFailedFile {
+  filename: string;
+  errorMessage: string;
+}
+
+export interface TransferImportLog {
+  indexId: string;
+  indexName: string;
+  createdAt: string;
+  endedAt?: string;
+  videoStatus: TransferImportLogVideoStatus;
+  failedFiles?: TransferImportLogFailedFile[];
+}
