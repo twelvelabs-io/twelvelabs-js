@@ -6,10 +6,10 @@ import { Index, TwelveLabs } from 'twelvelabs';
   const indexName = `${new Date().toISOString()}`;
   let index = await client.index.create({
     name: indexName,
-    engines: [
+    models: [
       {
-        name: 'marengo2.6',
-        options: ['visual', 'conversation', 'text_in_video'],
+        name: 'marengo2.7',
+        options: ['visual', 'audio'],
       },
     ],
     addons: ['thumbnail'],

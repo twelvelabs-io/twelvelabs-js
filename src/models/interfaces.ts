@@ -8,7 +8,7 @@ export interface PageInfo {
 export interface TokenPageInfo {
   limitPerPage: number;
   totalResults: number;
-  pageExpiredAt: string;
+  pageExpiresAt: string;
   nextPageToken?: string;
   prevPageToken?: string;
 }

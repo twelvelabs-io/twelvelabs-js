@@ -42,7 +42,7 @@ export class Index extends APIResource {
     { id, name, createdAt, updatedAt, ...restParams }: ListIndexParams = {},
     options: RequestOptions = {},
   ): Promise<Models.IndexListWithPagination> {
-    const originParams = { id, name, ...restParams };
+    const originParams = { id, name, createdAt, updatedAt, ...restParams };
     const _params = convertKeysToSnakeCase({
       ...restParams,
       _id: id,
@@ -59,12 +59,12 @@ export class Index extends APIResource {
   }
 
   async create(
-    { name, engines, addons }: CreateIndexParams,
+    { name, models, addons }: CreateIndexParams,
     options: RequestOptions = {},
   ): Promise<Models.Index> {
     const _body = {
       indexName: name,
-      engines: engines.map(({ name, options }) => ({ engineName: name, engineOptions: options })),
+      models: models.map(({ name, options }) => ({ modelName: name, modelOptions: options })),
       addons,
     };
     const res = await this._post<{ id: string }>(

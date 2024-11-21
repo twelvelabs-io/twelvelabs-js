@@ -6,7 +6,8 @@ import { PageInfo } from '../interfaces';
 
 export interface VideoResponse {
   id: string;
-  metadata: VideoMetadata;
+  systemMetadata: VideoMetadata;
+  userMetadata?: Record<string, any>;
   hls?: VideoHLS;
   source?: VideoSource;
   indexedAt?: string;
@@ -19,7 +20,8 @@ export class Video {
   private readonly _resource: Resources.Video;
   private readonly _indexId: string;
   id: string;
-  metadata: VideoMetadata & Record<string, any>;
+  systemMetadata: VideoMetadata & Record<string, any>;
+  userMetadata?: Record<string, any>;
   hls?: VideoHLS;
   source?: VideoSource;
   indexedAt?: string;
@@ -31,7 +33,8 @@ export class Video {
     this._resource = resource;
     this._indexId = indexId;
     this.id = data.id;
-    this.metadata = data.metadata;
+    this.systemMetadata = data.systemMetadata;
+    this.userMetadata = data.userMetadata;
     this.hls = data.hls;
     this.source = data.source;
     this.indexedAt = data.indexedAt;
@@ -50,28 +53,6 @@ export class Video {
 
   async delete(options: RequestOptions = {}): Promise<void> {
     return await this._resource.delete(this._indexId, this.id, options);
-  }
-
-  async transcription(
-    filter?: Resources.VideoFilterOptions,
-    options: RequestOptions = {},
-  ): Promise<VideoValue[]> {
-    return await this._resource.transcription(this._indexId, this.id, filter, options);
-  }
-
-  async textInVideo(
-    filter: Resources.VideoFilterOptions = {},
-    options: RequestOptions = {},
-  ): Promise<VideoValue[]> {
-    return await this._resource.textInVideo(this._indexId, this.id, filter, options);
-  }
-
-  async logo(filter: Resources.VideoFilterOptions = {}, options: RequestOptions = {}): Promise<VideoValue[]> {
-    return await this._resource.logo(this._indexId, this.id, filter, options);
-  }
-
-  async thumbnail(time?: number, options: RequestOptions = {}): Promise<string> {
-    return await this._resource.thumbnail(this._indexId, this.id, time, options);
   }
 
   // Generate related methods

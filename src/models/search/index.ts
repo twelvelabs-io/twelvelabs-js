@@ -35,7 +35,6 @@ export interface SearchData {
   start: number;
   end: number;
   videoId: string;
-  metadata?: Record<string, any>;
   confidence: string;
   thumbnailUrl?: string;
   moduleConfidence?: Record<string, any>;

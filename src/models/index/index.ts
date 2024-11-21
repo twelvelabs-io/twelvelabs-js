@@ -8,7 +8,7 @@ import { Video } from '../video';
 export interface IndexResponse {
   id: string;
   indexName: string;
-  engines: IndexEngineResponse[];
+  models: IndexModelResponse[];
   videoCount: number;
   totalDuration: number;
   createdAt: string;
@@ -21,7 +21,7 @@ export class Index {
 
   id: string;
   name: string;
-  engines: IndexEngine[];
+  models: IndexModel[];
   videoCount: number;
   totalDuration: number;
   createdAt: string;
@@ -31,7 +31,7 @@ export class Index {
     this._resource = resource;
     this.id = data.id;
     this.name = data.indexName;
-    this.engines = data.engines.map((v) => new IndexEngine(v));
+    this.models = data.models.map((v) => new IndexModel(v));
     this.videoCount = data.videoCount;
     this.totalDuration = data.totalDuration;
     this.createdAt = data.createdAt;
@@ -115,24 +115,24 @@ export class IndexListWithPagination {
   }
 }
 
-interface IndexEngineResponse {
+interface IndexModelResponse {
   id: string;
-  engineName: string;
-  engineOptions: string[];
+  modelName: string;
+  modelOptions: ('visual' | 'audio' | 'conversation' | 'text_in_video' | 'logo')[];
   addons?: string[];
   finetuned?: boolean;
 }
 
-class IndexEngine {
+class IndexModel {
   id: string;
   name: string;
-  options: string[];
+  options: ('visual' | 'audio' | 'conversation' | 'text_in_video' | 'logo')[];
   addons?: string[];
   finetuned?: boolean;
-  constructor(res: IndexEngineResponse) {
+  constructor(res: IndexModelResponse) {
     this.id = res.id;
-    this.name = res.engineName;
-    this.options = res.engineOptions;
+    this.name = res.modelName;
+    this.options = res.modelOptions;
     this.addons = res.addons;
     this.finetuned = res.finetuned;
   }

@@ -1,25 +1,28 @@
 import { APIClient } from './core';
 import * as Resources from './resources';
-import { BASE_URL, DEFAULT_API_VERSION } from './constants';
+import { BASE_URL, LATEST_API_VERSION } from './constants';
 
 export interface ClientOptions {
   apiKey: string;
-  version?: 'v1.1' | 'v1.2';
+  version?: 'v1.1' | 'v1.2' | 'v1.3';
 }
 
 export class TwelveLabs extends APIClient {
-  engine: Resources.Engine;
   index: Resources.Index;
   task: Resources.Task;
   search: Resources.Search;
-  classify: Resources.Classify;
   generate: Resources.Generate;
   embed: Resources.Embed;
 
   baseUrl: string;
   apiKey: string;
 
-  constructor({ apiKey, version = DEFAULT_API_VERSION }: ClientOptions) {
+  constructor({ apiKey, version = LATEST_API_VERSION }: ClientOptions) {
+    if (version !== LATEST_API_VERSION) {
+      throw new Error(
+        `[Warning] You manually set the API version to ${version}, but this SDK version is not fully compatible with current API version, please use corresponding version of SDK.`,
+      );
+    }
     if (!apiKey) {
       throw new Error(
         'Provide `apiKey` to initialize a client. You can see the API Key in the Dashboard page: https://dashboard.playground.io',
@@ -34,18 +37,15 @@ export class TwelveLabs extends APIClient {
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;
 
-    this.engine = new Resources.Engine(this);
     this.index = new Resources.Index(this);
     this.task = new Resources.Task(this);
     this.search = new Resources.Search(this);
-    this.classify = new Resources.Classify(this);
     this.generate = new Resources.Generate(this);
     this.embed = new Resources.Embed(this);
   }
 }
 
 export {
-  Engine,
   Index,
   IndexListWithPagination,
   Video,
@@ -80,7 +80,6 @@ export {
   ListVideoParams,
   SearchOptions,
   UpdateVideoParams,
-  VideoFilterOptions,
   GenerateGistType,
   GenerateSummarizeType,
   CreateEmbedParams,
