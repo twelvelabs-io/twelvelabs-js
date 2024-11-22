@@ -176,20 +176,4 @@ export class Task extends APIResource {
     const res = await this._get<Models.TaskStatus>(`tasks/status`, convertKeysToSnakeCase(params), options);
     return res;
   }
-
-  async transfer(file: Buffer | NodeJS.ReadableStream, options: RequestOptions = {}): Promise<void> {
-    const formData = new FormData();
-    formData.append('file', file);
-    await this._post<void>(`tasks/transfers`, formData, options);
-  }
-
-  async externalProvider(indexId: string, url: string, options: RequestOptions = {}): Promise<Models.Task> {
-    const body = { index_id: indexId, url };
-    const res = await this._post<{ id: string }>(
-      `tasks/external-provider`,
-      convertKeysToSnakeCase(body),
-      options,
-    );
-    return await this.retrieve(res.id);
-  }
 }

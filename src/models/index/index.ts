@@ -65,10 +65,6 @@ export class Index {
     return await this._resource._client.task.status(this.id, options);
   }
 
-  async taskExternalProvider(url: string, options: RequestOptions = {}): Promise<Task> {
-    return await this._resource._client.task.externalProvider(this.id, url, options);
-  }
-
   // Video related methods
 
   async listVideos(params: Resources.ListVideoParams = {}, options: RequestOptions = {}): Promise<Video[]> {
@@ -126,6 +122,7 @@ interface IndexModelResponse {
 class IndexModel {
   id: string;
   name: string;
+  // conversation, text_in_video, and logo are to keep backward compatibility with the old models
   options: ('visual' | 'audio' | 'conversation' | 'text_in_video' | 'logo')[];
   addons?: string[];
   finetuned?: boolean;

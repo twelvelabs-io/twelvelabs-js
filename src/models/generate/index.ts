@@ -24,13 +24,6 @@ export interface GenerateSummarizeResult {
   highlights?: GenerateSummarizeHighlightResult[];
 }
 
-export interface GenerateGistResult {
-  id: string;
-  title?: string;
-  topics?: string[];
-  hashtags?: string[];
-}
-
 export class GenerateTextStreamResult {
   id: string;
   texts: string[] = [];

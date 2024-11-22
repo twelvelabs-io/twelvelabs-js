@@ -42,7 +42,7 @@ export interface SearchData {
 }
 
 interface SearchModule {
-  type: 'visual' | 'conversation' | 'text_in_video' | 'logo';
+  type: 'visual' | 'audio';
   confidence: 'high' | 'medium' | 'low';
 }
 
