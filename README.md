@@ -19,6 +19,27 @@ Install the `twelvelabs-js` package:
 yarn add twelvelabs-js # or npm i twelvelabs-js
 ```
 
+````
+
+The current SDK version is compatible with API version 1.3. If you wish to use API version 1.2, please use version 0.3.x or earlier of the SDK. Below are the SDK versions and the corresponding supported API versions.
+
+| SDK Version | Supported API Version |
+| ----------- | --------------------- |
+| 0.4.x       | 1.3                   |
+| 0.3.x       | 1.2                   |
+
+How to install the latest 0.3.x version of the SDK:
+
+```sh
+npm install twelvelabs-js@0.3.x
+```
+
+How to install the SDK with a specific version:
+
+```sh
+npm install twelvelabs-js@0.3.x # replace 0.3.x with the version you want
+```
+
 # Initialize the SDK
 
 1. Import the required packages into your application:
@@ -290,3 +311,4 @@ You can sign your commit automatically with Git by using `git commit -s` if you 
 We ask that you use your real name (please, no anonymous contributions or pseudonyms). By signing your commitment, you are certifying that you have the right have the right to submit it under the open-source license used by that particular project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
 We use the Probot DCO GitHub app to check for DCO signoffs of every commit.
 If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
+````

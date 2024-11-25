@@ -20,7 +20,7 @@ export class TwelveLabs extends APIClient {
   constructor({ apiKey, version = LATEST_API_VERSION }: ClientOptions) {
     if (version !== LATEST_API_VERSION) {
       throw new Error(
-        `[Warning] You manually set the API version to ${version}, but this SDK version is not fully compatible with current API version, please use corresponding version of SDK.`,
+        `[Warning] You manually set the API version to ${version}, but this SDK version is not fully compatible with current API version, please use version 0.3.x or earlier`,
       );
     }
     if (!apiKey) {
