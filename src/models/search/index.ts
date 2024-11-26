@@ -38,12 +38,6 @@ export interface SearchData {
   confidence: string;
   thumbnailUrl?: string;
   moduleConfidence?: Record<string, any>;
-  modules?: SearchModule[];
-}
-
-interface SearchModule {
-  type: 'visual' | 'audio';
-  confidence: 'high' | 'medium' | 'low';
 }
 
 export interface GroupByVideoSearchData {
