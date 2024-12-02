@@ -24,40 +24,40 @@ import { TwelveLabs, EmbeddingsTask, SegmentEmbedding } from 'twelvelabs';
     }
   });
 
-  const engineName = 'Marengo-retrieval-2.6';
+  const modelName = 'Marengo-retrieval-2.7';
 
   let res = await client.embed.create({
-    engineName,
+    modelName,
     text: 'man walking across the street',
     textTruncate: 'start',
   });
-  console.log(`Created text embedding: engineName=${res.engineName}`);
+  console.log(`Created text embedding: modelName=${res.modelName}`);
   if (res.textEmbedding?.segments) {
     printSegments(res.textEmbedding.segments);
   }
 
   res = await client.embed.create({
-    engineName,
+    modelName,
     imageFile: fs.createReadStream(path.join(__dirname, 'assets/search_sample.png')),
   });
-  console.log(`Created image embedding: engineName=${res.engineName}`);
+  console.log(`Created image embedding: modelName=${res.modelName}`);
   if (res.imageEmbedding?.segments) {
     printSegments(res.imageEmbedding.segments);
   }
 
   res = await client.embed.create({
-    engineName,
+    modelName,
     audioFile: fs.createReadStream(path.join(__dirname, 'assets/audio_sample.mp3')),
   });
-  console.log(`Created audio embedding: engineName=${res.engineName}`);
+  console.log(`Created audio embedding: modelName=${res.modelName}`);
   if (res.audioEmbedding?.segments) {
     printSegments(res.audioEmbedding.segments);
   }
 
-  let task = await client.embed.task.create(engineName, {
+  let task = await client.embed.task.create(modelName, {
     file: fs.createReadStream(path.join(__dirname, 'assets/example.mp4')),
   });
-  console.log(`Created task: id=${task.id} engineName=${task.engineName} status=${task.status}`);
+  console.log(`Created task: id=${task.id} modelName=${task.modelName} status=${task.status}`);
 
   const status = await task.waitForDone(5000, (task: EmbeddingsTask) => {
     console.log(`  Status=${task.status}`);

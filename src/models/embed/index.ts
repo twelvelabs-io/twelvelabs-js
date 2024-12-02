@@ -50,7 +50,7 @@ export class SegmentEmbedding {
 }
 
 export interface CreateEmbeddingsResultResponse {
-  engineName: string;
+  modelName: string;
   textEmbedding?: EmbeddingResponse;
   imageEmbedding?: EmbeddingResponse;
   videoEmbedding?: EmbeddingResponse;
@@ -58,14 +58,14 @@ export interface CreateEmbeddingsResultResponse {
 }
 
 export class CreateEmbeddingsResult {
-  engineName: string;
+  modelName: string;
   textEmbedding?: Embedding;
   imageEmbedding?: Embedding;
   videoEmbedding?: Embedding;
   audioEmbedding?: Embedding;
 
   constructor(data: CreateEmbeddingsResultResponse) {
-    this.engineName = data.engineName;
+    this.modelName = data.modelName;
     this.textEmbedding = data.textEmbedding ? new Embedding(data.textEmbedding) : undefined;
     this.imageEmbedding = data.imageEmbedding ? new Embedding(data.imageEmbedding) : undefined;
     this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
@@ -75,20 +75,20 @@ export class CreateEmbeddingsResult {
 
 export interface EmbeddingsTaskStatusResponse {
   id: string;
-  engineName: string;
+  modelName: string;
   status: string;
   videoEmbedding?: EmbeddingResponse;
 }
 
 export class EmbeddingsTaskStatus {
   id: string;
-  engineName: string;
+  modelName: string;
   status: string;
   videoEmbedding?: Embedding;
 
   constructor(data: EmbeddingsTaskStatusResponse) {
     this.id = data.id;
-    this.engineName = data.engineName;
+    this.modelName = data.modelName;
     this.status = data.status;
     this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
   }
@@ -96,7 +96,7 @@ export class EmbeddingsTaskStatus {
 
 export interface EmbeddingsTaskResponse {
   id: string;
-  engineName: string;
+  modelName: string;
   status: string;
   videoEmbedding?: EmbeddingResponse;
   createdAt?: string;
@@ -105,7 +105,7 @@ export interface EmbeddingsTaskResponse {
 export class EmbeddingsTask {
   private readonly _resource: Resources.EmbedTask;
   id: string;
-  engineName: string;
+  modelName: string;
   status: string;
   videoEmbedding?: Embedding;
   createdAt?: string;
@@ -113,7 +113,7 @@ export class EmbeddingsTask {
   constructor(resource: Resources.EmbedTask, data: EmbeddingsTaskResponse) {
     this._resource = resource;
     this.id = data.id;
-    this.engineName = data.engineName;
+    this.modelName = data.modelName;
     this.status = data.status;
     this.videoEmbedding = data.videoEmbedding ? new Embedding(data.videoEmbedding) : undefined;
     this.createdAt = data.createdAt;

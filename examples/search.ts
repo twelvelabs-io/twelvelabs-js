@@ -11,7 +11,7 @@ import { TwelveLabs, SearchData, GroupByVideoSearchData } from 'twelvelabs';
   const result = await client.search.query({
     indexId: index.id,
     queryText: 'A man talking',
-    options: ['visual', 'conversation'],
+    options: ['visual', 'audio'],
   });
   (result.data as SearchData[]).forEach((clip) => {
     console.log(`  score=${clip.score} start=${clip.start} end=${clip.end} confidence=${clip.confidence}`);
@@ -29,7 +29,7 @@ import { TwelveLabs, SearchData, GroupByVideoSearchData } from 'twelvelabs';
   const groupByResult = await client.search.query({
     indexId: index.id,
     queryText: 'A man talking',
-    options: ['visual', 'conversation'],
+    options: ['visual', 'audio'],
     groupBy: 'video',
   });
   (groupByResult.data as GroupByVideoSearchData[]).forEach((group) => {
@@ -60,7 +60,7 @@ import { TwelveLabs, SearchData, GroupByVideoSearchData } from 'twelvelabs';
     indexId: index.id,
     queryMediaFile: fs.createReadStream(imagePath),
     queryMediaType: 'image',
-    options: ['visual', 'conversation'],
+    options: ['visual', 'audio'],
   });
   (imageResult.data as SearchData[]).forEach((clip) => {
     console.log(`  score=${clip.score} start=${clip.start} end=${clip.end} confidence=${clip.confidence}`);

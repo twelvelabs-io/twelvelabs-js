@@ -2,14 +2,13 @@ import FormData from 'form-data';
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
-import { attachFormFile, convertKeysToSnakeCase, removeUndefinedValues } from '../../util';
+import { attachFormFile } from '../../util';
 import { SearchOptions } from './interfaces';
 
 export class Search extends APIResource {
   async query(
     {
       indexId,
-      query,
       queryText,
       queryMediaType,
       queryMediaFile,
@@ -18,7 +17,6 @@ export class Search extends APIResource {
       groupBy,
       threshold,
       operator,
-      conversationOption,
       filter,
       pageLimit,
       sortOption,
@@ -27,43 +25,7 @@ export class Search extends APIResource {
     options: RequestOptions = {},
   ): Promise<Models.SearchResult> {
     if (!queryText && !queryMediaFile && !queryMediaUrl) {
-      if (query) {
-        // deprecated; call /search endpoint
-        console.warn(
-          'Warning: `query` is deprecated. Use `queryText`, `queryMediaFile` or `queryMediaUrl` instead.',
-        );
-        const _body = convertKeysToSnakeCase({
-          indexId,
-          query,
-          queryText,
-          queryMediaType,
-          queryMediaFile,
-          queryMediaUrl,
-          searchOptions,
-          groupBy,
-          threshold,
-          operator,
-          conversationOption,
-          filter,
-          pageLimit,
-          sortOption,
-          adjustConfidenceLevel,
-        });
-        const res = await this._post<Models.SearchResultResponse>(
-          'search',
-          removeUndefinedValues(_body),
-          options,
-        );
-        return new Models.SearchResult(this, res);
-      } else {
-        throw new Error('Either `queryText`, `queryMediaFile`, or `queryMediaUrl` must be provided');
-      }
-    }
-
-    if ((queryMediaFile || queryMediaUrl) && !queryMediaType) {
-      throw new Error(
-        '`queryMediaType` must be provided when `queryMediaFile` or `queryMediaUrl` is provided.',
-      );
+      throw new Error('Either `queryText`, `queryMediaFile`, or `queryMediaUrl` must be provided');
     }
 
     const formData = new FormData();
@@ -77,7 +39,6 @@ export class Search extends APIResource {
     if (groupBy) formData.append('group_by', groupBy);
     if (threshold) formData.append('threshold', threshold);
     if (operator) formData.append('operator', operator);
-    if (conversationOption) formData.append('conversation_option', conversationOption);
     if (filter) formData.append('filter', JSON.stringify(filter));
     if (pageLimit) formData.append('page_limit', pageLimit);
     if (sortOption) formData.append('sort_option', sortOption);

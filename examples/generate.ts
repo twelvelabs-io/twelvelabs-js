@@ -5,9 +5,6 @@ import { TwelveLabs } from 'twelvelabs';
 
   const videoId = '<YOUR_VIDEO_ID>';
 
-  const gist = await client.generate.gist(videoId, ['title']);
-  console.log(`Gist: title=${gist.title} topics=${gist.topics} hashtags=${gist.hashtags}`);
-
   const summary = await client.generate.summarize(videoId, 'summary');
   console.log(`Summary: ${summary.summary}`);
 

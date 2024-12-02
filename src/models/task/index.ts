@@ -6,10 +6,8 @@ export interface TaskResponse {
   id: string;
   indexId: string;
   videoId?: string[];
-  estimatedTime?: string;
   status: string;
-  metadata: Record<string, any>;
-  process?: Record<string, any>;
+  systemMetadata: Record<string, any>;
   createdAt: string;
   updatedAt?: string;
 }
@@ -19,10 +17,8 @@ export class Task {
   id: string;
   indexId: string;
   videoId?: string[];
-  estimatedTime?: string;
   status: string;
-  metadata: Record<string, any>;
-  process?: TaskProcess;
+  systemMetadata: Record<string, any>;
   hls?: TaskHLS;
   createdAt: string;
   updatedAt?: string;
@@ -32,10 +28,8 @@ export class Task {
     this.id = data.id;
     this.indexId = data.indexId;
     this.videoId = data.videoId;
-    this.estimatedTime = data.estimatedTime;
     this.status = data.status;
-    this.metadata = data.metadata;
-    this.process = data.process;
+    this.systemMetadata = data.systemMetadata;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
@@ -58,10 +52,8 @@ export class Task {
       await this.sleep(sleepInterval);
       try {
         const task = await this.retrieve();
-        this.estimatedTime = task.estimatedTime;
         this.status = task.status;
-        this.metadata = task.metadata;
-        this.process = task.process;
+        this.systemMetadata = task.systemMetadata;
       } catch (err) {
         console.warn(`Retrieving task failed: ${err.message}, retrying..`);
         continue;
@@ -124,11 +116,6 @@ export interface TaskHLS {
   thumbnailUrls?: string[];
   status?: string;
   updatedAt: string;
-}
-
-export interface TaskProcess {
-  percentage?: number;
-  remainSeconds?: number;
 }
 
 export interface TransferImportVideo {

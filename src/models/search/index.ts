@@ -35,16 +35,9 @@ export interface SearchData {
   start: number;
   end: number;
   videoId: string;
-  metadata?: Record<string, any>;
   confidence: string;
   thumbnailUrl?: string;
   moduleConfidence?: Record<string, any>;
-  modules?: SearchModule[];
-}
-
-interface SearchModule {
-  type: 'visual' | 'conversation' | 'text_in_video' | 'logo';
-  confidence: 'high' | 'medium' | 'low';
 }
 
 export interface GroupByVideoSearchData {

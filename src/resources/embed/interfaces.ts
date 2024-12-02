@@ -1,7 +1,7 @@
 import { PageOptions } from '../../interfaces';
 
 export interface CreateEmbedParams {
-  engineName: string;
+  modelName: string;
   // text params
   text?: string;
   textTruncate?: 'none' | 'start' | 'end';

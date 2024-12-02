@@ -39,7 +39,7 @@ export class EmbedTask extends APIResource {
   }
 
   async create(
-    engineName: string,
+    modelName: 'Marengo-retrieval-2.7',
     { file, url, startOffsetSec, endOffsetSec, clipLength, scopes }: CreateEmbeddingsTaskVideoParams,
     options: RequestOptions = {},
   ): Promise<Models.EmbeddingsTask | undefined> {
@@ -49,7 +49,7 @@ export class EmbedTask extends APIResource {
 
     const formData = new FormData();
 
-    formData.append('engine_name', engineName);
+    formData.append('model_name', modelName);
     if (url) formData.append('video_url', url);
     if (startOffsetSec) formData.append('video_start_offset_sec', startOffsetSec);
     if (endOffsetSec) formData.append('video_end_offset_sec', endOffsetSec);
@@ -70,14 +70,14 @@ export class EmbedTask extends APIResource {
   }
 
   async createBulk(
-    engineName: string,
+    modelName: 'Marengo-retrieval-2.7',
     videos: CreateEmbeddingsTaskVideoParams[],
     options: RequestOptions = {},
   ): Promise<Models.EmbeddingsTask[]> {
     const tasks: Models.EmbeddingsTask[] = [];
     for (const videoParams of videos) {
       try {
-        const task = await this.create(engineName, videoParams, options);
+        const task = await this.create(modelName, videoParams, options);
         tasks.push(task);
       } catch (e) {
         console.error(`Error creating task with video: ${e}`);
@@ -106,7 +106,7 @@ export class Embed extends APIResource {
 
   async create(
     {
-      engineName,
+      modelName,
       text,
       textTruncate,
       audioUrl,
@@ -123,7 +123,7 @@ export class Embed extends APIResource {
 
     const formData = new FormData();
 
-    formData.append('engine_name', engineName);
+    formData.append('model_name', modelName);
     if (text) formData.append('text', text);
     if (textTruncate) formData.append('text_truncate', textTruncate);
     if (audioUrl) formData.append('audio_url', audioUrl);

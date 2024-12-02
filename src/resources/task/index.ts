@@ -63,13 +63,10 @@ export class Task extends APIResource {
   }
 
   async list(
-    { id, createdAt, updatedAt, ...restParams }: ListTaskParams = {},
+    { createdAt, updatedAt, ...restParams }: ListTaskParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Task[]> {
-    const _params = convertKeysToSnakeCase({
-      ...restParams,
-      _id: id,
-    });
+    const _params = convertKeysToSnakeCase(restParams);
     handleComparisonParams(_params, 'createdAt', createdAt);
     handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.TaskResponse[] }>(
@@ -81,14 +78,12 @@ export class Task extends APIResource {
   }
 
   async listPagination(
-    { id, createdAt, updatedAt, ...restParams }: ListTaskParams = {},
+    { createdAt, updatedAt, ...restParams }: ListTaskParams = {},
     options: RequestOptions = {},
   ): Promise<Models.TaskListWithPagination> {
-    const originParams = { id, ...restParams };
-    const _params = convertKeysToSnakeCase({
-      ...restParams,
-      _id: id,
-    });
+    const originParams = { createdAt, updatedAt, ...restParams };
+    const _params = convertKeysToSnakeCase(restParams);
+    handleComparisonParams(_params, 'createdAt', createdAt);
     handleComparisonParams(_params, 'updatedAt', updatedAt);
     const res = await this._get<{ data: Models.TaskResponse[]; pageInfo: Models.PageInfo }>(
       'tasks',
@@ -109,7 +104,7 @@ export class Task extends APIResource {
     if (body.url) formData.append('video_url', body.url);
     if (body.transcriptionUrl) formData.append('transcription_url', body.transcriptionUrl);
     if (body.language) formData.append('language', body.language);
-    if (body.disableVideoStream) formData.append('disable_video_stream', String(body.disableVideoStream));
+    if (body.enableVideoStream) formData.append('enable_video_stream', String(body.enableVideoStream));
 
     try {
       if (body.file) attachFormFile(formData, 'video_file', body.file);
@@ -132,12 +127,12 @@ export class Task extends APIResource {
       files,
       urls,
       language,
-      disableVideoStream,
+      enableVideoStream,
     }: {
       files?: (string | Buffer | null)[];
       urls?: string[];
       language?: string;
-      disableVideoStream?: boolean;
+      enableVideoStream?: boolean;
     },
     options: RequestOptions = {},
   ): Promise<Models.Task[]> {
@@ -150,7 +145,7 @@ export class Task extends APIResource {
     if (files) {
       for (const file of files) {
         try {
-          const task = await this.create({ indexId, file, language, disableVideoStream }, options);
+          const task = await this.create({ indexId, file, language, enableVideoStream }, options);
           tasks.push(task);
         } catch (e) {
           console.error(`Error processing file ${file}:`, e);
@@ -161,7 +156,7 @@ export class Task extends APIResource {
     if (urls) {
       for (const url of urls) {
         try {
-          const task = await this.create({ indexId, url, language, disableVideoStream }, options);
+          const task = await this.create({ indexId, url, language, enableVideoStream }, options);
           tasks.push(task);
         } catch (e) {
           console.error(`Error processing url ${url}:`, e);
@@ -180,21 +175,5 @@ export class Task extends APIResource {
     const params = { index_id: indexId };
     const res = await this._get<Models.TaskStatus>(`tasks/status`, convertKeysToSnakeCase(params), options);
     return res;
-  }
-
-  async transfer(file: Buffer | NodeJS.ReadableStream, options: RequestOptions = {}): Promise<void> {
-    const formData = new FormData();
-    formData.append('file', file);
-    await this._post<void>(`tasks/transfers`, formData, options);
-  }
-
-  async externalProvider(indexId: string, url: string, options: RequestOptions = {}): Promise<Models.Task> {
-    const body = { index_id: indexId, url };
-    const res = await this._post<{ id: string }>(
-      `tasks/external-provider`,
-      convertKeysToSnakeCase(body),
-      options,
-    );
-    return await this.retrieve(res.id);
   }
 }

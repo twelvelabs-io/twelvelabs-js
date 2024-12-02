@@ -1,7 +1,6 @@
 import { PageOptions } from '../../interfaces';
 
 export interface ListTaskParams extends PageOptions {
-  id?: string;
   indexId?: string;
   filename?: string;
   duration?: number;
@@ -9,7 +8,6 @@ export interface ListTaskParams extends PageOptions {
   height?: number;
   createdAt?: string | Record<string, string>;
   updatedAt?: string | Record<string, string>;
-  estimatedTime?: number;
 }
 
 export interface CreateTaskParams {
@@ -19,7 +17,7 @@ export interface CreateTaskParams {
   transcriptionFile?: Buffer | NodeJS.ReadableStream | string;
   transcriptionUrl?: string;
   language?: string;
-  disableVideoStream?: boolean;
+  enableVideoStream?: boolean;
 }
 
 export interface TransferImportParams {
