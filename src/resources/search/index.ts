@@ -50,7 +50,7 @@ export class Search extends APIResource {
       throw err;
     }
 
-    const res = await this._post<Models.SearchResultResponse>('search-v2', formData, options);
+    const res = await this._post<Models.SearchResultResponse>('search', formData, options);
     return new Models.SearchResult(this, res);
   }
 
