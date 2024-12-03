@@ -36,6 +36,7 @@ export class Generate extends APIResource {
       videoId,
       prompt,
       temperature,
+      stream: false,
     });
     const res = await this._post<Models.GenerateOpenEndedTextResult>(
       'generate',
