@@ -19,8 +19,6 @@ Install the `twelvelabs-js` package:
 yarn add twelvelabs-js # or npm i twelvelabs-js
 ```
 
-````
-
 The current SDK version is compatible with API version 1.3. If you wish to use API version 1.2, please use version 0.3.x or earlier of the SDK. Below are the SDK versions and the corresponding supported API versions.
 
 | SDK Version | Supported API Version |
