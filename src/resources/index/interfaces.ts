@@ -11,6 +11,6 @@ export interface ListIndexParams extends PageOptions {
 
 export interface CreateIndexParams {
   name: string;
-  models: { name: 'marengo2.7' | 'pegasus1.1'; options: ('visual' | 'audio')[] }[];
+  models: { name: 'marengo2.7' | 'pegasus1.1' | 'pegasus1.2'; options: ('visual' | 'audio')[] }[];
   addons?: string[];
 }
