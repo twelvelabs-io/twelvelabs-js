@@ -11,6 +11,10 @@ import { Index, TwelveLabs } from 'twelvelabs';
         name: 'marengo2.7',
         options: ['visual', 'audio'],
       },
+      {
+        name: 'pegasus1.2',
+        options: ['visual', 'audio'],
+      },
     ],
     addons: ['thumbnail'],
   });

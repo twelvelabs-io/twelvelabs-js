@@ -75,7 +75,7 @@ let index = await client.index.create({
       options: ['visual', 'audio'],
     },
     {
-      name: 'pegasus1.1',
+      name: 'pegasus1.2',
       options: ['visual', 'audio'],
     },
   ],
@@ -96,7 +96,7 @@ Note the following about this example:
 The output should look similar to the following:
 
 ```
-Created index: id=65e71802bb29f13bdd6f38d8 name=2024-03-05T13:02:57.938Z models=[{"name":"pegasus1.1","options":["visual","audio"]},{"name":"marengo2.7","options":["visual","audio"]}]
+Created index: id=65e71802bb29f13bdd6f38d8 name=2024-03-05T13:02:57.938Z models=[{"name":"pegasus1.2","options":["visual","audio"]},{"name":"marengo2.7","options":["visual","audio"]}]
 ```
 
 Note that the API returns, among other information, a field named `id`, representing the unique identifier of your new index.
@@ -309,4 +309,7 @@ You can sign your commit automatically with Git by using `git commit -s` if you 
 We ask that you use your real name (please, no anonymous contributions or pseudonyms). By signing your commitment, you are certifying that you have the right have the right to submit it under the open-source license used by that particular project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
 We use the Probot DCO GitHub app to check for DCO signoffs of every commit.
 If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
-````
+
+```
+
+```
