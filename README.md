@@ -109,7 +109,7 @@ Before you upload a video to the platform, ensure that it meets the following re
 
 - **Video resolution**: Must be at least 480x360 or 360x480, and not exceed 4K (3840x2160).
 - **Video and audio formats**: The video files you wish to upload must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at [support@twelvelabs.io](mailto:support@twelvelabs.io).
-- **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 30 minutes (1,800s).
+- **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 1 hour (3,600s).
 - **File size**: Must not exceed 2 GB. If you require different options, send us an email at support@twelvelabs.io.
 - **Audio track**: If the `audio` [model option](https://docs.twelvelabs.io/v1.3/docs/model-options) is selected, the video you're uploading must contain an audio track.
 
@@ -309,7 +309,3 @@ You can sign your commit automatically with Git by using `git commit -s` if you 
 We ask that you use your real name (please, no anonymous contributions or pseudonyms). By signing your commitment, you are certifying that you have the right have the right to submit it under the open-source license used by that particular project. You must use your real name (no pseudonyms or anonymous contributions are allowed.)
 We use the Probot DCO GitHub app to check for DCO signoffs of every commit.
 If you forget to sign your commits, the DCO bot will remind you and give you detailed instructions for how to amend your commits to add a signature.
-
-```
-
-```
