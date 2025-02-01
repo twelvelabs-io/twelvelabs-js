@@ -1,7 +1,7 @@
 import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
 import { CreateEmbeddingsResult, CreateEmbeddingsResultResponse } from '../embed';
-import { GenerateOpenEndedTextResult, GenerateSummarizeResult } from '../generate';
+import { GenerateOpenEndedTextResult, GenerateSummarizeResult, GenerateGistResult } from '../generate';
 import { PageInfo } from '../interfaces';
 
 export interface VideoResponse {
@@ -56,6 +56,13 @@ export class Video {
   }
 
   // Generate related methods
+
+  async generateGist(
+    types: Resources.GenerateGistType[],
+    options: RequestOptions = {},
+  ): Promise<GenerateGistResult> {
+    return await this._resource._client.generate.gist(this.id, types, options);
+  }
 
   async generateSummarize(
     type: Resources.GenerateSummarizeType,

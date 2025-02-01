@@ -8,6 +8,9 @@ import { TwelveLabs } from 'twelvelabs';
   const summary = await client.generate.summarize(videoId, 'summary');
   console.log(`Summary: ${summary.summary}`);
 
+  const gist = await client.generate.gist(videoId, ['title']);
+  console.log(`Gist: title=${gist.title} topics=${gist.topics} hashtags=${gist.hashtags}`);
+
   const text = await client.generate.text(videoId, 'What happened?');
   console.log(`Open-ended Text: ${text.data}`);
 
