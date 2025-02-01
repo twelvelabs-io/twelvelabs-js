@@ -2,7 +2,7 @@ import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
 import { convertKeysToSnakeCase, removeUndefinedValues, trackStream } from '../../util';
-import { GenerateSummarizeType, GenerateTextStreamParams } from './interfaces';
+import { GenerateGistType, GenerateSummarizeType, GenerateTextStreamParams } from './interfaces';
 
 export class Generate extends APIResource {
   async summarize(
@@ -23,6 +23,19 @@ export class Generate extends APIResource {
       removeUndefinedValues(_body),
       options,
     );
+    return res;
+  }
+
+  async gist(
+    videoId: string,
+    types: GenerateGistType[],
+    options: RequestOptions = {},
+  ): Promise<Models.GenerateGistResult> {
+    const _body = convertKeysToSnakeCase({
+      videoId,
+      types,
+    });
+    const res = await this._post<Models.GenerateGistResult>('gist', _body, options);
     return res;
   }
 
