@@ -49,9 +49,4 @@ import { TwelveLabs, Task } from 'twelvelabs';
       console.log(`  id=${task.id} status=${task.status}`);
     });
   }
-
-  const status = await client.task.status(index.id);
-  console.log(
-    `Tasks by status: ready=${status.ready} validating=${status.validating} pending=${status.pending} failed=${status.failed} totalResult=${status.totalResult}`,
-  );
 })();

@@ -1,6 +1,8 @@
 import * as fs from 'fs';
-import FormData from 'form-data';
 import path from 'path';
+// In Node, use the Node-specific "form-data" package,
+// but in Bun we use the global FormData.
+import FormDataNode from 'form-data';
 
 // Converts object keys from snake_case or leading underscore format to camelCase.
 // This function is recursive, so it works on nested objects and arrays of objects as well.
@@ -97,25 +99,61 @@ export function handleComparisonParams(
   }
 }
 
+function isBunEnv() {
+  return typeof (globalThis as any).Bun !== 'undefined';
+}
+
+export const FormDataImpl = isBunEnv() ? globalThis.FormData : FormDataNode;
+
 export function attachFormFile(
-  formData: FormData,
+  formData: InstanceType<typeof FormDataImpl>,
   formKey: string,
   file: Buffer | NodeJS.ReadableStream | string,
 ): void {
+  const isBun = isBunEnv();
+  if (isBun) {
+    console.log('Bun environment detected');
+  } else {
+    console.log('Node environment detected');
+  }
+
   if (typeof file === 'string') {
     const filePath = path.resolve(file);
     if (!fs.existsSync(filePath)) {
       throw new Error('File does not exist');
     }
-    const fileStream = fs.createReadStream(filePath);
     const fileName = path.basename(filePath);
-    formData.append(formKey, fileStream, fileName);
+
+    if (isBun) {
+      const fileBuffer = fs.readFileSync(filePath);
+      const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+      formData.append(formKey, blob, fileName);
+    } else {
+      const fileStream = fs.createReadStream(filePath);
+      (formData as FormDataNode).append(formKey, fileStream, fileName);
+    }
   } else if (file instanceof fs.ReadStream) {
     const filePath = file.path;
     if (!fs.existsSync(filePath)) {
       throw new Error('File does not exist');
     }
-    formData.append(formKey, file);
+    const resolvedPath = typeof filePath === 'string' ? filePath : filePath.toString();
+    const fileName = path.basename(resolvedPath);
+
+    if (isBun) {
+      const fileBuffer = fs.readFileSync(resolvedPath);
+      const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+      formData.append(formKey, blob, fileName);
+    } else {
+      (formData as FormDataNode).append(formKey, file);
+    }
+  } else if (Buffer.isBuffer(file)) {
+    if (isBun) {
+      const blob = new Blob([file], { type: 'application/octet-stream' });
+      formData.append(formKey, blob, 'file');
+    } else {
+      (formData as FormDataNode).append(formKey, file, 'file');
+    }
   }
 }
 

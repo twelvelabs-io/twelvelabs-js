@@ -1,9 +1,9 @@
-import FormData from 'form-data';
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import {
   attachFormFile,
   convertKeysToSnakeCase,
+  FormDataImpl,
   handleComparisonParams,
   removeUndefinedValues,
 } from '../../util';
@@ -98,7 +98,7 @@ export class Task extends APIResource {
       throw new Error('Either file or url must be provided');
     }
 
-    const formData = new FormData();
+    const formData = new FormDataImpl();
 
     formData.append('index_id', body.indexId);
     if (body.url) formData.append('video_url', body.url);
@@ -110,7 +110,7 @@ export class Task extends APIResource {
       if (body.file) attachFormFile(formData, 'video_file', body.file);
       if (body.transcriptionFile) {
         attachFormFile(formData, 'transcription_file', body.transcriptionFile);
-        formData.append('provide_transcription', true);
+        formData.append('provide_transcription', 'true');
       }
     } catch (err) {
       throw err;
@@ -169,11 +169,5 @@ export class Task extends APIResource {
 
   async delete(id: string, options: RequestOptions = {}): Promise<void> {
     await this._delete<void>(`tasks/${id}`, options);
-  }
-
-  async status(indexId: string, options: RequestOptions = {}): Promise<Models.TaskStatus> {
-    const params = { index_id: indexId };
-    const res = await this._get<Models.TaskStatus>(`tasks/status`, convertKeysToSnakeCase(params), options);
-    return res;
   }
 }

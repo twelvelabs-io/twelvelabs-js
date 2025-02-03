@@ -1,8 +1,7 @@
-import FormData from 'form-data';
 import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
-import { attachFormFile } from '../../util';
+import { attachFormFile, FormDataImpl } from '../../util';
 import { SearchOptions } from './interfaces';
 
 export class Search extends APIResource {
@@ -28,7 +27,7 @@ export class Search extends APIResource {
       throw new Error('Either `queryText`, `queryMediaFile`, or `queryMediaUrl` must be provided');
     }
 
-    const formData = new FormData();
+    const formData = new FormDataImpl();
     formData.append('index_id', indexId);
     if (queryText) formData.append('query_text', queryText);
     if (queryMediaType) formData.append('query_media_type', queryMediaType);
@@ -40,9 +39,9 @@ export class Search extends APIResource {
     if (threshold) formData.append('threshold', threshold);
     if (operator) formData.append('operator', operator);
     if (filter) formData.append('filter', JSON.stringify(filter));
-    if (pageLimit) formData.append('page_limit', pageLimit);
+    if (pageLimit) formData.append('page_limit', String(pageLimit));
     if (sortOption) formData.append('sort_option', sortOption);
-    if (adjustConfidenceLevel) formData.append('adjust_confidence_level', adjustConfidenceLevel);
+    if (adjustConfidenceLevel) formData.append('adjust_confidence_level', String(adjustConfidenceLevel));
 
     try {
       if (queryMediaFile) attachFormFile(formData, 'query_media_file', queryMediaFile);
