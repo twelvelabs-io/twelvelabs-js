@@ -99,7 +99,7 @@ export function handleComparisonParams(
   }
 }
 
-function isBunEnv() {
+export function isBunEnv() {
   return typeof (globalThis as any).Bun !== 'undefined';
 }
 
@@ -111,11 +111,6 @@ export function attachFormFile(
   file: Buffer | NodeJS.ReadableStream | string,
 ): void {
   const isBun = isBunEnv();
-  if (isBun) {
-    console.log('Bun environment detected');
-  } else {
-    console.log('Node environment detected');
-  }
 
   if (typeof file === 'string') {
     const filePath = path.resolve(file);
