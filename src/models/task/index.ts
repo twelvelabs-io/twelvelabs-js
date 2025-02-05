@@ -8,6 +8,7 @@ export interface TaskResponse {
   videoId?: string[];
   status: string;
   systemMetadata: Record<string, any>;
+  hls?: TaskHLS;
   createdAt: string;
   updatedAt?: string;
 }
@@ -30,6 +31,7 @@ export class Task {
     this.videoId = data.videoId;
     this.status = data.status;
     this.systemMetadata = data.systemMetadata;
+    this.hls = data.hls;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
@@ -106,7 +108,7 @@ export interface TaskHLS {
   videoUrl?: string;
   thumbnailUrls?: string[];
   status?: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface TransferImportVideo {
