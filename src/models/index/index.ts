@@ -2,7 +2,7 @@ import { RequestOptions } from '../../core';
 import * as Resources from '../../resources';
 import { PageInfo } from '../interfaces';
 import { SearchResult } from '../search';
-import { Task, TaskStatus } from '../task';
+import { Task } from '../task';
 import { Video } from '../video';
 
 export interface IndexResponse {
@@ -59,10 +59,6 @@ export class Index {
     options: RequestOptions = {},
   ): Promise<Task> {
     return await this._resource._client.task.create({ ...body, indexId: this.id }, options);
-  }
-
-  async taskStatus(options: RequestOptions = {}): Promise<TaskStatus> {
-    return await this._resource._client.task.status(this.id, options);
   }
 
   // Video related methods

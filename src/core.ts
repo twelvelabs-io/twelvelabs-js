@@ -2,7 +2,7 @@ import fetch from 'cross-fetch';
 import FormData from 'form-data';
 import { API_KEY_HEADER } from './constants';
 import * as Errors from './error';
-import { convertKeysToCamelCase } from './util';
+import { convertKeysToCamelCase, isBunEnv } from './util';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type RequestOptions = RequestInit & { params?: Record<string, any>; skipCamelKeys?: string[] };
@@ -33,26 +33,29 @@ export class APIClient {
 
     let headers = {
       [API_KEY_HEADER]: this.apiKey,
-      ['content-type']: 'application/json',
       ...options.headers,
     };
-    if (body instanceof FormData) {
-      headers = {
-        ...headers,
-        ...body.getHeaders(),
-      };
+
+    // Bun will natively append headers like Content-Type, Content-Length, etc. so doesn't need to set them manually.
+    if (!isBunEnv() && body) {
+      if (body instanceof FormData) {
+        if (typeof (body as any).getHeaders === 'function') {
+          headers = {
+            ...headers,
+            ...(body as any).getHeaders(),
+          };
+        }
+      } else {
+        headers['content-type'] = 'application/json';
+        body = JSON.stringify(body);
+      }
     }
 
     const config: RequestInit = {
       ...options,
       method,
       headers,
-      body:
-        body ?
-          body instanceof FormData ?
-            body
-          : JSON.stringify(body)
-        : undefined,
+      body,
     };
 
     const isStreamRequest = (params && params.stream === true) || (body && (body as any).stream === true);

@@ -102,15 +102,6 @@ export class TaskListWithPagination {
   }
 }
 
-export interface TaskStatus {
-  indexId: string;
-  ready: number;
-  validating: number;
-  pending: number;
-  failed: number;
-  totalResult: number;
-}
-
 export interface TaskHLS {
   videoUrl?: string;
   thumbnailUrls?: string[];
