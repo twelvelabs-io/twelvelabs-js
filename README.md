@@ -8,7 +8,7 @@ This SDK provides a convenient way to interact with the Twelve Labs Video Unders
 
 Ensure that the following prerequisites are met before using the SDK:
 
-- [Node.js](https://nodejs.org/) 14 or newer must be installed on your machine.
+- [Node.js](https://nodejs.org/) or [Bun](https://bun.sh) must be installed on your machine.
 - You have an API key. If you don't have an account, please [sign up](https://playground.twelvelabs.io/) for a free account. Then, to retrieve your API key, go to the [API Key](https://playground.twelvelabs.io/dashboard/api-key) page, and select the **Copy** icon to the right of the key to copy it to your clipboard.
 
 # Install the SDK
