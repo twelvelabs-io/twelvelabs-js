@@ -22,17 +22,7 @@ export class Video extends APIResource {
 
   async list(
     indexId: string,
-    {
-      size,
-      width,
-      height,
-      duration,
-      fps,
-      createdAt,
-      updatedAt,
-      indexedAt,
-      ...restParams
-    }: ListVideoParams = {},
+    { size, width, height, duration, fps, createdAt, updatedAt, ...restParams }: ListVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Video[]> {
     const _params = convertKeysToSnakeCase(restParams);
@@ -43,7 +33,6 @@ export class Video extends APIResource {
     handleComparisonParams(_params, 'fps', fps);
     handleComparisonParams(_params, 'createdAt', createdAt);
     handleComparisonParams(_params, 'updatedAt', updatedAt);
-    handleComparisonParams(_params, 'indexedAt', indexedAt);
     const res = await this._get<{ data: Models.VideoResponse[] }>(
       `indexes/${indexId}/videos`,
       removeUndefinedValues(_params),
@@ -54,17 +43,7 @@ export class Video extends APIResource {
 
   async listPagination(
     indexId: string,
-    {
-      size,
-      width,
-      height,
-      duration,
-      fps,
-      createdAt,
-      updatedAt,
-      indexedAt,
-      ...restParams
-    }: ListVideoParams = {},
+    { size, width, height, duration, fps, createdAt, updatedAt, ...restParams }: ListVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.VideoListWithPagination> {
     const originParams = {
@@ -75,7 +54,6 @@ export class Video extends APIResource {
       fps,
       createdAt,
       updatedAt,
-      indexedAt,
       ...restParams,
     };
     const _params = convertKeysToSnakeCase(restParams);
@@ -86,7 +64,6 @@ export class Video extends APIResource {
     handleComparisonParams(_params, 'fps', fps);
     handleComparisonParams(_params, 'createdAt', createdAt);
     handleComparisonParams(_params, 'updatedAt', updatedAt);
-    handleComparisonParams(_params, 'indexedAt', indexedAt);
     const res = await this._get<{ data: Models.VideoResponse[]; pageInfo: Models.PageInfo }>(
       `indexes/${indexId}/videos`,
       removeUndefinedValues(_params),
