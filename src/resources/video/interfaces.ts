@@ -14,7 +14,6 @@ export interface ListVideoParams extends PageOptions {
   userMetadata?: Record<string, any>;
   createdAt?: string | Record<string, string>;
   updatedAt?: string | Record<string, string>;
-  indexedAt?: string | Record<string, string>;
 }
 
 export interface UpdateVideoParams {

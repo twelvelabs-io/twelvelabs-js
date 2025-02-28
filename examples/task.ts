@@ -13,7 +13,6 @@ import { TwelveLabs, Task } from 'twelvelabs';
   const task = await client.task.create({
     indexId: index.id,
     file: fs.createReadStream(videoPath),
-    language: 'en',
   });
 
   console.log(`Created task: id=${task.id} status=${task.status}`);

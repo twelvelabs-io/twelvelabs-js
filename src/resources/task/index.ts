@@ -103,7 +103,6 @@ export class Task extends APIResource {
     formData.append('index_id', body.indexId);
     if (body.url) formData.append('video_url', body.url);
     if (body.transcriptionUrl) formData.append('transcription_url', body.transcriptionUrl);
-    if (body.language) formData.append('language', body.language);
     if (body.enableVideoStream) formData.append('enable_video_stream', String(body.enableVideoStream));
 
     try {
@@ -126,12 +125,10 @@ export class Task extends APIResource {
     {
       files,
       urls,
-      language,
       enableVideoStream,
     }: {
       files?: (string | Buffer | null)[];
       urls?: string[];
-      language?: string;
       enableVideoStream?: boolean;
     },
     options: RequestOptions = {},
@@ -145,7 +142,7 @@ export class Task extends APIResource {
     if (files) {
       for (const file of files) {
         try {
-          const task = await this.create({ indexId, file, language, enableVideoStream }, options);
+          const task = await this.create({ indexId, file, enableVideoStream }, options);
           tasks.push(task);
         } catch (e) {
           console.error(`Error processing file ${file}:`, e);
@@ -156,7 +153,7 @@ export class Task extends APIResource {
     if (urls) {
       for (const url of urls) {
         try {
-          const task = await this.create({ indexId, url, language, enableVideoStream }, options);
+          const task = await this.create({ indexId, url, enableVideoStream }, options);
           tasks.push(task);
         } catch (e) {
           console.error(`Error processing url ${url}:`, e);

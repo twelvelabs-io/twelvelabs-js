@@ -10,7 +10,6 @@ export interface VideoResponse {
   userMetadata?: Record<string, any>;
   hls?: VideoHLS;
   source?: VideoSource;
-  indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
   embedding?: CreateEmbeddingsResultResponse;
@@ -24,7 +23,6 @@ export class Video {
   userMetadata?: Record<string, any>;
   hls?: VideoHLS;
   source?: VideoSource;
-  indexedAt?: string;
   createdAt: string;
   updatedAt?: string;
   embedding?: CreateEmbeddingsResult;
@@ -37,7 +35,6 @@ export class Video {
     this.userMetadata = data.userMetadata;
     this.hls = data.hls;
     this.source = data.source;
-    this.indexedAt = data.indexedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
     if (data.embedding) {
