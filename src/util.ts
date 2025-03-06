@@ -28,9 +28,13 @@ export function convertKeysToCamelCase(obj: any, skipKeys?: string[]): any {
     return obj.map((v) => convertKeysToCamelCase(v));
   } else if (obj !== null && obj.constructor === Object) {
     return Object.keys(obj).reduce((result, key) => {
-      // Skip converting keys by `skipKeys`
+      // if `skipKeys` is provided, skip converting inner values of keys in `skipKeys`
+      // only convert the keys in `skipKeys` like `user_metadata` to `userMetadata`
       if (skipKeys?.includes(key)) {
-        return { ...result, [key]: obj[key] };
+        const camelCaseKey = key.replace(/([-_][a-z])/g, (group) =>
+          group.toUpperCase().replace('-', '').replace('_', ''),
+        );
+        return { ...result, [camelCaseKey]: obj[key] };
       }
       // Check if key starts with "_"
       if (key.startsWith('_')) {

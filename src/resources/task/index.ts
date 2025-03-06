@@ -67,8 +67,8 @@ export class Task extends APIResource {
     options: RequestOptions = {},
   ): Promise<Models.Task[]> {
     const _params = convertKeysToSnakeCase(restParams);
-    handleComparisonParams(_params, 'createdAt', createdAt);
-    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'created_at', createdAt);
+    handleComparisonParams(_params, 'updated_at', updatedAt);
     const res = await this._get<{ data: Models.TaskResponse[] }>(
       'tasks',
       removeUndefinedValues(_params),
@@ -83,8 +83,8 @@ export class Task extends APIResource {
   ): Promise<Models.TaskListWithPagination> {
     const originParams = { createdAt, updatedAt, ...restParams };
     const _params = convertKeysToSnakeCase(restParams);
-    handleComparisonParams(_params, 'createdAt', createdAt);
-    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'created_at', createdAt);
+    handleComparisonParams(_params, 'updated_at', updatedAt);
     const res = await this._get<{ data: Models.TaskResponse[]; pageInfo: Models.PageInfo }>(
       'tasks',
       removeUndefinedValues(_params),
