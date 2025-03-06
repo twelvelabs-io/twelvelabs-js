@@ -15,7 +15,7 @@ export class Video extends APIResource {
     const res = await this._get<Models.VideoResponse>(
       `indexes/${indexId}/videos/${id}`,
       removeUndefinedValues(_params),
-      { ...options, skipCamelKeys: ['metadata'] },
+      { ...options, skipCamelKeys: ['user_metadata'] },
     );
     return new Models.Video(this, indexId, res);
   }
@@ -31,8 +31,8 @@ export class Video extends APIResource {
     handleComparisonParams(_params, 'height', height);
     handleComparisonParams(_params, 'duration', duration);
     handleComparisonParams(_params, 'fps', fps);
-    handleComparisonParams(_params, 'createdAt', createdAt);
-    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'created_at', createdAt);
+    handleComparisonParams(_params, 'updated_at', updatedAt);
     const res = await this._get<{ data: Models.VideoResponse[] }>(
       `indexes/${indexId}/videos`,
       removeUndefinedValues(_params),
@@ -62,8 +62,8 @@ export class Video extends APIResource {
     handleComparisonParams(_params, 'height', height);
     handleComparisonParams(_params, 'duration', duration);
     handleComparisonParams(_params, 'fps', fps);
-    handleComparisonParams(_params, 'createdAt', createdAt);
-    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'created_at', createdAt);
+    handleComparisonParams(_params, 'updated_at', updatedAt);
     const res = await this._get<{ data: Models.VideoResponse[]; pageInfo: Models.PageInfo }>(
       `indexes/${indexId}/videos`,
       removeUndefinedValues(_params),
@@ -80,7 +80,7 @@ export class Video extends APIResource {
   ): Promise<void> {
     await this._put<void>(
       `indexes/${indexId}/videos/${id}`,
-      removeUndefinedValues(convertKeysToSnakeCase({ userMetadata })),
+      removeUndefinedValues({ user_metadata: userMetadata }),
       options,
     );
   }

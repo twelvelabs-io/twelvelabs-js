@@ -28,8 +28,8 @@ export class Index extends APIResource {
       _id: id,
       indexName: name,
     });
-    handleComparisonParams(_params, 'createdAt', createdAt);
-    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'created_at', createdAt);
+    handleComparisonParams(_params, 'updated_at', updatedAt);
     const res = await this._get<{ data: Models.IndexResponse[] }>(
       'indexes',
       removeUndefinedValues(_params),
@@ -48,8 +48,8 @@ export class Index extends APIResource {
       _id: id,
       indexName: name,
     });
-    handleComparisonParams(_params, 'createdAt', createdAt);
-    handleComparisonParams(_params, 'updatedAt', updatedAt);
+    handleComparisonParams(_params, 'created_at', createdAt);
+    handleComparisonParams(_params, 'updated_at', updatedAt);
     const res = await this._get<{ data: Models.IndexResponse[]; pageInfo: Models.PageInfo }>(
       'indexes',
       removeUndefinedValues(_params),
