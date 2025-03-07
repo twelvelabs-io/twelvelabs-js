@@ -1,6 +1,11 @@
+export interface GenerateUsage {
+  outputTokens: number;
+}
+
 export interface GenerateOpenEndedTextResult {
   id: string;
   data: string;
+  usage?: GenerateUsage;
 }
 
 export interface GenerateSummarizeChapterResult {
@@ -15,6 +20,7 @@ export interface GenerateSummarizeHighlightResult {
   start: number;
   end: number;
   highlight: string;
+  highlightSummary: string;
 }
 
 export interface GenerateSummarizeResult {
@@ -22,6 +28,7 @@ export interface GenerateSummarizeResult {
   summary?: string;
   chapters?: GenerateSummarizeChapterResult[];
   highlights?: GenerateSummarizeHighlightResult[];
+  usage?: GenerateUsage;
 }
 
 export interface GenerateGistResult {
@@ -29,6 +36,7 @@ export interface GenerateGistResult {
   title?: string;
   topics?: string[];
   hashtags?: string[];
+  usage?: GenerateUsage;
 }
 
 export class GenerateTextStreamResult {
