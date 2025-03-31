@@ -5,7 +5,7 @@ import { PageInfo } from '../interfaces';
 export interface TaskResponse {
   id: string;
   indexId: string;
-  videoId?: string[];
+  videoId?: string;
   status: string;
   systemMetadata: Record<string, any>;
   hls?: TaskHLS;
@@ -17,7 +17,7 @@ export class Task {
   private readonly _resource: Resources.Task;
   id: string;
   indexId: string;
-  videoId?: string[];
+  videoId?: string;
   status: string;
   systemMetadata: Record<string, any>;
   hls?: TaskHLS;
