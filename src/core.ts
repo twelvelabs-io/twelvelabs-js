@@ -36,6 +36,10 @@ export class APIClient {
       ...options.headers,
     };
 
+    const isParamsStream = params && params.stream === true;
+    const isBodyStream = body && (body as any).stream === true;
+    const isStreamRequest = isParamsStream || isBodyStream;
+
     // Bun will natively append headers like Content-Type, Content-Length, etc. so doesn't need to set them manually.
     if (!isBunEnv() && body) {
       if (body instanceof FormData) {
@@ -57,8 +61,6 @@ export class APIClient {
       headers,
       body,
     };
-
-    const isStreamRequest = (params && params.stream === true) || (body && (body as any).stream === true);
 
     try {
       const response = await fetch(url, config);
