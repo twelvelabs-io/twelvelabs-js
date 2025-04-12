@@ -3,12 +3,30 @@ import { RequestOptions } from '../../core';
 import * as Models from '../../models';
 import { APIResource } from '../../resource';
 import { TwelveLabs } from '../..';
-import { CreateEmbedParams, CreateEmbeddingsTaskVideoParams, ListEmbeddingsTaskParams } from './interfaces';
+import { CreateEmbedParams, CreateEmbeddingsTaskVideoParams, ListEmbeddingsTaskParams, RetrieveEmbeddingsTaskParams } from './interfaces';
 import { attachFormFile, removeUndefinedValues, convertKeysToSnakeCase } from '../../util';
 
 export class EmbedTask extends APIResource {
-  async retrieve(id: string, options: RequestOptions = {}): Promise<Models.EmbeddingsTask> {
-    const res = await this._get<Models.EmbeddingsTaskResponse>(`embed/tasks/${id}`, {}, options);
+  async retrieve(
+    id: string,
+    params: RetrieveEmbeddingsTaskParams = {},
+    options: RequestOptions = {}
+  ): Promise<Models.EmbeddingsTask> {
+    let queryString = '';
+
+    if (params.embeddingOption && params.embeddingOption.length > 0) {
+      params.embeddingOption.forEach(option => {
+        queryString += `embedding_option=${encodeURIComponent(option)}&`;
+      });
+      // Remove trailing &
+      queryString = queryString.slice(0, -1);
+    }
+
+    const res = await this._get<Models.EmbeddingsTaskResponse>(
+      `embed/tasks/${id}${queryString ? '?' + queryString : ''}`,
+      {},
+      options
+    );
     return new Models.EmbeddingsTask(this, res);
   }
 

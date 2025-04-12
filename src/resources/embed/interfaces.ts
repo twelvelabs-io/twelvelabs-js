@@ -28,3 +28,7 @@ export interface ListEmbeddingsTaskParams extends PageOptions {
   endedAt?: string;
   status?: 'processing' | 'ready' | 'failed';
 }
+
+export interface RetrieveEmbeddingsTaskParams {
+  embeddingOption?: Array<'visual-text' | 'audio'>;
+}
