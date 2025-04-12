@@ -1,7 +1,7 @@
 import { PageOptions } from '../../interfaces';
 
 export interface RetrieveVideoParams {
-  embeddingOption?: Array<'visual-text' | 'audio'>;
+  embed?: boolean;
 }
 
 export interface ListVideoParams extends PageOptions {

@@ -8,22 +8,13 @@ export class Video extends APIResource {
   async retrieve(
     indexId: string,
     id: string,
-    { embeddingOption }: RetrieveVideoParams = {},
+    { embed }: RetrieveVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Video> {
-    let queryString = '';
-
-    if (embeddingOption && embeddingOption.length > 0) {
-      embeddingOption.forEach(option => {
-        queryString += `embedding_option=${encodeURIComponent(option)}&`;
-      });
-      // Remove trailing &
-      queryString = queryString.slice(0, -1);
-    }
-
+    const _params = convertKeysToSnakeCase({ embed });
     const res = await this._get<Models.VideoResponse>(
-      `indexes/${indexId}/videos/${id}${queryString ? '?' + queryString : ''}`,
-      {}, // Empty params since we're adding them directly to the URL
+      `indexes/${indexId}/videos/${id}`,
+      removeUndefinedValues(_params),
       { ...options, skipCamelKeys: ['user_metadata'] },
     );
     return new Models.Video(this, indexId, res);

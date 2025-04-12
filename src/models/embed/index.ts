@@ -33,7 +33,6 @@ export interface SegmentEmbeddingResponse {
   startOffsetSec?: number;
   endOffsetSec?: number;
   embeddingScope?: string;
-  embeddingOption?: string;
 }
 
 export class SegmentEmbedding {
@@ -41,14 +40,12 @@ export class SegmentEmbedding {
   startOffsetSec?: number;
   endOffsetSec?: number;
   embeddingScope?: string;
-  embeddingOption?: string;
 
   constructor(data: SegmentEmbeddingResponse) {
     this.embeddingsFloat = data.float;
     this.startOffsetSec = data.startOffsetSec;
     this.endOffsetSec = data.endOffsetSec;
     this.embeddingScope = data.embeddingScope;
-    this.embeddingOption = data.embeddingOption;
   }
 }
 
@@ -122,8 +119,8 @@ export class EmbeddingsTask {
     this.createdAt = data.createdAt;
   }
 
-  async retrieve(params: Resources.RetrieveEmbeddingsTaskParams = {}, options: RequestOptions = {}): Promise<EmbeddingsTask> {
-    return await this._resource.retrieve(this.id, params, options);
+  async retrieve(options: RequestOptions = {}): Promise<EmbeddingsTask> {
+    return await this._resource.retrieve(this.id, options);
   }
 
   async getStatus(options: RequestOptions = {}): Promise<string> {

@@ -14,6 +14,8 @@ export interface CreateTaskParams {
   indexId: string;
   file?: Buffer | NodeJS.ReadableStream | string;
   url?: string;
+  transcriptionFile?: Buffer | NodeJS.ReadableStream | string;
+  transcriptionUrl?: string;
   enableVideoStream?: boolean;
 }
 
