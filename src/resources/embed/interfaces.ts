@@ -30,5 +30,5 @@ export interface ListEmbeddingsTaskParams extends PageOptions {
 }
 
 export interface RetrieveEmbeddingsTaskParams {
-  embeddingOption?: Array<'visual-text' | 'audio'>;
+  embeddingOption?: ('visual-text' | 'audio')[];
 }

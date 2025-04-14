@@ -11,18 +11,16 @@ export class Video extends APIResource {
     { embeddingOption }: RetrieveVideoParams = {},
     options: RequestOptions = {},
   ): Promise<Models.Video> {
-    let queryString = '';
-
-    if (embeddingOption && embeddingOption.length > 0) {
+    let url = `indexes/${indexId}/videos/${id}`;
+    if (embeddingOption?.length) {
+      const queryParams = new URLSearchParams();
       embeddingOption.forEach(option => {
-        queryString += `embedding_option=${encodeURIComponent(option)}&`;
+        queryParams.append('embedding_option', option);
       });
-      // Remove trailing &
-      queryString = queryString.slice(0, -1);
+      url += `?${queryParams.toString()}`;
     }
-
     const res = await this._get<Models.VideoResponse>(
-      `indexes/${indexId}/videos/${id}${queryString ? '?' + queryString : ''}`,
+      url,
       {}, // Empty params since we're adding them directly to the URL
       { ...options, skipCamelKeys: ['user_metadata'] },
     );
