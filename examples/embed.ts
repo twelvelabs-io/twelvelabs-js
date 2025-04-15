@@ -8,7 +8,7 @@ import { TwelveLabs, EmbeddingsTask, SegmentEmbedding } from 'twelvelabs';
   const printSegments = (segments: SegmentEmbedding[]) => {
     segments.forEach((segment) => {
       console.log(
-        `embeddingScope=${segment.embeddingScope} startOffsetSec=${segment.startOffsetSec} endOffsetSec=${segment.endOffsetSec}`,
+        `embeddingScope=${segment.embeddingScope} embeddingOption=${segment.embeddingOption} startOffsetSec=${segment.startOffsetSec} endOffsetSec=${segment.endOffsetSec}`,
       );
       console.log('embeddings: ', segment.embeddingsFloat);
     });
@@ -64,7 +64,7 @@ import { TwelveLabs, EmbeddingsTask, SegmentEmbedding } from 'twelvelabs';
   });
   console.log(`Embedding done: ${status}`);
 
-  task = await task.retrieve();
+  task = await task.retrieve({ embeddingOption: ['visual-text', 'audio'] });
   if (task.videoEmbedding) {
     if (task.videoEmbedding.segments) {
       printSegments(task.videoEmbedding.segments);
