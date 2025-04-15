@@ -28,7 +28,14 @@ export class APIClient {
   ): Promise<any> {
     const url = new URL(endpoint, this.baseUrl);
     if (params) {
-      Object.keys(params).forEach((key) => url.searchParams.append(key, params![key]));
+      Object.keys(params).forEach((key) => {
+        const value = params![key];
+        if (Array.isArray(value)) {
+          value.forEach((item) => url.searchParams.append(key, item));
+        } else {
+          url.searchParams.append(key, value);
+        }
+      });
     }
 
     let headers = {
