@@ -14,16 +14,15 @@ export class EmbedTask extends APIResource {
   ): Promise<Models.EmbeddingsTask> {
     const { embeddingOption } = params;
 
-    let url = `embed/tasks/${id}`;
+    const url = new URL(`embed/tasks/${id}`, this.baseUrl);
+
     if (embeddingOption?.length) {
-      const queryParams = new URLSearchParams();
       embeddingOption.forEach(option => {
-        queryParams.append('embedding_option', option);
+        url.searchParams.append('embedding_option', option);
       });
-      url += `?${queryParams.toString()}`;
     }
 
-    const res = await this._get<Models.EmbeddingsTaskResponse>(url, {}, options);
+    const res = await this._get<Models.EmbeddingsTaskResponse>(url.toString(), {}, options);
     return new Models.EmbeddingsTask(this, res);
   }
 
