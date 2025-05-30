@@ -11,14 +11,14 @@ import { TwelveLabs } from 'twelvelabs';
   const gist = await client.generate.gist(videoId, ['title', 'topic', 'hashtag']);
   console.log(`Gist: title=${gist.title} topics=${gist.topics} hashtags=${gist.hashtags}`);
 
-  const text = await client.generate.text(videoId, 'What happened?');
-  console.log(`Open-ended Text: ${text.data}`);
+  const analysis = await client.generate.analyze(videoId, 'What happened?');
+  console.log(`Analysis: ${analysis.data}`);
 
-  const textStream = await client.generate.textStream({ videoId, prompt: 'What happened?' });
+  const analysisStream = await client.generate.analyzeStream({ videoId, prompt: 'What happened?' });
 
-  for await (const text of textStream) {
+  for await (const text of analysisStream) {
     console.log(text);
   }
 
-  console.log(`Aggregated text: ${textStream.aggregatedText}`);
+  console.log(`Aggregated analysis: ${analysisStream.aggregatedText}`);
 })();
