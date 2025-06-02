@@ -1,6 +1,9 @@
 import { APIClient } from './core';
 import * as Resources from './resources';
 import { BASE_URL, LATEST_API_VERSION } from './constants';
+import { RequestOptions } from './core';
+import * as Models from './models';
+import { convertKeysToSnakeCase, removeUndefinedValues, trackStream } from './util';
 
 export interface ClientOptions {
   apiKey: string;
@@ -11,7 +14,7 @@ export class TwelveLabs extends APIClient {
   index: Resources.Index;
   task: Resources.Task;
   search: Resources.Search;
-  generate: Resources.Generate;
+  private _generate: Resources.Generate;
   embed: Resources.Embed;
 
   baseUrl: string;
@@ -40,8 +43,86 @@ export class TwelveLabs extends APIClient {
     this.index = new Resources.Index(this);
     this.task = new Resources.Task(this);
     this.search = new Resources.Search(this);
-    this.generate = new Resources.Generate(this);
+    this._generate = new Resources.Generate(this);
     this.embed = new Resources.Embed(this);
+  }
+
+  /**
+   * @deprecated The `generate` property is deprecated. Use the flattened methods directly on the client: `client.summarize()`, `client.gist()`, `client.analyze()`, `client.analyzeStream()` instead.
+   */
+  get generate(): Resources.Generate {
+    console.warn(
+      '[Deprecation Warning] The `generate` property is deprecated. Use the flattened methods directly on the client: `client.summarize()`, `client.gist()`, `client.analyze()`, `client.analyzeStream()` instead.',
+    );
+    return this._generate;
+  }
+
+  async summarize(
+    videoId: string,
+    type: Resources.GenerateSummarizeType,
+    prompt?: string,
+    temperature?: number,
+    options: RequestOptions = {},
+  ): Promise<Models.GenerateSummarizeResult> {
+    const _body = convertKeysToSnakeCase({
+      videoId,
+      type,
+      prompt,
+      temperature,
+    });
+    const res = await this._post<Models.GenerateSummarizeResult>(
+      'summarize',
+      removeUndefinedValues(_body),
+      options,
+    );
+    return res;
+  }
+
+  async gist(
+    videoId: string,
+    types: Resources.GenerateGistType[],
+    options: RequestOptions = {},
+  ): Promise<Models.GenerateGistResult> {
+    const _body = convertKeysToSnakeCase({
+      videoId,
+      types,
+    });
+    const res = await this._post<Models.GenerateGistResult>('gist', _body, options);
+    return res;
+  }
+
+  async analyze(
+    videoId: string,
+    prompt: string,
+    temperature?: number,
+    options: RequestOptions = {},
+  ): Promise<Models.GenerateOpenEndedTextResult> {
+    const _body = convertKeysToSnakeCase({
+      videoId,
+      prompt,
+      temperature,
+      stream: false,
+    });
+    const res = await this._post<Models.GenerateOpenEndedTextResult>(
+      'analyze',
+      removeUndefinedValues(_body),
+      options,
+    );
+    return res;
+  }
+
+  async analyzeStream(
+    { videoId, prompt, temperature }: Resources.GenerateTextStreamParams,
+    options: RequestOptions = {},
+  ): Promise<Models.GenerateTextStreamResult> {
+    const _body = convertKeysToSnakeCase({
+      videoId,
+      prompt,
+      temperature,
+      stream: true,
+    });
+    const res = await this._post<AsyncIterable<Uint8Array>>('analyze', removeUndefinedValues(_body), options);
+    return new Models.GenerateTextStreamResult(trackStream(res));
   }
 }
 
@@ -59,7 +140,9 @@ export {
   SearchData,
   GroupByVideoSearchData,
   GenerateSummarizeResult,
+  GenerateGistResult,
   GenerateOpenEndedTextResult,
+  GenerateTextStreamResult,
   EmbeddingsTask,
   EmbeddingsTaskListWithPagination,
   EmbeddingsTaskStatus,
@@ -79,6 +162,8 @@ export {
   SearchOptions,
   UpdateVideoParams,
   GenerateSummarizeType,
+  GenerateGistType,
+  GenerateTextStreamParams,
   CreateEmbedParams,
   CreateEmbeddingsTaskVideoParams,
   ListEmbeddingsTaskParams,
