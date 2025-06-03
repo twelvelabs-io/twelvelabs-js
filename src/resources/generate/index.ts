@@ -5,6 +5,9 @@ import { convertKeysToSnakeCase, removeUndefinedValues, trackStream } from '../.
 import { GenerateGistType, GenerateSummarizeType, GenerateTextStreamParams } from './interfaces';
 
 export class Generate extends APIResource {
+  /**
+   * @deprecated client.generate.summarize() is deprecated. Use client.summarize() instead.
+   */
   async summarize(
     videoId: string,
     type: GenerateSummarizeType,
@@ -26,6 +29,9 @@ export class Generate extends APIResource {
     return res;
   }
 
+  /**
+   * @deprecated client.generate.gist() is deprecated. Use client.gist() instead.
+   */
   async gist(
     videoId: string,
     types: GenerateGistType[],
@@ -39,6 +45,9 @@ export class Generate extends APIResource {
     return res;
   }
 
+  /**
+   * @deprecated client.generate.text() is deprecated. Use client.analyze() instead.
+   */
   async text(
     videoId: string,
     prompt: string,
@@ -59,6 +68,9 @@ export class Generate extends APIResource {
     return res;
   }
 
+  /**
+   * @deprecated client.generate.textStream() is deprecated. Use client.analyzeStream() instead.
+   */
   async textStream(
     { videoId, prompt, temperature }: GenerateTextStreamParams,
     options: RequestOptions = {},
