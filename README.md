@@ -226,7 +226,19 @@ let searchResults = await client.search.query({
 
 The response is similar to that received when using text queries.
 
-### Generate text from video
+### Analyze videos
+
+>**NOTE**: The Generate API has been renamed to the Analyze API to more accurately reflect its purpose of analyzing videos to generate text. This update includes changes to specific SDK methods, outlined below. You can continue using the Generate API until July 30, 2025. After this date, the Generate API will be deprecated, and you must transition to the Analyze API.
+>
+>The `generate` prefix has been removed from method names, and the following methods have been renamed as follows:
+>
+>- `generate.gist` is now `gist`
+>- `generate.summarize` is now `summarize`
+>- `generate.text` is now `analyze`
+>- `generate.textStream` is now `analyzeStream`
+>
+>To maintain compatibility, update your applications to use the new names before July 30, 2025.
+
 
 The Twelve Labs Video Understanding Platform offers three distinct endpoints tailored to meet various requirements. Each endpoint has been designed with specific levels of flexibility and customization to accommodate different needs.
 
@@ -234,32 +246,43 @@ Note the following about using these endpoints:
 
 - The Pegasus video understanding model must be enabled for the index to which your video has been uploaded.
 - Your prompts must be instructive or descriptive, and you can also phrase them as questions.
-- The maximum length of a prompt is 1500 characters.
+- The maximum length of a prompt is 2,000 characters.
+
+#### Titles, topics, and hashtags
+
+To analyze videos and generate titles, topics, and hashtags use the example code below, replacing the following:
+
+- **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
+
+```js
+const res = await client.gist("<YOUR_VIDEO_ID>", ["title", "topic","hashtag"]);
+console.log(`Title: ${res.title}\nTopics=${res.topics}\nHashtags=${res.hashtags}`);
+```
 
 #### Summaries, chapters, and highlights
 
-To generate summaries, chapters, and highlights, use the example code below, replacing the following:
+To analyze videos and generate summaries, chapters, and highlights, use the example code below, replacing the following:
 
 - **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
 - **`<TYPE>`**: with a string representing the type of text the platform should generate. This parameter can take one of the following values: "summary", "chapter", or "highlight".
 - _(Optional)_ **`<YOUR_PROMPT>`**: with a string that provides context for the summarization task, such as the target audience, style, tone of voice, and purpose. Example: "Generate a summary in no more than 5 bullet points."
 
 ```js
-const summary = await client.generate.summarize('<YOUR_VIDEO_ID>', '<TYPE>');
+const summary = await client.summarize('<YOUR_VIDEO_ID>', '<TYPE>');
 console.log(`Summary: ${summary.summary}`);
 ```
 
-For a description of each field in the request and response, see the [Summaries, chapters, or highlights](https://docs.twelvelabs.io/v1.3/docs/generate-summaries-chapters-highlights) page.
+For a description of each field in the request and response, see the [Summaries, chapters, or highlights](https://docs.twelvelabs.io/v1.3/api-reference/analyze-videos/summarize) page.
 
 #### Open-ended analysis
 
-To generate open-ended analysis, use the example code below, replacing the following:
+To perform open-ended analysis and generate tailored text outputs based on your prompts, use the example code below, replacing the following:
 
 - **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
-- **`<YOUR_PROMPT>`**: with a string that guides the model on the desired format or content. The maximum length of the prompt is 1500 characters. Example: "I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks."
+- **`<YOUR_PROMPT>`**: with a string that guides the model on the desired format or content. The maximum length of the prompt is 2,000 characters. Example: "I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks."
 
 ```js
-const analysis = await client.generate.analyze('<YOUR_VIDEO_ID>', '<YOUR_PROMPT>');
+const analysis = await client.analyze('<YOUR_VIDEO_ID>', '<YOUR_PROMPT>');
 console.log(`Open-ended analysis: ${analysis.data}`);
 ```
 
