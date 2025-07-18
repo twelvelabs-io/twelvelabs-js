@@ -1,16 +1,17 @@
 {
-  "include": ["src", "examples"],
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    "target": "es2020",
-    "lib": ["es2020", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "twelvelabs/*": ["src/*"],
-      "twelvelabs": ["src/index.ts"]
-    }
-  }
+    "compilerOptions": {
+        "extendedDiagnostics": true,
+        "strict": true,
+        "target": "ES6",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "declaration": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "baseUrl": "src"
+    },
+    "include": ["src"],
+    "exclude": []
 }
