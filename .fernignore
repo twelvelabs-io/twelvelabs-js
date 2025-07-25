@@ -1,6 +1,7 @@
 node_modules
 examples
 legacy
+0.4/
 
 src/wrapper
 src/index.ts
