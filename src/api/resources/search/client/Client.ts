@@ -49,7 +49,6 @@ export class Search {
      *   - **Format**: JPEG and PNG.
      *   - **Dimension**: Must be at least 64 x 64 pixels.
      *   - **Size**: Must not exceed 5MB.
-     *   - **Object visibility**: Ensure that the objects of interest are visible and occupy at least 50% of the video frame. This helps the platform accurately identify and match the objects.
      * </Accordion>
      *
      * <Note title="Note">
@@ -168,8 +167,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -275,8 +274,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

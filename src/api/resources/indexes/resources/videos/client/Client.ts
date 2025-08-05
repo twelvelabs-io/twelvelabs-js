@@ -128,8 +128,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.0-beta.0",
-                        "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                        "X-Fern-SDK-Version": "1.0.0",
+                        "User-Agent": "twelvelabs-js/1.0.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -260,8 +260,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -329,7 +329,7 @@ export class Videos {
     }
 
     /**
-     * Use this method to update the metadata of a video such as file name.
+     * Use this method to update the metadata of a video.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to update.
@@ -374,8 +374,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -425,7 +425,7 @@ export class Videos {
     }
 
     /**
-     * This method deletes all the information about the specified video This action cannot be undone.
+     * This method deletes all the information about the specified video. This action cannot be undone.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to delete.
@@ -460,8 +460,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
