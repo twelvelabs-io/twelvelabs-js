@@ -1,6 +1,6 @@
 {
     "name": "twelvelabs-js",
-    "version": "1.0.0-beta.0",
+    "version": "1.0.0",
     "private": false,
     "repository": "https://github.com/twelvelabs-io/twelvelabs-js",
     "main": "./index.js",

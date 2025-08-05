@@ -1,0 +1,1 @@
+export { PartialUpdateVideoInformationRequest } from "./PartialUpdateVideoInformationRequest";

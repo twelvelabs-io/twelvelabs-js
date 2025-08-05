@@ -142,8 +142,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.0-beta.0",
-                        "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                        "X-Fern-SDK-Version": "1.0.0",
+                        "User-Agent": "twelvelabs-js/1.0.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -270,6 +270,10 @@ export class Tasks {
             _request.append("enable_video_stream", request.enableVideoStream.toString());
         }
 
+        if (request.userMetadata != null) {
+            _request.append("user_metadata", request.userMetadata);
+        }
+
         const _maybeEncodedRequest = await _request.getRequest();
         const _response = await core.fetcher({
             url: urlJoin(
@@ -282,8 +286,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -372,8 +376,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -457,8 +461,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0-beta.0",
-                "User-Agent": "twelvelabs-js/1.0.0-beta.0",
+                "X-Fern-SDK-Version": "1.0.0",
+                "User-Agent": "twelvelabs-js/1.0.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

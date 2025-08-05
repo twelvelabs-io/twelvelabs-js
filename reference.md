@@ -755,6 +755,94 @@ await client.indexes.delete("6298d673f1090f1100476d4c");
 </dl>
 </details>
 
+## Manage videos
+
+<details><summary><code>client.manageVideos.<a href="/src/api/resources/manageVideos/client/Client.ts">partialUpdateVideoInformation</a>(indexId, videoId, { ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to update one or more fields of the metadata of a video. Also, you can delete a field by setting it to `null`.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.manageVideos.partialUpdateVideoInformation("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
+    userMetadata: {
+        category: "recentlyAdded",
+        batchNumber: 5,
+        rating: 9.3,
+        needsReview: true,
+    },
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**indexId:** `string` — The unique identifier of the index to which the video has been uploaded.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**videoId:** `string` — The unique identifier of the video to update.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.PartialUpdateVideoInformationRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ManageVideos.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## Embed
 
 <details><summary><code>client.embed.<a href="/src/api/resources/embed/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.EmbeddingResponse</code></summary>
@@ -879,7 +967,6 @@ Use this endpoint to search for relevant matches in an index using text or vario
     - **Format**: JPEG and PNG.
     - **Dimension**: Must be at least 64 x 64 pixels.
     - **Size**: Must not exceed 5MB.
-    - **Object visibility**: Ensure that the objects of interest are visible and occupy at least 50% of the video frame. This helps the platform accurately identify and match the objects.
       </Accordion>
 
 <Note title="Note">
@@ -1518,7 +1605,7 @@ await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f
 <dl>
 <dd>
 
-Use this method to update the metadata of a video such as file name.
+Use this method to update the metadata of a video.
 
 </dd>
 </dl>
@@ -1604,7 +1691,7 @@ await client.indexes.videos.update("6298d673f1090f1100476d4c", "6298d673f1090f11
 <dl>
 <dd>
 
-This method deletes all the information about the specified video This action cannot be undone.
+This method deletes all the information about the specified video. This action cannot be undone.
 
 </dd>
 </dl>
