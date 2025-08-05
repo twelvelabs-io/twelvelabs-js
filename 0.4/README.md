@@ -1,4 +1,4 @@
-# TwelveLabs JavaScript SDK
+# TwelveLabs JavaScript Legacy SDK
 
 [![NPM version](https://img.shields.io/npm/v/twelvelabs-js.svg)](https://npmjs.org/package/twelvelabs-js)
 
