@@ -39,7 +39,7 @@ export interface EmbedCreateRequest {
     /** The publicly accessible URL of the image for which you wish to create an embedding. This parameter is required for image embeddings if `image_file` is not provided. */
     imageUrl?: string;
     imageFile?: File | fs.ReadStream | Blob | undefined;
-    /** The publicly accessible URL of the audio file for which you wish to creae an embedding. This parameter is required for audio embeddings if `audio_file` is not provided. */
+    /** The publicly accessible URL of the audio file for which you wish to create an embedding. This parameter is required for audio embeddings if `audio_file` is not provided. */
     audioUrl?: string;
     audioFile?: File | fs.ReadStream | Blob | undefined;
     /**

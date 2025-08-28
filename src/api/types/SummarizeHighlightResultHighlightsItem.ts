@@ -12,7 +12,7 @@ export interface SummarizeHighlightResultHighlightsItem {
     end?: number;
     /** The starting time of the highlight, measured in seconds from the beginning of the video. */
     startSec?: number;
-    /** The ending time of the chapter, measured in seconds from the beginning of the video. */
+    /** The ending time of the highlight, measured in seconds from the beginning of the video. */
     endSec?: number;
     /** The tile of the highlight. */
     highlight?: string;

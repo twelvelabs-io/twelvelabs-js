@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * An index groups one or more videos stored as vectors and is the most granular level at which you can perform a search.
  */
 export interface IndexSchema {
-    /** A string representing the unique identifier of the index. It is assigned by the API when an index is created. */
+    /** A string representing the unique identifier of the index. It is assigned by the platform when an index is created. */
     id?: string;
     /** A string representing the date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), that the index was created. */
     createdAt?: string;

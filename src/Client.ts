@@ -11,7 +11,6 @@ import * as errors from "./errors/index";
 import * as stream from "stream";
 import { Tasks } from "./api/resources/tasks/client/Client";
 import { Indexes } from "./api/resources/indexes/client/Client";
-import { ManageVideos } from "./api/resources/manageVideos/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
 
@@ -38,7 +37,6 @@ export declare namespace TwelvelabsApiClient {
 export class TwelvelabsApiClient {
     protected _tasks: Tasks | undefined;
     protected _indexes: Indexes | undefined;
-    protected _manageVideos: ManageVideos | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
 
@@ -50,10 +48,6 @@ export class TwelvelabsApiClient {
 
     public get indexes(): Indexes {
         return (this._indexes ??= new Indexes(this._options));
-    }
-
-    public get manageVideos(): ManageVideos {
-        return (this._manageVideos ??= new ManageVideos(this._options));
     }
 
     public get embed(): Embed {
@@ -107,8 +101,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -206,8 +200,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -271,7 +265,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Streaming response](/v1.3/docs/guides/generate-text-from-video/open-ended-text#streaming-responses) guide.
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
      * </Note>
      *
      * @param {TwelvelabsApi.GenerateRequest} request
@@ -310,8 +304,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -373,7 +367,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Streaming response](/v1.3/docs/guides/generate-text-from-video/open-ended-text#streaming-responses) guide.
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
      * </Note>
      */
     public analyzeStream(
@@ -398,8 +392,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -475,7 +469,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Streaming response](/v1.3/docs/guides/generate-text-from-video/open-ended-text#streaming-responses) guide.
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
      * </Note>
      *
      * @param {TwelvelabsApi.AnalyzeRequest} request
@@ -513,8 +507,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
