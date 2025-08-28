@@ -21,6 +21,6 @@ export interface IndexesCreateRequestModelsItem {
      * For more details, see the [Video understanding models](/v1.3/docs/concepts/models) page.
      */
     modelName: string;
-    /** An array that specifies how the platform will process the videos uploaded to this index. For the Marengo and Pegasus models, you can specify one or both of the following model options: `visual` and `audio`. For more details, see the [model options](/v1.3/docs/concepts/model-options) page. */
+    /** An array that specifies how the platform will process the videos uploaded to this index. For the Marengo and Pegasus models, you can specify one or both of the following model options: `visual` and `audio`. For more details, see the [model options](/v1.3/docs/concepts/modalities#model-options) section. */
     modelOptions: string[];
 }

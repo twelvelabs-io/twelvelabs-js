@@ -61,7 +61,7 @@ export class Embed {
      *   - `audio_file`: Local audio file.
      *
      * <Note title="Notes">
-     * - The "Marengo-retrieval-2.7" video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
+     * - The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
      * - You can create multiple types of embeddings in a single API call.
      * - Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/text-image-audio-embeddings/create-text-image-audio-embeddings) from these transcriptions.
      * </Note>
@@ -129,8 +129,8 @@ export class Embed {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -18,7 +18,7 @@ export interface VideosRetrieveRequest {
      *
      * The platform does not return embeddings if you don't provide this parameter.
      *
-     * The values you specify in `embedding_option` must be included in the `model_options` defined when the index was created. For example, if `model_options` is set to `visual,` you cannot set `embedding_option` to `audio` or  both `visual-text` and `audio`.
+     * The values you specify in `embedding_option` must be included in the `model_options` defined when the index was created. For example, if `model_options` is set to `visual` only, then you cannot set `embedding_option` to `audio` or  both `visual-text` and `audio`.
      */
     embeddingOption?:
         | TwelvelabsApi.indexes.VideosRetrieveRequestEmbeddingOptionItem
