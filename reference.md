@@ -16,7 +16,7 @@ This endpoint analyzes your videos and creates fully customizable text based on 
 
 <Note title="Notes">
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Streaming response](/v1.3/docs/guides/generate-text-from-video/open-ended-text#streaming-responses) guide.
+- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
 </Note>
 </dd>
 </dl>
@@ -198,8 +198,8 @@ Upload options:
   - **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 60 minutes (3600s). In a future release, the maximum duration for Pegasus will be 2 hours (7,200 seconds).
   - **File size**: Must not exceed 2 GB.
     If you require different options, contact us at support@twelvelabs.io.
-  
-  If both Marengo and Pegasus are enabled for your index, the most restrictive prerequisites will apply.
+
+If both Marengo and Pegasus are enabled for your index, the most restrictive prerequisites will apply.
 </Accordion>
 
 <Note title="Notes">
@@ -755,94 +755,6 @@ await client.indexes.delete("6298d673f1090f1100476d4c");
 </dl>
 </details>
 
-## Manage videos
-
-<details><summary><code>client.manageVideos.<a href="/src/api/resources/manageVideos/client/Client.ts">partialUpdateVideoInformation</a>(indexId, videoId, { ...params }) -> void</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this method to update one or more fields of the metadata of a video. Also, you can delete a field by setting it to `null`.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.manageVideos.partialUpdateVideoInformation("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
-    userMetadata: {
-        category: "recentlyAdded",
-        batchNumber: 5,
-        rating: 9.3,
-        needsReview: true,
-    },
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**indexId:** `string` — The unique identifier of the index to which the video has been uploaded.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**videoId:** `string` — The unique identifier of the video to update.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `TwelvelabsApi.PartialUpdateVideoInformationRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `ManageVideos.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## Embed
 
 <details><summary><code>client.embed.<a href="/src/api/resources/embed/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.EmbeddingResponse</code></summary>
@@ -880,7 +792,7 @@ Parameters for embeddings:
     - `audio_file`: Local audio file.
 
 <Note title="Notes">
-- The "Marengo-retrieval-2.7" video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
+- The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
 - You can create multiple types of embeddings in a single API call.
 - Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/text-image-audio-embeddings/create-text-image-audio-embeddings) from these transcriptions.
 </Note>
@@ -1222,7 +1134,7 @@ Specify at least one option. If both are provided, `video_url` takes precedence.
 </Accordion>
 
 <Note title="Notes">
-- The "Marengo-retrieval-2.7" video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
+- The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
 - Video embeddings are stored for seven days.
 - The platform supports uploading video files that can play without additional user interaction or custom video players. Ensure your URL points to the raw video file, not a web page containing the video. Links to third-party hosting sites, cloud storage services, or videos requiring extra steps to play are not supported.
 </Note>
@@ -1593,6 +1505,77 @@ await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f
 </dl>
 </details>
 
+<details><summary><code>client.indexes.videos.<a href="/src/api/resources/indexes/resources/videos/client/Client.ts">delete</a>(indexId, videoId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method deletes all the information about the specified video. This action cannot be undone.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**indexId:** `string` — The unique identifier of the index to which the video has been uploaded.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**videoId:** `string` — The unique identifier of the video to delete.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Videos.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.indexes.videos.<a href="/src/api/resources/indexes/resources/videos/client/Client.ts">update</a>(indexId, videoId, { ...params }) -> void</code></summary>
 <dl>
 <dd>
@@ -1605,7 +1588,7 @@ await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f
 <dl>
 <dd>
 
-Use this method to update the metadata of a video.
+Use this method to update one or more fields of the metadata of a video. Also, you can delete a field by setting it to `null`.
 
 </dd>
 </dl>
@@ -1661,77 +1644,6 @@ await client.indexes.videos.update("6298d673f1090f1100476d4c", "6298d673f1090f11
 <dd>
 
 **request:** `TwelvelabsApi.indexes.VideosUpdateRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `Videos.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.indexes.videos.<a href="/src/api/resources/indexes/resources/videos/client/Client.ts">delete</a>(indexId, videoId) -> void</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method deletes all the information about the specified video. This action cannot be undone.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**indexId:** `string` — The unique identifier of the index to which the video has been uploaded.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**videoId:** `string` — The unique identifier of the video to delete.
 
 </dd>
 </dl>

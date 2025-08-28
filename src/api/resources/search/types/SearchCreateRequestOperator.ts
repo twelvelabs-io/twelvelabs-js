@@ -11,9 +11,6 @@
  *
  *   - `and`
  *
- *   For details and examples, see the [Using multiple sources of information](/v1.3/docs/guides/search/queries/text-queries#visual-and-audio) section.
- *
- *
  *   **Default**: `or`.
  */
 export type SearchCreateRequestOperator = "or" | "and";

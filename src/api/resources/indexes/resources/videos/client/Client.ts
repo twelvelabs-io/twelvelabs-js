@@ -128,8 +128,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.0",
-                        "User-Agent": "twelvelabs-js/1.0.0",
+                        "X-Fern-SDK-Version": "1.0.1",
+                        "User-Agent": "twelvelabs-js/1.0.1",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -260,8 +260,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -329,7 +329,92 @@ export class Videos {
     }
 
     /**
-     * Use this method to update the metadata of a video.
+     * This method deletes all the information about the specified video. This action cannot be undone.
+     *
+     * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
+     * @param {string} videoId - The unique identifier of the video to delete.
+     * @param {Videos.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     *
+     * @example
+     *     await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c")
+     */
+    public delete(
+        indexId: string,
+        videoId: string,
+        requestOptions?: Videos.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(indexId, videoId, requestOptions));
+    }
+
+    private async __delete(
+        indexId: string,
+        videoId: string,
+        requestOptions?: Videos.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `indexes/${encodeURIComponent(indexId)}/videos/${encodeURIComponent(videoId)}`,
+            ),
+            method: "DELETE",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling DELETE /indexes/{index-id}/videos/{video-id}.",
+                );
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * Use this method to update one or more fields of the metadata of a video. Also, you can delete a field by setting it to `null`.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to update.
@@ -370,12 +455,12 @@ export class Videos {
                     environments.TwelvelabsApiEnvironment.Default,
                 `indexes/${encodeURIComponent(indexId)}/videos/${encodeURIComponent(videoId)}`,
             ),
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
+                "X-Fern-SDK-Version": "1.0.1",
+                "User-Agent": "twelvelabs-js/1.0.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -414,92 +499,7 @@ export class Videos {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling PUT /indexes/{index-id}/videos/{video-id}.",
-                );
-            case "unknown":
-                throw new errors.TwelvelabsApiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
-    }
-
-    /**
-     * This method deletes all the information about the specified video. This action cannot be undone.
-     *
-     * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
-     * @param {string} videoId - The unique identifier of the video to delete.
-     * @param {Videos.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     *
-     * @example
-     *     await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c")
-     */
-    public delete(
-        indexId: string,
-        videoId: string,
-        requestOptions?: Videos.RequestOptions,
-    ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(indexId, videoId, requestOptions));
-    }
-
-    private async __delete(
-        indexId: string,
-        videoId: string,
-        requestOptions?: Videos.RequestOptions,
-    ): Promise<core.WithRawResponse<void>> {
-        const _response = await core.fetcher({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.TwelvelabsApiEnvironment.Default,
-                `indexes/${encodeURIComponent(indexId)}/videos/${encodeURIComponent(videoId)}`,
-            ),
-            method: "DELETE",
-            headers: {
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.0",
-                "User-Agent": "twelvelabs-js/1.0.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...(await this._getCustomAuthorizationHeaders()),
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return { data: undefined, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.TwelvelabsApiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling DELETE /indexes/{index-id}/videos/{video-id}.",
+                    "Timeout exceeded when calling PATCH /indexes/{index-id}/videos/{video-id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({

@@ -6,5 +6,3 @@ export * as search from "./search";
 export * from "./search/types";
 export * as embed from "./embed";
 export * from "./indexes/client/requests";
-export * as manageVideos from "./manageVideos";
-export * from "./manageVideos/client/requests";
