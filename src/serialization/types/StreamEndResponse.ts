@@ -5,19 +5,20 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { FinishReason } from "./FinishReason";
 import { StreamEndResponseMetadata } from "./StreamEndResponseMetadata";
 
 export const StreamEndResponse: core.serialization.ObjectSchema<
     serializers.StreamEndResponse.Raw,
     TwelvelabsApi.StreamEndResponse
 > = core.serialization.object({
-    eventType: core.serialization.property("event_type", core.serialization.string().optional()),
+    finishReason: core.serialization.property("finish_reason", FinishReason.optional()),
     metadata: StreamEndResponseMetadata.optional(),
 });
 
 export declare namespace StreamEndResponse {
     export interface Raw {
-        event_type?: string | null;
+        finish_reason?: FinishReason.Raw | null;
         metadata?: StreamEndResponseMetadata.Raw | null;
     }
 }

@@ -12,5 +12,6 @@ export interface NonStreamAnalyzeResponse {
     id?: string;
     /** The generated text based on the prompt you provided. */
     data?: string;
+    finishReason?: TwelvelabsApi.FinishReason;
     usage?: TwelvelabsApi.TokenUsage;
 }

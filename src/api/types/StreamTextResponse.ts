@@ -6,8 +6,6 @@
  * Contains a fragment of generated text. Note that text fragments may be split at arbitrary points, not necessarily at word or sentence boundaries.
  */
 export interface StreamTextResponse {
-    /** This field is always set to `text_generation` for this event. */
-    eventType?: string;
     /** A fragment of the generated text. */
     text?: string;
 }

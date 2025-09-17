@@ -10,13 +10,11 @@ export const StreamTextResponse: core.serialization.ObjectSchema<
     serializers.StreamTextResponse.Raw,
     TwelvelabsApi.StreamTextResponse
 > = core.serialization.object({
-    eventType: core.serialization.property("event_type", core.serialization.string().optional()),
     text: core.serialization.string().optional(),
 });
 
 export declare namespace StreamTextResponse {
     export interface Raw {
-        event_type?: string | null;
         text?: string | null;
     }
 }

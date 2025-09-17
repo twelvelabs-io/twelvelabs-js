@@ -8,8 +8,7 @@ import * as TwelvelabsApi from "../index";
  * Indicates the end of the stream.
  */
 export interface StreamEndResponse {
-    /** This field is always set to `stream_end` for this event. */
-    eventType?: string;
+    finishReason?: TwelvelabsApi.FinishReason;
     /** An object containing metadata about the stream. */
     metadata?: TwelvelabsApi.StreamEndResponseMetadata;
 }

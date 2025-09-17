@@ -57,6 +57,8 @@ export * from "./StreamEndResponseMetadata";
 export * from "./StreamEndResponse";
 export * from "./NonStreamAnalyzeResponse";
 export * from "./TokenUsage";
+export * from "./ResponseFormat";
+export * from "./FinishReason";
 export * from "./UserMetadata";
 export * from "./SummarizeSummaryResult";
 export * from "./SummarizeChapterResultChaptersItem";

@@ -5,6 +5,7 @@
 import * as serializers from "../../index";
 import * as TwelvelabsApi from "../../../api/index";
 import * as core from "../../../core";
+import { ResponseFormat } from "../../types/ResponseFormat";
 
 export const SummarizeRequest: core.serialization.Schema<
     serializers.SummarizeRequest.Raw,
@@ -14,6 +15,8 @@ export const SummarizeRequest: core.serialization.Schema<
     type: core.serialization.string(),
     prompt: core.serialization.string().optional(),
     temperature: core.serialization.number().optional(),
+    responseFormat: core.serialization.property("response_format", ResponseFormat.optional()),
+    maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
 });
 
 export declare namespace SummarizeRequest {
@@ -22,5 +25,7 @@ export declare namespace SummarizeRequest {
         type: string;
         prompt?: string | null;
         temperature?: number | null;
+        response_format?: ResponseFormat.Raw | null;
+        max_tokens?: number | null;
     }
 }

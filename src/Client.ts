@@ -101,8 +101,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.1",
-                "User-Agent": "twelvelabs-js/1.0.1",
+                "X-Fern-SDK-Version": "1.0.2",
+                "User-Agent": "twelvelabs-js/1.0.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -200,8 +200,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.1",
-                "User-Agent": "twelvelabs-js/1.0.1",
+                "X-Fern-SDK-Version": "1.0.2",
+                "User-Agent": "twelvelabs-js/1.0.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -259,7 +259,7 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * <Warning>This endpoint will be deprecated on **July 30, 2025**. Transition to the [`/analyze`](/v1.3/api-reference/analyze-videos/analyze) endpoint, which provides identical functionality. Ensure you've updated your API calls before the deprecation date to ensure uninterrupted service.</Warning>
+     * <Warning>This endpoint is deprecated. Use the [`/analyze`](/v1.3/api-reference/analyze-videos/analyze) endpoint instead, which provides identical functionality.</Warning>
      *
      * This endpoint generates open-ended texts based on your videos, including but not limited to tables of content, action items, memos, and detailed analyses.
      *
@@ -304,8 +304,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.1",
-                "User-Agent": "twelvelabs-js/1.0.1",
+                "X-Fern-SDK-Version": "1.0.2",
+                "User-Agent": "twelvelabs-js/1.0.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -392,8 +392,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.1",
-                "User-Agent": "twelvelabs-js/1.0.1",
+                "X-Fern-SDK-Version": "1.0.2",
+                "User-Agent": "twelvelabs-js/1.0.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -482,7 +482,28 @@ export class TwelvelabsApiClient {
      *     await client.analyze({
      *         videoId: "6298d673f1090f1100476d4c",
      *         prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
-     *         temperature: 0.2
+     *         temperature: 0.2,
+     *         responseFormat: {
+     *             type: "json_schema",
+     *             jsonSchema: {
+     *                 "type": "object",
+     *                 "properties": {
+     *                     "title": {
+     *                         "type": "string"
+     *                     },
+     *                     "summary": {
+     *                         "type": "string"
+     *                     },
+     *                     "keywords": {
+     *                         "type": "array",
+     *                         "items": {
+     *                             "type": "string"
+     *                         }
+     *                     }
+     *                 }
+     *             }
+     *         },
+     *         maxTokens: 2000
      *     })
      */
     public analyze(
@@ -507,8 +528,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.1",
-                "User-Agent": "twelvelabs-js/1.0.1",
+                "X-Fern-SDK-Version": "1.0.2",
+                "User-Agent": "twelvelabs-js/1.0.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

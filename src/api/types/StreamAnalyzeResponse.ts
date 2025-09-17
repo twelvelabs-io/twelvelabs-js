@@ -19,6 +19,20 @@ import * as TwelvelabsApi from "../index";
  * - Use the `stream_start` and `stream_end` events to manage the lifecycle of your streaming session.
  */
 export type StreamAnalyzeResponse =
-    | TwelvelabsApi.StreamStartResponse
-    | TwelvelabsApi.StreamTextResponse
-    | TwelvelabsApi.StreamEndResponse;
+    | TwelvelabsApi.StreamAnalyzeResponse.StreamStart
+    | TwelvelabsApi.StreamAnalyzeResponse.TextGeneration
+    | TwelvelabsApi.StreamAnalyzeResponse.StreamEnd;
+
+export namespace StreamAnalyzeResponse {
+    export interface StreamStart extends TwelvelabsApi.StreamStartResponse {
+        eventType: "stream_start";
+    }
+
+    export interface TextGeneration extends TwelvelabsApi.StreamTextResponse {
+        eventType: "text_generation";
+    }
+
+    export interface StreamEnd extends TwelvelabsApi.StreamEndResponse {
+        eventType: "stream_end";
+    }
+}

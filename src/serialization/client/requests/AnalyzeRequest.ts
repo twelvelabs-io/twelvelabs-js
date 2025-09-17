@@ -5,12 +5,15 @@
 import * as serializers from "../../index";
 import * as TwelvelabsApi from "../../../api/index";
 import * as core from "../../../core";
+import { ResponseFormat } from "../../types/ResponseFormat";
 
 export const AnalyzeRequest: core.serialization.Schema<serializers.AnalyzeRequest.Raw, TwelvelabsApi.AnalyzeRequest> =
     core.serialization.object({
         videoId: core.serialization.property("video_id", core.serialization.string()),
         prompt: core.serialization.string(),
         temperature: core.serialization.number().optional(),
+        responseFormat: core.serialization.property("response_format", ResponseFormat.optional()),
+        maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
     });
 
 export declare namespace AnalyzeRequest {
@@ -18,5 +21,7 @@ export declare namespace AnalyzeRequest {
         video_id: string;
         prompt: string;
         temperature?: number | null;
+        response_format?: ResponseFormat.Raw | null;
+        max_tokens?: number | null;
     }
 }

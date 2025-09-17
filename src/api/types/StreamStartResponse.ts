@@ -8,8 +8,6 @@ import * as TwelvelabsApi from "../index";
  * Indicates the beginning of the stream.
  */
 export interface StreamStartResponse {
-    /** This field is always set to `stream_start` for this event. */
-    eventType?: string;
     /** An object containing metadata about the stream. */
     metadata?: TwelvelabsApi.StreamStartResponseMetadata;
 }
