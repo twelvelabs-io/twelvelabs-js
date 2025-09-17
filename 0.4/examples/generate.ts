@@ -1,13 +1,9 @@
 import { TwelveLabs } from 'twelvelabs';
-
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.API_KEY });
-
   const videoId = '<YOUR_VIDEO_ID>';
-
   const summary = await client.summarize(videoId, 'summary');
   console.log(`Summary: ${summary.summary}`);
-
   const gist = await client.gist(videoId, ['title', 'topic', 'hashtag']);
   console.log(`Gist: title=${gist.title} topics=${gist.topics} hashtags=${gist.hashtags}`);
 
