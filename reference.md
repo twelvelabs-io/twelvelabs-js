@@ -36,6 +36,27 @@ await client.analyze({
     videoId: "6298d673f1090f1100476d4c",
     prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
     temperature: 0.2,
+    responseFormat: {
+        type: "json_schema",
+        jsonSchema: {
+            type: "object",
+            properties: {
+                title: {
+                    type: "string",
+                },
+                summary: {
+                    type: "string",
+                },
+                keywords: {
+                    type: "array",
+                    items: {
+                        type: "string",
+                    },
+                },
+            },
+        },
+    },
+    maxTokens: 2000,
 });
 ```
 

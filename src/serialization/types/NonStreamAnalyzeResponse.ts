@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { FinishReason } from "./FinishReason";
 import { TokenUsage } from "./TokenUsage";
 
 export const NonStreamAnalyzeResponse: core.serialization.ObjectSchema<
@@ -13,6 +14,7 @@ export const NonStreamAnalyzeResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     id: core.serialization.string().optional(),
     data: core.serialization.string().optional(),
+    finishReason: core.serialization.property("finish_reason", FinishReason.optional()),
     usage: TokenUsage.optional(),
 });
 
@@ -20,6 +22,7 @@ export declare namespace NonStreamAnalyzeResponse {
     export interface Raw {
         id?: string | null;
         data?: string | null;
+        finish_reason?: FinishReason.Raw | null;
         usage?: TokenUsage.Raw | null;
     }
 }

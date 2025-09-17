@@ -12,8 +12,32 @@ import { StreamEndResponse } from "./StreamEndResponse";
 export const StreamAnalyzeResponse: core.serialization.Schema<
     serializers.StreamAnalyzeResponse.Raw,
     TwelvelabsApi.StreamAnalyzeResponse
-> = core.serialization.undiscriminatedUnion([StreamStartResponse, StreamTextResponse, StreamEndResponse]);
+> = core.serialization
+    .union(core.serialization.discriminant("eventType", "event_type"), {
+        stream_start: StreamStartResponse,
+        text_generation: StreamTextResponse,
+        stream_end: StreamEndResponse,
+    })
+    .transform<TwelvelabsApi.StreamAnalyzeResponse>({
+        transform: (value) => value,
+        untransform: (value) => value,
+    });
 
 export declare namespace StreamAnalyzeResponse {
-    export type Raw = StreamStartResponse.Raw | StreamTextResponse.Raw | StreamEndResponse.Raw;
+    export type Raw =
+        | StreamAnalyzeResponse.StreamStart
+        | StreamAnalyzeResponse.TextGeneration
+        | StreamAnalyzeResponse.StreamEnd;
+
+    export interface StreamStart extends StreamStartResponse.Raw {
+        event_type: "stream_start";
+    }
+
+    export interface TextGeneration extends StreamTextResponse.Raw {
+        event_type: "text_generation";
+    }
+
+    export interface StreamEnd extends StreamEndResponse.Raw {
+        event_type: "stream_end";
+    }
 }

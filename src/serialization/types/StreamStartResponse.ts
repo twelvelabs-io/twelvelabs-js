@@ -11,13 +11,11 @@ export const StreamStartResponse: core.serialization.ObjectSchema<
     serializers.StreamStartResponse.Raw,
     TwelvelabsApi.StreamStartResponse
 > = core.serialization.object({
-    eventType: core.serialization.property("event_type", core.serialization.string().optional()),
     metadata: StreamStartResponseMetadata.optional(),
 });
 
 export declare namespace StreamStartResponse {
     export interface Raw {
-        event_type?: string | null;
         metadata?: StreamStartResponseMetadata.Raw | null;
     }
 }
