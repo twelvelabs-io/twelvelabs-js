@@ -31,6 +31,35 @@ import { TwelveLabs } from "twelvelabs-js";
   });
   console.log(`Gist: title=${gist.title} topics=${gist.topics} hashtags=${gist.hashtags}`);
 
+  // Basic analyze example
+  const basicAnalyze = await client.analyze({
+    videoId,
+    prompt: "What happened?",
+  });
+  console.log("Basic analyze result:");
+  console.log(JSON.stringify(basicAnalyze, null, 2));
+
+  // Advanced analyze with structured output and max_tokens
+  const advancedAnalyze = await client.analyze({
+    videoId,
+    prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
+    temperature: 0.2,
+    responseFormat: {
+      type: "json_schema",
+      jsonSchema: {
+        type: "object",
+        properties: {
+          title: { type: "string" },
+          summary: { type: "string" },
+          keywords: { type: "array", items: { type: "string" } },
+        },
+      },
+    },
+    maxTokens: 2000,
+  });
+  console.log("\nStructured analyze result:");
+  console.log(JSON.stringify(advancedAnalyze, null, 2));
+
   // Basic streaming analyze example
   const textStream = await client.analyzeStream({
     videoId,
