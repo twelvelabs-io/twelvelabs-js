@@ -15,7 +15,7 @@ export declare namespace Videos {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -34,9 +34,9 @@ export class Videos {
     constructor(protected readonly _options: Videos.Options = {}) {}
 
     /**
-     * This method returns a list of the videos in the specified index. By default, the API returns your videos sorted by creation date, with the newest at the top of the list.
+     * This method returns a list of the videos in the specified index. By default, the platform returns your videos sorted by creation date, with the newest at the top of the list.
      *
-     * @param {string} indexId - The unique identifier of the index for which the API will retrieve the videos.
+     * @param {string} indexId - The unique identifier of the index for which the platform will retrieve the videos.
      * @param {TwelvelabsApi.indexes.VideosListRequest} request
      * @param {Videos.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -49,6 +49,11 @@ export class Videos {
      *         sortBy: "created_at",
      *         sortOption: "desc",
      *         filename: "01.mp4",
+     *         duration: 1.1,
+     *         fps: 1.1,
+     *         width: 1.1,
+     *         height: 1,
+     *         size: 1.1,
      *         createdAt: "2024-08-16T16:53:59Z",
      *         updatedAt: "2024-08-16T16:53:59Z"
      *     })
@@ -128,8 +133,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.2",
-                        "User-Agent": "twelvelabs-js/1.0.2",
+                        "X-Fern-SDK-Version": "1.0.3",
+                        "User-Agent": "twelvelabs-js/1.0.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -211,7 +216,9 @@ export class Videos {
      * @throws {@link TwelvelabsApi.NotFoundError}
      *
      * @example
-     *     await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c")
+     *     await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
+     *         transcription: true
+     *     })
      */
     public retrieve(
         indexId: string,
@@ -260,8 +267,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -291,15 +298,7 @@ export class Videos {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
                 case 404:
-                    throw new TwelvelabsApi.NotFoundError(
-                        serializers.NotFoundErrorBody.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -329,7 +328,7 @@ export class Videos {
     }
 
     /**
-     * This method deletes all the information about the specified video. This action cannot be undone.
+     * This method deletes all the information about the specified video This action cannot be undone.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to delete.
@@ -364,8 +363,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -414,7 +413,7 @@ export class Videos {
     }
 
     /**
-     * Use this method to update one or more fields of the metadata of a video. Also, you can delete a field by setting it to `null`.
+     * Use this method to update one or more fields of the metadata of a video. Also, can delete a field by setting it to null.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to update.
@@ -459,8 +458,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -510,7 +509,7 @@ export class Videos {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

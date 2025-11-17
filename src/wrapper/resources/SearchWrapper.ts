@@ -8,7 +8,7 @@ export class SearchWrapper extends Search {
     }
 
     /**
-     * Use this endpoint to search for relevant matches in an index using text or various media queries.
+     * Use this endpoint to search for relevant matches in an index using text, media, or a combination of both as your query.
      *
      * **Text queries**:
      * - Use the `query_text` parameter to specify your query.
@@ -20,7 +20,16 @@ export class SearchWrapper extends Search {
      *   - `query_media_file`: Local media file.
      *   If both `query_media_url` and `query_media_file` are specified in the same request, `query_media_url` takes precedence.
      *
-     * Before using a media file as a query, ensure that the file meets the [prerequisites](/v1.3/docs/guides/search/queries/prerequisites#image-queries).
+     * **Composed text and media queries** (Marengo 3.0 only):
+     * - Use the `query_text` parameter for your text query.
+     * - Set `query_media_type` to `image`.
+     * - Specify the image using either the `query_media_url` or the `query_media_file` parameter.
+     *
+     *   Example: Provide an image of a car and include  "red color"  in your query to find red instances of that car model.
+     *
+     * <Note title="Note">
+     *   When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [format requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements).
+     * </Note>
      *
      * <Note title="Note">
      * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
@@ -33,7 +42,7 @@ export class SearchWrapper extends Search {
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      *
      * @example
-     *     await client.search.query({
+     *     await client.search.create({
      *         indexId: "index_id",
      *         searchOptions: ["visual"]
      *     })

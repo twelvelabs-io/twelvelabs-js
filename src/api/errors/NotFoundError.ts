@@ -3,11 +3,10 @@
  */
 
 import * as errors from "../../errors/index";
-import * as TwelvelabsApi from "../index";
 import * as core from "../../core";
 
 export class NotFoundError extends errors.TwelvelabsApiError {
-    constructor(body: TwelvelabsApi.NotFoundErrorBody, rawResponse?: core.RawResponse) {
+    constructor(body?: unknown, rawResponse?: core.RawResponse) {
         super({
             message: "NotFoundError",
             statusCode: 404,

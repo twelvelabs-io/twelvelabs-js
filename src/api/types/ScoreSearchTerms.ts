@@ -3,6 +3,10 @@
  */
 
 /**
+ * <Info>
+ *   Marengo 3.0 and newer versions do not return this field. Use the `rank` field instead.
+ * </Info>
+ *
  * A quantitative value determined by the AI model representing the level of confidence that the results match your search terms.
  */
 export type ScoreSearchTerms = number;

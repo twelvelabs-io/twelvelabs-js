@@ -9,8 +9,8 @@ import * as core from "../../../../core";
 export const SearchCreateRequestSearchOptionsItem: core.serialization.Schema<
     serializers.SearchCreateRequestSearchOptionsItem.Raw,
     TwelvelabsApi.SearchCreateRequestSearchOptionsItem
-> = core.serialization.enum_(["visual", "audio"]);
+> = core.serialization.enum_(["visual", "audio", "transcription"]);
 
 export declare namespace SearchCreateRequestSearchOptionsItem {
-    export type Raw = "visual" | "audio";
+    export type Raw = "visual" | "audio" | "transcription";
 }

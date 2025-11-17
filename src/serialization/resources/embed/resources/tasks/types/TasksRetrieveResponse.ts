@@ -6,6 +6,8 @@ import * as serializers from "../../../../../index";
 import * as TwelvelabsApi from "../../../../../../api/index";
 import * as core from "../../../../../../core";
 import { TasksRetrieveResponseVideoEmbedding } from "./TasksRetrieveResponseVideoEmbedding";
+import { CreatedAt } from "../../../../../types/CreatedAt";
+import { UpdatedAt } from "../../../../../types/UpdatedAt";
 
 export const TasksRetrieveResponse: core.serialization.ObjectSchema<
     serializers.embed.TasksRetrieveResponse.Raw,
@@ -15,7 +17,8 @@ export const TasksRetrieveResponse: core.serialization.ObjectSchema<
     id: core.serialization.property("_id", core.serialization.string().optional()),
     modelName: core.serialization.property("model_name", core.serialization.string().optional()),
     status: core.serialization.string().optional(),
-    createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
+    createdAt: core.serialization.property("created_at", CreatedAt.optional()),
+    updatedAt: core.serialization.property("updated_at", UpdatedAt.optional()),
 });
 
 export declare namespace TasksRetrieveResponse {
@@ -24,6 +27,7 @@ export declare namespace TasksRetrieveResponse {
         _id?: string | null;
         model_name?: string | null;
         status?: string | null;
-        created_at?: string | null;
+        created_at?: CreatedAt.Raw | null;
+        updated_at?: UpdatedAt.Raw | null;
     }
 }

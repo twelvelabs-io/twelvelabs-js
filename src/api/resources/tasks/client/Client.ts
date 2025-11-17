@@ -15,7 +15,7 @@ export declare namespace Tasks {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -40,7 +40,7 @@ export class Tasks {
     }
 
     /**
-     * This method returns a list of the video indexing tasks in your account. The API returns your video indexing tasks sorted by creation date, with the newest at the top of the list.
+     * This method returns a list of the video indexing tasks in your account. The platform returns your video indexing tasks sorted by creation date, with the newest at the top of the list.
      *
      * @param {TwelvelabsApi.TasksListRequest} request
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
@@ -142,8 +142,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.2",
-                        "User-Agent": "twelvelabs-js/1.0.2",
+                        "X-Fern-SDK-Version": "1.0.3",
+                        "User-Agent": "twelvelabs-js/1.0.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -212,27 +212,29 @@ export class Tasks {
     }
 
     /**
-     * This method creates a video indexing task that uploads and indexes a video.
+     * This method creates a video indexing task that uploads and indexes a video in a single operation.
+     *
+     * <Warning title="Legacy endpoint">
+     * This endpoint bundles two operations (upload and indexing) together. In the next major API release, this endpoint will be removed in favor of a separated workflow:
+     * 1. Upload your video using the [`POST /assets`](/v1.3/api-reference/upload-content/direct-uploads/create) endpoint
+     * 2. Index the uploaded video using the [`POST /indexes/{index-id}/indexed-assets`](/v1.3/api-reference/index-content/create) endpoint
+     *
+     * This separation provides better control, reusability of assets, and improved error handling. New implementations should use the new workflow.
+     * </Warning>
+     *
      *
      * Upload options:
      * - **Local file**: Use the `video_file` parameter.
      * - **Publicly accessible URL**: Use the `video_url` parameter.
      *
-     * <Accordion title="Video requirements">
-     *   The videos you wish to upload must meet the following requirements:
-     *   - **Video resolution**: Must be at least 360x360 and must not exceed 3840x2160.
-     *   - **Aspect ratio**: Must be one of 1:1, 4:3, 4:5, 5:4, 16:9, 9:16, or 17:9.
-     *   - **Video and audio formats**: Your video files must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at support@twelvelabs.io.
-     *   - **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 60 minutes (3600s). In a future release, the maximum duration for Pegasus will be 2 hours (7,200 seconds).
-     *   - **File size**: Must not exceed 2 GB.
-     *     If you require different options, contact us at support@twelvelabs.io.
+     * Your video files must meet requirements based on the models enabled for your index:
+     * - [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
+     * - [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#video-file-requirements).
+     * - If both models are enabled, the most restrictive limits apply.
+     * - This method allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
      *
-     *   If both Marengo and Pegasus are enabled for your index, the most restrictive prerequisites will apply.
-     * </Accordion>
-     *
-     * <Note title="Notes">
-     * - The platform supports video URLs that can play without additional user interaction or custom video players. Ensure your URL points to the raw video file, not a web page containing the video. Links to third-party hosting sites, cloud storage services, or videos requiring extra steps to play are not supported.
-     * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * <Note title="Note">
+     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
      * </Note>
      *
      * @param {TwelvelabsApi.TasksCreateRequest} request
@@ -286,8 +288,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -376,8 +378,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -461,8 +463,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -509,7 +511,7 @@ export class Tasks {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

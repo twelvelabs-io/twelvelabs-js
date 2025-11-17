@@ -3,6 +3,7 @@ import { SearchWrapper } from "./resources/SearchWrapper";
 import { TasksWrapper } from "./resources/TasksWrapper";
 import { EmbedWrapper } from "./resources/EmbedWrapper";
 import { IndexesWrapper } from "./resources/IndexesWrapper";
+import { MultipartUploadWrapper } from "./resources/MultipartUploadWrapper";
 import { TwelvelabsApiEnvironment } from "..";
 import * as core from "../core";
 
@@ -13,6 +14,9 @@ export class TwelveLabs {
     public readonly indexes: IndexesWrapper;
     public readonly search: SearchWrapper;
     public readonly embed: EmbedWrapper;
+    public readonly assets: TwelvelabsApiClient["assets"];
+    public readonly entityCollections: TwelvelabsApiClient["entityCollections"];
+    public readonly multipartUpload: MultipartUploadWrapper;
     public readonly summarize: TwelvelabsApiClient["summarize"];
     public readonly gist: TwelvelabsApiClient["gist"];
     public readonly analyze: TwelvelabsApiClient["analyze"];
@@ -36,12 +40,15 @@ export class TwelveLabs {
         this.gist = this.client.gist.bind(this.client);
         this.analyze = this.client.analyze.bind(this.client);
         this.analyzeStream = this.client.analyzeStream.bind(this.client);
+        this.assets = this.client.assets;
+        this.entityCollections = this.client.entityCollections;
 
         // Use custom wrappers instead of default clients
         this.tasks = new TasksWrapper(clientOptions);
         this.indexes = new IndexesWrapper(clientOptions);
         this.search = new SearchWrapper(clientOptions);
         this.embed = new EmbedWrapper(clientOptions);
+        this.multipartUpload = new MultipartUploadWrapper(clientOptions);
     }
 
     protected async _getCustomAuthorizationHeaders() {

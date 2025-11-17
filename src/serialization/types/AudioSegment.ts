@@ -5,17 +5,21 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { StartOffsetSec } from "./StartOffsetSec";
+import { EndOffsetSec } from "./EndOffsetSec";
 import { BaseSegment } from "./BaseSegment";
 
 export const AudioSegment: core.serialization.ObjectSchema<serializers.AudioSegment.Raw, TwelvelabsApi.AudioSegment> =
     core.serialization
         .object({
-            startOffsetSec: core.serialization.property("start_offset_sec", core.serialization.number().optional()),
+            startOffsetSec: core.serialization.property("start_offset_sec", StartOffsetSec.optional()),
+            endOffsetSec: core.serialization.property("end_offset_sec", EndOffsetSec.optional()),
         })
         .extend(BaseSegment);
 
 export declare namespace AudioSegment {
     export interface Raw extends BaseSegment.Raw {
-        start_offset_sec?: number | null;
+        start_offset_sec?: StartOffsetSec.Raw | null;
+        end_offset_sec?: EndOffsetSec.Raw | null;
     }
 }

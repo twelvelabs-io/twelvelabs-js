@@ -13,32 +13,58 @@ import * as TwelvelabsApi from "../../../../index";
  *     }
  */
 export interface SearchCreateRequest {
-    /** The type of media you wish to use. This parameter is required for media queries. For example, to perform an image-based search, set this parameter to `image`. */
+    /** The type of media you wish to use. This parameter is required for media queries. For example, to perform an image-based search, set this parameter to `image`. Use `query_text` together with this parameter when you want to perform a composed image+text search. */
     queryMediaType?: "image";
     /** The publicly accessible URL of the media file you wish to use. This parameter is required for media queries if `query_media_file` is not provided. */
     queryMediaUrl?: string;
     queryMediaFile?: File | fs.ReadStream | Blob | undefined;
-    /** The text query to search for. This parameter is required for text queries. Note that the platform supports full natural language-based search. */
+    /**
+     * The text query to search for. This parameter is required for text queries. Note that the platform supports full natural language-based search. You can use this parameter together with `query_media_type` and `query_media_url` or `query_media_file` to perform a composed image+text search.
+     *
+     * If you're using the Entity Search feature to search for specific persons in your video content, you must enclose the unique identifier of your entity between the `<@` and `>` markers. For example, to search for an entity with the ID `entity123`, use `<@entity123> is walking` as your query.
+     *
+     *
+     * The maximum query length varies by model. Marengo 3.0 supports up to 500 tokens per query, while Marengo 2.7 supports up to 77 tokens per query.
+     */
     queryText?: string;
     /** The unique identifier of the index to search. */
     indexId: string;
     /**
-     * Specifies the [sources of information](/v1.3/docs/concepts/modalities#search-options) the platform uses when performing a search. You must include the `search_options` parameter separately for each desired source of information.
+     * Specifies the modalities the video understanding model uses to find relevant information.
      *
-     * <Note title="Notes">
-     * - The search options you specify must be a subset of the [model options](/v1.3/docs/concepts/modalities#model-options) used when you created the index.
-     * - You can specify multiple search options in conjunction with the `operator` parameter described below to broaden or narrow your search.
+     * Available options:
+     * - `visual`: Searches visual content.
+     * - `audio`: Searches non-speech audio (Marengo 3.0) or all audio (Marengo 2.7).
+     * - `transcription`: Spoken words (Marengo 3.0 only)
      *
-     * Example:
-     * To search using both visual and audio cues, include this parameter twice in the request as shown below:
-     * ```JSON
-     * --form search_options=visual \
-     * --form search_options=audio \
-     * ```
+     * <Note title="Note">
+     * - You can specify multiple search options in conjunction with the [`operator`](/v1.3/api-reference/any-to-video-search/make-search-request#request.body.operator.operator) parameter described below to broaden or narrow your search. For example, to search using both visual and non-speech audio content, include this parameter two times in the request as shown below:
+     *   ```JSON
+     *   --form search_options=visual \
+     *   --form search_options=audio \
+     *   --form search_options=transcription \
+     *   ```
      * </Note>
+     *
+     * For detailed guidance and version-specific behavior, see the [Search options](/v1.3/docs/concepts/modalities#search-options) section.
      */
     searchOptions: TwelvelabsApi.SearchCreateRequestSearchOptionsItem[];
     /**
+     * Specifies how the platform matches your text query with the words spoken in the video. This parameter applies only when using Marengo 3.0 with the `search_options` parameter containing the `transcription` value.
+     *
+     * Available options:
+     * - `lexical`: Exact word matching
+     * - `semantic`: Meaning-based matching
+     *
+     * For details on when to use each option, see the [Transcription options](/v1.3/docs/concepts/modalities#transcription-options) section.
+     *
+     * **Default**: `["lexical", "semantic"]`.
+     */
+    transcriptionOptions?: TwelvelabsApi.SearchCreateRequestTranscriptionOptionsItem[];
+    /**
+     * <Info>
+     *   This parameter is deprecated in Marengo 3.0 and newer versions. Use the [`rank`](/v1.3/api-reference/any-to-video-search/make-search-request#response.body.data.rank) field in the response instead, which indicates the relevance ranking assigned by the model.
+     * </Info>
      * This parameter specifies the strictness of the thresholds for assigning the high, medium, or low confidence levels to search results. If you use a lower value, the thresholds become more relaxed, and more search results will be classified as having high, medium, or low confidence levels. You can use this parameter to include a broader range of potentially relevant video clips, even if some results might be less precise.
      *
      * **Min**: 0
@@ -56,22 +82,26 @@ export interface SearchCreateRequest {
     groupBy?: TwelvelabsApi.SearchCreateRequestGroupBy;
     threshold?: TwelvelabsApi.ThresholdSearch;
     /**
+     * <Info>
+     *   This parameter is deprecated in Marengo 3.0 and newer versions. Use the [`rank`](/v1.3/api-reference/any-to-video-search/make-search-request#response.body.data.rank) field in the response instead, which indicates the relevance ranking assigned by the model.
+     * </Info>
+     *
      * Use this parameter to specify the sort order for the response.
      *
-     * When performing a search, the platform determines the level of confidence that each video clip matches your search terms. By default, the search results are sorted on the level of confidence in descending order.
+     * When performing a search, the platform assigns a relevance ranking to each video clip that matches your search terms. By default, the search results are sorted by relevance ranking in ascending order, with 1 being the most relevant result.
      *
-     * If you set this parameter to `score` and `group_by` is set to `video`, the platform will determine the maximum value of the `score` field for each video and sort the videos in the response by the maximum value of this field. For each video, the matching video clips will be sorted by the level of confidence.
+     * If you set this parameter to `score` and `group_by` is set to `video`, the platform will determine the highest relevance ranking (lowest number) for each video and sort the videos in the response by this ranking. For each video, the matching video clips will be sorted by relevance ranking in ascending order.
      *
-     * If you set this parameter to `clip_count` and `group_by` is set to `video`, the platform will sort the videos in the response by the number of clips. For each video, the matching video clips will be sorted by the level of confidence. You can use `clip_count` only when the matching video clips are grouped by video.
+     * If you set this parameter to `clip_count` and `group_by` is set to `video`, the platform will sort the videos in the response by the number of clips. For each video, the matching video clips will be sorted by relevance ranking in ascending order. You can use `clip_count` only when the matching video clips are grouped by video.
      *
      *
      * **Default:** `score`
      */
     sortOption?: TwelvelabsApi.SearchCreateRequestSortOption;
     /**
-     * Combines multiple search options using `or` or `and`. Use `and` to find segments matching all search options. Use `or` to find segments matching any search option.
+     * Combines multiple search options using `or` or `and`. Use `and` to find segments matching all search options. Use `or` to find segments matching any search option. For detailed guidance on using this parameter, see the [Combine multiple modalities](/v1.3/docs/concepts/modalities#combine-multiple-modalities) section.
      *
-     *   **Default**: `or`.
+     * **Default**: `or`.
      */
     operator?: TwelvelabsApi.SearchCreateRequestOperator;
     /**

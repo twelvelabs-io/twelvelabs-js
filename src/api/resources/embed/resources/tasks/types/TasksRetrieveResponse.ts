@@ -12,6 +12,6 @@ export interface TasksRetrieveResponse {
     modelName?: string;
     /** A string indicating the status of the video indexing task. It can take one of the following values: `processing`, `ready` or `failed`. */
     status?: string;
-    /** The date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), that the video embedding task was created. */
-    createdAt?: Date;
+    createdAt?: TwelvelabsApi.CreatedAt;
+    updatedAt?: TwelvelabsApi.UpdatedAt;
 }

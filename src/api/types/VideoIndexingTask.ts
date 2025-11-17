@@ -16,7 +16,7 @@ export interface VideoIndexingTask {
     createdAt?: string;
     /** A string indicating the date and time, in the RFC RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), that the task object was last updated. The platform updates this field every time the video indexing task transitions to a different state. */
     updatedAt?: string;
-    /** A string indicating the status of the video indexing task. See the [Task object](/v1.3/api-reference/tasks/the-task-object) page for a list of possible statuses. */
+    /** A string indicating the status of the video indexing task. See the [Task object](/v1.3/api-reference/upload-content/tasks/the-task-object) page for a list of possible statuses. */
     status?: string;
     /** A string representing the unique identifier of the index to which the video must be uploaded. */
     indexId?: string;

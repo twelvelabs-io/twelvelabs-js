@@ -31,7 +31,7 @@ import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
     index.id!,
     videoId!,
     {
-      embeddingOption: ["visual-text", "audio"],
+      embeddingOption: ["visual", "audio"],
     }
   );
 

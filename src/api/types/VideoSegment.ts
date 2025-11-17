@@ -7,9 +7,9 @@ import * as TwelvelabsApi from "../index";
 /**
  * An object that contains the video embedding and its start time. Each segment is between 2 and 10 seconds.
  */
-export interface VideoSegment extends TwelvelabsApi.AudioSegment {
-    /** The end time, in seconds, of the video segment for this embedding. */
-    endOffsetSec?: number;
+export interface VideoSegment extends TwelvelabsApi.BaseSegment {
+    startOffsetSec?: TwelvelabsApi.StartOffsetSec;
+    endOffsetSec?: TwelvelabsApi.EndOffsetSec;
     /** The type of the embedding. */
     embeddingOption?: string;
     /** The scope of the video embedding. */

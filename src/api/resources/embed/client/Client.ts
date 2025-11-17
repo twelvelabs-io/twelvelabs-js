@@ -9,13 +9,14 @@ import urlJoin from "url-join";
 import * as serializers from "../../../../serialization/index";
 import * as errors from "../../../../errors/index";
 import { Tasks } from "../resources/tasks/client/Client";
+import { V2 } from "../resources/v2/client/Client";
 
 export declare namespace Embed {
     export interface Options {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -32,6 +33,7 @@ export declare namespace Embed {
 
 export class Embed {
     protected _tasks: Tasks | undefined;
+    protected _v2: V2 | undefined;
 
     constructor(protected readonly _options: Embed.Options = {}) {}
 
@@ -39,16 +41,24 @@ export class Embed {
         return (this._tasks ??= new Tasks(this._options));
     }
 
+    public get v2(): V2 {
+        return (this._v2 ??= new V2(this._options));
+    }
+
     /**
+     * <Note title="Note">
+     *   This endpoint will be deprecated in a future version. Migrate to the [Embed API v2](/v1.3/api-reference/create-embeddings-v2) for continued support and access to new features.
+     * </Note>
+     *
      * This method creates embeddings for text, image, and audio content.
      *
-     * Before you create an embedding, ensure that your image or audio files meet the following prerequisites:
-     * - [Image embeddings](/v1.3/docs/guides/create-embeddings/image#prerequisites)
-     * - [Audio embeddings](/v1.3/docs/guides/create-embeddings/audio#prerequisites)
+     * Ensure your media files meet the following requirements:
+     * - [Audio files](/v1.3/docs/concepts/models/marengo#audio-requirements).
+     * - [Image files](/v1.3/docs/concepts/models/marengo#image-requirements).
      *
      * Parameters for embeddings:
      * - **Common parameters**:
-     *   - `model_name`: The video understanding model you want to use. Example: "Marengo-retrieval-2.7".
+     *   - `model_name`: The video understanding model you want to use. Example: "marengo3.0".
      * - **Text embeddings**:
      *   - `text`: Text for which to create an embedding.
      * - **Image embeddings**:
@@ -63,7 +73,7 @@ export class Embed {
      * <Note title="Notes">
      * - The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
      * - You can create multiple types of embeddings in a single API call.
-     * - Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/text-image-audio-embeddings/create-text-image-audio-embeddings) from these transcriptions.
+     * - Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/create-embeddings-v1/text-image-audio-embeddings/create-text-image-audio-embeddings) from these transcriptions.
      * </Note>
      *
      * @param {TwelvelabsApi.EmbedCreateRequest} request
@@ -129,8 +139,8 @@ export class Embed {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -187,7 +197,7 @@ export class Embed {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

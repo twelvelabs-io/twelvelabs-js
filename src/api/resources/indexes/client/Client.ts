@@ -8,6 +8,7 @@ import * as TwelvelabsApi from "../../../index";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization/index";
 import * as errors from "../../../../errors/index";
+import { IndexedAssets } from "../resources/indexedAssets/client/Client";
 import { Videos } from "../resources/videos/client/Client";
 
 export declare namespace Indexes {
@@ -15,7 +16,7 @@ export declare namespace Indexes {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -31,16 +32,21 @@ export declare namespace Indexes {
 }
 
 export class Indexes {
+    protected _indexedAssets: IndexedAssets | undefined;
     protected _videos: Videos | undefined;
 
     constructor(protected readonly _options: Indexes.Options = {}) {}
+
+    public get indexedAssets(): IndexedAssets {
+        return (this._indexedAssets ??= new IndexedAssets(this._options));
+    }
 
     public get videos(): Videos {
         return (this._videos ??= new Videos(this._options));
     }
 
     /**
-     * This method returns a list of the indexes in your account. The API returns indexes sorted by creation date, with the oldest indexes at the top of the list.
+     * This method returns a list of the indexes in your account. The platform returns indexes sorted by creation date, with the oldest indexes at the top of the list.
      *
      * @param {TwelvelabsApi.IndexesListRequest} request
      * @param {Indexes.RequestOptions} requestOptions - Request-specific configuration.
@@ -118,8 +124,8 @@ export class Indexes {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.2",
-                        "User-Agent": "twelvelabs-js/1.0.2",
+                        "X-Fern-SDK-Version": "1.0.3",
+                        "User-Agent": "twelvelabs-js/1.0.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -199,7 +205,7 @@ export class Indexes {
      *     await client.indexes.create({
      *         indexName: "myIndex",
      *         models: [{
-     *                 modelName: "marengo2.7",
+     *                 modelName: "marengo3.0",
      *                 modelOptions: ["visual", "audio"]
      *             }, {
      *                 modelName: "pegasus1.2",
@@ -230,8 +236,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -319,8 +325,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -412,8 +418,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -490,8 +496,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -538,7 +544,7 @@ export class Indexes {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

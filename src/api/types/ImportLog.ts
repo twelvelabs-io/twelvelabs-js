@@ -16,7 +16,7 @@ export interface ImportLog {
     createdAt?: Date;
     /** The date and time, in the RFC 3339 format, when the platform completed importing your videos. A `null` value indicates that the import process is still ongoing. */
     endedAt?: Date;
-    /** Counts of files in different statuses. See the [Task object](/v1.3/api-reference/tasks/the-task-object) page for details on each status. */
+    /** Counts of files in different statuses. See the [Task object](/v1.3/api-reference/upload-content/tasks/the-task-object) page for details on each status. */
     videoStatus?: TwelvelabsApi.ImportLogVideoStatus;
     /** An array containing the video files that failed to import, along with details about the error. */
     failedFiles?: TwelvelabsApi.ImportLogFailedFilesItem[];

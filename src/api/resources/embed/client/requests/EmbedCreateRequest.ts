@@ -13,25 +13,27 @@ import * as fs from "fs";
 export interface EmbedCreateRequest {
     /**
      * The name of the model you want to use. The following models are available:
-     *   - `Marengo-retrieval-2.7`
+     *   - `marengo3.0`: Enhanced model with sports intelligence and extended content support. For a list of the new features, see the [New in Marengo 3.0](/v1.3/docs/concepts/models/marengo#new-in-marengo-30) section.
+     *   - `Marengo-retrieval-2.7`: Video embedding model for multimodal search.
      */
     modelName: string;
     /**
      * The text for which you wish to create an embedding.
      *
-     * <Note title="Note">
-     * Text embeddings are limited to 77 tokens. If the text exceeds this limit, the platform truncates it according to the value of the `text_truncate` parameter described below.
-     * </Note>
-     *
      * **Example**: "Man with a dog crossing the street"
      */
     text?: string;
     /**
-     * Specifies how the platform truncates text that exceeds 77 tokens to fit the maximum length allowed for an embedding.
-     * This parameter can take one of the following values:
-     * - `start`: The platform will truncate the start of the provided text.
-     * - `end`: The platform will truncate the end of the provided text.
-     * - `none`: The platform will return an error if the text is longer than the maximum token limit.
+     * Specifies how the platform handles text that exceeds token limits.
+     *
+     * **Available options by model version**:
+     *
+     * **Marengo 3.0**: This parameter is deprecated. The platform automatically truncates text exceeding 500 tokens from the end.
+     *
+     * **Marengo 2.7**: Specifies truncation method for text exceeding 77 tokens:
+     * - `start`: Removes tokens from the beginning
+     * - `end`: Removes tokens from the end (default)
+     * - `none`: Returns an error if the text is longer than the maximum token limit.
      *
      * **Default**: `end`
      */
@@ -39,7 +41,7 @@ export interface EmbedCreateRequest {
     /** The publicly accessible URL of the image for which you wish to create an embedding. This parameter is required for image embeddings if `image_file` is not provided. */
     imageUrl?: string;
     imageFile?: File | fs.ReadStream | Blob | undefined;
-    /** The publicly accessible URL of the audio file for which you wish to create an embedding. This parameter is required for audio embeddings if `audio_file` is not provided. */
+    /** The publicly accessible URL of the audio file for which you wish to creae an emebdding. This parameter is required for audio embeddings if `audio_file` is not provided. */
     audioUrl?: string;
     audioFile?: File | fs.ReadStream | Blob | undefined;
     /**

@@ -9,8 +9,9 @@ export interface SearchItemClipsItem {
     start?: TwelvelabsApi.StartTime;
     end?: TwelvelabsApi.EndTime;
     confidence?: TwelvelabsApi.Confidence;
+    rank?: TwelvelabsApi.Rank;
     thumbnailUrl?: TwelvelabsApi.ThumbnailUrl;
-    /** A transcription of the spoken words that are captured in the clip. Note that the official SDKs will support this feature in a future release. */
+    /** A transcription of the spoken words that are captured in the clip. */
     transcription?: string;
     /** A string representing the unique identifier of the video for the corresponding clip. */
     videoId?: string;

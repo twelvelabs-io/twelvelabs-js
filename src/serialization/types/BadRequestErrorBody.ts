@@ -10,13 +10,15 @@ export const BadRequestErrorBody: core.serialization.ObjectSchema<
     serializers.BadRequestErrorBody.Raw,
     TwelvelabsApi.BadRequestErrorBody
 > = core.serialization.object({
-    errorCode: core.serialization.property("error_code", core.serialization.number().optional()),
+    code: core.serialization.string().optional(),
     message: core.serialization.string().optional(),
+    docsUrl: core.serialization.property("docs_url", core.serialization.string().optional()),
 });
 
 export declare namespace BadRequestErrorBody {
     export interface Raw {
-        error_code?: number | null;
+        code?: string | null;
         message?: string | null;
+        docs_url?: string | null;
     }
 }

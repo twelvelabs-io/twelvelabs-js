@@ -5,20 +5,24 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { AudioSegment } from "./AudioSegment";
+import { StartOffsetSec } from "./StartOffsetSec";
+import { EndOffsetSec } from "./EndOffsetSec";
+import { BaseSegment } from "./BaseSegment";
 
 export const VideoSegment: core.serialization.ObjectSchema<serializers.VideoSegment.Raw, TwelvelabsApi.VideoSegment> =
     core.serialization
         .object({
-            endOffsetSec: core.serialization.property("end_offset_sec", core.serialization.number().optional()),
+            startOffsetSec: core.serialization.property("start_offset_sec", StartOffsetSec.optional()),
+            endOffsetSec: core.serialization.property("end_offset_sec", EndOffsetSec.optional()),
             embeddingOption: core.serialization.property("embedding_option", core.serialization.string().optional()),
             embeddingScope: core.serialization.property("embedding_scope", core.serialization.string().optional()),
         })
-        .extend(AudioSegment);
+        .extend(BaseSegment);
 
 export declare namespace VideoSegment {
-    export interface Raw extends AudioSegment.Raw {
-        end_offset_sec?: number | null;
+    export interface Raw extends BaseSegment.Raw {
+        start_offset_sec?: StartOffsetSec.Raw | null;
+        end_offset_sec?: EndOffsetSec.Raw | null;
         embedding_option?: string | null;
         embedding_scope?: string | null;
     }

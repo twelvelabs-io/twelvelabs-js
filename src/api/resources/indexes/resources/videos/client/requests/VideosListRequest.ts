@@ -12,6 +12,11 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         sortBy: "created_at",
  *         sortOption: "desc",
  *         filename: "01.mp4",
+ *         duration: 1.1,
+ *         fps: 1.1,
+ *         width: 1.1,
+ *         height: 1,
+ *         size: 1.1,
  *         createdAt: "2024-08-16T16:53:59Z",
  *         updatedAt: "2024-08-16T16:53:59Z"
  *     }
