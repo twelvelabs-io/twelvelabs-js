@@ -8,6 +8,6 @@ import * as TwelvelabsApi from "../index";
  * An object that contains the audio embedding and its start time.
  */
 export interface AudioSegment extends TwelvelabsApi.BaseSegment {
-    /** The start time, in seconds, from which the platform generated the audio embedding. */
-    startOffsetSec?: number;
+    startOffsetSec?: TwelvelabsApi.StartOffsetSec;
+    endOffsetSec?: TwelvelabsApi.EndOffsetSec;
 }

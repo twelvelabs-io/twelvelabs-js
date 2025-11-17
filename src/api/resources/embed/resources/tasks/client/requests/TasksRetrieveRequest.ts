@@ -10,11 +10,15 @@ import * as TwelvelabsApi from "../../../../../../index";
  */
 export interface TasksRetrieveRequest {
     /**
-     * Specifies which types of embeddings to retrieve. You can include one or more of the following values:
-     *   - `visual-text`:  Returns visual embeddings optimized for text search.
-     *   - `audio`: Returns audio embeddings.
+     * Specifies which types of embeddings to retrieve. Values vary depending on the version of the model:
+     * - **Marengo 3.0**: `visual`, `audio`, `transcription`.
+     * - **Marengo 2.7**: `visual-text`, `audio`.
      *
-     * The platform returns all available embeddings if you don't provide this parameter.
+     * For details, see the [Embedding options](/v1.3/docs/concepts/modalities#embedding-options) section.
+     *
+     * <Note title="Note">
+     * The platform returns all available embeddings when you omit this parameter.
+     * </Note>
      */
     embeddingOption?:
         | TwelvelabsApi.embed.TasksRetrieveRequestEmbeddingOptionItem

@@ -14,7 +14,8 @@ export interface HlsObject {
     thumbnailUrls?: string[];
     /**
      * A string representing the encoding status of the video file from its original format to a streamable format.
-     * Possible values:
+     *
+     * **Values**:
      * - `PROCESSING`: Video is currently being encoded and is not yet ready for streaming
      * - `COMPLETE`: Encoding has successfully finished and the video is ready for streaming
      * - `CANCELED`: Encoding was manually canceled before completion

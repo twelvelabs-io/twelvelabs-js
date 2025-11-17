@@ -9,8 +9,8 @@ import * as core from "../../../../../../core";
 export const VideosRetrieveRequestEmbeddingOptionItem: core.serialization.Schema<
     serializers.indexes.VideosRetrieveRequestEmbeddingOptionItem.Raw,
     TwelvelabsApi.indexes.VideosRetrieveRequestEmbeddingOptionItem
-> = core.serialization.enum_(["visual-text", "audio"]);
+> = core.serialization.enum_(["visual", "audio", "transcription", "visual-text"]);
 
 export declare namespace VideosRetrieveRequestEmbeddingOptionItem {
-    export type Raw = "visual-text" | "audio";
+    export type Raw = "visual" | "audio" | "transcription" | "visual-text";
 }

@@ -6,25 +6,27 @@ import * as TwelvelabsApi from "../../../../../../index";
 
 /**
  * @example
- *     {}
+ *     {
+ *         transcription: true
+ *     }
  */
 export interface VideosRetrieveRequest {
     /**
-     * Specifies which types of embeddings to retrieve. You can include one or more of the following values:
-     * - `visual-text`:  Returns visual embeddings optimized for text search.
-     * - `audio`: Returns audio embeddings.
-     * <br/>
-     * To retrieve embeddings for a video, it must be indexed using the Marengo video understanding model version 2.7 or later. For details on enabling this model for an index, see the [Create an index](/reference/create-index) page.
+     * Specifies which types of embeddings to retrieve. Values vary depending on the version of the model:
+     * - **Marengo 3.0**: `visual`, `audio`, `transcription`.
+     * - **Marengo 2.7**: `visual-text`, `audio`.
      *
-     * The platform does not return embeddings if you don't provide this parameter.
+     * For details, see the [Embedding options](/v1.3/docs/concepts/modalities#embedding-options) section.
      *
-     * The values you specify in `embedding_option` must be included in the `model_options` defined when the index was created. For example, if `model_options` is set to `visual` only, then you cannot set `embedding_option` to `audio` or  both `visual-text` and `audio`.
+     * <Note title="Note">
+     * To retrieve embeddings for a video, it must be indexed using the Marengo video understanding model. For details on enabling this model for an index, see the [Create an index](/reference/create-index) page.
+     * </Note>
      */
     embeddingOption?:
         | TwelvelabsApi.indexes.VideosRetrieveRequestEmbeddingOptionItem
         | TwelvelabsApi.indexes.VideosRetrieveRequestEmbeddingOptionItem[];
     /**
-     * The parameter indicates whether to retrieve a transcription of the spoken words for the indexed video. Note that the official SDKs will support this feature in a future release.
+     * The parameter indicates whether to retrieve a transcription of the spoken words for the indexed video.
      */
     transcription?: boolean;
 }

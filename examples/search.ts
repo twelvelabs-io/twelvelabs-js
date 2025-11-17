@@ -11,7 +11,7 @@ import { TwelveLabs } from "twelvelabs-js";
   let searchPager = await client.search.query({
     indexId: index.id!,
     queryText: "A man talking",
-    searchOptions: ["visual", "audio"],
+    searchOptions: ["visual", "audio", "transcription"],
     groupBy: "video",
   });
   for await (const group of searchPager) {
@@ -20,9 +20,7 @@ import { TwelveLabs } from "twelvelabs-js";
     }
     console.log(`  videoId=${group.id}`);
     group.clips?.forEach((clip) => {
-      console.log(
-        `     score=${clip.score} start=${clip.start} end=${clip.end} confidence=${clip.confidence}`
-      );
+      console.log(`     rank=${clip.rank} start=${clip.start} end=${clip.end}`);
     });
   }
 
@@ -30,11 +28,24 @@ import { TwelveLabs } from "twelvelabs-js";
   searchPager = await client.search.query({
     indexId: index.id!,
     queryText: "A man talking",
-    searchOptions: ["visual", "audio"],
+    searchOptions: ["visual", "audio", "transcription"],
   });
   for await (const clip of searchPager) {
     console.log(
-      `  videoId=${clip.videoId} score=${clip.score} start=${clip.start} end=${clip.end} confidence=${clip.confidence}`
+      `  videoId=${clip.videoId} rank=${clip.rank} start=${clip.start} end=${clip.end}`
+    );
+  }
+
+  console.log("Search (semantic transcription only): ");
+  searchPager = await client.search.query({
+    indexId: index.id!,
+    queryText: "couple of chemicals",
+    searchOptions: ["transcription"],
+    transcriptionOptions: ["semantic"], // also supports "lexical"
+  });
+  for await (const clip of searchPager) {
+    console.log(
+      `  videoId=${clip.videoId} rank=${clip.rank} start=${clip.start} end=${clip.end} transcription=${clip.transcription}`
     );
   }
 
@@ -48,7 +59,21 @@ import { TwelveLabs } from "twelvelabs-js";
   });
   for await (const clip of searchPager) {
     console.log(
-      `  videoId=${clip.videoId} score=${clip.score} start=${clip.start} end=${clip.end} confidence=${clip.confidence}`
+      `  videoId=${clip.videoId} rank=${clip.rank} start=${clip.start} end=${clip.end}`
+    );
+  }
+
+  console.log("Composed text and image search: ");
+  searchPager = await client.search.query({
+    indexId: index.id!,
+    queryText: "A man talking",
+    queryMediaFile: fs.createReadStream(imagePath),
+    queryMediaType: "image",
+    searchOptions: ["visual", "audio"],
+  });
+  for await (const clip of searchPager) {
+    console.log(
+      `  videoId=${clip.videoId} rank=${clip.rank} start=${clip.start} end=${clip.end}`
     );
   }
 })();

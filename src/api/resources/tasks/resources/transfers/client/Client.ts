@@ -4,8 +4,6 @@
 
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
-import * as TwelvelabsApi from "../../../../../index";
-import * as serializers from "../../../../../../serialization/index";
 import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 
@@ -14,7 +12,7 @@ export declare namespace Transfers {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -33,62 +31,20 @@ export class Transfers {
     constructor(protected readonly _options: Transfers.Options = {}) {}
 
     /**
-     * An import represents the process of uploading and indexing all videos from the specified integration.
-     *
-     * This method initiates an asynchronous import and returns two lists:
-     * - Videos that will be imported.
-     * - Videos that will not be imported, typically because they do not meet the prerequisites of all enabled video understanding models for your index. Note that the most restrictive prerequisites among the enabled models will apply.
-     *
-     * The actual uploading and indexing of videos occur asynchronously after you invoke this method. To monitor the status of each upload after invoking this method, use the [Retrieve import status](/v1.3/api-reference/tasks/cloud-to-cloud-integrations/get-status) method.
-     *
-     * <Accordion title="Video requirements">
-     *   The videos you wish to upload must meet the following requirements:
-     *   - **Video resolution**: Must be at least 360x360 and must not exceed 3840x2160.
-     *   - **Aspect ratio**: Must be one of 1:1, 4:3, 4:5, 5:4, 16:9, 9:16, or 17:9.
-     *   - **Video and audio formats**: Your video files must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at support@twelvelabs.io.
-     *   - **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 60 minutes (3600s). In a future release, the maximum duration for Pegasus will be 2 hours (7,200 seconds).
-     *   - **File size**: Must not exceed 2 GB.
-     *     If you require different options, contact us at support@twelvelabs.io.
-     *
-     *   If both Marengo and Pegasus are enabled for your index, the most restrictive prerequisites will apply.
-     * </Accordion>
-     *
-     * <Note title="Notes">
-     * - Before importing videos, you must set up an integration. For details, see the [Set up an integration](/v1.3/docs/advanced/cloud-to-cloud-integrations#set-up-an-integration) section.
-     * - By default, the platform checks for duplicate files using hashes within the target index and will not upload the same video to the same index twice. However, the same video can exist in multiple indexes. To bypass duplicate checking entirely and import duplicate videos into the same index, set the value of the `incremental_import` parameter to `false`.
-     * - Only one import job can run at a time. To start a new import, wait for the current job to complete. Use the [`GET`](/v1.3/api-reference/tasks/cloud-to-cloud-integrations/get-status) method of the `/tasks/transfers/import/{integration-id}/logs` endpoint to retrieve a list of your import jobs, including their creation time, completion time, and processing status for each video file.
-     * </Note>
-     *
-     * @param {string} integrationId - The unique identifier of the integration for which you want to import videos. You can retrieve it from the [Integrations](https://playground.twelvelabs.io/dashboard/integrations) page.
-     * @param {TwelvelabsApi.tasks.TransfersCreateRequest} request
+     * @param {string} integrationId
      * @param {Transfers.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     *
      * @example
-     *     await client.tasks.transfers.create("6298d673f1090f1100476d4c", {
-     *         indexId: "6298d673f1090f1100476d4c",
-     *         incrementalImport: true,
-     *         retryFailed: false,
-     *         userMetadata: {
-     *             "category": "recentlyAdded",
-     *             "batchNumber": 5
-     *         }
-     *     })
+     *     await client.tasks.transfers.create("integration-id")
      */
-    public create(
-        integrationId: string,
-        request: TwelvelabsApi.tasks.TransfersCreateRequest,
-        requestOptions?: Transfers.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.tasks.TransfersCreateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(integrationId, request, requestOptions));
+    public create(integrationId: string, requestOptions?: Transfers.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__create(integrationId, requestOptions));
     }
 
     private async __create(
         integrationId: string,
-        request: TwelvelabsApi.tasks.TransfersCreateRequest,
         requestOptions?: Transfers.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.tasks.TransfersCreateResponse>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -100,8 +56,8 @@ export class Transfers {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -109,34 +65,20 @@ export class Transfers {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.tasks.TransfersCreateRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.tasks.TransfersCreateResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.TwelvelabsApiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         switch (_response.error.reason) {
@@ -159,35 +101,20 @@ export class Transfers {
     }
 
     /**
-     * This method retrieves the current status for each video from a specified integration and index. It returns an object containing lists of videos grouped by status. See the [Task object](/v1.3/api-reference/tasks/the-task-object) page for details on each status.
-     *
-     * @param {string} integrationId - The unique identifier of the integration for which you want to retrieve the status of your imported videos. You can retrieve it from the [Integrations](https://playground.twelvelabs.io/dashboard/integrations) page.
-     * @param {TwelvelabsApi.tasks.TransfersGetStatusRequest} request
+     * @param {string} integrationId
      * @param {Transfers.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     *
      * @example
-     *     await client.tasks.transfers.getStatus("6298d673f1090f1100476d4c", {
-     *         indexId: "6298d673f1090f1100476d4c"
-     *     })
+     *     await client.tasks.transfers.getStatus("integration-id")
      */
-    public getStatus(
-        integrationId: string,
-        request: TwelvelabsApi.tasks.TransfersGetStatusRequest,
-        requestOptions?: Transfers.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.tasks.TransfersGetStatusResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__getStatus(integrationId, request, requestOptions));
+    public getStatus(integrationId: string, requestOptions?: Transfers.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__getStatus(integrationId, requestOptions));
     }
 
     private async __getStatus(
         integrationId: string,
-        request: TwelvelabsApi.tasks.TransfersGetStatusRequest,
         requestOptions?: Transfers.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.tasks.TransfersGetStatusResponse>> {
-        const { indexId } = request;
-        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-        _queryParams["index_id"] = indexId;
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -199,43 +126,29 @@ export class Transfers {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
                 ...requestOptions?.headers,
             },
             contentType: "application/json",
-            queryParameters: _queryParams,
             requestType: "json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.tasks.TransfersGetStatusResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.TwelvelabsApiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         switch (_response.error.reason) {
@@ -258,31 +171,20 @@ export class Transfers {
     }
 
     /**
-     * This endpoint returns a chronological list of import operations for the specified integration. The list is sorted by creation date, with the oldest imports first. Each item in the list contains:
-     * - The number of videos in each status
-     * - Detailed error information for failed uploads, including filenames and error messages.
-     *
-     * Use this endpoint to track import progress and troubleshoot potential issues across multiple operations.
-     *
-     * @param {string} integrationId - The unique identifier of the integration for which you want to retrieve the import logs. You can retrieve it from the [Integrations](https://playground.twelvelabs.io/dashboard/integrations) page.
+     * @param {string} integrationId
      * @param {Transfers.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     *
      * @example
-     *     await client.tasks.transfers.getLogs("6298d673f1090f1100476d4c")
+     *     await client.tasks.transfers.getLogs("integration-id")
      */
-    public getLogs(
-        integrationId: string,
-        requestOptions?: Transfers.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.tasks.TransfersGetLogsResponse> {
+    public getLogs(integrationId: string, requestOptions?: Transfers.RequestOptions): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__getLogs(integrationId, requestOptions));
     }
 
     private async __getLogs(
         integrationId: string,
         requestOptions?: Transfers.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.tasks.TransfersGetLogsResponse>> {
+    ): Promise<core.WithRawResponse<void>> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -294,8 +196,8 @@ export class Transfers {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -308,28 +210,15 @@ export class Transfers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.tasks.TransfersGetLogsResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
+            throw new errors.TwelvelabsApiError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+                rawResponse: _response.rawResponse,
+            });
         }
 
         switch (_response.error.reason) {
@@ -352,7 +241,7 @@ export class Transfers {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

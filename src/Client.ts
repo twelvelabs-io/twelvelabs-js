@@ -11,6 +11,10 @@ import * as errors from "./errors/index";
 import * as stream from "stream";
 import { Tasks } from "./api/resources/tasks/client/Client";
 import { Indexes } from "./api/resources/indexes/client/Client";
+import { Assets } from "./api/resources/assets/client/Client";
+import { MultipartUpload } from "./api/resources/multipartUpload/client/Client";
+import { EntityCollections } from "./api/resources/entityCollections/client/Client";
+import { ManageEntities } from "./api/resources/manageEntities/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
 
@@ -19,7 +23,7 @@ export declare namespace TwelvelabsApiClient {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -37,6 +41,10 @@ export declare namespace TwelvelabsApiClient {
 export class TwelvelabsApiClient {
     protected _tasks: Tasks | undefined;
     protected _indexes: Indexes | undefined;
+    protected _assets: Assets | undefined;
+    protected _multipartUpload: MultipartUpload | undefined;
+    protected _entityCollections: EntityCollections | undefined;
+    protected _manageEntities: ManageEntities | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
 
@@ -48,6 +56,22 @@ export class TwelvelabsApiClient {
 
     public get indexes(): Indexes {
         return (this._indexes ??= new Indexes(this._options));
+    }
+
+    public get assets(): Assets {
+        return (this._assets ??= new Assets(this._options));
+    }
+
+    public get multipartUpload(): MultipartUpload {
+        return (this._multipartUpload ??= new MultipartUpload(this._options));
+    }
+
+    public get entityCollections(): EntityCollections {
+        return (this._entityCollections ??= new EntityCollections(this._options));
+    }
+
+    public get manageEntities(): ManageEntities {
+        return (this._manageEntities ??= new ManageEntities(this._options));
     }
 
     public get embed(): Embed {
@@ -101,8 +125,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -200,8 +224,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -259,7 +283,10 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * <Warning>This endpoint is deprecated. Use the [`/analyze`](/v1.3/api-reference/analyze-videos/analyze) endpoint instead, which provides identical functionality.</Warning>
+     * <Warning>
+     * This endpoint is deprecated. Use the [`/analyze`](/v1.3/api-reference/analyze-videos/analyze) endpoint instead, which provides identical functionality.
+     * </Warning>
+     *
      *
      * This endpoint generates open-ended texts based on your videos, including but not limited to tables of content, action items, memos, and detailed analyses.
      *
@@ -304,8 +331,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -367,7 +394,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/generate-text-from-video/open-ended-text#streaming-responses).
      * </Note>
      */
     public analyzeStream(
@@ -392,8 +419,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -469,7 +496,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/generate-text-from-video/open-ended-text#streaming-responses).
      * </Note>
      *
      * @param {TwelvelabsApi.AnalyzeRequest} request
@@ -528,8 +555,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -590,7 +617,7 @@ export class TwelvelabsApiClient {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

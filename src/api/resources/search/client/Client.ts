@@ -14,7 +14,7 @@ export declare namespace Search {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -33,7 +33,7 @@ export class Search {
     constructor(protected readonly _options: Search.Options = {}) {}
 
     /**
-     * Use this endpoint to search for relevant matches in an index using text or various media queries.
+     * Use this endpoint to search for relevant matches in an index using text, media, or a combination of both as your query.
      *
      * **Text queries**:
      * - Use the `query_text` parameter to specify your query.
@@ -44,12 +44,21 @@ export class Search {
      *   - `query_media_url`: Publicly accessible URL of your media file.
      *   - `query_media_file`: Local media file.
      *   If both `query_media_url` and `query_media_file` are specified in the same request, `query_media_url` takes precedence.
-     * <Accordion title="Image requirements">
-     * Your images must meet the following requirements:
-     *   - **Format**: JPEG and PNG.
-     *   - **Dimension**: Must be at least 64 x 64 pixels.
-     *   - **Size**: Must not exceed 5MB.
-     * </Accordion>
+     *
+     * **Composed text and media queries** (Marengo 3.0 only):
+     * - Use the `query_text` parameter for your text query.
+     * - Set `query_media_type` to `image`.
+     * - Specify the image using either the `query_media_url` or the `query_media_file` parameter.
+     *
+     *   Example: Provide an image of a car and include  "red color"  in your query to find red instances of that car model.
+     *
+     * **Entity search** (Marengo 3.0 only and in beta):
+     *
+     * - To find a specific person in your videos, enclose the unique identifier of the entity you want to find in the `query_text` parameter.
+     *
+     * <Note title="Note">
+     *   When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [format requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements).
+     * </Note>
      *
      * <Note title="Note">
      * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
@@ -103,6 +112,17 @@ export class Search {
                     unrecognizedObjectKeys: "strip",
                 }),
             );
+        }
+
+        if (request.transcriptionOptions != null) {
+            for (const _item of request.transcriptionOptions) {
+                _request.append(
+                    "transcription_options",
+                    serializers.SearchCreateRequestTranscriptionOptionsItem.jsonOrThrow(_item, {
+                        unrecognizedObjectKeys: "strip",
+                    }),
+                );
+            }
         }
 
         if (request.adjustConfidenceLevel != null) {
@@ -167,8 +187,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -274,8 +294,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -331,7 +351,7 @@ export class Search {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

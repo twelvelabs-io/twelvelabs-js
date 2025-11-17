@@ -5,6 +5,8 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { CreatedAt } from "./CreatedAt";
+import { UpdatedAt } from "./UpdatedAt";
 import { VideoEmbeddingTaskVideoEmbedding } from "./VideoEmbeddingTaskVideoEmbedding";
 
 export const VideoEmbeddingTask: core.serialization.ObjectSchema<
@@ -14,7 +16,8 @@ export const VideoEmbeddingTask: core.serialization.ObjectSchema<
     id: core.serialization.property("_id", core.serialization.string().optional()),
     modelName: core.serialization.property("model_name", core.serialization.string().optional()),
     status: core.serialization.string().optional(),
-    createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
+    createdAt: core.serialization.property("created_at", CreatedAt.optional()),
+    updatedAt: core.serialization.property("updated_at", UpdatedAt.optional()),
     videoEmbedding: core.serialization.property("video_embedding", VideoEmbeddingTaskVideoEmbedding.optional()),
 });
 
@@ -23,7 +26,8 @@ export declare namespace VideoEmbeddingTask {
         _id?: string | null;
         model_name?: string | null;
         status?: string | null;
-        created_at?: string | null;
+        created_at?: CreatedAt.Raw | null;
+        updated_at?: UpdatedAt.Raw | null;
         video_embedding?: VideoEmbeddingTaskVideoEmbedding.Raw | null;
     }
 }

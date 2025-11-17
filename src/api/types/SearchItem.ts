@@ -14,8 +14,9 @@ export interface SearchItem {
     /** A string representing the unique identifier of the video. Once the platform indexes a video, it assigns a unique identifier. Note that this is different from the identifier of the video indexing task. */
     videoId?: string;
     confidence?: TwelvelabsApi.Confidence;
+    rank?: TwelvelabsApi.Rank;
     thumbnailUrl?: TwelvelabsApi.ThumbnailUrl;
-    /** A transcription of the spoken words that are captured in the video. Note that the official SDKs will support this feature in a future release. */
+    /** A transcription of the spoken words that are captured in the video. */
     transcription?: string;
     /** A string representing the unique identifier of the video. It only appears when the `group_by=video` parameter is used in the request. */
     id?: string;

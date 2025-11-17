@@ -9,7 +9,7 @@ import * as TwelvelabsApi from "../../../../index";
  *     {
  *         indexName: "myIndex",
  *         models: [{
- *                 modelName: "marengo2.7",
+ *                 modelName: "marengo3.0",
  *                 modelOptions: ["visual", "audio"]
  *             }, {
  *                 modelName: "pegasus1.2",
@@ -21,7 +21,7 @@ import * as TwelvelabsApi from "../../../../index";
 export interface IndexesCreateRequest {
     /** The name of the index. Make sure you use a succinct and descriptive name. */
     indexName: string;
-    /** An array that specifies the [video understanding models](/v1.3/docs/concepts/models) and the [model options](/v1.3/docs/concepts/modalities#model-options) to be enabled for this index. This determines how the platform processes your videos. */
+    /** An array that specifies the [video understanding models](/v1.3/docs/concepts/models) and the [model options](/v1.3/docs/concepts/modalities#model-options) to be enabled for this index. Models determine what tasks you can perform with your videos. Model options determine which modalities the platform analyzes. */
     models: TwelvelabsApi.IndexesCreateRequestModelsItem[];
     /**
      * An array specifying which add-ons should be enabled. Each entry in the array is an addon, and the following values are supported:

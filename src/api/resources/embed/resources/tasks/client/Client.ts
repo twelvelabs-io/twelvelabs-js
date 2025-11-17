@@ -14,7 +14,7 @@ export declare namespace Tasks {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string>;
+        apiKey?: core.Supplier<string | undefined>;
     }
 
     export interface RequestOptions {
@@ -33,6 +33,9 @@ export class Tasks {
     constructor(protected readonly _options: Tasks.Options = {}) {}
 
     /**
+     * <Note title="Note">
+     *   This method will be deprecated in a future version. Migrate to the [Embed API v2](/v1.3/api-reference/create-embeddings-v2) for continued support and access to new features.
+     * </Note>
      * This method returns a list of the video embedding tasks in your account. The platform returns your video embedding tasks sorted by creation date, with the newest at the top of the list.
      *
      * <Note title="Notes">
@@ -57,7 +60,7 @@ export class Tasks {
     public async list(
         request: TwelvelabsApi.embed.TasksListRequest = {},
         requestOptions?: Tasks.RequestOptions,
-    ): Promise<core.Page<TwelvelabsApi.VideoEmbeddingTask>> {
+    ): Promise<core.Page<TwelvelabsApi.MediaEmbeddingTask>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: TwelvelabsApi.embed.TasksListRequest,
@@ -90,8 +93,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.2",
-                        "User-Agent": "twelvelabs-js/1.0.2",
+                        "X-Fern-SDK-Version": "1.0.3",
+                        "User-Agent": "twelvelabs-js/1.0.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -147,7 +150,7 @@ export class Tasks {
         );
         let _offset = request?.page != null ? request?.page : 1;
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<TwelvelabsApi.embed.TasksListResponse, TwelvelabsApi.VideoEmbeddingTask>({
+        return new core.Pageable<TwelvelabsApi.embed.TasksListResponse, TwelvelabsApi.MediaEmbeddingTask>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) => (response?.data ?? []).length > 0,
@@ -160,6 +163,11 @@ export class Tasks {
     }
 
     /**
+     *
+     * <Note title="Note">
+     *   This endpoint will be deprecated in a future version. Migrate to the [Embed API v2](/v1.3/api-reference/create-embeddings-v2) for continued support and access to new features.
+     * </Note>
+     *
      * This method creates a new video embedding task that uploads a video to the platform and creates one or multiple video embeddings.
      *
      * Upload options:
@@ -168,20 +176,12 @@ export class Tasks {
      *
      * Specify at least one option. If both are provided, `video_url` takes precedence.
      *
-     * <Accordion title="Video requirements">
-     *   The videos you wish to upload must meet the following requirements:
-     *   - **Video resolution**: Must be at least 360x360 and must not exceed 3840x2160.
-     *   - **Aspect ratio**: Must be one of 1:1, 4:3, 4:5, 5:4, 16:9, 9:16, or 17:9.
-     *   - **Video and audio formats**: Your video files must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at support@twelvelabs.io.
-     *   - **Duration**: Must be between 4 seconds and 2 hours (7,200s).
-     *   - **File size**: Must not exceed 2 GB.
-     *     If you require different options, contact us at support@twelvelabs.io.
-     * </Accordion>
+     * Your video files must meet the [format requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
+     * This endpoint allows you to upload files up to 2 GB in size.  To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
      *
      * <Note title="Notes">
      * - The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
      * - Video embeddings are stored for seven days.
-     * - The platform supports uploading video files that can play without additional user interaction or custom video players. Ensure your URL points to the raw video file, not a web page containing the video. Links to third-party hosting sites, cloud storage services, or videos requiring extra steps to play are not supported.
      * </Note>
      *
      * @param {TwelvelabsApi.embed.TasksCreateRequest} request
@@ -250,8 +250,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -308,11 +308,14 @@ export class Tasks {
     }
 
     /**
+     * <Note title="Note">
+     *   This endpoint will be deprecated in a future version. Migrate to the [Embed API v2](/v1.3/api-reference/create-embeddings-v2) for continued support and access to new features.
+     * </Note>
      * This method retrieves the status of a video embedding task. Check the task status of a video embedding task to determine when you can retrieve the embedding.
      *
      * A task can have one of the following statuses:
      * - `processing`: The platform is creating the embeddings.
-     * - `ready`:  Processing is complete. Retrieve the embeddings by invoking the [`GET`](/v1.3/api-reference/video-embeddings/retrieve-video-embeddings) method of the `/embed/tasks/{task_id} endpoint`.
+     * - `ready`:  Processing is complete. Retrieve the embeddings by invoking the [`GET`](/v1.3/api-reference/create-embeddings-v1/video-embeddings/retrieve-video-embeddings) method of the `/embed/tasks/{task_id} endpoint`.
      * - `failed`: The task could not be completed, and the embeddings haven't been created.
      *
      * @param {string} taskId - The unique identifier of your video embedding task.
@@ -345,8 +348,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -403,7 +406,7 @@ export class Tasks {
     }
 
     /**
-     * This method retrieves embeddings for a specific video embedding task. Ensure the task status is `ready` before invoking this method. Refer to the [Retrieve the status of a video embedding tasks](/v1.3/api-reference/video-embeddings/retrieve-video-embedding-task-status) page for instructions on checking the task status.
+     * This method retrieves embeddings for a specific video embedding task. Ensure the task status is `ready` before invoking this method. Refer to the [Retrieve the status of a video embedding tasks](/v1.3/api-reference/create-embeddings-v1/video-embeddings/retrieve-video-embedding-task-status) page for instructions on checking the task status.
      *
      * @param {string} taskId - The unique identifier of your video embedding task.
      * @param {TwelvelabsApi.embed.TasksRetrieveRequest} request
@@ -455,8 +458,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.2",
-                "User-Agent": "twelvelabs-js/1.0.2",
+                "X-Fern-SDK-Version": "1.0.3",
+                "User-Agent": "twelvelabs-js/1.0.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -512,7 +515,7 @@ export class Tasks {
     }
 
     protected async _getCustomAuthorizationHeaders() {
-        const apiKeyValue = (await core.Supplier.get(this._options.apiKey)) ?? process?.env["TWELVE_LABS_API_KEY"];
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };
     }
 }

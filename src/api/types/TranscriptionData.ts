@@ -5,6 +5,6 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * An array of objects that contains the transcription. For each time range for which the platform finds spoken words, it returns an object that contains the fields below. If the platform doesn't find any spoken words, the `data` field is set to `null`. Note that the official SDKs will support this feature in a future release.
+ * An array of objects that contains the transcription. For each time range for which the platform finds spoken words, it returns an object that contains the fields below. If the platform doesn't find any spoken words, the `data` field is set to `null`.
  */
 export type TranscriptionData = TwelvelabsApi.TranscriptionDataItem[];

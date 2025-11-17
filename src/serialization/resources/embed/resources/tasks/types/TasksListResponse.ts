@@ -5,20 +5,20 @@
 import * as serializers from "../../../../../index";
 import * as TwelvelabsApi from "../../../../../../api/index";
 import * as core from "../../../../../../core";
-import { VideoEmbeddingTask } from "../../../../../types/VideoEmbeddingTask";
+import { MediaEmbeddingTask } from "../../../../../types/MediaEmbeddingTask";
 import { TasksListResponsePageInfo } from "./TasksListResponsePageInfo";
 
 export const TasksListResponse: core.serialization.ObjectSchema<
     serializers.embed.TasksListResponse.Raw,
     TwelvelabsApi.embed.TasksListResponse
 > = core.serialization.object({
-    data: core.serialization.list(VideoEmbeddingTask).optional(),
+    data: core.serialization.list(MediaEmbeddingTask).optional(),
     pageInfo: core.serialization.property("page_info", TasksListResponsePageInfo.optional()),
 });
 
 export declare namespace TasksListResponse {
     export interface Raw {
-        data?: VideoEmbeddingTask.Raw[] | null;
+        data?: MediaEmbeddingTask.Raw[] | null;
         page_info?: TasksListResponsePageInfo.Raw | null;
     }
 }

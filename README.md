@@ -54,7 +54,7 @@ let index = await client.indexes.create({
     indexName: "<YOUR_INDEX_NAME>",
     models: [
         {
-            modelName: "marengo2.7",
+            modelName: "marengo3.0",
             modelOptions: ["visual", "audio"],
         },
         {
@@ -70,7 +70,7 @@ console.log(`Created index: id=${index.id} name=${index.name}`);
 Note the following about this example:
 
 - The platform provides two distinct models, each serving unique purposes in multimodal video understanding.
-  - **Marengo**: An embedding model that analyzes multiple modalities in video content, including visuals, audio, and text, to provide a holistic understanding similar to human comprehension. Key use cases include searching using image or natural-language queries and creating embeddings for various downstream applications. The current version is Marengo 2.7.
+  - **Marengo**: An embedding model that analyzes multiple modalities in video content, including visuals, audio, and text, to provide a holistic understanding similar to human comprehension. Key use cases include searching using image or natural-language queries and creating embeddings for various downstream applications. The current version is Marengo 3.0.
   - **Pegasus**: A generative model that analyzes multiple modalities to generate contextually relevant text based on the content of your videos. Key use cases include content summarization and timestamp identification. The current version is Pegasus 1.2.
     This example enables both Marengo and Pegasus.
 - The `models.options` fields specify the modalities each video understanding model will process.
@@ -87,8 +87,8 @@ Before you upload a video to the platform, ensure that it meets the following re
 - **Video resolution**: The shorter side (width or height) must be at least 360 pixels and must not exceed 2160 pixels.
 - **Aspect ratio**: Must be one of the following (including both landscape and portrait variants): 1:1, 4:3, 4:5, 5:4, 16:9, 9:16, or 17:9.
 - **Video and audio formats**: The video files you wish to upload must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at [support@twelvelabs.io](mailto:support@twelvelabs.io).
-- **Duration**: For Marengo, it must be between 4 seconds and 2 hours (7,200s). For Pegasus, it must be between 4 seconds and 1 hour (3,600s).
-- **File size**: Must not exceed 2 GB.
+- **Duration**: For Marengo, it must be between 4 seconds and 4 hours (14,400s). For Pegasus, it must be between 4 seconds and 1 hour (3,600s).
+- **File size**: For Marengo, up to 4 GB is supported. For Pegasus, up to 2 GB is supported.
 
 To upload videos, use the example code below, replacing the following:
 
@@ -166,6 +166,9 @@ Note that the response contains, among other information, the following fields:
     - `high`
     - `medium`
     - `low`
+
+  **Note:** The `confidence` field is deprecated for indexes created with the Marengo 3.0 model.
+- `rank`: Indicates the rank of the matched clip based on search relevance. 
 
 For a description of each field in the request and response, see the [Make a search request](https://docs.twelvelabs.io/v1.3/sdk-reference/node-js/search#make-a-search-request) page.
 
@@ -279,7 +282,7 @@ try {
         indexName: "<YOUR_INDEX_NAME>",
         models: [
             {
-                modelName: "marengo2.7",
+                modelName: "marengo3.0",
                 modelOptions: ["visual", "audio"],
             },
         ],

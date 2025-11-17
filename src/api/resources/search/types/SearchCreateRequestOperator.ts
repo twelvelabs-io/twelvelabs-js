@@ -3,9 +3,9 @@
  */
 
 /**
- * Combines multiple search options using `or` or `and`. Use `and` to find segments matching all search options. Use `or` to find segments matching any search option.
+ * Combines multiple search options using `or` or `and`. Use `and` to find segments matching all search options. Use `or` to find segments matching any search option. For detailed guidance on using this parameter, see the [Combine multiple modalities](/v1.3/docs/concepts/modalities#combine-multiple-modalities) section.
  *
- *   **Default**: `or`.
+ * **Default**: `or`.
  */
 export type SearchCreateRequestOperator = "or" | "and";
 export const SearchCreateRequestOperator = {

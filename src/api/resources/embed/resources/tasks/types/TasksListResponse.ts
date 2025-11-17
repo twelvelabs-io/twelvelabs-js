@@ -5,8 +5,8 @@
 import * as TwelvelabsApi from "../../../../../index";
 
 export interface TasksListResponse {
-    /** An array that contains up to `page_limit` video embedding tasks. */
-    data?: TwelvelabsApi.VideoEmbeddingTask[];
+    /** An array that contains up to `page_limit` embedding tasks. */
+    data?: TwelvelabsApi.MediaEmbeddingTask[];
     /** An object that provides information about pagination. */
     pageInfo?: TwelvelabsApi.embed.TasksListResponsePageInfo;
 }

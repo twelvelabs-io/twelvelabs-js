@@ -8,7 +8,7 @@ import { TwelveLabs } from "twelvelabs-js";
     indexName: indexName,
     models: [
       {
-        modelName: "marengo2.7",
+        modelName: "marengo3.0",
         modelOptions: ["visual", "audio"],
       },
       {

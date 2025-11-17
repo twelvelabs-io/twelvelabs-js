@@ -3,6 +3,10 @@
  */
 
 /**
+ * <Info>
+ *   Marengo 3.0 and newer versions do not return this field. Use the `rank` field instead.
+ * </Info>
+ *
  * A qualitative indicator based on the value of the `score` field. This field can take one of the following values:
  * - `high`
  * - `medium`
