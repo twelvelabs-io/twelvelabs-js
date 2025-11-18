@@ -16,7 +16,7 @@ This endpoint analyzes your videos and creates fully customizable text based on 
 
 <Note title="Notes">
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
+- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses).
 </Note>
 </dd>
 </dl>
@@ -219,11 +219,11 @@ Upload options:
 - **Local file**: Use the `video_file` parameter.
 - **Publicly accessible URL**: Use the `video_url` parameter.
 
-Your video files must meet requirements based on the models enabled for your index:
+Your video files must meet requirements based on your workflow:
 
-- [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
-- [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#video-file-requirements).
-- If both models are enabled, the most restrictive limits apply.
+- **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#video-file-requirements).
+- If you want to both search and analyze your videos, the most restrictive requirements apply.
 - This method allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
 
 <Note title="Note">
@@ -878,17 +878,19 @@ This method creates an asset by uploading a file to the platform. Assets are fil
 
 **Supported content**: Video, audio, and images.
 
-**File size**: 200MB maximum for local file uploads, 4GB maximum for URL uploads.
-
-Your content must also meet the requirements based on the [video understanding model](/v1.3/docs/concepts/models) you wish to use:
-
-- [Marengo requirements](/docs/concepts/models/marengo#input-requirements)
-- [Pegasus requirements](/docs/concepts/models/pegasus#video-file-requirements)
-
-Upload methods:
+**Upload methods**:
 
 - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
 - **Publicly accessible URL**: Set the `method` parameter to `url` and use the `url` parameter to specify the URL of your file.
+
+**File size**: 200MB maximum for local file uploads, 4GB maximum for URL uploads.
+
+**Additional requirements** depend on your workflow:
+
+- **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+- **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements)
+- **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
   </dd>
   </dl>
   </dd>
@@ -1164,10 +1166,11 @@ This method creates a multipart upload session.
 
 **File size**: 4GB maximum.
 
-Your content must meet the requirements based on the [video understanding model](/v1.3/docs/concepts/models) you wish to use:
+**Additional requirements** depend on your workflow:
 
-- [Marengo requirements](/docs/concepts/models/marengo#input-requirements)
-- [Pegasus requirements](/docs/concepts/models/pegasus#video-file-requirements)
+- **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+- **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
   </dd>
   </dl>
   </dd>
@@ -3624,20 +3627,17 @@ This method indexes an uploaded asset to make it searchable and analyzable. Inde
 
 This operation is asynchronous. The platform returns an indexed asset ID immediately and processes your content in the background. Monitor the indexing status to know when your content is ready to use.
 
-**Before you invoke this method**:
+Your asset must meet the requirements based on your workflow:
 
-- Upload your content using [direct uploads](/v1.3/api-reference/upload-content/direct-uploads) or [multipart uploads](/v1.3/api-reference/upload-content/multipart-uploads).
-- You've created an index with the video understanding models you wish to use.
+- **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements).
 
-**After you invoke this method**:
+If you want to both search and analyze your videos, the most restrictive requirements apply.
 
-1. Monitor the indexing status by calling the [`GET`](/v1.3/api-reference/index-content/retrieve) method of the `/indexes/{index-id}/indexed-assets/{indexed-asset-id}`
-2. Wait until the `status` field shows `ready`
-3. Use your indexed content to search or analyze it
- </dd>
- </dl>
- </dd>
- </dl>
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3962,6 +3962,8 @@ await client.indexes.indexedAssets.update("6298d673f1090f1100476d4c", "6298d673f
 <dl>
 <dd>
 
+<Info>This method will be deprecated in a future version. New implementations should use the [List indexed assets](/v1.3/api-reference/index-content/list) method.</Info>
+
 This method returns a list of the videos in the specified index. By default, the platform returns your videos sorted by creation date, with the newest at the top of the list.
 
 </dd>
@@ -4068,6 +4070,8 @@ while (page.hasNextPage()) {
 <dl>
 <dd>
 
+<Info> This method will be deprecated in a future version. New implementations should use the [Retrieve an indexed asset](/v1.3/api-reference/index-content/retrieve) method.</Info>
+
 This method retrieves information about the specified video.
 
 </dd>
@@ -4149,7 +4153,9 @@ await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f
 <dl>
 <dd>
 
-This method deletes all the information about the specified video This action cannot be undone.
+<Info>This method will be deprecated in a future version. New implementations should use the [Delete an indexed asset](/v1.3/api-reference/index-content/delete) method.</Info>
+
+This method deletes all the information about the specified video. This action cannot be undone.
 
 </dd>
 </dl>
@@ -4219,6 +4225,8 @@ await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f11
 
 <dl>
 <dd>
+
+<Info>This method will be deprecated in a future version. New implementations should use the [Partial update indexed asset](/v1.3/api-reference/index-content/update) method.</Info>
 
 Use this method to update one or more fields of the metadata of a video. Also, can delete a field by setting it to null.
 

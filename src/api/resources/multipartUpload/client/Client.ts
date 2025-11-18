@@ -75,8 +75,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.3",
-                        "User-Agent": "twelvelabs-js/1.0.3",
+                        "X-Fern-SDK-Version": "1.1.0",
+                        "User-Agent": "twelvelabs-js/1.1.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -157,9 +157,10 @@ export class MultipartUpload {
      *
      * **File size**: 4GB maximum.
      *
-     * Your content must meet the requirements based on the [video understanding model](/v1.3/docs/concepts/models) you wish to use:
-     * - [Marengo requirements](/docs/concepts/models/marengo#input-requirements)
-     * - [Pegasus requirements](/docs/concepts/models/pegasus#video-file-requirements)
+     * **Additional requirements** depend on your workflow:
+     * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
+     * - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+     * - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
      *
      * @param {TwelvelabsApi.CreateAssetUploadRequest} request
      * @param {MultipartUpload.RequestOptions} requestOptions - Request-specific configuration.
@@ -196,8 +197,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -316,8 +317,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.3",
-                        "User-Agent": "twelvelabs-js/1.0.3",
+                        "X-Fern-SDK-Version": "1.1.0",
+                        "User-Agent": "twelvelabs-js/1.1.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -442,8 +443,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -553,8 +554,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -34,6 +34,8 @@ export class Videos {
     constructor(protected readonly _options: Videos.Options = {}) {}
 
     /**
+     * <Info>This method will be deprecated in a future version. New implementations should use the [List indexed assets](/v1.3/api-reference/index-content/list) method.</Info>
+     *
      * This method returns a list of the videos in the specified index. By default, the platform returns your videos sorted by creation date, with the newest at the top of the list.
      *
      * @param {string} indexId - The unique identifier of the index for which the platform will retrieve the videos.
@@ -133,8 +135,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.3",
-                        "User-Agent": "twelvelabs-js/1.0.3",
+                        "X-Fern-SDK-Version": "1.1.0",
+                        "User-Agent": "twelvelabs-js/1.1.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -205,6 +207,8 @@ export class Videos {
     }
 
     /**
+     * <Info> This method will be deprecated in a future version. New implementations should use the [Retrieve an indexed asset](/v1.3/api-reference/index-content/retrieve) method.</Info>
+     *
      * This method retrieves information about the specified video.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
@@ -267,8 +271,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -328,7 +332,9 @@ export class Videos {
     }
 
     /**
-     * This method deletes all the information about the specified video This action cannot be undone.
+     * <Info>This method will be deprecated in a future version. New implementations should use the [Delete an indexed asset](/v1.3/api-reference/index-content/delete) method.</Info>
+     *
+     * This method deletes all the information about the specified video. This action cannot be undone.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to delete.
@@ -363,8 +369,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -413,6 +419,8 @@ export class Videos {
     }
 
     /**
+     * <Info>This method will be deprecated in a future version. New implementations should use the [Partial update indexed asset](/v1.3/api-reference/index-content/update) method.</Info>
+     *
      * Use this method to update one or more fields of the metadata of a video. Also, can delete a field by setting it to null.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
@@ -458,8 +466,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
