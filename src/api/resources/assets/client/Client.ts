@@ -99,8 +99,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.3",
-                        "User-Agent": "twelvelabs-js/1.0.3",
+                        "X-Fern-SDK-Version": "1.1.0",
+                        "User-Agent": "twelvelabs-js/1.1.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -173,15 +173,17 @@ export class Assets {
      *
      * **Supported content**: Video, audio, and images.
      *
-     * **File size**: 200MB maximum for local file uploads, 4GB maximum for URL uploads.
-     *
-     * Your content must also meet the requirements based on the [video understanding model](/v1.3/docs/concepts/models) you wish to use:
-     * - [Marengo requirements](/docs/concepts/models/marengo#input-requirements)
-     * - [Pegasus requirements](/docs/concepts/models/pegasus#video-file-requirements)
-     *
-     * Upload methods:
+     * **Upload methods**:
      * - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
      * - **Publicly accessible URL**: Set the `method` parameter to `url` and use the `url` parameter to specify the URL of your file.
+     *
+     * **File size**: 200MB maximum for local file uploads, 4GB maximum for URL uploads.
+     *
+     * **Additional requirements** depend on your workflow:
+     * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
+     * - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+     * - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements)
+     * - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
      *
      * @param {TwelvelabsApi.AssetsCreateRequest} request
      * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
@@ -233,8 +235,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -323,8 +325,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -408,8 +410,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -93,8 +93,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.0.3",
-                        "User-Agent": "twelvelabs-js/1.0.3",
+                        "X-Fern-SDK-Version": "1.1.0",
+                        "User-Agent": "twelvelabs-js/1.1.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -250,8 +250,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -348,8 +348,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -458,8 +458,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.0.3",
-                "User-Agent": "twelvelabs-js/1.0.3",
+                "X-Fern-SDK-Version": "1.1.0",
+                "User-Agent": "twelvelabs-js/1.1.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
