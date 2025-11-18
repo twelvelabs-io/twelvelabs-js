@@ -17,53 +17,78 @@ on:
 jobs:
     compile:
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
 
             - name: Set up node
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18.18.0"
+
+            - name: Setup yarn
+              run: npm install -g yarn
+
+            - name: Install dependencies
+              run: yarn install
 
             - name: Compile
-              run: yarn && yarn build
+              run: yarn build
 
     test:
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
 
             - name: Set up node
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18.18.0"
 
-            - name: Compile
-              run: yarn && yarn test
+            - name: Setup yarn
+              run: npm install -g yarn
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Run tests
+              run: yarn test
 
     publish:
         needs: [compile, test]
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
+
             - name: Set up node
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18.18.0"
+
+            - name: Setup yarn
+              run: npm install -g yarn
+
             - name: Install dependencies
               run: yarn install
+
             - name: Build
               run: yarn build
 
             - name: Publish to npm
               run: |
-                  npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+                  publish() {
+                    npx -y npm@latest publish "$@"
+                  }
                   if [[ ${GITHUB_REF} == *alpha* ]]; then
-                    npm publish --access public --tag alpha
+                    publish --access public --tag alpha
                   elif [[ ${GITHUB_REF} == *beta* ]]; then
-                    npm publish --access public --tag beta
+                    publish --access public --tag beta
                   else
-                    npm publish --access public
+                    publish --access public
                   fi
-              env:
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
