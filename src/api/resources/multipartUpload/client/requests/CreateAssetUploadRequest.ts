@@ -10,7 +10,7 @@
  *     }
  */
 export interface CreateAssetUploadRequest {
-    /** Original filename of the asset */
+    /** The original file name of the asset. */
     filename: string;
     /**
      * The total size of the file in bytes. The platform uses this value to:

@@ -8,7 +8,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "text",
- *         modelName: "marengo3.0",
  *         text: {
  *             inputText: "man walking a dog"
  *         }
@@ -17,7 +16,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "image",
- *         modelName: "marengo3.0",
  *         image: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/folder/dog.jpg"
@@ -28,7 +26,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "text_image",
- *         modelName: "marengo3.0",
  *         textImage: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/folder/dog.jpg"
@@ -40,7 +37,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "image",
- *         modelName: "marengo3.0",
  *         image: {
  *             mediaSource: {
  *                 assetId: "1234567890"
@@ -51,7 +47,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "audio",
- *         modelName: "marengo3.0",
  *         audio: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/audio/a.wav"
@@ -72,7 +67,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "video",
- *         modelName: "marengo3.0",
  *         video: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/video/clip.mp4"
@@ -93,7 +87,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "video",
- *         modelName: "marengo3.0",
  *         video: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/video/simple.mp4"
@@ -104,7 +97,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "audio",
- *         modelName: "marengo3.0",
  *         audio: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/audio/speech.wav"
@@ -117,7 +109,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "text",
- *         modelName: "marengo3.0",
  *         text: {
  *             inputText: "man walking a dog"
  *         }
@@ -126,7 +117,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "text",
- *         modelName: "marengo3.0",
  *         text: {
  *             inputText: "man walking a dog"
  *         }
@@ -135,17 +125,24 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "text",
- *         modelName: "marengo3.0",
  *         text: {
  *             inputText: "man walking a dog"
  *         }
  *     }
  */
 export interface CreateEmbeddingsRequest {
-    /** The type of content for which you wish to create embeddings. */
+    /**
+     * The type of content for the embeddings.
+     *
+     *
+     * **Values**:
+     * - `audio`: Creates embeddings for an audio file
+     * - `video`: Creates embeddings for a video file
+     * - `image`: Creates embeddings for an image file
+     * - `text`: Creates embeddings for text input
+     * - `text_image`: Creates embeddings for text and an image.
+     */
     inputType: TwelvelabsApi.embed.CreateEmbeddingsRequestInputType;
-    /** The video understanding model you wish to use. */
-    modelName: string;
     text?: TwelvelabsApi.TextInputRequest;
     image?: TwelvelabsApi.ImageInputRequest;
     textImage?: TwelvelabsApi.TextImageInputRequest;

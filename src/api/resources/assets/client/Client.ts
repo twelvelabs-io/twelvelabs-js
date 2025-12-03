@@ -35,10 +35,7 @@ export class Assets {
     /**
      * This method returns a list of assets in your account.
      *
-     * <Note title="Note">
-     * - The platform returns your assets sorted by creation date, with the newest at the top of the list.
-     * - The platform automatically deletes assets that are not associated with any entity after 72 hours.
-     * </Note>
+     * The platform returns your assets sorted by creation date, with the newest at the top of the list.
      *
      * @param {TwelvelabsApi.AssetsListRequest} request
      * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
@@ -99,8 +96,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.1.0",
-                        "User-Agent": "twelvelabs-js/1.1.0",
+                        "X-Fern-SDK-Version": "1.1.1",
+                        "User-Agent": "twelvelabs-js/1.1.1",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -169,7 +166,7 @@ export class Assets {
     }
 
     /**
-     * This method creates an asset by uploading a file to the platform. Assets are files (such as images, audio, or video) that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
+     * This method creates an asset by uploading a file to the platform. Assets are media files that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
      *
      * **Supported content**: Video, audio, and images.
      *
@@ -235,8 +232,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -325,8 +322,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -410,8 +407,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

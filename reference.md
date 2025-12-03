@@ -794,10 +794,8 @@ await client.indexes.delete("6298d673f1090f1100476d4c");
 
 This method returns a list of assets in your account.
 
-<Note title="Note">
-- The platform returns your assets sorted by creation date, with the newest at the top of the list.
-- The platform automatically deletes assets that are not associated with any entity after 72 hours.
-</Note>
+The platform returns your assets sorted by creation date, with the newest at the top of the list.
+
 </dd>
 </dl>
 </dd>
@@ -874,7 +872,7 @@ while (page.hasNextPage()) {
 <dl>
 <dd>
 
-This method creates an asset by uploading a file to the platform. Assets are files (such as images, audio, or video) that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
+This method creates an asset by uploading a file to the platform. Assets are media files that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
 
 **Supported content**: Video, audio, and images.
 
@@ -1237,7 +1235,7 @@ await client.multipartUpload.create({
 
 This method provides information about an upload session, including its current status, chunk-level progress, and completion state.
 
-Use this endpoint to:
+Use this method to:
 
 - Verify upload completion (`status` = `completed`)
 - Identify any failed chunks that require a retry
@@ -1331,11 +1329,10 @@ while (page.hasNextPage()) {
 <dl>
 <dd>
 
-This method notifies the platform which chunks have been successfully uploaded. When all chunks are reported, the platform finalizes the upload.
+This method reports successfully uploaded chunks to the platform. The platform finalizes the upload after you report all chunks.
 
-<Note title="Note">
 For optimal performance, report chunks in batches and in any order.
-</Note>
+
 </dd>
 </dl>
 </dd>
@@ -2556,7 +2553,6 @@ This endpoint synchronously creates embeddings for multimodal content and return
 ```typescript
 await client.embed.v2.create({
     inputType: "text",
-    modelName: "marengo3.0",
     text: {
         inputText: "man walking a dog",
     },
@@ -2742,7 +2738,6 @@ Creating embeddings asynchronously requires three steps:
 ```typescript
 await client.embed.v2.tasks.create({
     inputType: "audio",
-    modelName: "marengo3.0",
     audio: {
         mediaSource: {
             url: "https://user-bucket.com/audio/long-audio.wav",
@@ -3707,19 +3702,19 @@ await client.indexes.indexedAssets.create("6298d673f1090f1100476d4c", {
 
 This method retrieves information about an indexed asset, including its status, metadata, and optional embeddings or transcription.
 
-**Common use cases**:
+Use this method to:
 
-- Monitor indexing progress:
+- Monitor the indexing progress:
     - Call this endpoint after creating an indexed asset
     - Check the `status` field until it shows `ready`
     - Once ready, your content is available for search and analysis
 
-- Retrieve asset metadata:
+- Retrieve the asset metadata:
     - Retrieve system metadata (duration, resolution, filename)
     - Access user-defined metadata
 
-- Retrieve embeddings:
-    - Include the `embedding_option` parameter to retrieve video embeddings
+- Retrieve the embeddings:
+    - Include the `embeddingOption` parameter to retrieve video embeddings
     - Requires the Marengo video understanding model to be enabled in your index
 
 - Retrieve transcriptions:
@@ -3874,7 +3869,7 @@ await client.indexes.indexedAssets.delete("6298d673f1090f1100476d4c", "6298d673f
 <dl>
 <dd>
 
-Use this method to update one or more fields of the metadata of an indexed asset. Also, can delete a field by setting it to null.
+This method updates one or more fields of the metadata of an indexed asset. Also, can delete a field by setting it to `null`.
 
 </dd>
 </dl>
@@ -4228,7 +4223,7 @@ await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f11
 
 <Info>This method will be deprecated in a future version. New implementations should use the [Partial update indexed asset](/v1.3/api-reference/index-content/update) method.</Info>
 
-Use this method to update one or more fields of the metadata of a video. Also, can delete a field by setting it to null.
+This method updates one or more fields of the metadata of a video. Also, can delete a field by setting it to `null`.
 
 </dd>
 </dl>

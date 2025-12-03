@@ -85,8 +85,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.1.0",
-                        "User-Agent": "twelvelabs-js/1.1.0",
+                        "X-Fern-SDK-Version": "1.1.1",
+                        "User-Agent": "twelvelabs-js/1.1.1",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -198,7 +198,6 @@ export class Tasks {
      * @example
      *     await client.embed.v2.tasks.create({
      *         inputType: "audio",
-     *         modelName: "marengo3.0",
      *         audio: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/audio/long-audio.wav"
@@ -219,7 +218,6 @@ export class Tasks {
      * @example
      *     await client.embed.v2.tasks.create({
      *         inputType: "video",
-     *         modelName: "marengo3.0",
      *         video: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/video/long-video.mp4"
@@ -259,8 +257,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -268,9 +266,12 @@ export class Tasks {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.embed.v2.CreateAsyncEmbeddingRequest.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-            }),
+            body: {
+                ...serializers.embed.v2.CreateAsyncEmbeddingRequest.jsonOrThrow(request, {
+                    unrecognizedObjectKeys: "strip",
+                }),
+                model_name: "marengo3.0",
+            },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -359,8 +360,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -3,7 +3,7 @@
  */
 
 /**
- * The type of content for which you wish to create embeddings.
+ * The type of content for the embeddings.
  *
  * **Values**:
  * - `audio`: Audio files

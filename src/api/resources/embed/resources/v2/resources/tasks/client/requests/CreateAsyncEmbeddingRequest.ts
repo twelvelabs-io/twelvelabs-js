@@ -8,7 +8,6 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  * @example
  *     {
  *         inputType: "audio",
- *         modelName: "marengo3.0",
  *         audio: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/audio/long-audio.wav"
@@ -29,7 +28,6 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  * @example
  *     {
  *         inputType: "video",
- *         modelName: "marengo3.0",
  *         video: {
  *             mediaSource: {
  *                 url: "https://user-bucket.com/video/long-video.mp4"
@@ -49,15 +47,13 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  */
 export interface CreateAsyncEmbeddingRequest {
     /**
-     * The type of content for which you wish to create embeddings.
+     * The type of content for the embeddings.
      *
      * **Values**:
      * - `audio`: Audio files
      * - `video`: Video content
      */
     inputType: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestInputType;
-    /** The model you wish to use. */
-    modelName: string;
     audio?: TwelvelabsApi.AudioInputRequest;
     video?: TwelvelabsApi.VideoInputRequest;
 }

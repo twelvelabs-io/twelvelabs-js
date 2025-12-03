@@ -19,10 +19,10 @@ export interface Asset {
      */
     method?: TwelvelabsApi.AssetMethod;
     /**
-     * Indicates the current state of the asset.
+     * Indicates the current status of the asset.
      *
      * **Values**:
-     * - `waiting`: The platform is preparing to process the upload
+     * - `failed`: The platform failed to process the upload
      * - `processing`: The platform is processing the uploaded file
      * - `ready`: The asset is ready to use
      */
@@ -31,16 +31,6 @@ export interface Asset {
     filename?: string;
     /** The MIME type of the asset file. */
     fileType?: string;
-    /**
-     * The URL where you can access the asset file. Use this URL to preview or download the asset.
-     *
-     * <Note title="Note">
-     * This URL expires after the time specified in the `url_expires_at` field. After expiration, you must retrieve the asset again to obtain a new URL.
-     * </Note>
-     */
-    url?: string;
-    /** The date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the URL expires. After this time, the URL in the `url` field becomes invalid. Retrieve the asset again to obtain a new URL. */
-    urlExpiresAt?: Date;
     /** The date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the asset was created. */
     createdAt?: Date;
 }

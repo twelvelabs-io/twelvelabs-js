@@ -12,6 +12,9 @@ export interface EmbeddingTaskResponse {
     id: string;
     /**
      * The current status of the task.
+     *
+     *
+     * **Values**:
      * - `processing`: The platform is creating the embeddings
      * - `ready`: Processing is complete. Embeddings are available in the `data` field
      * - `failed`: The task failed. The `data` field is `null`

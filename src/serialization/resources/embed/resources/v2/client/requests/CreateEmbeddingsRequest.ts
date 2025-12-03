@@ -17,7 +17,6 @@ export const CreateEmbeddingsRequest: core.serialization.Schema<
     TwelvelabsApi.embed.CreateEmbeddingsRequest
 > = core.serialization.object({
     inputType: core.serialization.property("input_type", CreateEmbeddingsRequestInputType),
-    modelName: core.serialization.property("model_name", core.serialization.string()),
     text: TextInputRequest.optional(),
     image: ImageInputRequest.optional(),
     textImage: core.serialization.property("text_image", TextImageInputRequest.optional()),
@@ -28,7 +27,6 @@ export const CreateEmbeddingsRequest: core.serialization.Schema<
 export declare namespace CreateEmbeddingsRequest {
     export interface Raw {
         input_type: CreateEmbeddingsRequestInputType.Raw;
-        model_name: string;
         text?: TextInputRequest.Raw | null;
         image?: ImageInputRequest.Raw | null;
         text_image?: TextImageInputRequest.Raw | null;

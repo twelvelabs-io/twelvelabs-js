@@ -3,16 +3,16 @@
  */
 
 /**
- * Indicates the current state of the asset.
+ * Indicates the current status of the asset.
  *
  * **Values**:
- * - `waiting`: The platform is preparing to process the upload
+ * - `failed`: The platform failed to process the upload
  * - `processing`: The platform is processing the uploaded file
  * - `ready`: The asset is ready to use
  */
-export type AssetStatus = "waiting" | "processing" | "ready";
+export type AssetStatus = "failed" | "processing" | "ready";
 export const AssetStatus = {
-    Waiting: "waiting",
+    Failed: "failed",
     Processing: "processing",
     Ready: "ready",
 } as const;

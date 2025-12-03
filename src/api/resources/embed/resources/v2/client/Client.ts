@@ -82,7 +82,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "text",
-     *         modelName: "marengo3.0",
      *         text: {
      *             inputText: "man walking a dog"
      *         }
@@ -91,7 +90,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "image",
-     *         modelName: "marengo3.0",
      *         image: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/folder/dog.jpg"
@@ -102,7 +100,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "text_image",
-     *         modelName: "marengo3.0",
      *         textImage: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/folder/dog.jpg"
@@ -114,7 +111,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "image",
-     *         modelName: "marengo3.0",
      *         image: {
      *             mediaSource: {
      *                 assetId: "1234567890"
@@ -125,7 +121,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "audio",
-     *         modelName: "marengo3.0",
      *         audio: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/audio/a.wav"
@@ -146,7 +141,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "video",
-     *         modelName: "marengo3.0",
      *         video: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/video/clip.mp4"
@@ -167,7 +161,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "video",
-     *         modelName: "marengo3.0",
      *         video: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/video/simple.mp4"
@@ -178,7 +171,6 @@ export class V2 {
      * @example
      *     await client.embed.v2.create({
      *         inputType: "audio",
-     *         modelName: "marengo3.0",
      *         audio: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/audio/speech.wav"
@@ -210,8 +202,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -219,7 +211,10 @@ export class V2 {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.embed.CreateEmbeddingsRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: {
+                ...serializers.embed.CreateEmbeddingsRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+                model_name: "marengo3.0",
+            },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
