@@ -62,7 +62,7 @@ export interface UploadFileOptions {
     /** Name to use for the asset (defaults to file basename) */
     filename?: string;
     /** Asset type (default: "video") */
-    fileType?: string;
+    fileType?: TwelvelabsApi.CreateAssetUploadRequestType;
     /** Number of chunks to report in each batch (default: 10) */
     batchSize?: number;
     /** Maximum number of concurrent upload workers (default: 5) */
@@ -135,7 +135,7 @@ export class MultipartUploadWrapper extends MultipartUpload {
     public async uploadFile(filePath: string, options: UploadFileOptions = {}): Promise<UploadResult> {
         const {
             filename = path.basename(filePath),
-            fileType = "video",
+            fileType = TwelvelabsApi.CreateAssetUploadRequestType.Video,
             batchSize = 10,
             maxWorkers = 5,
             progressCallback,
@@ -158,6 +158,7 @@ export class MultipartUploadWrapper extends MultipartUpload {
             const uploadSession = await this.create(
                 {
                     filename,
+                    type: fileType,
                     totalSize,
                 },
                 requestOptions,
