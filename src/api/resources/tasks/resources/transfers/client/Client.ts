@@ -12,7 +12,7 @@ export declare namespace Transfers {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -28,7 +28,7 @@ export declare namespace Transfers {
 }
 
 export class Transfers {
-    constructor(protected readonly _options: Transfers.Options = {}) {}
+    constructor(protected readonly _options: Transfers.Options) {}
 
     /**
      * @param {string} integrationId
@@ -56,8 +56,8 @@ export class Transfers {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -126,8 +126,8 @@ export class Transfers {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -196,8 +196,8 @@ export class Transfers {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

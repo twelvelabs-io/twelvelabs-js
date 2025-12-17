@@ -14,7 +14,7 @@ export declare namespace Tasks {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -30,7 +30,7 @@ export declare namespace Tasks {
 }
 
 export class Tasks {
-    constructor(protected readonly _options: Tasks.Options = {}) {}
+    constructor(protected readonly _options: Tasks.Options) {}
 
     /**
      * This method returns a list of the async embedding tasks in your account. The platform returns your async embedding tasks sorted by creation date, with the newest at the top of the list.
@@ -85,8 +85,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.1.0",
-                        "User-Agent": "twelvelabs-js/1.1.0",
+                        "X-Fern-SDK-Version": "1.2.0-beta.0",
+                        "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -173,7 +173,7 @@ export class Tasks {
      *   - Maximum duration: 4 hours
      *   - Maximum file size: 4 GB
      *   - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
-     *   - Resolution: 360x360 to 3840x2160 pixels
+     *   - Resolution: 360x360 to 5184x2160 pixels
      *   - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1
      *
      *   **Audio**:
@@ -259,8 +259,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -359,8 +359,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

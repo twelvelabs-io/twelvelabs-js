@@ -6,6 +6,7 @@ import * as serializers from "../../../../../../index";
 import * as TwelvelabsApi from "../../../../../../../api/index";
 import * as core from "../../../../../../../core";
 import { CreateEmbeddingsRequestInputType } from "../../types/CreateEmbeddingsRequestInputType";
+import { CreateEmbeddingsRequestModelName } from "../../types/CreateEmbeddingsRequestModelName";
 import { TextInputRequest } from "../../../../../../types/TextInputRequest";
 import { ImageInputRequest } from "../../../../../../types/ImageInputRequest";
 import { TextImageInputRequest } from "../../../../../../types/TextImageInputRequest";
@@ -17,7 +18,7 @@ export const CreateEmbeddingsRequest: core.serialization.Schema<
     TwelvelabsApi.embed.CreateEmbeddingsRequest
 > = core.serialization.object({
     inputType: core.serialization.property("input_type", CreateEmbeddingsRequestInputType),
-    modelName: core.serialization.property("model_name", core.serialization.string()),
+    modelName: core.serialization.property("model_name", CreateEmbeddingsRequestModelName),
     text: TextInputRequest.optional(),
     image: ImageInputRequest.optional(),
     textImage: core.serialization.property("text_image", TextImageInputRequest.optional()),
@@ -28,7 +29,7 @@ export const CreateEmbeddingsRequest: core.serialization.Schema<
 export declare namespace CreateEmbeddingsRequest {
     export interface Raw {
         input_type: CreateEmbeddingsRequestInputType.Raw;
-        model_name: string;
+        model_name: CreateEmbeddingsRequestModelName.Raw;
         text?: TextInputRequest.Raw | null;
         image?: ImageInputRequest.Raw | null;
         text_image?: TextImageInputRequest.Raw | null;

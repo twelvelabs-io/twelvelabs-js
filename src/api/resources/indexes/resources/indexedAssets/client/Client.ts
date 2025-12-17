@@ -15,7 +15,7 @@ export declare namespace IndexedAssets {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -31,7 +31,7 @@ export declare namespace IndexedAssets {
 }
 
 export class IndexedAssets {
-    constructor(protected readonly _options: IndexedAssets.Options = {}) {}
+    constructor(protected readonly _options: IndexedAssets.Options) {}
 
     /**
      * This method returns a list of the indexed assets in the specified index. By default, the platform returns your indexed assets sorted by creation date, with the newest at the top of the list.
@@ -148,8 +148,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.1.0",
-                        "User-Agent": "twelvelabs-js/1.1.0",
+                        "X-Fern-SDK-Version": "1.2.0-beta.0",
+                        "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -267,8 +267,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -334,20 +334,20 @@ export class IndexedAssets {
     /**
      * This method retrieves information about an indexed asset, including its status, metadata, and optional embeddings or transcription.
      *
-     * **Common use cases**:
+     * Use this method to:
      *
-     * - Monitor indexing progress:
-     *   - Call this endpoint after creating an indexed asset
-     *   - Check the `status` field until it shows `ready`
-     *   - Once ready, your content is available for search and analysis
+     * - Monitor the indexing progress:
+     *     - Call this endpoint after creating an indexed asset
+     *     - Check the `status` field until it shows `ready`
+     *     - Once ready, your content is available for search and analysis
      *
-     * - Retrieve  asset metadata:
-     *   - Retrieve system metadata (duration, resolution, filename)
-     *   - Access user-defined metadata
+     * - Retrieve the asset metadata:
+     *     - Retrieve system metadata (duration, resolution, filename)
+     *     - Access user-defined metadata
      *
-     * - Retrieve embeddings:
-     *   - Include the `embedding_option` parameter to retrieve video embeddings
-     *   - Requires the Marengo video understanding model to be enabled in your index
+     * - Retrieve the embeddings:
+     *     - Include the `embeddingOption` parameter to retrieve video embeddings
+     *     - Requires the Marengo video understanding model to be enabled in your index
      *
      * - Retrieve transcriptions:
      *   - Set the `transcription` parameter to `true` to retrieve spoken words from your video
@@ -412,8 +412,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -508,8 +508,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -558,7 +558,7 @@ export class IndexedAssets {
     }
 
     /**
-     * Use this method to update one or more fields of the metadata of an indexed asset. Also, can delete a field by setting it to null.
+     * This method updates one or more fields of the metadata of an indexed asset. Also, can delete a field by setting it to `null`.
      *
      * @param {string} indexId - The unique identifier of the index to which the indexed asset has been uploaded.
      * @param {string} indexedAssetId - The unique identifier of the indexed asset to update.
@@ -603,8 +603,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

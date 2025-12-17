@@ -17,12 +17,11 @@ export interface CreateAssetUploadResponse {
     /** The unique identifier for the asset being created. Store this value, as you'll need it to reference the asset in other API calls. Note that this identifier is reserved immediately, but the asset becomes available for other operations only after the upload is completed successfully. */
     assetId?: string;
     /**
-     * The initial set of presigned URLs for uploading chunks. Each URL corresponds to a specific chunk.
+     * An array containing the initial set of presigned URLs for uploading chunks. Each URL corresponds to a specific chunk.
      *
-     * <Note title="Notes>
-     * - URLs expire after 1 hour.
-     * - Depending on the size of the file, this initial set may not include URLs for all chunks. You can request more using the [`POST`](/v1.3/api-reference/multipart-uploads/get-additional-presigned-urls) method of the `/assets/multipart-uploads/{upload_id}/presigned-urls` endpoint.
-     * </Note>
+     * Note the following about the presigned URLs:
+     * - URLs expire after one hour.
+     * - Depending on the size of the file, the initial set may not include URLs for all chunks. If you need more URLs, you can request additional ones using the [`POST`](/v1.3/api-reference/multipart-uploads/get-additional-presigned-urls) method of the `/assets/multipart-uploads/{upload_id}/presigned-urls` endpoint.
      */
     uploadUrls?: TwelvelabsApi.PresignedUrlChunk[];
     uploadHeaders?: Record<string, string>;

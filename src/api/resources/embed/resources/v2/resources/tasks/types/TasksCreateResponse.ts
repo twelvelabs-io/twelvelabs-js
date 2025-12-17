@@ -8,7 +8,7 @@ export interface TasksCreateResponse {
     /** The unique identifier of the embedding task */
     id: string;
     /** The initial status of the embedding task. */
-    status: "processing";
-    /** Array of embedding results (only when status is ready) */
+    status: TwelvelabsApi.embed.v2.TasksCreateResponseStatus;
+    /** An array of embedding results when `status` is `ready`, or `null` when `status` is `processing` or `failed`. */
     data?: TwelvelabsApi.EmbeddingData[];
 }

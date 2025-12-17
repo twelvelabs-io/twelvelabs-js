@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * Specifies how the platform divides the audio into segments.
  */
 export interface AudioSegmentation {
-    strategy: "fixed";
+    strategy: TwelvelabsApi.AudioSegmentationStrategy;
     /**
      * Configuration for fixed segmentation.
      *

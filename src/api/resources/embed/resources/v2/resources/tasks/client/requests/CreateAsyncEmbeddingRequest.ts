@@ -49,15 +49,15 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  */
 export interface CreateAsyncEmbeddingRequest {
     /**
-     * The type of content for which you wish to create embeddings.
+     * The type of content for the embeddings.
      *
      * **Values**:
      * - `audio`: Audio files
      * - `video`: Video content
      */
     inputType: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestInputType;
-    /** The model you wish to use. */
-    modelName: string;
+    /** The model you wish to use. Only `"marengo3.0"` is supported. */
+    modelName: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestModelName;
     audio?: TwelvelabsApi.AudioInputRequest;
     video?: TwelvelabsApi.VideoInputRequest;
 }

@@ -5,12 +5,13 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { ResponseFormatType } from "./ResponseFormatType";
 
 export const ResponseFormat: core.serialization.ObjectSchema<
     serializers.ResponseFormat.Raw,
     TwelvelabsApi.ResponseFormat
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("json_schema"),
+    type: ResponseFormatType,
     jsonSchema: core.serialization.property(
         "json_schema",
         core.serialization.record(core.serialization.string(), core.serialization.unknown()),
@@ -19,7 +20,7 @@ export const ResponseFormat: core.serialization.ObjectSchema<
 
 export declare namespace ResponseFormat {
     export interface Raw {
-        type: "json_schema";
+        type: ResponseFormatType.Raw;
         json_schema: Record<string, unknown>;
     }
 }

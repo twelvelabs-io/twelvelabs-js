@@ -6,6 +6,7 @@ import * as serializers from "../../../../../../../../index";
 import * as TwelvelabsApi from "../../../../../../../../../api/index";
 import * as core from "../../../../../../../../../core";
 import { CreateAsyncEmbeddingRequestInputType } from "../../types/CreateAsyncEmbeddingRequestInputType";
+import { CreateAsyncEmbeddingRequestModelName } from "../../types/CreateAsyncEmbeddingRequestModelName";
 import { AudioInputRequest } from "../../../../../../../../types/AudioInputRequest";
 import { VideoInputRequest } from "../../../../../../../../types/VideoInputRequest";
 
@@ -14,7 +15,7 @@ export const CreateAsyncEmbeddingRequest: core.serialization.Schema<
     TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequest
 > = core.serialization.object({
     inputType: core.serialization.property("input_type", CreateAsyncEmbeddingRequestInputType),
-    modelName: core.serialization.property("model_name", core.serialization.string()),
+    modelName: core.serialization.property("model_name", CreateAsyncEmbeddingRequestModelName),
     audio: AudioInputRequest.optional(),
     video: VideoInputRequest.optional(),
 });
@@ -22,7 +23,7 @@ export const CreateAsyncEmbeddingRequest: core.serialization.Schema<
 export declare namespace CreateAsyncEmbeddingRequest {
     export interface Raw {
         input_type: CreateAsyncEmbeddingRequestInputType.Raw;
-        model_name: string;
+        model_name: CreateAsyncEmbeddingRequestModelName.Raw;
         audio?: AudioInputRequest.Raw | null;
         video?: VideoInputRequest.Raw | null;
     }

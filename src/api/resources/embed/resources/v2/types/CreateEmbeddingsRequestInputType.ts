@@ -3,7 +3,15 @@
  */
 
 /**
- * The type of content for which you wish to create embeddings.
+ * The type of content for the embeddings.
+ *
+ *
+ * **Values**:
+ * - `audio`: Creates embeddings for an audio file
+ * - `video`: Creates embeddings for a video file
+ * - `image`: Creates embeddings for an image file
+ * - `text`: Creates embeddings for text input
+ * - `text_image`: Creates embeddings for text and an image.
  */
 export type CreateEmbeddingsRequestInputType = "text" | "image" | "text_image" | "audio" | "video";
 export const CreateEmbeddingsRequestInputType = {

@@ -142,10 +142,20 @@ import * as TwelvelabsApi from "../../../../../../index";
  *     }
  */
 export interface CreateEmbeddingsRequest {
-    /** The type of content for which you wish to create embeddings. */
+    /**
+     * The type of content for the embeddings.
+     *
+     *
+     * **Values**:
+     * - `audio`: Creates embeddings for an audio file
+     * - `video`: Creates embeddings for a video file
+     * - `image`: Creates embeddings for an image file
+     * - `text`: Creates embeddings for text input
+     * - `text_image`: Creates embeddings for text and an image.
+     */
     inputType: TwelvelabsApi.embed.CreateEmbeddingsRequestInputType;
-    /** The video understanding model you wish to use. */
-    modelName: string;
+    /** The video understanding model to use. Only "marengo3.0" is supported. */
+    modelName: TwelvelabsApi.embed.CreateEmbeddingsRequestModelName;
     text?: TwelvelabsApi.TextInputRequest;
     image?: TwelvelabsApi.ImageInputRequest;
     textImage?: TwelvelabsApi.TextImageInputRequest;

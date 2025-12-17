@@ -5,6 +5,7 @@
 import * as serializers from "../../../../../../../index";
 import * as TwelvelabsApi from "../../../../../../../../api/index";
 import * as core from "../../../../../../../../core";
+import { TasksCreateResponseStatus } from "./TasksCreateResponseStatus";
 import { EmbeddingData } from "../../../../../../../types/EmbeddingData";
 
 export const TasksCreateResponse: core.serialization.ObjectSchema<
@@ -12,14 +13,14 @@ export const TasksCreateResponse: core.serialization.ObjectSchema<
     TwelvelabsApi.embed.v2.TasksCreateResponse
 > = core.serialization.object({
     id: core.serialization.property("_id", core.serialization.string()),
-    status: core.serialization.stringLiteral("processing"),
+    status: TasksCreateResponseStatus,
     data: core.serialization.list(EmbeddingData).optional(),
 });
 
 export declare namespace TasksCreateResponse {
     export interface Raw {
         _id: string;
-        status: "processing";
+        status: TasksCreateResponseStatus.Raw;
         data?: EmbeddingData.Raw[] | null;
     }
 }

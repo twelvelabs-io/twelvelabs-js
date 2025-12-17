@@ -14,7 +14,7 @@ export declare namespace MultipartUpload {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -30,7 +30,7 @@ export declare namespace MultipartUpload {
 }
 
 export class MultipartUpload {
-    constructor(protected readonly _options: MultipartUpload.Options = {}) {}
+    constructor(protected readonly _options: MultipartUpload.Options) {}
 
     /**
      * This method returns a list of all incomplete multipart upload sessions in your account.
@@ -75,8 +75,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.1.0",
-                        "User-Agent": "twelvelabs-js/1.1.0",
+                        "X-Fern-SDK-Version": "1.2.0-beta.0",
+                        "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -172,6 +172,7 @@ export class MultipartUpload {
      * @example
      *     await client.multipartUpload.create({
      *         filename: "my-video.mp4",
+     *         type: "video",
      *         totalSize: 104857600
      *     })
      */
@@ -197,8 +198,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -206,10 +207,7 @@ export class MultipartUpload {
             },
             contentType: "application/json",
             requestType: "json",
-            body: {
-                ...serializers.CreateAssetUploadRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-                type: "video",
-            },
+            body: serializers.CreateAssetUploadRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -265,14 +263,14 @@ export class MultipartUpload {
     /**
      * This method provides information about an upload session, including its current status, chunk-level progress, and completion state.
      *
-     * Use this endpoint to:
+     * Use this method to:
      * - Verify upload completion (`status` = `completed`)
      * - Identify any failed chunks that require a retry
      * - Monitor the upload progress by comparing `uploaded_size` with `total_size`
      * - Determine if the session has expired
      * - Retrieve the status information for each chunk
      *
-     *  You must call this method after reporting chunk completion to confirm the upload has transitioned to the `completed` status before using the asset.
+     * You must call this method after reporting chunk completion to confirm the upload has transitioned to the `completed` status before using the asset.
      *
      * @param {string} uploadId - The unique identifier of the upload session.
      * @param {TwelvelabsApi.MultipartUploadGetStatusRequest} request
@@ -317,8 +315,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.1.0",
-                        "User-Agent": "twelvelabs-js/1.1.0",
+                        "X-Fern-SDK-Version": "1.2.0-beta.0",
+                        "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -395,11 +393,10 @@ export class MultipartUpload {
     }
 
     /**
-     * This method notifies the platform which chunks have been successfully uploaded. When all chunks are reported, the platform finalizes the upload.
+     * This method reports successfully uploaded chunks to the platform. The platform finalizes the upload after you report all chunks.
      *
-     * <Note title="Note">
+     *
      * For optimal performance, report chunks in batches and in any order.
-     * </Note>
      *
      * @param {string} uploadId - The unique identifier of the upload session.
      * @param {TwelvelabsApi.ReportChunkBatchRequest} request
@@ -443,8 +440,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -554,8 +551,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
