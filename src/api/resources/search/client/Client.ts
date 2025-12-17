@@ -14,7 +14,7 @@ export declare namespace Search {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -30,7 +30,7 @@ export declare namespace Search {
 }
 
 export class Search {
-    constructor(protected readonly _options: Search.Options = {}) {}
+    constructor(protected readonly _options: Search.Options) {}
 
     /**
      * Use this endpoint to search for relevant matches in an index using text, media, or a combination of both as your query.
@@ -89,7 +89,12 @@ export class Search {
     ): Promise<core.WithRawResponse<TwelvelabsApi.SearchResults>> {
         const _request = await core.newFormData();
         if (request.queryMediaType != null) {
-            _request.append("query_media_type", request.queryMediaType);
+            _request.append(
+                "query_media_type",
+                serializers.SearchCreateRequestQueryMediaType.jsonOrThrow(request.queryMediaType, {
+                    unrecognizedObjectKeys: "strip",
+                }),
+            );
         }
 
         if (request.queryMediaUrl != null) {
@@ -187,8 +192,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -294,8 +299,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

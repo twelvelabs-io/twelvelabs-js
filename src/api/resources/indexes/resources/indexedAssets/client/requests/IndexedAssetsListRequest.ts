@@ -92,7 +92,7 @@ export interface IndexedAssetsListRequest {
      */
     size?: number;
     /**
-     * Filter indexed assets by the creation date and time of their associated indexing tasks, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"). The platform returns the indexed assets whose indexing tasks were created on the specified date at or after the given time.
+     * Filter indexed assets by the creation date and time of their associated indexing tasks, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"). The platform returns indexed assets created on or after the specified date and time.
      */
     createdAt?: string;
     /**

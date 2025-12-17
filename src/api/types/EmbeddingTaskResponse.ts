@@ -12,6 +12,9 @@ export interface EmbeddingTaskResponse {
     id: string;
     /**
      * The current status of the task.
+     *
+     *
+     * **Values**:
      * - `processing`: The platform is creating the embeddings
      * - `ready`: Processing is complete. Embeddings are available in the `data` field
      * - `failed`: The task failed. The `data` field is `null`
@@ -19,7 +22,7 @@ export interface EmbeddingTaskResponse {
     status: TwelvelabsApi.EmbeddingTaskResponseStatus;
     createdAt?: TwelvelabsApi.CreatedAt;
     updatedAt?: TwelvelabsApi.UpdatedAt;
-    /** An array of embedding results. The platform retruns this field when `status` is `ready`. */
+    /** An object containing the embedding results, or `null` otherwise. */
     data?: TwelvelabsApi.EmbeddingData[];
     metadata?: TwelvelabsApi.EmbeddingTaskMediaMetadata;
 }

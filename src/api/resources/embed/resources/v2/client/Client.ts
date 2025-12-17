@@ -15,7 +15,7 @@ export declare namespace V2 {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -33,7 +33,7 @@ export declare namespace V2 {
 export class V2 {
     protected _tasks: Tasks | undefined;
 
-    constructor(protected readonly _options: V2.Options = {}) {}
+    constructor(protected readonly _options: V2.Options) {}
 
     public get tasks(): Tasks {
         return (this._tasks ??= new Tasks(this._options));
@@ -68,7 +68,7 @@ export class V2 {
      *   - Maximum file size for base64 encoded strings: 36 MB
      *   - Audio formats: WAV (uncompressed), MP3 (lossy), FLAC (lossless)
      *   - Video formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
-     *   - Video resolution: 360x360 to 3840x2160 pixels
+     *   - Video resolution: 360x360 to 5184x2160 pixels
      *   - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1
      * </Accordion>
      *
@@ -210,8 +210,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

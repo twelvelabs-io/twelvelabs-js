@@ -14,6 +14,6 @@ export interface MediaSource {
      * Use direct links to raw media files. Video hosting platforms and cloud storage sharing links are not supported.
      */
     url?: string;
-    /** The unique identifier of an asset uploaded via the Assets API. */
+    /** The unique identifier of an asset from a [direct](/v1.3/api-reference/upload-content) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) upload. */
     assetId?: string;
 }

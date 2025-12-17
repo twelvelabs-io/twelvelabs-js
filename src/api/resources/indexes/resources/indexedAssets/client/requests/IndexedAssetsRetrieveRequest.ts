@@ -26,7 +26,7 @@ export interface IndexedAssetsRetrieveRequest {
         | TwelvelabsApi.indexes.IndexedAssetsRetrieveRequestEmbeddingOptionItem
         | TwelvelabsApi.indexes.IndexedAssetsRetrieveRequestEmbeddingOptionItem[];
     /**
-     * The parameter indicates whether to retrieve a transcription of the spoken words for the indexed asset.
+     * Specifies whether to retrieve a transcription of the spoken words.
      */
     transcription?: boolean;
 }

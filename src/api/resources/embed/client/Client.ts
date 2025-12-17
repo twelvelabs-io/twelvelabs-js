@@ -16,7 +16,7 @@ export declare namespace Embed {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -35,7 +35,7 @@ export class Embed {
     protected _tasks: Tasks | undefined;
     protected _v2: V2 | undefined;
 
-    constructor(protected readonly _options: Embed.Options = {}) {}
+    constructor(protected readonly _options: Embed.Options) {}
 
     public get tasks(): Tasks {
         return (this._tasks ??= new Tasks(this._options));
@@ -139,8 +139,8 @@ export class Embed {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

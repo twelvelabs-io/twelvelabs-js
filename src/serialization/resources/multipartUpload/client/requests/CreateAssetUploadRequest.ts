@@ -5,18 +5,21 @@
 import * as serializers from "../../../../index";
 import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
+import { CreateAssetUploadRequestType } from "../../types/CreateAssetUploadRequestType";
 
 export const CreateAssetUploadRequest: core.serialization.Schema<
     serializers.CreateAssetUploadRequest.Raw,
     TwelvelabsApi.CreateAssetUploadRequest
 > = core.serialization.object({
     filename: core.serialization.string(),
+    type: CreateAssetUploadRequestType,
     totalSize: core.serialization.property("total_size", core.serialization.number()),
 });
 
 export declare namespace CreateAssetUploadRequest {
     export interface Raw {
         filename: string;
+        type: CreateAssetUploadRequestType.Raw;
         total_size: number;
     }
 }

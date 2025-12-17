@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * An indexed asset object that contains information about the indexed asset, including its indexing status.
  */
 export interface IndexedAsset {
-    /** A string representing the unique identifier of an indexed asset. The platform creates a new indexed asset object and assigns it a unique identifier when the asset has been created for indexing. */
+    /** A string representing the unique identifier of your indexed asset. */
     id?: string;
     /** A string indicating the date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), that the indexing task was created. */
     createdAt?: string;

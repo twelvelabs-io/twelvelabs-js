@@ -5,19 +5,20 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { AudioSegmentationStrategy } from "./AudioSegmentationStrategy";
 import { AudioSegmentationFixed } from "./AudioSegmentationFixed";
 
 export const AudioSegmentation: core.serialization.ObjectSchema<
     serializers.AudioSegmentation.Raw,
     TwelvelabsApi.AudioSegmentation
 > = core.serialization.object({
-    strategy: core.serialization.stringLiteral("fixed"),
+    strategy: AudioSegmentationStrategy,
     fixed: AudioSegmentationFixed,
 });
 
 export declare namespace AudioSegmentation {
     export interface Raw {
-        strategy: "fixed";
+        strategy: AudioSegmentationStrategy.Raw;
         fixed: AudioSegmentationFixed.Raw;
     }
 }

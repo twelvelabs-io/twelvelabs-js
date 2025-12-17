@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { CompletedChunkProofType } from "./CompletedChunkProofType";
 
 export const CompletedChunk: core.serialization.ObjectSchema<
     serializers.CompletedChunk.Raw,
@@ -12,7 +13,7 @@ export const CompletedChunk: core.serialization.ObjectSchema<
 > = core.serialization.object({
     chunkIndex: core.serialization.property("chunk_index", core.serialization.number()),
     proof: core.serialization.string(),
-    proofType: core.serialization.property("proof_type", core.serialization.stringLiteral("etag")),
+    proofType: core.serialization.property("proof_type", CompletedChunkProofType),
     chunkSize: core.serialization.property("chunk_size", core.serialization.number()),
 });
 
@@ -20,7 +21,7 @@ export declare namespace CompletedChunk {
     export interface Raw {
         chunk_index: number;
         proof: string;
-        proof_type: "etag";
+        proof_type: CompletedChunkProofType.Raw;
         chunk_size: number;
     }
 }

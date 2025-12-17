@@ -14,7 +14,7 @@ export declare namespace ManageEntities {
         environment?: core.Supplier<environments.TwelvelabsApiEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        apiKey?: core.Supplier<string | undefined>;
+        apiKey: core.Supplier<string>;
     }
 
     export interface RequestOptions {
@@ -30,7 +30,7 @@ export declare namespace ManageEntities {
 }
 
 export class ManageEntities {
-    constructor(protected readonly _options: ManageEntities.Options = {}) {}
+    constructor(protected readonly _options: ManageEntities.Options) {}
 
     /**
      * This method returns a list of entities from all entity collections.
@@ -103,8 +103,8 @@ export class ManageEntities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.1.0",
-                "User-Agent": "twelvelabs-js/1.1.0",
+                "X-Fern-SDK-Version": "1.2.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.2.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

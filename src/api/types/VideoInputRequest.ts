@@ -39,11 +39,11 @@ export interface VideoInputRequest {
      */
     embeddingOption?: TwelvelabsApi.VideoInputRequestEmbeddingOptionItem[];
     /**
-     * The scope for whichyou wish to generate embeddings.
+     * The scope for which you wish to generate embeddings.
      *
      * **Values**:
      * - `clip`: Generates one embedding for each segment
-     * - `asset`: Generates one embedding for the entire video file
+     * - `asset`: Generates one embedding for the entire video file. Use this scope for videos up to 10-30 seconds to maintain optimal performance.
      *
      * You can specify multiple scopes to generate embeddings at different levels.
      *
