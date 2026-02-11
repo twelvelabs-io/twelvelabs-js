@@ -16,7 +16,7 @@ This endpoint analyzes your videos and creates fully customizable text based on 
 
 <Note title="Notes">
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses).
+- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Analyze videos](/v1.3/docs/guides/analyze-videos) page.
 </Note>
 </dd>
 </dl>
@@ -96,7 +96,7 @@ await client.analyze({
 
 ## Tasks
 
-<details><summary><code>client.tasks.<a href="/src/api/resources/tasks/client/Client.ts">list</a>({ ...params }) -> core.Page<TwelvelabsApi.VideoIndexingTask></code></summary>
+<details><summary><code>client.tasks.<a href="/src/api/resources/tasks/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.VideoIndexingTask&gt;</code></summary>
 <dl>
 <dd>
 
@@ -411,7 +411,7 @@ await client.tasks.delete("6298d673f1090f1100476d4c");
 
 ## Indexes
 
-<details><summary><code>client.indexes.<a href="/src/api/resources/indexes/client/Client.ts">list</a>({ ...params }) -> core.Page<TwelvelabsApi.IndexSchema></code></summary>
+<details><summary><code>client.indexes.<a href="/src/api/resources/indexes/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.IndexSchema&gt;</code></summary>
 <dl>
 <dd>
 
@@ -780,7 +780,7 @@ await client.indexes.delete("6298d673f1090f1100476d4c");
 
 ## Assets
 
-<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">list</a>({ ...params }) -> core.Page<TwelvelabsApi.Asset></code></summary>
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.Asset&gt;</code></summary>
 <dl>
 <dd>
 
@@ -889,10 +889,14 @@ This method creates an asset by uploading a file to the platform. Assets are med
 - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
 - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements)
 - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+</Note>
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1068,7 +1072,7 @@ await client.assets.delete("6298d673f1090f1100476d4c");
 
 ## MultipartUpload
 
-<details><summary><code>client.multipartUpload.<a href="/src/api/resources/multipartUpload/client/Client.ts">listIncompleteUploads</a>({ ...params }) -> core.Page<TwelvelabsApi.IncompleteUploadSummary></code></summary>
+<details><summary><code>client.multipartUpload.<a href="/src/api/resources/multipartUpload/client/Client.ts">listIncompleteUploads</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.IncompleteUploadSummary&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1222,7 +1226,7 @@ await client.multipartUpload.create({
 </dl>
 </details>
 
-<details><summary><code>client.multipartUpload.<a href="/src/api/resources/multipartUpload/client/Client.ts">getStatus</a>(uploadId, { ...params }) -> core.Page<TwelvelabsApi.ChunkInfo></code></summary>
+<details><summary><code>client.multipartUpload.<a href="/src/api/resources/multipartUpload/client/Client.ts">getStatus</a>(uploadId, { ...params }) -> core.Page&lt;TwelvelabsApi.ChunkInfo&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1481,7 +1485,7 @@ await client.multipartUpload.getAdditionalPresignedUrls("507f1f77bcf86cd79943901
 
 ## EntityCollections
 
-<details><summary><code>client.entityCollections.<a href="/src/api/resources/entityCollections/client/Client.ts">list</a>({ ...params }) -> core.Page<TwelvelabsApi.EntityCollection></code></summary>
+<details><summary><code>client.entityCollections.<a href="/src/api/resources/entityCollections/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.EntityCollection&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1827,79 +1831,6 @@ await client.entityCollections.update("6298d673f1090f1100476d4c");
 </dl>
 </details>
 
-## Manage entities
-
-<details><summary><code>client.manageEntities.<a href="/src/api/resources/manageEntities/client/Client.ts">listAllEntities</a>({ ...params }) -> TwelvelabsApi.ListAllEntitiesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method returns a list of entities from all entity collections.
-This is an internal API primarily used by the search interface.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.manageEntities.listAllEntities({
-    page: 1,
-    pageLimit: 10,
-    name: "foo",
-    status: "processing",
-    sortBy: "created_at",
-    sortOption: "desc",
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `TwelvelabsApi.ListAllEntitiesRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `ManageEntities.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## Embed
 
 <details><summary><code>client.embed.<a href="/src/api/resources/embed/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.EmbeddingResponse</code></summary>
@@ -1943,7 +1874,8 @@ Parameters for embeddings:
 <Note title="Notes">
 - The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
 - You can create multiple types of embeddings in a single API call.
-- Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/create-embeddings-v1/text-image-audio-embeddings/create-text-image-audio-embeddings) from these transcriptions.
+- Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/create-embeddings-v1/text-image-audio-embeddings/create-text-image-audio-embeddings) from these 
+- This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
 </dd>
 </dl>
@@ -2036,12 +1968,9 @@ Use this endpoint to search for relevant matches in an index using text, media, 
 
 - To find a specific person in your videos, enclose the unique identifier of the entity you want to find in the `query_text` parameter.
 
-<Note title="Note">
-  When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [format requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements).
-</Note>
-
-<Note title="Note">
-This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+<Note title="Notes">
+- When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements).
+- This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
 </dd>
 </dl>
@@ -2173,7 +2102,7 @@ await client.search.retrieve("1234567890", {
 
 ## Embed Tasks
 
-<details><summary><code>client.embed.tasks.<a href="/src/api/resources/embed/resources/tasks/client/Client.ts">list</a>({ ...params }) -> core.Page<TwelvelabsApi.MediaEmbeddingTask></code></summary>
+<details><summary><code>client.embed.tasks.<a href="/src/api/resources/embed/resources/tasks/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.MediaEmbeddingTask&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2282,6 +2211,10 @@ while (page.hasNextPage()) {
 
 This method creates a new video embedding task that uploads a video to the platform and creates one or multiple video embeddings.
 
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+</Note>
+
 Upload options:
 
 - **Local file**: Use the `video_file` parameter
@@ -2289,7 +2222,7 @@ Upload options:
 
 Specify at least one option. If both are provided, `video_url` takes precedence.
 
-Your video files must meet the [format requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
+Your video files must meet the [requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
 This endpoint allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
 
 <Note title="Notes">
@@ -2537,11 +2470,15 @@ This endpoint synchronously creates embeddings for multimodal content and return
 - Video formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
 - Video resolution: 360x360 to 5184x2160 pixels
 - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1
-</Accordion>
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+  </Accordion>
+
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+</Note>
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2595,7 +2532,7 @@ await client.embed.v2.create({
 
 ## Embed V2 Tasks
 
-<details><summary><code>client.embed.v2.tasks.<a href="/src/api/resources/embed/resources/v2/resources/tasks/client/Client.ts">list</a>({ ...params }) -> core.Page<TwelvelabsApi.MediaEmbeddingTask></code></summary>
+<details><summary><code>client.embed.v2.tasks.<a href="/src/api/resources/embed/resources/v2/resources/tasks/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.MediaEmbeddingTask&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2724,10 +2661,14 @@ Creating embeddings asynchronously requires three steps:
 1. Create a task using this endpoint. The platform returns a task ID.
 2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Wait until the status is `ready`.
 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
- </dd>
- </dl>
- </dd>
- </dl>
+
+  <Note title="Note">
+  This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+  </Note>
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2864,7 +2805,7 @@ await client.embed.v2.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12");
 
 ## EntityCollections Entities
 
-<details><summary><code>client.entityCollections.entities.<a href="/src/api/resources/entityCollections/resources/entities/client/Client.ts">list</a>(entityCollectionId, { ...params }) -> core.Page<TwelvelabsApi.Entity></code></summary>
+<details><summary><code>client.entityCollections.entities.<a href="/src/api/resources/entityCollections/resources/entities/client/Client.ts">list</a>(entityCollectionId, { ...params }) -> core.Page&lt;TwelvelabsApi.Entity&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3503,7 +3444,7 @@ await client.entityCollections.entities.deleteAssets("6298d673f1090f1100476d4c",
 
 ## Indexes IndexedAssets
 
-<details><summary><code>client.indexes.indexedAssets.<a href="/src/api/resources/indexes/resources/indexedAssets/client/Client.ts">list</a>(indexId, { ...params }) -> core.Page<TwelvelabsApi.IndexedAsset></code></summary>
+<details><summary><code>client.indexes.indexedAssets.<a href="/src/api/resources/indexes/resources/indexedAssets/client/Client.ts">list</a>(indexId, { ...params }) -> core.Page&lt;TwelvelabsApi.IndexedAsset&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3632,6 +3573,9 @@ Your asset must meet the requirements based on your workflow:
 
 If you want to both search and analyze your videos, the most restrictive requirements apply.
 
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+</Note>
 </dd>
 </dl>
 </dd>
@@ -3948,7 +3892,7 @@ await client.indexes.indexedAssets.update("6298d673f1090f1100476d4c", "6298d673f
 
 ## Indexes Videos
 
-<details><summary><code>client.indexes.videos.<a href="/src/api/resources/indexes/resources/videos/client/Client.ts">list</a>(indexId, { ...params }) -> core.Page<TwelvelabsApi.VideoVector></code></summary>
+<details><summary><code>client.indexes.videos.<a href="/src/api/resources/indexes/resources/videos/client/Client.ts">list</a>(indexId, { ...params }) -> core.Page&lt;TwelvelabsApi.VideoVector&gt;</code></summary>
 <dl>
 <dd>
 

@@ -56,12 +56,9 @@ export class Search {
      *
      * - To find a specific person in your videos, enclose the unique identifier of the entity you want to find in the `query_text` parameter.
      *
-     * <Note title="Note">
-     *   When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [format requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements).
-     * </Note>
-     *
-     * <Note title="Note">
-     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * <Note title="Notes">
+     * - When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements).
+     * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
      * </Note>
      *
      * @param {TwelvelabsApi.SearchCreateRequest} request
@@ -192,8 +189,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -299,8 +296,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -3,7 +3,7 @@
  */
 
 /**
- * An object specifying the source of the media file.
+ * An object specifying the source of the media file. You must provide exactly one of `url`, `base64_string`, or `asset_id`.
  */
 export interface MediaSource {
     /** The base64-encoded media data. */

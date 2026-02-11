@@ -14,7 +14,6 @@ import { Indexes } from "./api/resources/indexes/client/Client";
 import { Assets } from "./api/resources/assets/client/Client";
 import { MultipartUpload } from "./api/resources/multipartUpload/client/Client";
 import { EntityCollections } from "./api/resources/entityCollections/client/Client";
-import { ManageEntities } from "./api/resources/manageEntities/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
 
@@ -44,7 +43,6 @@ export class TwelvelabsApiClient {
     protected _assets: Assets | undefined;
     protected _multipartUpload: MultipartUpload | undefined;
     protected _entityCollections: EntityCollections | undefined;
-    protected _manageEntities: ManageEntities | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
 
@@ -70,10 +68,6 @@ export class TwelvelabsApiClient {
         return (this._entityCollections ??= new EntityCollections(this._options));
     }
 
-    public get manageEntities(): ManageEntities {
-        return (this._manageEntities ??= new ManageEntities(this._options));
-    }
-
     public get embed(): Embed {
         return (this._embed ??= new Embed(this._options));
     }
@@ -83,6 +77,11 @@ export class TwelvelabsApiClient {
     }
 
     /**
+     *
+     * <Note title="Deprecation notice">
+     *   This endpoint will be sunset and removed. Use the [`POST`](/v1.3/api-reference/analyze-videos/analyze) method of the `/analyze` endpoint. Pass the [`response_format`](/v1.3/api-reference/analyze-videos/analyze#request.body.response_format) parameter to specify the format of the response as structured JSON. For migration instructions, see the [Release notes](/v1.3/docs/get-started/release-notes#predefined-formats-for-video-analysis-will-be-sunset-and-removed) page.
+     * </Note>
+     *
      * This endpoint analyzes videos and generates summaries, chapters, or highlights. Optionally, you can provide a prompt to customize the output.
      *
      * <Note title="Note">
@@ -125,8 +124,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -184,11 +183,11 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This endpoint analyzes videos and generates titles, topics, and hashtags.
-     *
-     * <Note title="Note">
-     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * <Note title="Deprecation notice">
+     *   This endpoint will be sunset and removed on February 15, 2026. Instead, use the [`POST`](/v1.3/api-reference/analyze-videos/analyze) method of the `/analyze` endpoint, passing the [`response_format`](/v1.3/api-reference/analyze-videos/analyze#request.body.response_format) parameter to specify the format of the response as structured JSON. For migration instructions, see the [Release notes](/v1.3/docs/get-started/release-notes#predefined-formats-for-video-analysis-will-be-sunset-and-removed) page.
      * </Note>
+     *
+     * This method analyzes videos and generates titles, topics, and hashtags.
      *
      * @param {TwelvelabsApi.GistRequest} request
      * @param {TwelvelabsApiClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -224,8 +223,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -283,118 +282,11 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * <Warning>
-     * This endpoint is deprecated. Use the [`/analyze`](/v1.3/api-reference/analyze-videos/analyze) endpoint instead, which provides identical functionality.
-     * </Warning>
-     *
-     *
-     * This endpoint generates open-ended texts based on your videos, including but not limited to tables of content, action items, memos, and detailed analyses.
-     *
-     * <Note title="Notes">
-     * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses) guide.
-     * </Note>
-     *
-     * @param {TwelvelabsApi.GenerateRequest} request
-     * @param {TwelvelabsApiClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
-     *
-     * @example
-     *     await client.generate({
-     *         videoId: "6298d673f1090f1100476d4c",
-     *         prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
-     *         temperature: 0.2,
-     *         stream: true
-     *     })
-     */
-    public generate(
-        request: TwelvelabsApi.GenerateRequest,
-        requestOptions?: TwelvelabsApiClient.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.GenerateResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__generate(request, requestOptions));
-    }
-
-    private async __generate(
-        request: TwelvelabsApi.GenerateRequest,
-        requestOptions?: TwelvelabsApiClient.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.GenerateResponse>> {
-        const _response = await core.fetcher({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.TwelvelabsApiEnvironment.Default,
-                "generate",
-            ),
-            method: "POST",
-            headers: {
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...(await this._getCustomAuthorizationHeaders()),
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: serializers.GenerateRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.GenerateResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.TwelvelabsApiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling POST /generate.");
-            case "unknown":
-                throw new errors.TwelvelabsApiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
-    }
-
-    /**
      * This endpoint analyzes your videos and creates fully customizable text based on your prompts, including but not limited to tables of content, action items, memos, and detailed analyses.
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses).
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Analyze videos](/v1.3/docs/guides/analyze-videos) page.
      * </Note>
      */
     public analyzeStream(
@@ -419,8 +311,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -496,7 +388,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Open-ended analysis](/v1.3/docs/guides/analyze-videos/open-ended-analysis#streaming-responses).
+     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Analyze videos](/v1.3/docs/guides/analyze-videos) page.
      * </Note>
      *
      * @param {TwelvelabsApi.AnalyzeRequest} request
@@ -555,8 +447,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.1.1",
+                "User-Agent": "twelvelabs-js/1.1.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
