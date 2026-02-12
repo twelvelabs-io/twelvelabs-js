@@ -72,6 +72,10 @@ export class V2 {
      *   - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1
      * </Accordion>
      *
+     * <Note title="Note">
+     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * </Note>
+     *
      * @param {TwelvelabsApi.embed.CreateEmbeddingsRequest} request
      * @param {V2.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -210,8 +214,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.2.0",
+                "User-Agent": "twelvelabs-js/1.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

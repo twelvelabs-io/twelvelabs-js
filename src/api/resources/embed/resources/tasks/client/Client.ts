@@ -93,8 +93,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.0-beta.1",
-                        "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                        "X-Fern-SDK-Version": "1.2.0",
+                        "User-Agent": "twelvelabs-js/1.2.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -170,13 +170,17 @@ export class Tasks {
      *
      * This method creates a new video embedding task that uploads a video to the platform and creates one or multiple video embeddings.
      *
+     * <Note title="Note">
+     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * </Note>
+     *
      * Upload options:
      * - **Local file**: Use the `video_file` parameter
      * - **Publicly accessible URL**: Use the `video_url` parameter.
      *
      * Specify at least one option. If both are provided, `video_url` takes precedence.
      *
-     * Your video files must meet the [format requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
+     * Your video files must meet the [requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements).
      * This endpoint allows you to upload files up to 2 GB in size.  To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
      *
      * <Note title="Notes">
@@ -250,8 +254,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.2.0",
+                "User-Agent": "twelvelabs-js/1.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -348,8 +352,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.2.0",
+                "User-Agent": "twelvelabs-js/1.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -458,8 +462,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0-beta.1",
-                "User-Agent": "twelvelabs-js/1.2.0-beta.1",
+                "X-Fern-SDK-Version": "1.2.0",
+                "User-Agent": "twelvelabs-js/1.2.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

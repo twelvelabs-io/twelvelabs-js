@@ -8,8 +8,6 @@ export * as multipartUpload from "./multipartUpload";
 export * from "./multipartUpload/types";
 export * as entityCollections from "./entityCollections";
 export * from "./entityCollections/types";
-export * as manageEntities from "./manageEntities";
-export * from "./manageEntities/types";
 export * as search from "./search";
 export * from "./search/types";
 export * as embed from "./embed";

@@ -5,7 +5,6 @@ export * from "./ForbiddenErrorBody";
 export * from "./SummarizeResponse";
 export * from "./GistRequestTypesItem";
 export * from "./Gist";
-export * from "./GenerateResponse";
 export * from "./CreatedAt";
 export * from "./UpdatedAt";
 export * from "./ExpiresAt";
