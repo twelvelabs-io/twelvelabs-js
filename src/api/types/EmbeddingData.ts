@@ -11,13 +11,14 @@ export interface EmbeddingData {
     /** The embedding vector for the content. */
     embedding: number[];
     /**
-     * The type of embedding generated.
+     * The modality used to generate this embedding.
      *
-     *  **Values**:
-     * - `visual`: Embedding based on visual content (video only)
-     * - `audio`: Embedding based on audio content
-     * - `transcription`: Embedding based on transcribed speech
-     * - `null`: For text and image embeddings
+     *   **Values**:
+     *  - `visual`: Embedding based on visual content (video only)
+     *  - `audio`: Embedding based on audio content
+     *  - `transcription`: Embedding based on transcribed speech
+     *  - `fused`: Embedding based on a combination of the modalities specified in the request. The platform returns this embedding only for video and audio content, and only when the `embedding_type` parameter in the request includes `fused_embedding`.
+     *  - `null`: For text and image embeddings
      */
     embeddingOption?: TwelvelabsApi.EmbeddingDataEmbeddingOption;
     /**

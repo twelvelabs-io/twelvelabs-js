@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * This field is required if `input_type` is `audio`.
+ * This field is required if the `input_type` parameter is `audio`.
  */
 export interface AudioInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;
@@ -46,4 +46,16 @@ export interface AudioInputRequest {
      * You can specify multiple scopes to generate embeddings at different levels.
      */
     embeddingScope?: TwelvelabsApi.AudioInputRequestEmbeddingScopeItem[];
+    /**
+     * Specifies how to structure the embedding. Include this parameter only when the `embedding_option` parameter contains at least two values.
+     *
+     * **Values**:
+     * - `separate_embedding`: Returns separate embeddings for each modality specified in the `embedding_option` parameter.
+     * - `fused_embedding`: Returns a single combined embedding that integrates all modalities into one vector.
+     *
+     * Specify both values to receive separate and fused embeddings in the same response.
+     *
+     * **Default**: `separate_embedding`.
+     */
+    embeddingType?: TwelvelabsApi.AudioInputRequestEmbeddingTypeItem[];
 }

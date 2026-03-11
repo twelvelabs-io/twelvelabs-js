@@ -9,6 +9,7 @@ import { MediaSource } from "./MediaSource";
 import { VideoSegmentation } from "./VideoSegmentation";
 import { VideoInputRequestEmbeddingOptionItem } from "./VideoInputRequestEmbeddingOptionItem";
 import { VideoInputRequestEmbeddingScopeItem } from "./VideoInputRequestEmbeddingScopeItem";
+import { VideoInputRequestEmbeddingTypeItem } from "./VideoInputRequestEmbeddingTypeItem";
 
 export const VideoInputRequest: core.serialization.ObjectSchema<
     serializers.VideoInputRequest.Raw,
@@ -26,6 +27,10 @@ export const VideoInputRequest: core.serialization.ObjectSchema<
         "embedding_scope",
         core.serialization.list(VideoInputRequestEmbeddingScopeItem).optional(),
     ),
+    embeddingType: core.serialization.property(
+        "embedding_type",
+        core.serialization.list(VideoInputRequestEmbeddingTypeItem).optional(),
+    ),
 });
 
 export declare namespace VideoInputRequest {
@@ -36,5 +41,6 @@ export declare namespace VideoInputRequest {
         segmentation?: VideoSegmentation.Raw | null;
         embedding_option?: VideoInputRequestEmbeddingOptionItem.Raw[] | null;
         embedding_scope?: VideoInputRequestEmbeddingScopeItem.Raw[] | null;
+        embedding_type?: VideoInputRequestEmbeddingTypeItem.Raw[] | null;
     }
 }

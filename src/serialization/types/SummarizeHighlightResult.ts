@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { SummarizeHighlightResultSummarizeType } from "./SummarizeHighlightResultSummarizeType";
 import { SummarizeHighlightResultHighlightsItem } from "./SummarizeHighlightResultHighlightsItem";
 import { TokenUsage } from "./TokenUsage";
 
@@ -12,6 +13,7 @@ export const SummarizeHighlightResult: core.serialization.ObjectSchema<
     serializers.SummarizeHighlightResult.Raw,
     TwelvelabsApi.SummarizeHighlightResult
 > = core.serialization.object({
+    summarizeType: core.serialization.property("summarize_type", SummarizeHighlightResultSummarizeType),
     id: core.serialization.string().optional(),
     highlights: core.serialization.list(SummarizeHighlightResultHighlightsItem).optional(),
     usage: TokenUsage.optional(),
@@ -19,6 +21,7 @@ export const SummarizeHighlightResult: core.serialization.ObjectSchema<
 
 export declare namespace SummarizeHighlightResult {
     export interface Raw {
+        summarize_type: SummarizeHighlightResultSummarizeType.Raw;
         id?: string | null;
         highlights?: SummarizeHighlightResultHighlightsItem.Raw[] | null;
         usage?: TokenUsage.Raw | null;

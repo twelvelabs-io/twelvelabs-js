@@ -16,7 +16,7 @@ This endpoint analyzes your videos and creates fully customizable text based on 
 
 <Note title="Notes">
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-- This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Analyze videos](/v1.3/docs/guides/analyze-videos) page.
+- This endpoint supports streaming responses.
 </Note>
 </dd>
 </dl>
@@ -1951,18 +1951,16 @@ Use this endpoint to search for relevant matches in an index using text, media, 
 **Media queries**:
 
 - Set the `query_media_type` parameter to the corresponding media type (example: `image`).
-- Specify either one of the following parameters:
+- Provide up to 10 images by specifying the following parameters multiple times:
     - `query_media_url`: Publicly accessible URL of your media file.
     - `query_media_file`: Local media file.
-      If both `query_media_url` and `query_media_file` are specified in the same request, `query_media_url` takes precedence.
+- Marengo 2.7 supports a single image per request.
 
 **Composed text and media queries** (Marengo 3.0 only):
 
 - Use the `query_text` parameter for your text query.
 - Set `query_media_type` to `image`.
-- Specify the image using either the `query_media_url` or the `query_media_file` parameter.
-
-    Example: Provide an image of a car and include "red color" in your query to find red instances of that car model.
+- Provide up to 10 images by specifying the `query_media_url` and `query_media_file` parameters multiple times.
 
 **Entity search** (Marengo 3.0 only and in beta):
 
@@ -2445,7 +2443,7 @@ This endpoint synchronously creates embeddings for multimodal content and return
 **When to use this endpoint**:
 
 - Create embeddings for text, images, audio, or video content
-- Get immediate results without waiting for background processing
+- Retrieve immediate results without waiting for background processing
 - Process audio or video content up to 10 minutes in duration
 
 **Do not use this endpoint for**:

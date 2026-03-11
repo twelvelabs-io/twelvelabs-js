@@ -5,13 +5,14 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Metadata for the media input. Available for image, text_image, audio, and video inputs.
+ * Metadata for the media input. Available for image, text_image, audio, video, and multi_input inputs.
  */
 export type EmbeddingMediaMetadata =
     | TwelvelabsApi.EmbeddingMediaMetadata.Image
     | TwelvelabsApi.EmbeddingMediaMetadata.TextImage
     | TwelvelabsApi.EmbeddingMediaMetadata.Audio
-    | TwelvelabsApi.EmbeddingMediaMetadata.Video;
+    | TwelvelabsApi.EmbeddingMediaMetadata.Video
+    | TwelvelabsApi.EmbeddingMediaMetadata.MultiInput;
 
 export namespace EmbeddingMediaMetadata {
     export interface Image extends TwelvelabsApi.EmbeddingImageMetadata {
@@ -28,5 +29,9 @@ export namespace EmbeddingMediaMetadata {
 
     export interface Video extends TwelvelabsApi.EmbeddingVideoMetadata {
         inputType: "video";
+    }
+
+    export interface MultiInput extends TwelvelabsApi.EmbeddingMultiInputMetadata {
+        inputType: "multi_input";
     }
 }

@@ -8,6 +8,8 @@ import * as TwelvelabsApi from "../index";
  * An object that represents the response from a summarize chapter operation.
  */
 export interface SummarizeChapterResult {
+    /** The type of summarize response. */
+    summarizeType: TwelvelabsApi.SummarizeChapterResultSummarizeType;
     /** Unique identifier of the response. */
     id?: string;
     /** An array that contains details about the detected chapters and their content. */

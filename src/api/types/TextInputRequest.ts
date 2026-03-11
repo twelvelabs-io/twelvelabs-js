@@ -3,7 +3,7 @@
  */
 
 /**
- * This field is required if `input_type` is `text`.
+ * This field is required if the `input_type` parameter is `text`.
  */
 export interface TextInputRequest {
     /** The text for which you wish to create an embedding. The maximul length is 500 tokens. */

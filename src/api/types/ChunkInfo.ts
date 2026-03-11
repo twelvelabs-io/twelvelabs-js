@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 export interface ChunkInfo {
-    /** The index of the chunk. The platform uses 1-based indexing, and this value matches the value of the [`chunk_index`](/v1.3/api-reference/multipart-uploads/create#response.body.upload_urls.chunk_index) field in the list of upload URLs. */
+    /** The index of the chunk. The platform uses 1-based indexing, and this value matches the value of the [`chunk_index`](/v1.3/api-reference/upload-content/multipart-uploads/create#response.body.upload_urls.chunk_index) field in the list of upload URLs. */
     index?: number;
     /**
      * The current status of this chunk. This field can take one of the following values:

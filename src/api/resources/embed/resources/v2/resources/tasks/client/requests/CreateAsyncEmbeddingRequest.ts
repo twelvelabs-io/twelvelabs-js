@@ -46,6 +46,20 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *             embeddingScope: ["clip", "asset"]
  *         }
  *     }
+ *
+ * @example
+ *     {
+ *         inputType: "video",
+ *         modelName: "marengo3.0",
+ *         video: {
+ *             mediaSource: {
+ *                 url: "https://user-bucket.com/video/long-video.mp4"
+ *             },
+ *             embeddingOption: ["visual", "audio"],
+ *             embeddingScope: ["clip", "asset"],
+ *             embeddingType: ["separate_embedding", "fused_embedding"]
+ *         }
+ *     }
  */
 export interface CreateAsyncEmbeddingRequest {
     /**

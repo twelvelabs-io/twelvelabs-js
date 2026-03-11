@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { SummarizeChapterResultSummarizeType } from "./SummarizeChapterResultSummarizeType";
 import { SummarizeChapterResultChaptersItem } from "./SummarizeChapterResultChaptersItem";
 import { TokenUsage } from "./TokenUsage";
 
@@ -12,6 +13,7 @@ export const SummarizeChapterResult: core.serialization.ObjectSchema<
     serializers.SummarizeChapterResult.Raw,
     TwelvelabsApi.SummarizeChapterResult
 > = core.serialization.object({
+    summarizeType: core.serialization.property("summarize_type", SummarizeChapterResultSummarizeType),
     id: core.serialization.string().optional(),
     chapters: core.serialization.list(SummarizeChapterResultChaptersItem).optional(),
     usage: TokenUsage.optional(),
@@ -19,6 +21,7 @@ export const SummarizeChapterResult: core.serialization.ObjectSchema<
 
 export declare namespace SummarizeChapterResult {
     export interface Raw {
+        summarize_type: SummarizeChapterResultSummarizeType.Raw;
         id?: string | null;
         chapters?: SummarizeChapterResultChaptersItem.Raw[] | null;
         usage?: TokenUsage.Raw | null;

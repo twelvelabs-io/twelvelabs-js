@@ -12,6 +12,7 @@ import { ImageInputRequest } from "../../../../../../types/ImageInputRequest";
 import { TextImageInputRequest } from "../../../../../../types/TextImageInputRequest";
 import { AudioInputRequest } from "../../../../../../types/AudioInputRequest";
 import { VideoInputRequest } from "../../../../../../types/VideoInputRequest";
+import { MultiInputRequest } from "../../../../../../types/MultiInputRequest";
 
 export const CreateEmbeddingsRequest: core.serialization.Schema<
     serializers.embed.CreateEmbeddingsRequest.Raw,
@@ -24,6 +25,7 @@ export const CreateEmbeddingsRequest: core.serialization.Schema<
     textImage: core.serialization.property("text_image", TextImageInputRequest.optional()),
     audio: AudioInputRequest.optional(),
     video: VideoInputRequest.optional(),
+    multiInput: core.serialization.property("multi_input", MultiInputRequest.optional()),
 });
 
 export declare namespace CreateEmbeddingsRequest {
@@ -35,5 +37,6 @@ export declare namespace CreateEmbeddingsRequest {
         text_image?: TextImageInputRequest.Raw | null;
         audio?: AudioInputRequest.Raw | null;
         video?: VideoInputRequest.Raw | null;
+        multi_input?: MultiInputRequest.Raw | null;
     }
 }

@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Required if the `input_type` parameter is `video`.
+ * This field is required if the `input_type` parameter is `video`.
  */
 export interface VideoInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;
@@ -50,4 +50,16 @@ export interface VideoInputRequest {
      * **Default**: `["clip", "asset"]`
      */
     embeddingScope?: TwelvelabsApi.VideoInputRequestEmbeddingScopeItem[];
+    /**
+     * Specifies how to structure the embedding. Include this parameter only when `embedding_option` contains at least two values.
+     *
+     * **Values**:
+     * - `separate_embedding`: Returns separate embeddings per modality specified in `embedding_option`
+     * - `fused_embedding`: Returns a single embedding that combines all modalities into one vector
+     *
+     * Specify both values to receive separate and fused embeddings in the same response.
+     *
+     * **Default**: `separate_embedding`.
+     */
+    embeddingType?: TwelvelabsApi.VideoInputRequestEmbeddingTypeItem[];
 }

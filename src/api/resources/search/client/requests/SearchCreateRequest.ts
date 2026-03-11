@@ -15,7 +15,15 @@ import * as fs from "fs";
 export interface SearchCreateRequest {
     /** The type of media you wish to use. This parameter is required for media queries. For example, to perform an image-based search, set this parameter to `image`. Use `query_text` together with this parameter when you want to perform a composed image+text search. */
     queryMediaType?: TwelvelabsApi.SearchCreateRequestQueryMediaType;
-    /** The publicly accessible URL of the media file you wish to use. This parameter is required for media queries if `query_media_file` is not provided. */
+    /**
+     * The publicly accessible URL of a media file to use as a query. This parameter is required for media queries if `query_media_file` is not provided.
+     *
+     * You can provide up to 10 images by specifying this parameter multiple times (Marengo 3.0 only):
+     * ```
+     * --form query_media_url=https://example.com/image1.jpg \
+     * --form query_media_url=https://example.com/image2.jpg
+     * ```
+     */
     queryMediaUrl?: string;
     queryMediaFile?: File | fs.ReadStream | Blob | undefined;
     /**
