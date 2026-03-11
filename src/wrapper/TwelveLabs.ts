@@ -17,8 +17,6 @@ export class TwelveLabs {
     public readonly assets: TwelvelabsApiClient["assets"];
     public readonly entityCollections: TwelvelabsApiClient["entityCollections"];
     public readonly multipartUpload: MultipartUploadWrapper;
-    public readonly summarize: TwelvelabsApiClient["summarize"];
-    public readonly gist: TwelvelabsApiClient["gist"];
     public readonly analyze: TwelvelabsApiClient["analyze"];
     public readonly analyzeStream: TwelvelabsApiClient["analyzeStream"];
 
@@ -36,8 +34,6 @@ export class TwelveLabs {
         this._options = clientOptions;
         this.client = new TwelvelabsApiClient(clientOptions);
 
-        this.summarize = this.client.summarize.bind(this.client);
-        this.gist = this.client.gist.bind(this.client);
         this.analyze = this.client.analyze.bind(this.client);
         this.analyzeStream = this.client.analyzeStream.bind(this.client);
         this.assets = this.client.assets;
