@@ -11,13 +11,15 @@
  * - `video`: Creates embeddings for a video file
  * - `image`: Creates embeddings for an image file
  * - `text`: Creates embeddings for text input
- * - `text_image`: Creates embeddings for text and an image.
+ * - `text_image`: Creates embeddings for text and an image
+ * - `multi_input`: Creates a single embedding from up to 10 images. You can optionally include text to provide context. To reference specific images in your text, use placeholders in the following format: `<@name>`, where `name` matches the `name` field of a media source
  */
-export type CreateEmbeddingsRequestInputType = "text" | "image" | "text_image" | "audio" | "video";
+export type CreateEmbeddingsRequestInputType = "text" | "image" | "text_image" | "audio" | "video" | "multi_input";
 export const CreateEmbeddingsRequestInputType = {
     Text: "text",
     Image: "image",
     TextImage: "text_image",
     Audio: "audio",
     Video: "video",
+    MultiInput: "multi_input",
 } as const;

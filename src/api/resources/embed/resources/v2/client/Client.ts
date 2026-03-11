@@ -48,7 +48,7 @@ export class V2 {
      *
      * **When to use this endpoint**:
      * - Create embeddings for text, images, audio, or video content
-     * - Get immediate results without waiting for background processing
+     * - Retrieve immediate results without waiting for background processing
      * - Process audio or video content up to 10 minutes in duration
      *
      * **Do not use this endpoint for**:
@@ -191,6 +191,69 @@ export class V2 {
      *             embeddingScope: ["asset"]
      *         }
      *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "video",
+     *         modelName: "marengo3.0",
+     *         video: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/video/clip.mp4"
+     *             },
+     *             embeddingOption: ["visual", "audio"],
+     *             embeddingScope: ["clip"],
+     *             embeddingType: ["separate_embedding", "fused_embedding"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.0",
+     *         multiInput: {
+     *             inputText: "A person cooking in the kitchen",
+     *             mediaSources: [{
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/person.jpg"
+     *                 }, {
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/kitchen.jpg"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.0",
+     *         multiInput: {
+     *             inputText: "A person wearing <@outfit> and holding <@accessory>",
+     *             mediaSources: [{
+     *                     name: "outfit",
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/outfit.jpg"
+     *                 }, {
+     *                     name: "accessory",
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/accessory.jpg"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.0",
+     *         multiInput: {
+     *             mediaSources: [{
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/image1.jpg"
+     *                 }, {
+     *                     mediaType: "image",
+     *                     base64String: "iVBORw0KGgoAAAANSUhEUgAA..."
+     *                 }]
+     *         }
+     *     })
      */
     public create(
         request: TwelvelabsApi.embed.CreateEmbeddingsRequest,
@@ -214,8 +277,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
+                "X-Fern-SDK-Version": "1.2.1",
+                "User-Agent": "twelvelabs-js/1.2.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

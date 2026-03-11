@@ -116,6 +116,87 @@ import * as TwelvelabsApi from "../../../../../../index";
  *
  * @example
  *     {
+ *         inputType: "video",
+ *         modelName: "marengo3.0",
+ *         video: {
+ *             mediaSource: {
+ *                 url: "https://user-bucket.com/video/clip.mp4"
+ *             },
+ *             embeddingOption: ["visual", "audio"],
+ *             embeddingScope: ["clip"],
+ *             embeddingType: ["separate_embedding", "fused_embedding"]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.0",
+ *         multiInput: {
+ *             inputText: "A person cooking in the kitchen",
+ *             mediaSources: [{
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/person.jpg"
+ *                 }, {
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/kitchen.jpg"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.0",
+ *         multiInput: {
+ *             inputText: "A person wearing <@outfit> and holding <@accessory>",
+ *             mediaSources: [{
+ *                     name: "outfit",
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/outfit.jpg"
+ *                 }, {
+ *                     name: "accessory",
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/accessory.jpg"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.0",
+ *         multiInput: {
+ *             mediaSources: [{
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/image1.jpg"
+ *                 }, {
+ *                     mediaType: "image",
+ *                     base64String: "iVBORw0KGgoAAAANSUhEUgAA..."
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "text",
+ *         modelName: "marengo3.0",
+ *         text: {
+ *             inputText: "man walking a dog"
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "text",
+ *         modelName: "marengo3.0",
+ *         text: {
+ *             inputText: "man walking a dog"
+ *         }
+ *     }
+ *
+ * @example
+ *     {
  *         inputType: "text",
  *         modelName: "marengo3.0",
  *         text: {
@@ -151,7 +232,8 @@ export interface CreateEmbeddingsRequest {
      * - `video`: Creates embeddings for a video file
      * - `image`: Creates embeddings for an image file
      * - `text`: Creates embeddings for text input
-     * - `text_image`: Creates embeddings for text and an image.
+     * - `text_image`: Creates embeddings for text and an image
+     * - `multi_input`: Creates a single embedding from up to 10 images. You can optionally include text to provide context. To reference specific images in your text, use placeholders in the following format: `<@name>`, where `name` matches the `name` field of a media source
      */
     inputType: TwelvelabsApi.embed.CreateEmbeddingsRequestInputType;
     /** The video understanding model to use. Only "marengo3.0" is supported. */
@@ -161,4 +243,5 @@ export interface CreateEmbeddingsRequest {
     textImage?: TwelvelabsApi.TextImageInputRequest;
     audio?: TwelvelabsApi.AudioInputRequest;
     video?: TwelvelabsApi.VideoInputRequest;
+    multiInput?: TwelvelabsApi.MultiInputRequest;
 }

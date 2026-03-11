@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * This field is required if `input_type` is `text_image`.
+ * This field is required if the `input_type` parameter is `text_image`.
  */
 export interface TextImageInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;

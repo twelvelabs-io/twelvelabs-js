@@ -85,8 +85,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.0",
-                        "User-Agent": "twelvelabs-js/1.2.0",
+                        "X-Fern-SDK-Version": "1.2.1",
+                        "User-Agent": "twelvelabs-js/1.2.1",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -240,6 +240,20 @@ export class Tasks {
      *             embeddingScope: ["clip", "asset"]
      *         }
      *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "video",
+     *         modelName: "marengo3.0",
+     *         video: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/video/long-video.mp4"
+     *             },
+     *             embeddingOption: ["visual", "audio"],
+     *             embeddingScope: ["clip", "asset"],
+     *             embeddingType: ["separate_embedding", "fused_embedding"]
+     *         }
+     *     })
      */
     public create(
         request: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequest,
@@ -263,8 +277,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
+                "X-Fern-SDK-Version": "1.2.1",
+                "User-Agent": "twelvelabs-js/1.2.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -363,8 +377,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
+                "X-Fern-SDK-Version": "1.2.1",
+                "User-Agent": "twelvelabs-js/1.2.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

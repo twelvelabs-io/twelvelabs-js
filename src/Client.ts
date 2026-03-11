@@ -7,8 +7,8 @@ import * as core from "./core";
 import * as TwelvelabsApi from "./api/index";
 import * as serializers from "./serialization/index";
 import urlJoin from "url-join";
-import * as errors from "./errors/index";
 import * as stream from "stream";
+import * as errors from "./errors/index";
 import { Tasks } from "./api/resources/tasks/client/Client";
 import { Indexes } from "./api/resources/indexes/client/Client";
 import { Assets } from "./api/resources/assets/client/Client";
@@ -77,216 +77,11 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     *
-     * <Note title="Deprecation notice">
-     *   This endpoint will be sunset and removed. Use the [`POST`](/v1.3/api-reference/analyze-videos/analyze) method of the `/analyze` endpoint. Pass the [`response_format`](/v1.3/api-reference/analyze-videos/analyze#request.body.response_format) parameter to specify the format of the response as structured JSON. For migration instructions, see the [Release notes](/v1.3/docs/get-started/release-notes#predefined-formats-for-video-analysis-will-be-sunset-and-removed) page.
-     * </Note>
-     *
-     * This endpoint analyzes videos and generates summaries, chapters, or highlights. Optionally, you can provide a prompt to customize the output.
-     *
-     * <Note title="Note">
-     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * </Note>
-     *
-     * @param {TwelvelabsApi.SummarizeRequest} request
-     * @param {TwelvelabsApiClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
-     *
-     * @example
-     *     await client.summarize({
-     *         videoId: "6298d673f1090f1100476d4c",
-     *         type: "summary",
-     *         prompt: "Generate a summary of this video for a social media post, up to two sentences.",
-     *         temperature: 0.2
-     *     })
-     */
-    public summarize(
-        request: TwelvelabsApi.SummarizeRequest,
-        requestOptions?: TwelvelabsApiClient.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.SummarizeResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__summarize(request, requestOptions));
-    }
-
-    private async __summarize(
-        request: TwelvelabsApi.SummarizeRequest,
-        requestOptions?: TwelvelabsApiClient.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.SummarizeResponse>> {
-        const _response = await core.fetcher({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.TwelvelabsApiEnvironment.Default,
-                "summarize",
-            ),
-            method: "POST",
-            headers: {
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...(await this._getCustomAuthorizationHeaders()),
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: serializers.SummarizeRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.SummarizeResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.TwelvelabsApiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling POST /summarize.");
-            case "unknown":
-                throw new errors.TwelvelabsApiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
-    }
-
-    /**
-     * <Note title="Deprecation notice">
-     *   This endpoint will be sunset and removed on February 15, 2026. Instead, use the [`POST`](/v1.3/api-reference/analyze-videos/analyze) method of the `/analyze` endpoint, passing the [`response_format`](/v1.3/api-reference/analyze-videos/analyze#request.body.response_format) parameter to specify the format of the response as structured JSON. For migration instructions, see the [Release notes](/v1.3/docs/get-started/release-notes#predefined-formats-for-video-analysis-will-be-sunset-and-removed) page.
-     * </Note>
-     *
-     * This method analyzes videos and generates titles, topics, and hashtags.
-     *
-     * @param {TwelvelabsApi.GistRequest} request
-     * @param {TwelvelabsApiClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link TwelvelabsApi.BadRequestError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
-     *
-     * @example
-     *     await client.gist({
-     *         videoId: "6298d673f1090f1100476d4c",
-     *         types: ["title", "topic"]
-     *     })
-     */
-    public gist(
-        request: TwelvelabsApi.GistRequest,
-        requestOptions?: TwelvelabsApiClient.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.Gist> {
-        return core.HttpResponsePromise.fromPromise(this.__gist(request, requestOptions));
-    }
-
-    private async __gist(
-        request: TwelvelabsApi.GistRequest,
-        requestOptions?: TwelvelabsApiClient.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.Gist>> {
-        const _response = await core.fetcher({
-            url: urlJoin(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.TwelvelabsApiEnvironment.Default,
-                "gist",
-            ),
-            method: "POST",
-            headers: {
-                "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
-                "X-Fern-Runtime": core.RUNTIME.type,
-                "X-Fern-Runtime-Version": core.RUNTIME.version,
-                ...(await this._getCustomAuthorizationHeaders()),
-                ...requestOptions?.headers,
-            },
-            contentType: "application/json",
-            requestType: "json",
-            body: serializers.GistRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
-            maxRetries: requestOptions?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.Gist.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.TwelvelabsApiError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        switch (_response.error.reason) {
-            case "non-json":
-                throw new errors.TwelvelabsApiError({
-                    statusCode: _response.error.statusCode,
-                    body: _response.error.rawBody,
-                    rawResponse: _response.rawResponse,
-                });
-            case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling POST /gist.");
-            case "unknown":
-                throw new errors.TwelvelabsApiError({
-                    message: _response.error.errorMessage,
-                    rawResponse: _response.rawResponse,
-                });
-        }
-    }
-
-    /**
      * This endpoint analyzes your videos and creates fully customizable text based on your prompts, including but not limited to tables of content, action items, memos, and detailed analyses.
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Analyze videos](/v1.3/docs/guides/analyze-videos) page.
+     * - This endpoint supports streaming responses.
      * </Note>
      */
     public analyzeStream(
@@ -311,8 +106,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
+                "X-Fern-SDK-Version": "1.2.1",
+                "User-Agent": "twelvelabs-js/1.2.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -388,7 +183,7 @@ export class TwelvelabsApiClient {
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses. For details on integrating this feature into your application, refer to the [Analyze videos](/v1.3/docs/guides/analyze-videos) page.
+     * - This endpoint supports streaming responses.
      * </Note>
      *
      * @param {TwelvelabsApi.AnalyzeRequest} request
@@ -447,8 +242,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.0",
-                "User-Agent": "twelvelabs-js/1.2.0",
+                "X-Fern-SDK-Version": "1.2.1",
+                "User-Agent": "twelvelabs-js/1.2.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

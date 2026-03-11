@@ -9,6 +9,7 @@ import { MediaSource } from "./MediaSource";
 import { AudioSegmentation } from "./AudioSegmentation";
 import { AudioInputRequestEmbeddingOptionItem } from "./AudioInputRequestEmbeddingOptionItem";
 import { AudioInputRequestEmbeddingScopeItem } from "./AudioInputRequestEmbeddingScopeItem";
+import { AudioInputRequestEmbeddingTypeItem } from "./AudioInputRequestEmbeddingTypeItem";
 
 export const AudioInputRequest: core.serialization.ObjectSchema<
     serializers.AudioInputRequest.Raw,
@@ -26,6 +27,10 @@ export const AudioInputRequest: core.serialization.ObjectSchema<
         "embedding_scope",
         core.serialization.list(AudioInputRequestEmbeddingScopeItem).optional(),
     ),
+    embeddingType: core.serialization.property(
+        "embedding_type",
+        core.serialization.list(AudioInputRequestEmbeddingTypeItem).optional(),
+    ),
 });
 
 export declare namespace AudioInputRequest {
@@ -36,5 +41,6 @@ export declare namespace AudioInputRequest {
         segmentation?: AudioSegmentation.Raw | null;
         embedding_option?: AudioInputRequestEmbeddingOptionItem.Raw[] | null;
         embedding_scope?: AudioInputRequestEmbeddingScopeItem.Raw[] | null;
+        embedding_type?: AudioInputRequestEmbeddingTypeItem.Raw[] | null;
     }
 }

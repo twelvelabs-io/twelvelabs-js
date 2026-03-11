@@ -8,6 +8,8 @@ import * as TwelvelabsApi from "../index";
  * An object that represents the response from a summarize highlight operation.
  */
 export interface SummarizeHighlightResult {
+    /** The type of summarize response. */
+    summarizeType: TwelvelabsApi.SummarizeHighlightResultSummarizeType;
     /** Unique identifier of the response. */
     id?: string;
     /** An array that contains the highlights. */

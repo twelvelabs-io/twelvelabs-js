@@ -9,8 +9,8 @@ import * as core from "../../../../../../core";
 export const CreateEmbeddingsRequestInputType: core.serialization.Schema<
     serializers.embed.CreateEmbeddingsRequestInputType.Raw,
     TwelvelabsApi.embed.CreateEmbeddingsRequestInputType
-> = core.serialization.enum_(["text", "image", "text_image", "audio", "video"]);
+> = core.serialization.enum_(["text", "image", "text_image", "audio", "video", "multi_input"]);
 
 export declare namespace CreateEmbeddingsRequestInputType {
-    export type Raw = "text" | "image" | "text_image" | "audio" | "video";
+    export type Raw = "text" | "image" | "text_image" | "audio" | "video" | "multi_input";
 }

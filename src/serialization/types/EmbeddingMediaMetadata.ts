@@ -9,6 +9,7 @@ import { EmbeddingImageMetadata } from "./EmbeddingImageMetadata";
 import { EmbeddingTextImageMetadata } from "./EmbeddingTextImageMetadata";
 import { EmbeddingAudioMetadata } from "./EmbeddingAudioMetadata";
 import { EmbeddingVideoMetadata } from "./EmbeddingVideoMetadata";
+import { EmbeddingMultiInputMetadata } from "./EmbeddingMultiInputMetadata";
 
 export const EmbeddingMediaMetadata: core.serialization.Schema<
     serializers.EmbeddingMediaMetadata.Raw,
@@ -19,6 +20,7 @@ export const EmbeddingMediaMetadata: core.serialization.Schema<
         text_image: EmbeddingTextImageMetadata,
         audio: EmbeddingAudioMetadata,
         video: EmbeddingVideoMetadata,
+        multi_input: EmbeddingMultiInputMetadata,
     })
     .transform<TwelvelabsApi.EmbeddingMediaMetadata>({
         transform: (value) => value,
@@ -30,7 +32,8 @@ export declare namespace EmbeddingMediaMetadata {
         | EmbeddingMediaMetadata.Image
         | EmbeddingMediaMetadata.TextImage
         | EmbeddingMediaMetadata.Audio
-        | EmbeddingMediaMetadata.Video;
+        | EmbeddingMediaMetadata.Video
+        | EmbeddingMediaMetadata.MultiInput;
 
     export interface Image extends EmbeddingImageMetadata.Raw {
         input_type: "image";
@@ -46,5 +49,9 @@ export declare namespace EmbeddingMediaMetadata {
 
     export interface Video extends EmbeddingVideoMetadata.Raw {
         input_type: "video";
+    }
+
+    export interface MultiInput extends EmbeddingMultiInputMetadata.Raw {
+        input_type: "multi_input";
     }
 }
