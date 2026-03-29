@@ -4,38 +4,48 @@
 [![NPM version](https://img.shields.io/npm/v/twelvelabs-js.svg)](https://npmjs.org/package/twelvelabs-js)
 ![NPM Downloads](https://img.shields.io/npm/dy/twelvelabs-js)
 
-> **NOTE**: This version includes breaking changes compared to the 0.4.x version. To use it in your application, you must update your code and thoroughly test the changes to ensure everything functions as expected before deploying it to production environments. If you want to use the legacy version, please refer to the [0.4 folder](./0.4).
+The TwelveLabs JavaScript SDK provides a set of intuitive classes and methods that streamline platform interaction, minimizing the need for boilerplate code.
 
-This SDK provides a convenient way to interact with the Twelve Labs Video Understanding Platform from an application written in JavaScript or TypeScript language. The SDK equips you with a set of intuitive methods that streamline the process of interacting with the platform, minimizing the need for boilerplate code.
+> **Note**: The examples in this guide show only the required parameters. For the complete guides, see the [Search](https://docs.twelvelabs.io/docs/guides/search) and [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos) pages.
 
 # Prerequisites
 
 Ensure that the following prerequisites are met before using the SDK:
 
 - [Node.js](https://nodejs.org/) or [Bun](https://bun.sh) must be installed on your machine.
-- You have an API key. If you don't have an account, please [sign up](https://playground.twelvelabs.io/) for a free account. Then, to retrieve your API key, go to the [API Key](https://playground.twelvelabs.io/dashboard/api-key) page, and select the **Copy** icon to the right of the key to copy it to your clipboard.
+- To use the platform, you need an API key:
+  1. If you don't have an account, [sign up](https://playground.twelvelabs.io/) for a free account.
+  2. Go to the [API Keys](https://playground.twelvelabs.io/dashboard/api-keys) page.
+  3. If you need to create a new key, select the **Create API Key** button. Enter a name and set the expiration period. The default is 12 months.
+  4. Select the **Copy** icon next to your key to copy it to your clipboard.
+- Your video files must meet the following requirements:
+    - **For this guide**: Files up to 4 GB when using publicly accessible URLs or 200 MB for local files
+    - **Model capabilities**: See the complete requirements for [Marengo](https://docs.twelvelabs.io/v1.3/docs/concepts/models/marengo#video-file-requirements) and [Pegasus](https://docs.twelvelabs.io/v1.3/docs/concepts/models/pegasus#video-file-requirements) for resolution, aspect ratio, and supported formats.
+
+    For upload size limits and processing modes, see the [Upload and processing methods](https://docs.twelvelabs.io/v1.3/docs/concepts/upload-methods) page.
 
 # Install the SDK
 
-Install the pre-release version of the `twelvelabs-js` package:
+Install the latest version of the `twelvelabs-js` package:
 
 ```sh
-yarn add twelvelabs-js # or npm install twelvelabs-js
+npm install twelvelabs-js
+# or yarn add twelvelabs-js
 ```
 
 # Initialize the SDK
 
-1. Import the "twelvelabs-js" package into your application:
+1. Import the SDK into your application:
 
-```js
-import { TwelveLabs } from "twelvelabs-js";
-```
+   ```js
+   import { TwelveLabs } from "twelvelabs-js";
+   ```
 
-1. Instantiate the SDK client with your API key:
+2. Instantiate the SDK client with your API key:
 
-```js
-const client = new TwelveLabs({ apiKey: "<YOUR_API_KEY>" });
-```
+   ```js
+   const client = new TwelveLabs({ apiKey: "<YOUR_API_KEY>" });
+   ```
 
 # Use the SDK
 
@@ -47,217 +57,246 @@ To get started with the SDK, follow these basic steps:
 
 ## Create an index
 
-To create an index, use the example code below, replacing "<YOUR_INDEX_NAME>" with the desired name for your index:
+Indexes store and organize your video data, allowing you to group related videos. When you create an index, configure which video understanding models process your videos and what modalities those models analyze.
+
+To create an index, call the `client.indexes.create` method with the following parameters:
+
+- **`indexName`**: The name of the index.
+- **`models`**: An array of models to enable. Each entry has two fields:
+  - **`modelName`**: The model to enable. Use `"marengo3.0"` for search or `"pegasus1.2"` for text generation.
+  - **`modelOptions`**: The modalities to analyze.
 
 ```js
-let index = await client.indexes.create({
-    indexName: "<YOUR_INDEX_NAME>",
-    models: [
-        {
-            modelName: "marengo3.0",
-            modelOptions: ["visual", "audio"],
-        },
-        {
-            modelName: "pegasus1.2",
-            modelOptions: ["visual", "audio"],
-        },
-    ],
+const index = await client.indexes.create({
+  indexName: "<YOUR_INDEX_NAME>",
+  models: [
+    { modelName: "marengo3.0", modelOptions: ["visual", "audio"] },
+    { modelName: "pegasus1.2", modelOptions: ["visual", "audio"] }
+  ]
 });
-
-console.log(`Created index: id=${index.id} name=${index.name}`);
+if (!index.id) {
+  throw new Error("Failed to create an index.");
+}
+console.log(`Created index: id=${index.id}`);
 ```
 
-Note the following about this example:
+The `client.indexes.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your new index.
 
-- The platform provides two distinct models, each serving unique purposes in multimodal video understanding.
-  - **Marengo**: An embedding model that analyzes multiple modalities in video content, including visuals, audio, and text, to provide a holistic understanding similar to human comprehension. Key use cases include searching using image or natural-language queries and creating embeddings for various downstream applications. The current version is Marengo 3.0.
-  - **Pegasus**: A generative model that analyzes multiple modalities to generate contextually relevant text based on the content of your videos. Key use cases include content summarization and timestamp identification. The current version is Pegasus 1.2.
-    This example enables both Marengo and Pegasus.
-- The `models.options` fields specify the modalities each video understanding model will process.
-- The models and the model options specified when you create an index apply to all the videos you upload to that index and cannot be changed.
-
-Note that the platform returns, among other information, a field named `id`, representing the unique identifier of your new index.
-
-For a description of each field in the request and response, see the [Create an index](https://docs.twelvelabs.io/v1.3/sdk-reference/node-js/manage-indexes#create-an-index) section.
+See the [Indexes](https://docs.twelvelabs.io/docs/concepts/indexes) page for more details.
 
 ## Upload videos
 
-Before you upload a video to the platform, ensure that it meets the following requirements:
+To upload a video, call the `client.assets.create` method with the following parameters:
 
-- **Video resolution**: The shorter side (width or height) must be at least 360 pixels and must not exceed 2160 pixels.
-- **Aspect ratio**: Must be one of the following (including both landscape and portrait variants): 1:1, 4:3, 4:5, 5:4, 16:9, 9:16, or 17:9.
-- **Video and audio formats**: The video files you wish to upload must be encoded in the video and audio formats listed on the [FFmpeg Formats Documentation](https://ffmpeg.org/ffmpeg-formats.html) page. For videos in other formats, contact us at [support@twelvelabs.io](mailto:support@twelvelabs.io).
-- **Duration**: For Marengo, it must be between 4 seconds and 4 hours (14,400s). For Pegasus, it must be between 4 seconds and 1 hour (3,600s).
-- **File size**: For Marengo, up to 4 GB is supported. For Pegasus, up to 2 GB is supported.
-
-To upload videos, use the example code below, replacing the following:
-
-- **`<YOUR_VIDEO_PATH>`**: with a string representing the path to the directory containing the video files you wish to upload.
-- **`<YOUR_INDEX_ID>`**: with a string representing the unique identifier of the index to which you want to upload your video.
+- **`method`**: Upload method. Use `"url"` for publicly accessible URLs or `"direct"` for local files.
+- **`url`** or **`file`**: The video URL or a readable stream. Use direct links to raw media files. Hosting platform links and cloud storage sharing links are not supported.
 
 ```js
-import { promises as fsPromises } from "fs";
-import * as path from "path";
-import * as fs from "fs";
+// Uncomment the next line if uploading a local file
+// import * as fs from "fs";
 
-const files = await fsPromises.readdir("<YOUR_VIDEO_PATH>");
-for (const file of files) {
-    const filePath = path.join("<YOUR_VIDEO_PATH>", file);
-    console.log(`Uploading ${filePath}`);
-    const task = await client.tasks.create({
-        indexId: "<YOUR_INDEX_ID>",
-        videoFile: fs.createReadStream(filePath),
-    });
-    console.log(`Created task: id=${task.id}`);
-    const completedTask = await client.tasks.waitForDone(task.id, {
-        callback: (task) => {
-            console.log(`  Status=${task.status}`);
-        },
-    });
-    if (completedTask.status !== "ready") {
-        throw new Error(`Indexing failed with status ${completedTask.status}`);
-    }
-    console.log(`Uploaded ${filePath}. The unique identifier of your video is ${completedTask.videoId}`);
+const asset = await client.assets.create({
+  method: "url",
+  url: "<YOUR_VIDEO_URL>"
+  // Or use method: "direct" and file: fs.createReadStream("<PATH_TO_VIDEO_FILE>") to upload a local file.
+});
+console.log(`Created asset: id=${asset.id}`);
+```
+
+The `client.assets.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your asset. Use this identifier in subsequent steps.
+
+## Index your video
+
+To index your video, call the `client.indexes.indexedAssets.create` method with the following parameters:
+
+- **`indexId`**: The unique identifier of your index.
+- **`assetId`**: The unique identifier of the asset to index.
+
+```js
+let indexedAsset = await client.indexes.indexedAssets.create(index.id, {
+  assetId: asset.id
+});
+console.log(`Created indexed asset: id=${indexedAsset.id}`);
+```
+
+The `client.indexes.indexedAssets.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your indexed asset.
+
+## Monitor the indexing process
+
+The platform indexes videos asynchronously. To monitor the indexing process, call the `client.indexes.indexedAssets.retrieve` method with the following parameters:
+
+- **`indexId`**: The unique identifier of your index.
+- **`indexedAssetId`**: The unique identifier of your indexed asset.
+
+```js
+console.log("Waiting for indexing to complete.");
+while (true) {
+  indexedAsset = await client.indexes.indexedAssets.retrieve(
+    index.id,
+    indexedAsset.id
+  );
+  console.log(`  Status=${indexedAsset.status}`);
+  if (indexedAsset.status === "ready") {
+    console.log("Indexing complete!");
+    break;
+  } else if (indexedAsset.status === "failed") {
+    throw new Error("Indexing failed");
+  }
+  await new Promise(resolve => setTimeout(resolve, 5000));
 }
 ```
 
-For a description of each field in the request and response, see the [Create a video indexing task](https://docs.twelvelabs.io/v1.3/sdk-reference/node-js/upload-videos#create-a-video-indexing-task) section.
+The `client.indexes.indexedAssets.retrieve` method returns an object that includes, among other information, a field named `status` representing the status of the indexing process. Poll this method until `status` is `"ready"` before performing downstream tasks.
 
 ## Perform downstream tasks
 
-The sections below show how you can perform the most common downstream tasks. See [our documentation](https://docs.twelvelabs.io/docs) for a complete list of all the features the Twelve Labs Understanding Platform provides.
+The sections below show the most common downstream tasks. See [our documentation](https://docs.twelvelabs.io/docs) for the complete list of features the platform provides.
 
 ### Search
 
-To search for relevant video content, you can use either text or images as queries:
+Use natural language, images, or both to find matching video segments. Search operates within a single index.
 
-- **Text queries**: Use natural language to find video segments matching specific keywords or phrases.
-- **Image queries**: Use images to find video segments that are semantically similar to the provided images.
+**Text queries**
 
-**Search using text queries**
+To search using a text query, call the `client.search.query` method with the following parameters:
 
-To perform search requests using text queries, use the example code below, replacing the following:
-
-- **`<YOUR_INDEX_ID>`**: with a string representing the unique identifier of your index.
-- **`<YOUR_QUERY>`**: with a string representing your search query. Note that the API supports full natural language-based search. The following examples are valid queries: "birds flying near a castle," "sun shining on water," and "an officer holding a child's hand."
-- **`[<YOUR_SEARCH_OPTIONS>]`**: with an array of strings that specifies the sources of information the platform uses when performing a search. For example, to search based on visual and audio cues, use `["visual", "audio"]`. Note that the search options you specify must be a subset of the model options used when you created the index. For more details, see the [Search options](https://docs.twelvelabs.io/v1.3/docs/concepts/modalities#search-options) section.
+- **`queryText`**: Natural language query. The maximum length of a query is 500 tokens.
+- **`searchOptions`**: Modalities to search. Valid values: `"visual"`, `"audio"`, `"transcription"` (spoken words). See the [Search options](https://docs.twelvelabs.io/docs/concepts/modalities#search-options) page for details.
 
 ```js
-let searchResults = await client.search.query({
-    indexId: "<YOUR_INDEX_ID>",
-    queryText: "<YOUR_QUERY>",
-    searchOptions: ["<YOUR_SEARCH_OPTIONS>"],
+const searchResults = await client.search.query({
+  indexId: index.id,
+  queryText: "<YOUR_QUERY>",
+  searchOptions: ["visual", "audio"]
 });
-
+let resultIndex = 0;
 for await (const clip of searchResults) {
-    console.log(
-        `video_id=${clip.videoId} score=${clip.score} start=${clip.start} end=${clip.end} confidence=${clip.confidence}`,
-    );
+  resultIndex++;
+  console.log(`Result ${resultIndex}: videoId=${clip.videoId} rank=${clip.rank} start=${clip.start}s end=${clip.end}s`);
 }
 ```
 
-Note that the response contains, among other information, the following fields:
+The `client.search.query` method returns an async iterable where each item contains, among other information, the following fields:
 
-- `videoId`: The unique identifier of the video that matched your search terms.
-- `score`: A quantitative value determined by the AI model representing the level of confidence that the results match your search terms.
-- `start`: The start time of the matching video clip, expressed in seconds.
-- `end`: The end time of the matching video clip, expressed in seconds.
-- `confidence`: A qualitative indicator based on the value of the score field. This field can take one of the following values:
-    - `high`
-    - `medium`
-    - `low`
+- `videoId`: The unique identifier of the matching video.
+- `rank`: The relevance ranking (1 = most relevant).
+- `start`, `end`: The start and end time of the matching clip, expressed in seconds.
 
-  **Note:** The `confidence` field is deprecated for indexes created with the Marengo 3.0 model.
-- `rank`: Indicates the rank of the matched clip based on search relevance. 
+**Image queries**
 
-For a description of each field in the request and response, see the [Make a search request](https://docs.twelvelabs.io/v1.3/sdk-reference/node-js/search#make-a-search-request) page.
+To search using an image query, call the `client.search.query` method with the following parameters:
 
-**Search using image queries**
-
-You can provide images as local files or publicly accessible URLs. Use the `queryMediaFile` parameter for local image files and the `queryMediaUrl` parameter for publicly accessible URLs.
-
-To perform a search request using image queries, use the example code below, replacing the following:
-
-- **`<YOUR_INDEX_ID>`**: with a string representing the unique identifier of your index.
-- **`<YOUR_FILE_PATH>`**: with a string representing the path of the image file you wish to provide.
-- **`[<YOUR_SEARCH_OPTIONS>]`**: with an array of strings that specifies the sources of information the platform uses when performing a search. For example, to search based on visual cues, use `["visual"]`. Note that the search options you specify must be a subset of the model options used when you created the index. For more details, see the [Search options](https://docs.twelvelabs.io/v1.3/docs/concepts/modalities#search-options) section.
+- **`queryMediaType`**: Must be `"image"`.
+- **`queryMediaFile`**, **`queryMediaUrl`**, **`queryMediaFiles`**, or **`queryMediaUrls`**: The image or images to use as a query (up to 10 total). Provide at least one of the following:
+  - _(Optional)_ **`queryMediaFile`**: A readable stream. Use `fs.createReadStream("<PATH>")` to open a local file.
+  - _(Optional)_ **`queryMediaUrl`**: The publicly accessible URL of your image file.
+  - _(Optional)_ **`queryMediaFiles`**: A list of readable streams.
+  - _(Optional)_ **`queryMediaUrls`**: A list of publicly accessible URLs.
 
 ```js
-let searchResults = await client.search.query({
-    indexId: "<YOUR_INDEX_ID>",
-    queryMediaType: "image",
-    queryMediaFile: "<YOUR_FILE_PATH>", # Use queryMediaUrl instead to provide a file from a publicly accessible URL.
-    searchOptions: ["visual"],
+// import * as fs from "fs";
+
+const searchResults = await client.search.query({
+  indexId: index.id,
+  queryMediaType: "image",
+  queryMediaUrl: "<YOUR_IMAGE_URL>",
+  // Or use queryMediaFile: fs.createReadStream("<PATH_TO_IMAGE_FILE>") for a local file.
+  // Or use queryMediaUrls: ["<URL_1>", "<URL_2>"] for multiple URLs.
+  // Or use queryMediaFiles: [fs.createReadStream("<FILE_1>"), fs.createReadStream("<FILE_2>")] for multiple local files.
+  searchOptions: ["visual"]
 });
+let resultIndex = 0;
+for await (const clip of searchResults) {
+  resultIndex++;
+  console.log(`Result ${resultIndex}: videoId=${clip.videoId} rank=${clip.rank} start=${clip.start}s end=${clip.end}s`);
+}
+```
+
+The response is similar to that received when using text queries.
+
+**Composed queries**
+
+Combine up to 10 images with text to narrow results. For example, provide an image of a car and add "red color" to find only red instances of that vehicle.
+
+To perform a composed query, call the `client.search.query` method with the following parameters:
+
+- **`queryMediaFile`**, **`queryMediaUrl`**, **`queryMediaFiles`**, or **`queryMediaUrls`**: The image or images to use as a query (up to 10 total). Provide at least one of the following:
+  - _(Optional)_ **`queryMediaFile`**: A readable stream. Use `fs.createReadStream("<PATH>")` to open a local file.
+  - _(Optional)_ **`queryMediaUrl`**: The publicly accessible URL of your image file.
+  - _(Optional)_ **`queryMediaFiles`**: A list of readable streams.
+  - _(Optional)_ **`queryMediaUrls`**: A list of publicly accessible URLs.
+- **`queryText`**: Text that refines the image query.
+
+```js
+// import * as fs from "fs";
+
+const searchResults = await client.search.query({
+  indexId: index.id,
+  queryMediaType: "image",
+  queryMediaUrl: "<YOUR_IMAGE_URL>",
+  // Or use queryMediaFile: fs.createReadStream("<PATH_TO_IMAGE_FILE>") for a local file.
+  // Or use queryMediaUrls: ["<URL_1>", "<URL_2>"] for multiple URLs.
+  // Or use queryMediaFiles: [fs.createReadStream("<FILE_1>"), fs.createReadStream("<FILE_2>")] for multiple local files.
+  queryText: "<YOUR_QUERY>",
+  searchOptions: ["visual"]
+});
+let resultIndex = 0;
+for await (const clip of searchResults) {
+  resultIndex++;
+  console.log(`Result ${resultIndex}: videoId=${clip.videoId} rank=${clip.rank} start=${clip.start}s end=${clip.end}s`);
+}
 ```
 
 The response is similar to that received when using text queries.
 
 ### Analyze videos
 
-The Twelve Labs Video Understanding Platform offers three distinct endpoints tailored to meet various requirements. Each endpoint has been designed with specific levels of flexibility and customization to accommodate different needs.
+The platform uses a multimodal approach to analyze video content, processing visuals, sounds, spoken words, and on-screen text. Use a custom prompt to generate summaries, extract insights, answer questions, or produce structured output.
 
-Note the following about using these endpoints:
+Note the following about using these methods:
 
-- The Pegasus video understanding model must be enabled for the index to which your video has been uploaded.
-- Your prompts must be instructive or descriptive, and you can also phrase them as questions.
-- The maximum length of a prompt is 2000 tokens.
+- The Pegasus model must be enabled for the index.
+- Your prompts can be instructive or descriptive, or you can phrase them as questions.
+- The maximum length of a prompt is 2,000 tokens.
 
-#### Titles, topics, and hashtags
+**Streaming responses**
 
-To analyze videos and generate titles, topics, and hashtags use the example code below, replacing the following:
+Streaming delivers text fragments in real-time. Use it for live transcription or when you need immediate output.
 
-- **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
+To analyze a video with streaming responses, call the `client.analyzeStream` method with the following parameters:
 
-```js
-const gist = await client.gist(task.videoId, ["title", "topic", "hashtag"]);
-console.log(`Title: ${gist.title}\nTopics=${gist.topics}\nHashtags=${gist.hashtags}`);
-```
-
-#### Summaries, chapters, and highlights
-
-To generate summaries, chapters, and highlights, use the example code below, replacing the following:
-
-- **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
-- **`<TYPE>`**: with a string representing the type of text the platform should generate. This parameter can take one of the following values: "summary", "chapter", or "highlight".
-- _(Optional)_ **`<YOUR_PROMPT>`**: with a string that provides context for the summarization task, such as the target audience, style, tone of voice, and purpose. Example: "Generate a summary in no more than 5 bullet points."
+- **`videoId`**: The unique identifier of the indexed asset.
+- **`prompt`**: Guides text generation, and it can be instructive, descriptive, or a question. The maximum length is 2,000 tokens.
 
 ```js
-const summaryResponse = await client.summarize({
-    videoId: "<YOUR_VIDEO_ID>",
-    type: "<TYPE>",
-    prompt: "<YOUR_PROMPT>", // Optional
+const textStream = await client.analyzeStream({
+  videoId: indexedAsset.id,
+  prompt: "<YOUR_PROMPT>"
 });
-
-if (summaryResponse.summarizeType === "summary") {
-    console.log(`Summary: ${summaryResponse.summary}`);
-} else if (summaryResponse.summarizeType === "chapter") {
-    for (const chapter of summaryResponse.chapters) {
-        console.log(`Chapter: ${chapter.chapterNumber} - ${chapter.chapterTitle}`);
-    }
-} else if (summaryResponse.summarizeType === "highlight") {
-    for (const highlight of summaryResponse.highlights) {
-        console.log(`Highlight: ${highlight.highlight}`);
-    }
+for await (const text of textStream) {
+  if ("text" in text) {
+    console.log(text.text);
+  }
 }
 ```
 
-For a description of each field in the request and response, see the [Summaries, chapters, or highlights](https://docs.twelvelabs.io/v1.3/sdk-reference/node-js/analyze-videos#summaries-chapters-and-highlights) page.
+The `client.analyzeStream` method returns an async iterable of objects. Filter for items that contain the `text` field to get the generated text fragments.
 
-#### Open-ended analysis
+**Non-streaming responses**
 
-To perform open-ended analysis and generate tailored text outputs based on your prompts, use the example code below, replacing the following:
-
-- **`<YOUR_VIDEO_ID>`**: with a string representing the unique identifier of your video.
-- **`<YOUR_PROMPT>`**: with a string that guides the model on the desired format or content. The maximum length of the prompt is 2000 tokens. Example: "I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks."
+Non-streaming returns the complete text in a single response. Use it for reports or summaries where you need the full result at once. Call the `client.analyze` method with the same parameters as `client.analyzeStream`.
 
 ```js
-const analysis = await client.analyze({
-    videoId: "<YOUR_VIDEO_ID>",
-    prompt: "<YOUR_PROMPT>",
+const result = await client.analyze({
+  videoId: indexedAsset.id,
+  prompt: "<YOUR_PROMPT>"
 });
-console.log(`Open-ended analysis: ${analysis.data}`);
+console.log(result.data);
 ```
+
+The `client.analyze` method returns an object where the `data` field contains the complete generated text string (up to 4,096 tokens).
+
+For the complete guide, see the [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos) page.
 
 ## Error Handling
 
@@ -277,19 +316,20 @@ The SDK includes a set of exceptions that are mapped to specific HTTP status cod
 The following example shows how you can handle specific HTTP errors in your application:
 
 ```js
+import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
+
+const client = new TwelveLabs({ apiKey: process.env.TWELVELABS_API_KEY });
 try {
-    let index = await client.indexes.create({
-        indexName: "<YOUR_INDEX_NAME>",
-        models: [
-            {
-                modelName: "marengo3.0",
-                modelOptions: ["visual", "audio"],
-            },
-        ],
-    });
-    console.log(`Created index: id=${index.id} name=${index.indexName} models=${JSON.stringify(index.models)}`);
+  const indexes = await client.indexes.list();
+  console.log(indexes);
 } catch (e) {
-    console.log(e);
+  if (e instanceof TwelvelabsApi.BadRequestError) {
+    console.log("Bad request.");
+  } else if (e instanceof TwelvelabsApi.NotFoundError) {
+    console.log("Not found.");
+  } else {
+    console.log(`An error occurred: ${e}`);
+  }
 }
 ```
 
