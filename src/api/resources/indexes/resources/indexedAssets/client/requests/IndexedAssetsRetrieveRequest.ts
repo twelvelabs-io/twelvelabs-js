@@ -12,11 +12,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  */
 export interface IndexedAssetsRetrieveRequest {
     /**
-     * Specifies which types of embeddings to retrieve. Values vary depending on the version of the model:
-     * - **Marengo 3.0**: `visual`, `audio`, `transcription`.
-     * - **Marengo 2.7**: `visual-text`, `audio`.
-     *
-     * For details, see the [Embedding options](/v1.3/docs/concepts/modalities#embedding-options) section.
+     * Specifies which types of embeddings to retrieve. Values: `visual`, `audio`, `transcription`. For details, see the [Embedding options](/v1.3/docs/concepts/modalities#embedding-options) section.
      *
      * <Note title="Note">
      * To retrieve embeddings for a video, it must be indexed using the Marengo video understanding model. For details on enabling this model for an index, see the [Create an index](/reference/create-index) page.

@@ -3,7 +3,7 @@
  */
 
 /**
- * The model you wish to use. Only `"marengo3.0"` is supported.
+ * The model you wish to use. Value: `"marengo3.0"`.
  */
 export type CreateAsyncEmbeddingRequestModelName = "marengo3.0";
 export const CreateAsyncEmbeddingRequestModelName = {

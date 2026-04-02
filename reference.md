@@ -12,11 +12,28 @@
 <dl>
 <dd>
 
-This endpoint analyzes your videos and creates fully customizable text based on your prompts, including but not limited to tables of content, action items, memos, and detailed analyses.
+This method synchronously analyzes your videos and generates fully customizable text based on your prompts.
+
+<Accordion title="Input requirements">
+- Minimum duration: 4 seconds
+- Maximum duration: 1 hour
+- Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
+- Resolution: 360x360 to 5184x2160 pixels
+- Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
+</Accordion>
+
+**When to use this method**:
+
+- Analyze videos up to 1 hour
+- Retrieve immediate results without waiting for asynchronous processing
+- Stream text fragments in real-time for immediate processing and feedback
+
+**Do not use this method for**:
+
+- Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
 
 <Note title="Notes">
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-- This endpoint supports streaming responses.
 </Note>
 </dd>
 </dl>
@@ -1874,7 +1891,7 @@ Parameters for embeddings:
 <Note title="Notes">
 - The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
 - You can create multiple types of embeddings in a single API call.
-- Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/create-embeddings-v1/text-image-audio-embeddings/create-text-image-audio-embeddings) from these 
+- Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/create-embeddings-v1/text-image-audio-embeddings/create-text-image-audio-embeddings) from these
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
 </dd>
@@ -1954,15 +1971,12 @@ Use this endpoint to search for relevant matches in an index using text, media, 
 - Provide up to 10 images by specifying the following parameters multiple times:
     - `query_media_url`: Publicly accessible URL of your media file.
     - `query_media_file`: Local media file.
-- Marengo 2.7 supports a single image per request.
-
-**Composed text and media queries** (Marengo 3.0 only):
-
+      **Composed text and media queries**:
 - Use the `query_text` parameter for your text query.
 - Set `query_media_type` to `image`.
 - Provide up to 10 images by specifying the `query_media_url` and `query_media_file` parameters multiple times.
 
-**Entity search** (Marengo 3.0 only and in beta):
+**Entity search** (beta):
 
 - To find a specific person in your videos, enclose the unique identifier of the entity you want to find in the `query_text` parameter.
 
@@ -2088,6 +2102,308 @@ await client.search.retrieve("1234567890", {
 <dd>
 
 **requestOptions:** `Search.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## AnalyzeAsync Tasks
+
+<details><summary><code>client.analyzeAsync.tasks.<a href="/src/api/resources/analyzeAsync/resources/tasks/client/Client.ts">list</a>({ ...params }) -> TwelvelabsApi.TasksListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of the analysis tasks in your account. The platform returns your analysis tasks sorted by creation date, with the newest at the top of the list.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.tasks.list({
+    page: 1,
+    pageLimit: 10,
+    status: "queued",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.analyzeAsync.TasksListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.tasks.<a href="/src/api/resources/analyzeAsync/resources/tasks/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.CreateAnalyzeTaskResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method asynchronously analyzes your videos and generates fully customizable text based on your prompts.
+
+<Accordion title="Input requirements">
+- Minimum duration: 4 seconds
+- Maximum duration: 2 hours
+- Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
+- Resolution: 360x360 to 5184x2160 pixels
+- Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
+</Accordion>
+
+**When to use this method**:
+
+- Analyze videos longer than 1 hour
+- Process videos asynchronously without blocking your application
+
+**Do not use this method for**:
+
+- Videos for which you need immediate results or real-time streaming. Use the [`POST`](/v1.3/api-reference/analyze-videos/sync-analysis) method of the `/analyze` endpoint instead.
+
+Analyzing videos asynchronously requires three steps:
+
+1. Create an analysis task using this method. The platform returns a task ID.
+2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`.
+3. Retrieve the results from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
+
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+</Note>
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.tasks.create({
+    video: {
+        type: "url",
+        url: "https://example.com/video.mp4",
+    },
+    prompt: "Generate a detailed summary of this video in 3-4 sentences",
+    temperature: 0.2,
+    maxTokens: 1000,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.tasks.<a href="/src/api/resources/analyzeAsync/resources/tasks/client/Client.ts">retrieve</a>(taskId) -> TwelvelabsApi.AnalyzeTaskResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves the status and results of an analysis task.
+
+**Task statuses**:
+
+- `queued`: The task is waiting to be processed.
+- `pending`: The task is queued and waiting to start.
+- `processing`: The platform is analyzing the video.
+- `ready`: Processing is complete. Results are available in the response.
+- `failed`: The task failed. No results were generated.
+
+Poll this method until `status` is `ready` or `failed`. When `status` is `ready`, use the results from the response.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskId:** `string` — The unique identifier of the analysis task.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.tasks.<a href="/src/api/resources/analyzeAsync/resources/tasks/client/Client.ts">delete</a>(taskId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method deletes an analysis task. You can only delete tasks that are not currently being processed.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.tasks.delete("64f8d2c7e4a1b37f8a9c5d12");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskId:** `string` — The unique identifier of the analyze task.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Tasks.RequestOptions`
 
 </dd>
 </dl>
@@ -2436,10 +2752,6 @@ await client.embed.tasks.retrieve("663da73b31cdd0c1f638a8e6");
 
 This endpoint synchronously creates embeddings for multimodal content and returns the results immediately in the response.
 
-<Note title="Note">
-  This method only supports Marengo version 3.0 or newer.
-</Note>
-
 **When to use this endpoint**:
 
 - Create embeddings for text, images, audio, or video content
@@ -2627,10 +2939,6 @@ while (page.hasNextPage()) {
 <dd>
 
 This endpoint creates embeddings for audio and video content asynchronously.
-
-<Note title="Note">
-  This method only supports Marengo version 3.0 or newer.
-</Note>
 
 **When to use this endpoint**:
 
@@ -4095,7 +4403,7 @@ await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f
 
 <Info>This method will be deprecated in a future version. New implementations should use the [Delete an indexed asset](/v1.3/api-reference/index-content/delete) method.</Info>
 
-This method deletes all the information about the specified video. This action cannot be undone.
+This method deletes all the information about the specified indexed video. This action cannot be undone.
 
 </dd>
 </dl>

@@ -85,8 +85,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.1",
-                        "User-Agent": "twelvelabs-js/1.2.1",
+                        "X-Fern-SDK-Version": "1.2.2",
+                        "User-Agent": "twelvelabs-js/1.2.2",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -158,10 +158,6 @@ export class Tasks {
 
     /**
      * This endpoint creates embeddings for audio and video content asynchronously.
-     *
-     * <Note title="Note">
-     *   This method only supports Marengo version 3.0 or newer.
-     * </Note>
      *
      * **When to use this endpoint**:
      * - Process audio or video files longer than 10 minutes
@@ -277,8 +273,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -377,8 +373,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

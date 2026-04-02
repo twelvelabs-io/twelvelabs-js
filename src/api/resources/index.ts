@@ -10,6 +10,7 @@ export * as entityCollections from "./entityCollections";
 export * from "./entityCollections/types";
 export * as search from "./search";
 export * from "./search/types";
+export * as analyzeAsync from "./analyzeAsync";
 export * as embed from "./embed";
 export * from "./tasks/client/requests";
 export * from "./indexes/client/requests";

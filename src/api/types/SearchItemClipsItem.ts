@@ -5,10 +5,8 @@
 import * as TwelvelabsApi from "../index";
 
 export interface SearchItemClipsItem {
-    score?: TwelvelabsApi.ScoreSearchTerms;
     start?: TwelvelabsApi.StartTime;
     end?: TwelvelabsApi.EndTime;
-    confidence?: TwelvelabsApi.Confidence;
     rank?: TwelvelabsApi.Rank;
     thumbnailUrl?: TwelvelabsApi.ThumbnailUrl;
     /** A transcription of the spoken words that are captured in the clip. */

@@ -15,7 +15,6 @@ export interface TasksCreateRequest {
     /**
      * The name of the model you want to use. The following models are available:
      *   - `marengo3.0`: Enhanced model with sports intelligence and extended content support.
-     *   - `Marengo-retrieval-2.7`: **Deprecation notice**: Starting mid-March 2026, your videos will be automatically reindexed to Marengo 3.0. Marengo 2.7 will be deprecated once reindexing completes. See the [Migration guide](/v1.3/docs/get-started/migration-guide) for details.
      */
     modelName: string;
     videoFile?: File | fs.ReadStream | Blob | undefined;

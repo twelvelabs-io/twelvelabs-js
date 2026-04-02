@@ -70,7 +70,7 @@ export interface CreateAsyncEmbeddingRequest {
      * - `video`: Video content
      */
     inputType: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestInputType;
-    /** The model you wish to use. Only `"marengo3.0"` is supported. */
+    /** The model you wish to use. Value: `"marengo3.0"`. */
     modelName: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestModelName;
     audio?: TwelvelabsApi.AudioInputRequest;
     video?: TwelvelabsApi.VideoInputRequest;

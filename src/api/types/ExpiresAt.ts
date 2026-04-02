@@ -3,6 +3,6 @@
  */
 
 /**
- * A string representing the date and time, in RFC 3339 format (“YYYY-MM-DDTHH:mm:ssZ”), when the resource will expire.
+ * A string representing the date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the resource will expire.
  */
 export type ExpiresAt = Date;

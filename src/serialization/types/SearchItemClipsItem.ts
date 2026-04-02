@@ -5,10 +5,8 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { ScoreSearchTerms } from "./ScoreSearchTerms";
 import { StartTime } from "./StartTime";
 import { EndTime } from "./EndTime";
-import { Confidence } from "./Confidence";
 import { Rank } from "./Rank";
 import { ThumbnailUrl } from "./ThumbnailUrl";
 import { UserMetadata } from "./UserMetadata";
@@ -17,10 +15,8 @@ export const SearchItemClipsItem: core.serialization.ObjectSchema<
     serializers.SearchItemClipsItem.Raw,
     TwelvelabsApi.SearchItemClipsItem
 > = core.serialization.object({
-    score: ScoreSearchTerms.optional(),
     start: StartTime.optional(),
     end: EndTime.optional(),
-    confidence: Confidence.optional(),
     rank: Rank.optional(),
     thumbnailUrl: core.serialization.property("thumbnail_url", ThumbnailUrl.optional()),
     transcription: core.serialization.string().optional(),
@@ -30,10 +26,8 @@ export const SearchItemClipsItem: core.serialization.ObjectSchema<
 
 export declare namespace SearchItemClipsItem {
     export interface Raw {
-        score?: ScoreSearchTerms.Raw | null;
         start?: StartTime.Raw | null;
         end?: EndTime.Raw | null;
-        confidence?: Confidence.Raw | null;
         rank?: Rank.Raw | null;
         thumbnail_url?: ThumbnailUrl.Raw | null;
         transcription?: string | null;

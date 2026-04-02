@@ -19,6 +19,7 @@ export class TwelveLabs {
     public readonly multipartUpload: MultipartUploadWrapper;
     public readonly analyze: TwelvelabsApiClient["analyze"];
     public readonly analyzeStream: TwelvelabsApiClient["analyzeStream"];
+    public readonly analyzeAsync: TwelvelabsApiClient["analyzeAsync"];
 
     constructor({ apiKey = process.env.TWELVE_LABS_API_KEY }: { apiKey?: string }) {
         if (!apiKey) {
@@ -36,6 +37,8 @@ export class TwelveLabs {
 
         this.analyze = this.client.analyze.bind(this.client);
         this.analyzeStream = this.client.analyzeStream.bind(this.client);
+        this.analyzeAsync = this.client.analyzeAsync;
+        
         this.assets = this.client.assets;
         this.entityCollections = this.client.entityCollections;
 

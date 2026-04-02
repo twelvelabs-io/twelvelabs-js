@@ -236,7 +236,7 @@ export interface CreateEmbeddingsRequest {
      * - `multi_input`: Creates a single embedding from up to 10 images. You can optionally include text to provide context. To reference specific images in your text, use placeholders in the following format: `<@name>`, where `name` matches the `name` field of a media source
      */
     inputType: TwelvelabsApi.embed.CreateEmbeddingsRequestInputType;
-    /** The video understanding model to use. Only "marengo3.0" is supported. */
+    /** The video understanding model to use. Value: "marengo3.0". */
     modelName: TwelvelabsApi.embed.CreateEmbeddingsRequestModelName;
     text?: TwelvelabsApi.TextInputRequest;
     image?: TwelvelabsApi.ImageInputRequest;

@@ -8,12 +8,10 @@ import * as TwelvelabsApi from "../index";
  * An object that contains the search results.
  */
 export interface SearchItem {
-    score?: TwelvelabsApi.ScoreSearchTerms;
     start?: TwelvelabsApi.StartTime;
     end?: TwelvelabsApi.EndTime;
     /** A string representing the unique identifier of the video. Once the platform indexes a video, it assigns a unique identifier. Note that this is different from the identifier of the video indexing task. */
     videoId?: string;
-    confidence?: TwelvelabsApi.Confidence;
     rank?: TwelvelabsApi.Rank;
     thumbnailUrl?: TwelvelabsApi.ThumbnailUrl;
     /** A transcription of the spoken words that are captured in the video. */

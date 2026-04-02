@@ -157,30 +157,14 @@ export class SearchWrapper extends Search {
             }
         }
 
-        if (rest.adjustConfidenceLevel != null) {
-            _request.append("adjust_confidence_level", rest.adjustConfidenceLevel.toString());
-        }
+        // Note: adjustConfidenceLevel is deprecated and ignored by the API. Use the `rank` field in the response instead.
+        // Note: threshold is deprecated and ignored by the API. Use the `rank` field in the response instead.
+        // Note: sortOption is deprecated and ignored by the API. Use the `rank` field in the response instead.
 
         if (rest.groupBy != null) {
             _request.append(
                 "group_by",
                 serializers.SearchCreateRequestGroupBy.jsonOrThrow(rest.groupBy, {
-                    unrecognizedObjectKeys: "strip",
-                }),
-            );
-        }
-
-        if (rest.threshold != null) {
-            _request.append(
-                "threshold",
-                serializers.ThresholdSearch.jsonOrThrow(rest.threshold, { unrecognizedObjectKeys: "strip" }),
-            );
-        }
-
-        if (rest.sortOption != null) {
-            _request.append(
-                "sort_option",
-                serializers.SearchCreateRequestSortOption.jsonOrThrow(rest.sortOption, {
                     unrecognizedObjectKeys: "strip",
                 }),
             );
@@ -287,5 +271,20 @@ export declare namespace SearchWrapper {
         queryMediaUrls?: string[];
         /** Array of up to 10 local image files to use as query images (Marengo 3.0). */
         queryMediaFiles?: FileType[];
+        /**
+         * @deprecated This field is deprecated and ignored by the API.
+         * Use the `rank` field in the response instead.
+         */
+        adjustConfidenceLevel?: number;
+        /**
+         * @deprecated This field is deprecated and ignored by the API.
+         * Use the `rank` field in the response instead.
+         */
+        threshold?: Record<string, unknown>;
+        /**
+         * @deprecated This field is deprecated and ignored by the API.
+         * Use the `rank` field in the response instead.
+         */
+        sortOption?: string;
     }
 }
