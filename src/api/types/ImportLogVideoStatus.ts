@@ -3,7 +3,7 @@
  */
 
 /**
- * Counts of files in different statuses. See the [Task object](/v1.3/api-reference/upload-content/tasks/the-task-object) page for details on each status.
+ * Counts of files in different statuses. See the [Task object](/v1.3/api-reference/upload-content/tasks/the-task-object) page details on possible values.
  */
 export interface ImportLogVideoStatus {
     ready: number;

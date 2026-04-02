@@ -6,11 +6,11 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
-export const ScoreSearchTerms: core.serialization.Schema<
-    serializers.ScoreSearchTerms.Raw,
-    TwelvelabsApi.ScoreSearchTerms
+export const AnalyzeTemperature: core.serialization.Schema<
+    serializers.AnalyzeTemperature.Raw,
+    TwelvelabsApi.AnalyzeTemperature
 > = core.serialization.number();
 
-export declare namespace ScoreSearchTerms {
+export declare namespace AnalyzeTemperature {
     export type Raw = number;
 }

@@ -33,7 +33,7 @@ export interface AudioInputRequest {
      * - `audio`: Generates embeddings based on audio content (sounds, music, effects)
      * - `transcription`: Generates embeddings based on transcribed speech
      *
-     * You can specify multiple options to generate different types of embeddings for the same audio.
+     * You can specify multiple values to generate different types of embeddings for the same audio.
      */
     embeddingOption?: TwelvelabsApi.AudioInputRequestEmbeddingOptionItem[];
     /**

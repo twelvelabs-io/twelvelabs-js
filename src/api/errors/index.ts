@@ -3,3 +3,4 @@ export * from "./NotFoundError";
 export * from "./InternalServerError";
 export * from "./ForbiddenError";
 export * from "./TooManyRequestsError";
+export * from "./ConflictError";

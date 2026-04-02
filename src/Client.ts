@@ -16,6 +16,7 @@ import { MultipartUpload } from "./api/resources/multipartUpload/client/Client";
 import { EntityCollections } from "./api/resources/entityCollections/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
+import { AnalyzeAsync } from "./api/resources/analyzeAsync/client/Client";
 
 export declare namespace TwelvelabsApiClient {
     export interface Options {
@@ -45,6 +46,7 @@ export class TwelvelabsApiClient {
     protected _entityCollections: EntityCollections | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
+    protected _analyzeAsync: AnalyzeAsync | undefined;
 
     constructor(protected readonly _options: TwelvelabsApiClient.Options) {}
 
@@ -76,12 +78,31 @@ export class TwelvelabsApiClient {
         return (this._search ??= new Search(this._options));
     }
 
+    public get analyzeAsync(): AnalyzeAsync {
+        return (this._analyzeAsync ??= new AnalyzeAsync(this._options));
+    }
+
     /**
-     * This endpoint analyzes your videos and creates fully customizable text based on your prompts, including but not limited to tables of content, action items, memos, and detailed analyses.
+     * This method synchronously analyzes your videos and generates fully customizable text based on your prompts.
+     *
+     * <Accordion title="Input requirements">
+     * - Minimum duration: 4 seconds
+     * - Maximum duration: 1 hour
+     * - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
+     * - Resolution: 360x360 to 5184x2160 pixels
+     * - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
+     * </Accordion>
+     *
+     * **When to use this method**:
+     * - Analyze videos up to 1 hour
+     * - Retrieve immediate results without waiting for asynchronous processing
+     * - Stream text fragments in real-time for immediate processing and feedback
+     *
+     * **Do not use this method for**:
+     * - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses.
      * </Note>
      */
     public analyzeStream(
@@ -106,8 +127,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -179,11 +200,26 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This endpoint analyzes your videos and creates fully customizable text based on your prompts, including but not limited to tables of content, action items, memos, and detailed analyses.
+     * This method synchronously analyzes your videos and generates fully customizable text based on your prompts.
+     *
+     * <Accordion title="Input requirements">
+     * - Minimum duration: 4 seconds
+     * - Maximum duration: 1 hour
+     * - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
+     * - Resolution: 360x360 to 5184x2160 pixels
+     * - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
+     * </Accordion>
+     *
+     * **When to use this method**:
+     * - Analyze videos up to 1 hour
+     * - Retrieve immediate results without waiting for asynchronous processing
+     * - Stream text fragments in real-time for immediate processing and feedback
+     *
+     * **Do not use this method for**:
+     * - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
      *
      * <Note title="Notes">
      * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     * - This endpoint supports streaming responses.
      * </Note>
      *
      * @param {TwelvelabsApi.AnalyzeRequest} request
@@ -242,8 +278,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

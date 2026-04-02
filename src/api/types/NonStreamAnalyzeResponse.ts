@@ -10,8 +10,7 @@ import * as TwelvelabsApi from "../index";
 export interface NonStreamAnalyzeResponse {
     /** Unique identifier of the response. */
     id?: string;
-    /** The generated text based on the prompt you provided. */
-    data?: string;
+    data?: TwelvelabsApi.GeneratedTextData;
     finishReason?: TwelvelabsApi.FinishReason;
     usage?: TwelvelabsApi.TokenUsage;
 }

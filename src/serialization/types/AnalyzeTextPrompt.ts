@@ -6,9 +6,11 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
-export const Confidence: core.serialization.Schema<serializers.Confidence.Raw, TwelvelabsApi.Confidence> =
-    core.serialization.string();
+export const AnalyzeTextPrompt: core.serialization.Schema<
+    serializers.AnalyzeTextPrompt.Raw,
+    TwelvelabsApi.AnalyzeTextPrompt
+> = core.serialization.string();
 
-export declare namespace Confidence {
+export declare namespace AnalyzeTextPrompt {
     export type Raw = string;
 }

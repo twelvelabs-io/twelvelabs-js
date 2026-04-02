@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Use this parameter to specify the format of the response. When you omit this parameter, the platform returns unstructured text.
+ * Specifies the format of the response. When you omit this parameter, the platform returns unstructured text.
  */
 export interface ResponseFormat {
     /** Set this parameter to "json_schema" to receive structured JSON responses. */

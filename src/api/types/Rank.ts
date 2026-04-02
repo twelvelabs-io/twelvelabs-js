@@ -3,10 +3,6 @@
  */
 
 /**
- * <Info>
- *   Only Marengo 3.0 and newer versions return this field. Earlier versions return `score` and `confidence` instead.
- * </Info>
- *
  * The relevance ranking assigned by the model. Lower numbers indicate higher relevance, starting with 1 for the most relevant result.
  */
 export type Rank = number;

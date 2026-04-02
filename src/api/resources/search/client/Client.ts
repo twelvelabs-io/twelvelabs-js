@@ -43,14 +43,12 @@ export class Search {
      * - Provide up to 10 images by specifying the following parameters multiple times:
      *   - `query_media_url`: Publicly accessible URL of your media file.
      *   - `query_media_file`: Local media file.
-     * - Marengo 2.7 supports a single image per request.
-     *
-     * **Composed text and media queries** (Marengo 3.0 only):
+     * **Composed text and media queries**:
      * - Use the `query_text` parameter for your text query.
      * - Set `query_media_type` to `image`.
      * - Provide up to 10 images by specifying the `query_media_url` and `query_media_file` parameters multiple times.
      *
-     * **Entity search** (Marengo 3.0 only and in beta):
+     * **Entity search** (beta):
      * - To find a specific person in your videos, enclose the unique identifier of the entity you want to find in the `query_text` parameter.
      *
      * <Note title="Notes">
@@ -124,30 +122,10 @@ export class Search {
             }
         }
 
-        if (request.adjustConfidenceLevel != null) {
-            _request.append("adjust_confidence_level", request.adjustConfidenceLevel.toString());
-        }
-
         if (request.groupBy != null) {
             _request.append(
                 "group_by",
                 serializers.SearchCreateRequestGroupBy.jsonOrThrow(request.groupBy, {
-                    unrecognizedObjectKeys: "strip",
-                }),
-            );
-        }
-
-        if (request.threshold != null) {
-            _request.append(
-                "threshold",
-                serializers.ThresholdSearch.jsonOrThrow(request.threshold, { unrecognizedObjectKeys: "strip" }),
-            );
-        }
-
-        if (request.sortOption != null) {
-            _request.append(
-                "sort_option",
-                serializers.SearchCreateRequestSortOption.jsonOrThrow(request.sortOption, {
                     unrecognizedObjectKeys: "strip",
                 }),
             );
@@ -186,8 +164,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -293,8 +271,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

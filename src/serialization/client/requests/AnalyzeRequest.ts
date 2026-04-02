@@ -5,23 +5,29 @@
 import * as serializers from "../../index";
 import * as TwelvelabsApi from "../../../api/index";
 import * as core from "../../../core";
+import { VideoContext } from "../../types/VideoContext";
+import { AnalyzeTextPrompt } from "../../types/AnalyzeTextPrompt";
+import { AnalyzeTemperature } from "../../types/AnalyzeTemperature";
 import { ResponseFormat } from "../../types/ResponseFormat";
+import { AnalyzeMaxTokens } from "../../types/AnalyzeMaxTokens";
 
 export const AnalyzeRequest: core.serialization.Schema<serializers.AnalyzeRequest.Raw, TwelvelabsApi.AnalyzeRequest> =
     core.serialization.object({
-        videoId: core.serialization.property("video_id", core.serialization.string()),
-        prompt: core.serialization.string(),
-        temperature: core.serialization.number().optional(),
+        videoId: core.serialization.property("video_id", core.serialization.string().optional()),
+        video: VideoContext.optional(),
+        prompt: AnalyzeTextPrompt,
+        temperature: AnalyzeTemperature.optional(),
         responseFormat: core.serialization.property("response_format", ResponseFormat.optional()),
-        maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
+        maxTokens: core.serialization.property("max_tokens", AnalyzeMaxTokens.optional()),
     });
 
 export declare namespace AnalyzeRequest {
     export interface Raw {
-        video_id: string;
-        prompt: string;
-        temperature?: number | null;
+        video_id?: string | null;
+        video?: VideoContext.Raw | null;
+        prompt: AnalyzeTextPrompt.Raw;
+        temperature?: AnalyzeTemperature.Raw | null;
         response_format?: ResponseFormat.Raw | null;
-        max_tokens?: number | null;
+        max_tokens?: AnalyzeMaxTokens.Raw | null;
     }
 }

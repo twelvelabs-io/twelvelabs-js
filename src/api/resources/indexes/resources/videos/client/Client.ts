@@ -135,8 +135,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.1",
-                        "User-Agent": "twelvelabs-js/1.2.1",
+                        "X-Fern-SDK-Version": "1.2.2",
+                        "User-Agent": "twelvelabs-js/1.2.2",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -271,8 +271,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -334,7 +334,7 @@ export class Videos {
     /**
      * <Info>This method will be deprecated in a future version. New implementations should use the [Delete an indexed asset](/v1.3/api-reference/index-content/delete) method.</Info>
      *
-     * This method deletes all the information about the specified video. This action cannot be undone.
+     * This method deletes all the information about the specified indexed video. This action cannot be undone.
      *
      * @param {string} indexId - The unique identifier of the index to which the video has been uploaded.
      * @param {string} videoId - The unique identifier of the video to delete.
@@ -369,8 +369,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -466,8 +466,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.1",
-                "User-Agent": "twelvelabs-js/1.2.1",
+                "X-Fern-SDK-Version": "1.2.2",
+                "User-Agent": "twelvelabs-js/1.2.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

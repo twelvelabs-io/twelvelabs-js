@@ -3,7 +3,7 @@
  */
 
 /**
- * The video understanding model to use. Only "marengo3.0" is supported.
+ * The video understanding model to use. Value: "marengo3.0".
  */
 export type CreateEmbeddingsRequestModelName = "marengo3.0";
 export const CreateEmbeddingsRequestModelName = {
