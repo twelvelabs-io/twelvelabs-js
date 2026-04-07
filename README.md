@@ -19,7 +19,7 @@ Ensure that the following prerequisites are met before using the SDK:
   3. If you need to create a new key, select the **Create API Key** button. Enter a name and set the expiration period. The default is 12 months.
   4. Select the **Copy** icon next to your key to copy it to your clipboard.
 - Your video files must meet the following requirements:
-    - **For this guide**: Files up to 4 GB when using publicly accessible URLs or 200 MB for local files
+    - **For this guide**: Files up to 4 GB.
     - **Model capabilities**: See the complete requirements for [Marengo](https://docs.twelvelabs.io/v1.3/docs/concepts/models/marengo#video-file-requirements) and [Pegasus](https://docs.twelvelabs.io/v1.3/docs/concepts/models/pegasus#video-file-requirements) for resolution, aspect ratio, and supported formats.
 
     For upload size limits and processing modes, see the [Upload and processing methods](https://docs.twelvelabs.io/v1.3/docs/concepts/upload-methods) page.
@@ -104,6 +104,25 @@ console.log(`Created asset: id=${asset.id}`);
 ```
 
 The `client.assets.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your asset. Use this identifier in subsequent steps.
+
+## Check the status of the asset
+
+You only need this step for files larger than 200 MB. The platform processes files up to 200 MB synchronously and sets the asset status to ready. For larger files, check the asset status until it is ready.
+
+To check the status of the asset, call the `client.assets.retrieve` method with the unique identifier of your asset as a paremeter:
+
+```js
+console.log("Waiting for asset to be ready...");
+let readyAsset = await client.assets.retrieve(asset.id);
+while (readyAsset.status !== "ready" && readyAsset.status !== "failed") {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  readyAsset = await client.assets.retrieve(asset.id);
+}
+if (readyAsset.status === "failed") {
+  throw new Error(`Asset processing failed: id=${asset.id}`);
+}
+console.log("Asset is ready");
+```
 
 ## Index your video
 
