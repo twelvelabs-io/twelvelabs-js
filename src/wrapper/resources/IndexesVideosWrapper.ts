@@ -75,20 +75,25 @@ export class IndexesVideosWrapper extends Videos {
                 if (filename != null) {
                     _queryParams["filename"] = filename;
                 }
-                if (duration != null) {
-                    _queryParams["duration"] = duration.toString();
+                if (duration != null && typeof duration === "object") {
+                    if (duration.gte != null) _queryParams["duration[gte]"] = duration.gte.toString();
+                    if (duration.lte != null) _queryParams["duration[lte]"] = duration.lte.toString();
                 }
-                if (fps != null) {
-                    _queryParams["fps"] = fps.toString();
+                if (fps != null && typeof fps === "object") {
+                    if (fps.gte != null) _queryParams["fps[gte]"] = fps.gte.toString();
+                    if (fps.lte != null) _queryParams["fps[lte]"] = fps.lte.toString();
                 }
-                if (width != null) {
-                    _queryParams["width"] = width.toString();
+                if (width != null && typeof width === "object") {
+                    if (width.gte != null) _queryParams["width[gte]"] = width.gte.toString();
+                    if (width.lte != null) _queryParams["width[lte]"] = width.lte.toString();
                 }
-                if (height != null) {
-                    _queryParams["height"] = height.toString();
+                if (height != null && typeof height === "object") {
+                    if (height.gte != null) _queryParams["height[gte]"] = height.gte.toString();
+                    if (height.lte != null) _queryParams["height[lte]"] = height.lte.toString();
                 }
-                if (size != null) {
-                    _queryParams["size"] = size.toString();
+                if (size != null && typeof size === "object") {
+                    if (size.gte != null) _queryParams["size[gte]"] = size.gte.toString();
+                    if (size.lte != null) _queryParams["size[lte]"] = size.lte.toString();
                 }
                 if (createdAt != null) {
                     _queryParams["created_at"] = createdAt;
