@@ -12,11 +12,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         sortBy: "created_at",
  *         sortOption: "desc",
  *         filename: "01.mp4",
- *         duration: 1.1,
- *         fps: 1.1,
- *         width: 1.1,
- *         height: 1,
- *         size: 1.1,
  *         createdAt: "2024-08-16T16:53:59Z",
  *         updatedAt: "2024-08-16T16:53:59Z"
  *     }
@@ -72,25 +67,30 @@ export interface IndexedAssetsListRequest {
      */
     filename?: string;
     /**
-     * Filter by duration. Expressed in seconds.
+     * Filter by duration in seconds. Pass an object with `gte` and/or `lte` for range filtering.
+     * For exact match, set both to the same value.
      */
-    duration?: number;
+    duration?: TwelvelabsApi.IndexedAssetsListRequestDuration;
     /**
-     * Filter by frames per second.
+     * Filter by frames per second. Pass an object with `gte` and/or `lte` for range filtering.
+     * For exact match, set both to the same value.
      */
-    fps?: number;
+    fps?: TwelvelabsApi.IndexedAssetsListRequestFps;
     /**
-     * Filter by width.
+     * Filter by width in pixels. Pass an object with `gte` and/or `lte` for range filtering.
+     * For exact match, set both to the same value.
      */
-    width?: number;
+    width?: TwelvelabsApi.IndexedAssetsListRequestWidth;
     /**
-     * Filter by height.
+     * Filter by height in pixels. Pass an object with `gte` and/or `lte` for range filtering.
+     * For exact match, set both to the same value.
      */
-    height?: number;
+    height?: TwelvelabsApi.IndexedAssetsListRequestHeight;
     /**
-     * Filter by size. Expressed in bytes.
+     * Filter by size in bytes. Pass an object with `gte` and/or `lte` for range filtering.
+     * For exact match, set both to the same value.
      */
-    size?: number;
+    size?: TwelvelabsApi.IndexedAssetsListRequestSize;
     /**
      * Filter indexed assets by the creation date and time of their associated indexing tasks, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"). The platform returns indexed assets created on or after the specified date and time.
      */

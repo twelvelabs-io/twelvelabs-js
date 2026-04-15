@@ -5,9 +5,9 @@
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as TwelvelabsApi from "../../../../../index";
+import * as serializers from "../../../../../../serialization/index";
 import { toJson } from "../../../../../../core/json";
 import urlJoin from "url-join";
-import * as serializers from "../../../../../../serialization/index";
 import * as errors from "../../../../../../errors/index";
 
 export declare namespace Videos {
@@ -51,11 +51,6 @@ export class Videos {
      *         sortBy: "created_at",
      *         sortOption: "desc",
      *         filename: "01.mp4",
-     *         duration: 1.1,
-     *         fps: 1.1,
-     *         width: 1.1,
-     *         height: 1,
-     *         size: 1.1,
      *         createdAt: "2024-08-16T16:53:59Z",
      *         updatedAt: "2024-08-16T16:53:59Z"
      *     })
@@ -101,19 +96,44 @@ export class Videos {
                     _queryParams["filename"] = filename;
                 }
                 if (duration != null) {
-                    _queryParams["duration"] = duration.toString();
+                    _queryParams["duration"] = serializers.VideosListRequestDuration.jsonOrThrow(duration, {
+                        unrecognizedObjectKeys: "passthrough",
+                        allowUnrecognizedUnionMembers: true,
+                        allowUnrecognizedEnumValues: true,
+                        breadcrumbsPrefix: ["request", "duration"],
+                    });
                 }
                 if (fps != null) {
-                    _queryParams["fps"] = fps.toString();
+                    _queryParams["fps"] = serializers.VideosListRequestFps.jsonOrThrow(fps, {
+                        unrecognizedObjectKeys: "passthrough",
+                        allowUnrecognizedUnionMembers: true,
+                        allowUnrecognizedEnumValues: true,
+                        breadcrumbsPrefix: ["request", "fps"],
+                    });
                 }
                 if (width != null) {
-                    _queryParams["width"] = width.toString();
+                    _queryParams["width"] = serializers.VideosListRequestWidth.jsonOrThrow(width, {
+                        unrecognizedObjectKeys: "passthrough",
+                        allowUnrecognizedUnionMembers: true,
+                        allowUnrecognizedEnumValues: true,
+                        breadcrumbsPrefix: ["request", "width"],
+                    });
                 }
                 if (height != null) {
-                    _queryParams["height"] = height.toString();
+                    _queryParams["height"] = serializers.VideosListRequestHeight.jsonOrThrow(height, {
+                        unrecognizedObjectKeys: "passthrough",
+                        allowUnrecognizedUnionMembers: true,
+                        allowUnrecognizedEnumValues: true,
+                        breadcrumbsPrefix: ["request", "height"],
+                    });
                 }
                 if (size != null) {
-                    _queryParams["size"] = size.toString();
+                    _queryParams["size"] = serializers.VideosListRequestSize.jsonOrThrow(size, {
+                        unrecognizedObjectKeys: "passthrough",
+                        allowUnrecognizedUnionMembers: true,
+                        allowUnrecognizedEnumValues: true,
+                        breadcrumbsPrefix: ["request", "size"],
+                    });
                 }
                 if (createdAt != null) {
                     _queryParams["created_at"] = createdAt;
@@ -135,8 +155,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.2",
-                        "User-Agent": "twelvelabs-js/1.2.2",
+                        "X-Fern-SDK-Version": "1.2.3",
+                        "User-Agent": "twelvelabs-js/1.2.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -271,8 +291,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -369,8 +389,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -466,8 +486,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -18,7 +18,7 @@ export interface AssetsCreateRequest {
     /**
      * Specify this parameter to upload a file from a publicly accessible URL. This parameter is required when `method` is set to `url`.
      *
-     * URL uploads have a maximum limit of 4GB.
+     * URL uploads have a maximum limit of 4 GB.
      */
     url?: string;
     /** The optional filename of the asset. If not provided, the platform will determine the filename from the file or URL. */
