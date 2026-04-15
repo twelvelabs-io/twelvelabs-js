@@ -6,6 +6,6 @@
  * Provide the video via a unique identifier of an asset.
  */
 export interface One {
-    /** The unique identifier of an asset from a [direct](/v1.3/api-reference/upload-content/direct-uploads) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) upload. */
+    /** The unique identifier of an asset from a [direct](/v1.3/api-reference/upload-content/direct-uploads) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) upload. The asset status must be `ready`. Use the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) method to check the status. */
     assetId: string;
 }

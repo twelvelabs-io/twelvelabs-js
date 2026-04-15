@@ -39,7 +39,7 @@ export class Tasks {
      * This method returns a list of the video embedding tasks in your account. The platform returns your video embedding tasks sorted by creation date, with the newest at the top of the list.
      *
      * <Note title="Notes">
-     * - Video embeddings are stored for seven days
+     * - Video embeddings are stored for seven days.
      * - When you invoke this method without specifying the `started_at` and `ended_at` parameters, the platform returns all the video embedding tasks created within the last seven days.
      * </Note>
      *
@@ -93,8 +93,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.2",
-                        "User-Agent": "twelvelabs-js/1.2.2",
+                        "X-Fern-SDK-Version": "1.2.3",
+                        "User-Agent": "twelvelabs-js/1.2.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -254,8 +254,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -352,8 +352,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -462,8 +462,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

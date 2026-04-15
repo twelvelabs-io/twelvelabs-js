@@ -96,8 +96,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.2",
-                        "User-Agent": "twelvelabs-js/1.2.2",
+                        "X-Fern-SDK-Version": "1.2.3",
+                        "User-Agent": "twelvelabs-js/1.2.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -174,7 +174,7 @@ export class Assets {
      * - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
      * - **Publicly accessible URL**: Set the `method` parameter to `url` and use the `url` parameter to specify the URL of your file.
      *
-     * **File size**: 200MB maximum for local file uploads, 4GB maximum for URL uploads.
+     * **File size**: Up to 4 GB.
      *
      * **Additional requirements** depend on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
@@ -236,8 +236,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -326,8 +326,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -411,8 +411,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.2",
-                "User-Agent": "twelvelabs-js/1.2.2",
+                "X-Fern-SDK-Version": "1.2.3",
+                "User-Agent": "twelvelabs-js/1.2.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

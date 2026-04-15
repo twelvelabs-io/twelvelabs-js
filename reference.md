@@ -898,7 +898,7 @@ This method creates an asset by uploading a file to the platform. Assets are med
 - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
 - **Publicly accessible URL**: Set the `method` parameter to `url` and use the `url` parameter to specify the URL of your file.
 
-**File size**: 200MB maximum for local file uploads, 4GB maximum for URL uploads.
+**File size**: Up to 4 GB.
 
 **Additional requirements** depend on your workflow:
 
@@ -1183,7 +1183,7 @@ This method creates a multipart upload session.
 
 **Supported content**: Video and audio
 
-**File size**: 4GB maximum.
+**File size**: 4 GB maximum.
 
 **Additional requirements** depend on your workflow:
 
@@ -2434,7 +2434,7 @@ await client.analyzeAsync.tasks.delete("64f8d2c7e4a1b37f8a9c5d12");
 This method returns a list of the video embedding tasks in your account. The platform returns your video embedding tasks sorted by creation date, with the newest at the top of the list.
 
 <Note title="Notes">
-- Video embeddings are stored for seven days
+- Video embeddings are stored for seven days.
 - When you invoke this method without specifying the `started_at` and `ended_at` parameters, the platform returns all the video embedding tasks created within the last seven days.
 </Note>
 </dd>
@@ -2856,6 +2856,10 @@ await client.embed.v2.create({
 
 This method returns a list of the async embedding tasks in your account. The platform returns your async embedding tasks sorted by creation date, with the newest at the top of the list.
 
+<Note title="Notes">
+- Embeddings are stored for seven days.
+- When you invoke this method without specifying the `started_at` and `ended_at` parameters, the platform returns all the async embedding tasks created within the last seven days.
+</Note>
 </dd>
 </dl>
 </dd>
@@ -2968,8 +2972,9 @@ Creating embeddings asynchronously requires three steps:
 2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Wait until the status is `ready`.
 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
 
-  <Note title="Note">
-  This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+  <Note title="Notes">
+  - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+  - Embeddings are stored for seven days.
   </Note>
 </dd>
 </dl>
@@ -3060,6 +3065,9 @@ This method retrieves the status and the results of an async embedding task.
 
 Invoke this method repeatedly until the `status` field is `ready`. When `status` is `ready`, use the embeddings from the response.
 
+<Note title="Note">
+Embeddings are stored for seven days.
+</Note>
 </dd>
 </dl>
 </dd>
@@ -3784,11 +3792,6 @@ const response = await client.indexes.indexedAssets.list("6298d673f1090f1100476d
     sortBy: "created_at",
     sortOption: "desc",
     filename: "01.mp4",
-    duration: 1.1,
-    fps: 1.1,
-    width: 1.1,
-    height: 1,
-    size: 1.1,
     createdAt: "2024-08-16T16:53:59Z",
     updatedAt: "2024-08-16T16:53:59Z",
 });
@@ -3803,11 +3806,6 @@ const page = await client.indexes.indexedAssets.list("6298d673f1090f1100476d4c",
     sortBy: "created_at",
     sortOption: "desc",
     filename: "01.mp4",
-    duration: 1.1,
-    fps: 1.1,
-    width: 1.1,
-    height: 1,
-    size: 1.1,
     createdAt: "2024-08-16T16:53:59Z",
     updatedAt: "2024-08-16T16:53:59Z",
 });
@@ -4234,11 +4232,6 @@ const response = await client.indexes.videos.list("6298d673f1090f1100476d4c", {
     sortBy: "created_at",
     sortOption: "desc",
     filename: "01.mp4",
-    duration: 1.1,
-    fps: 1.1,
-    width: 1.1,
-    height: 1,
-    size: 1.1,
     createdAt: "2024-08-16T16:53:59Z",
     updatedAt: "2024-08-16T16:53:59Z",
 });
@@ -4253,11 +4246,6 @@ const page = await client.indexes.videos.list("6298d673f1090f1100476d4c", {
     sortBy: "created_at",
     sortOption: "desc",
     filename: "01.mp4",
-    duration: 1.1,
-    fps: 1.1,
-    width: 1.1,
-    height: 1,
-    size: 1.1,
     createdAt: "2024-08-16T16:53:59Z",
     updatedAt: "2024-08-16T16:53:59Z",
 });
