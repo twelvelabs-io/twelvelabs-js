@@ -14,6 +14,8 @@ export const CreateAssetUploadRequest: core.serialization.Schema<
     filename: core.serialization.string(),
     type: CreateAssetUploadRequestType,
     totalSize: core.serialization.property("total_size", core.serialization.number()),
+    enableHls: core.serialization.property("enable_hls", core.serialization.boolean().optional()),
+    enableThumbnail: core.serialization.property("enable_thumbnail", core.serialization.boolean().optional()),
 });
 
 export declare namespace CreateAssetUploadRequest {
@@ -21,5 +23,7 @@ export declare namespace CreateAssetUploadRequest {
         filename: string;
         type: CreateAssetUploadRequestType.Raw;
         total_size: number;
+        enable_hls?: boolean | null;
+        enable_thumbnail?: boolean | null;
     }
 }

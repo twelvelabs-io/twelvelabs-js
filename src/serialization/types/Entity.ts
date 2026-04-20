@@ -10,6 +10,7 @@ import { EntityStatus } from "./EntityStatus";
 export const Entity: core.serialization.ObjectSchema<serializers.Entity.Raw, TwelvelabsApi.Entity> =
     core.serialization.object({
         id: core.serialization.property("_id", core.serialization.string().optional()),
+        entityCollectionId: core.serialization.property("entity_collection_id", core.serialization.string().optional()),
         name: core.serialization.string().optional(),
         description: core.serialization.string().optional(),
         metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
@@ -25,6 +26,7 @@ export const Entity: core.serialization.ObjectSchema<serializers.Entity.Raw, Twe
 export declare namespace Entity {
     export interface Raw {
         _id?: string | null;
+        entity_collection_id?: string | null;
         name?: string | null;
         description?: string | null;
         metadata?: Record<string, unknown> | null;

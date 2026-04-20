@@ -8,7 +8,7 @@ import * as core from "../../../core";
 import { VideoContext } from "../../types/VideoContext";
 import { AnalyzeTextPrompt } from "../../types/AnalyzeTextPrompt";
 import { AnalyzeTemperature } from "../../types/AnalyzeTemperature";
-import { ResponseFormat } from "../../types/ResponseFormat";
+import { SyncResponseFormat } from "../../types/SyncResponseFormat";
 import { AnalyzeMaxTokens } from "../../types/AnalyzeMaxTokens";
 
 export const AnalyzeStreamRequest: core.serialization.Schema<
@@ -19,7 +19,7 @@ export const AnalyzeStreamRequest: core.serialization.Schema<
     video: VideoContext.optional(),
     prompt: AnalyzeTextPrompt,
     temperature: AnalyzeTemperature.optional(),
-    responseFormat: core.serialization.property("response_format", ResponseFormat.optional()),
+    responseFormat: core.serialization.property("response_format", SyncResponseFormat.optional()),
     maxTokens: core.serialization.property("max_tokens", AnalyzeMaxTokens.optional()),
 });
 
@@ -29,7 +29,7 @@ export declare namespace AnalyzeStreamRequest {
         video?: VideoContext.Raw | null;
         prompt: AnalyzeTextPrompt.Raw;
         temperature?: AnalyzeTemperature.Raw | null;
-        response_format?: ResponseFormat.Raw | null;
+        response_format?: SyncResponseFormat.Raw | null;
         max_tokens?: AnalyzeMaxTokens.Raw | null;
     }
 }

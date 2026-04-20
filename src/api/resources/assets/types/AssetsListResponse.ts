@@ -6,6 +6,6 @@ import * as TwelvelabsApi from "../../../index";
 
 export interface AssetsListResponse {
     /** An array containing the assets. */
-    data?: TwelvelabsApi.Asset[];
+    data?: TwelvelabsApi.AssetDetail[];
     pageInfo?: TwelvelabsApi.PageInfo;
 }

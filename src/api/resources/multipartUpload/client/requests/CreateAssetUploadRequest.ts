@@ -24,4 +24,16 @@ export interface CreateAssetUploadRequest {
      * - Generate the initial set of presigned URLs
      */
     totalSize: number;
+    /**
+     * When set to `true`, the platform generates an HLS playlist and segments for streaming. Applicable to video and audio assets only.
+     *
+     * **Default**: `false`.
+     */
+    enableHls?: boolean;
+    /**
+     * When set to `true`, the platform generates thumbnail images from the uploaded content.
+     *
+     * **Default**: `false`.
+     */
+    enableThumbnail?: boolean;
 }

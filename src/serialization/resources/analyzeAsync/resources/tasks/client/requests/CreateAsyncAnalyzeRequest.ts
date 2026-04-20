@@ -5,29 +5,37 @@
 import * as serializers from "../../../../../../index";
 import * as TwelvelabsApi from "../../../../../../../api/index";
 import * as core from "../../../../../../../core";
+import { CreateAsyncAnalyzeRequestModelName } from "../../types/CreateAsyncAnalyzeRequestModelName";
 import { VideoContext } from "../../../../../../types/VideoContext";
-import { AnalyzeTextPrompt } from "../../../../../../types/AnalyzeTextPrompt";
+import { CreateAsyncAnalyzeRequestAnalysisMode } from "../../types/CreateAsyncAnalyzeRequestAnalysisMode";
 import { AnalyzeTemperature } from "../../../../../../types/AnalyzeTemperature";
-import { AnalyzeMaxTokens } from "../../../../../../types/AnalyzeMaxTokens";
-import { ResponseFormat } from "../../../../../../types/ResponseFormat";
+import { AsyncResponseFormat } from "../../../../../../types/AsyncResponseFormat";
 
 export const CreateAsyncAnalyzeRequest: core.serialization.Schema<
     serializers.analyzeAsync.CreateAsyncAnalyzeRequest.Raw,
     TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest
 > = core.serialization.object({
+    modelName: core.serialization.property("model_name", CreateAsyncAnalyzeRequestModelName.optional()),
     video: VideoContext,
-    prompt: AnalyzeTextPrompt,
+    prompt: core.serialization.string().optional(),
+    analysisMode: core.serialization.property("analysis_mode", CreateAsyncAnalyzeRequestAnalysisMode.optional()),
     temperature: AnalyzeTemperature.optional(),
-    maxTokens: core.serialization.property("max_tokens", AnalyzeMaxTokens.optional()),
-    responseFormat: core.serialization.property("response_format", ResponseFormat.optional()),
+    maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
+    responseFormat: core.serialization.property("response_format", AsyncResponseFormat.optional()),
+    minSegmentDuration: core.serialization.property("min_segment_duration", core.serialization.number().optional()),
+    maxSegmentDuration: core.serialization.property("max_segment_duration", core.serialization.number().optional()),
 });
 
 export declare namespace CreateAsyncAnalyzeRequest {
     export interface Raw {
+        model_name?: CreateAsyncAnalyzeRequestModelName.Raw | null;
         video: VideoContext.Raw;
-        prompt: AnalyzeTextPrompt.Raw;
+        prompt?: string | null;
+        analysis_mode?: CreateAsyncAnalyzeRequestAnalysisMode.Raw | null;
         temperature?: AnalyzeTemperature.Raw | null;
-        max_tokens?: AnalyzeMaxTokens.Raw | null;
-        response_format?: ResponseFormat.Raw | null;
+        max_tokens?: number | null;
+        response_format?: AsyncResponseFormat.Raw | null;
+        min_segment_duration?: number | null;
+        max_segment_duration?: number | null;
     }
 }

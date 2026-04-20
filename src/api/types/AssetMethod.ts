@@ -8,9 +8,11 @@
  * **Values**:
  * - `direct`: Uploaded from your local file system
  * - `url`: Uploaded from a publicly accessible URL
+ * - `multipart`: Uploaded using the multipart upload flow
  */
-export type AssetMethod = "direct" | "url";
+export type AssetMethod = "direct" | "url" | "multipart";
 export const AssetMethod = {
     Direct: "direct",
     Url: "url",
+    Multipart: "multipart",
 } as const;

@@ -679,6 +679,123 @@ export class IndexedAssets {
         }
     }
 
+    /**
+     * This method returns a list of indexed assets that reference the specified asset. Each entry includes the indexed asset ID and the index it belongs to.
+     *
+     * @param {string} assetId - The unique identifier of the asset.
+     * @param {TwelvelabsApi.indexes.IndexedAssetsListByAssetRequest} request
+     * @param {IndexedAssets.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     *
+     * @example
+     *     await client.indexes.indexedAssets.listByAsset("6298d673f1090f1100476d4c", {
+     *         page: 1,
+     *         pageLimit: 10
+     *     })
+     */
+    public async listByAsset(
+        assetId: string,
+        request: TwelvelabsApi.indexes.IndexedAssetsListByAssetRequest = {},
+        requestOptions?: IndexedAssets.RequestOptions,
+    ): Promise<core.Page<TwelvelabsApi.IndexedAssetSummary>> {
+        const list = core.HttpResponsePromise.interceptFunction(
+            async (
+                request: TwelvelabsApi.indexes.IndexedAssetsListByAssetRequest,
+            ): Promise<core.WithRawResponse<TwelvelabsApi.indexes.IndexedAssetsListByAssetResponse>> => {
+                const { page, pageLimit } = request;
+                const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+                if (page != null) {
+                    _queryParams["page"] = page.toString();
+                }
+                if (pageLimit != null) {
+                    _queryParams["page_limit"] = pageLimit.toString();
+                }
+                const _response = await core.fetcher({
+                    url: urlJoin(
+                        (await core.Supplier.get(this._options.baseUrl)) ??
+                            (await core.Supplier.get(this._options.environment)) ??
+                            environments.TwelvelabsApiEnvironment.Default,
+                        `assets/${encodeURIComponent(assetId)}/indexed-assets`,
+                    ),
+                    method: "GET",
+                    headers: {
+                        "X-Fern-Language": "JavaScript",
+                        "X-Fern-SDK-Name": "twelvelabs-js",
+                        "X-Fern-SDK-Version": "1.2.3",
+                        "User-Agent": "twelvelabs-js/1.2.3",
+                        "X-Fern-Runtime": core.RUNTIME.type,
+                        "X-Fern-Runtime-Version": core.RUNTIME.version,
+                        ...(await this._getCustomAuthorizationHeaders()),
+                        ...requestOptions?.headers,
+                    },
+                    contentType: "application/json",
+                    queryParameters: _queryParams,
+                    requestType: "json",
+                    timeoutMs:
+                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+                    maxRetries: requestOptions?.maxRetries,
+                    abortSignal: requestOptions?.abortSignal,
+                });
+                if (_response.ok) {
+                    return {
+                        data: serializers.indexes.IndexedAssetsListByAssetResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        rawResponse: _response.rawResponse,
+                    };
+                }
+                if (_response.error.reason === "status-code") {
+                    switch (_response.error.statusCode) {
+                        case 400:
+                            throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                        default:
+                            throw new errors.TwelvelabsApiError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
+                }
+                switch (_response.error.reason) {
+                    case "non-json":
+                        throw new errors.TwelvelabsApiError({
+                            statusCode: _response.error.statusCode,
+                            body: _response.error.rawBody,
+                            rawResponse: _response.rawResponse,
+                        });
+                    case "timeout":
+                        throw new errors.TwelvelabsApiTimeoutError(
+                            "Timeout exceeded when calling GET /assets/{asset_id}/indexed-assets.",
+                        );
+                    case "unknown":
+                        throw new errors.TwelvelabsApiError({
+                            message: _response.error.errorMessage,
+                            rawResponse: _response.rawResponse,
+                        });
+                }
+            },
+        );
+        let _offset = request?.page != null ? request?.page : 1;
+        const dataWithRawResponse = await list(request).withRawResponse();
+        return new core.Pageable<
+            TwelvelabsApi.indexes.IndexedAssetsListByAssetResponse,
+            TwelvelabsApi.IndexedAssetSummary
+        >({
+            response: dataWithRawResponse.data,
+            rawResponse: dataWithRawResponse.rawResponse,
+            hasNextPage: (response) => (response?.data ?? []).length > 0,
+            getItems: (response) => response?.data ?? [],
+            loadPage: (_response) => {
+                _offset += 1;
+                return list(core.setObjectProperty(request, "page", _offset));
+            },
+        });
+    }
+
     protected async _getCustomAuthorizationHeaders() {
         const apiKeyValue = await core.Supplier.get(this._options.apiKey);
         return { "x-api-key": apiKeyValue };

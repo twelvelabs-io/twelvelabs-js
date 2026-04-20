@@ -8,7 +8,8 @@ import * as TwelvelabsApi from "../../../../index";
  * @example
  *     {
  *         page: 1,
- *         pageLimit: 10
+ *         pageLimit: 10,
+ *         filename: "meeting"
  *     }
  */
 export interface AssetsListRequest {
@@ -33,4 +34,8 @@ export interface AssetsListRequest {
      * Filters the response to include only assets of the specified types. Provide one or more asset types. When you specify multiple types, the platform returns all matching assets.
      */
     assetTypes?: TwelvelabsApi.AssetsListRequestAssetTypesItem | TwelvelabsApi.AssetsListRequestAssetTypesItem[];
+    /**
+     * Filters the response to include only assets whose filename contains the specified string. The match is case-insensitive and supports partial matching.
+     */
+    filename?: string;
 }

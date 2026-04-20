@@ -153,7 +153,7 @@ export class MultipartUpload {
     /**
      * This method creates a multipart upload session.
      *
-     * **Supported content**: Video and audio
+     * **Supported content**: Video
      *
      * **File size**: 4 GB maximum.
      *

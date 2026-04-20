@@ -31,6 +31,7 @@ This method synchronously analyzes your videos and generates fully customizable 
 **Do not use this method for**:
 
 - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
+- Video segmentation. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with `model_name` set to `pegasus1.5` instead.
 
 <Note title="Notes">
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
@@ -797,7 +798,7 @@ await client.indexes.delete("6298d673f1090f1100476d4c");
 
 ## Assets
 
-<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.Asset&gt;</code></summary>
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.AssetDetail&gt;</code></summary>
 <dl>
 <dd>
 
@@ -830,6 +831,7 @@ The platform returns your assets sorted by creation date, with the newest at the
 const response = await client.assets.list({
     page: 1,
     pageLimit: 10,
+    filename: "meeting",
 });
 for await (const item of response) {
     console.log(item);
@@ -839,6 +841,7 @@ for await (const item of response) {
 const page = await client.assets.list({
     page: 1,
     pageLimit: 10,
+    filename: "meeting",
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();
@@ -961,7 +964,7 @@ await client.assets.create({
 </dl>
 </details>
 
-<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">retrieve</a>(assetId) -> TwelvelabsApi.Asset</code></summary>
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">retrieve</a>(assetId) -> TwelvelabsApi.AssetDetail</code></summary>
 <dl>
 <dd>
 
@@ -1024,7 +1027,7 @@ await client.assets.retrieve("6298d673f1090f1100476d4c");
 </dl>
 </details>
 
-<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">delete</a>(assetId) -> void</code></summary>
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">delete</a>(assetId, { ...params }) -> void</code></summary>
 <dl>
 <dd>
 
@@ -1038,10 +1041,16 @@ await client.assets.retrieve("6298d673f1090f1100476d4c");
 
 This method deletes the specified asset. This action cannot be undone.
 
-</dd>
-</dl>
-</dd>
-</dl>
+By default, the platform checks whether any indexed assets reference the asset. If references exist, the platform rejects the request with a `409 Conflict` error. To skip this check and delete the asset anyway, set the `force` query parameter to `true`. The platform unlinks any entity associations.
+
+Before deleting, you can inspect existing references:
+
+- [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) `/assets/{asset_id}/indexed-assets` returns a list of the indexed assets that will block deletion unless the `force` query parameter is set to `true`.
+- [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) `/assets/{asset_id}/entities` returns a list of the entities whose associations the platform will unlink.
+  </dd>
+  </dl>
+  </dd>
+  </dl>
 
 #### 🔌 Usage
 
@@ -1052,7 +1061,9 @@ This method deletes the specified asset. This action cannot be undone.
 <dd>
 
 ```typescript
-await client.assets.delete("6298d673f1090f1100476d4c");
+await client.assets.delete("6298d673f1090f1100476d4c", {
+    force: true,
+});
 ```
 
 </dd>
@@ -1069,6 +1080,14 @@ await client.assets.delete("6298d673f1090f1100476d4c");
 <dd>
 
 **assetId:** `string` — The unique identifier of the asset to delete.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.AssetsDeleteRequest`
 
 </dd>
 </dl>
@@ -1181,7 +1200,7 @@ while (page.hasNextPage()) {
 
 This method creates a multipart upload session.
 
-**Supported content**: Video and audio
+**Supported content**: Video
 
 **File size**: 4 GB maximum.
 
@@ -2146,6 +2165,9 @@ await client.analyzeAsync.tasks.list({
     page: 1,
     pageLimit: 10,
     status: "queued",
+    videoUrl: "https://example.com/video.mp4",
+    assetId: "69abc123def456789012abcd",
+    analysisMode: "time_based_metadata",
 });
 ```
 
@@ -2193,7 +2215,7 @@ await client.analyzeAsync.tasks.list({
 <dl>
 <dd>
 
-This method asynchronously analyzes your videos and generates fully customizable text based on your prompts.
+This method asynchronously analyzes your videos. It supports two modes: general analysis (prompt-based text generation) with Pegasus 1.2 and video segmentation with Pegasus 1.5.
 
 <Accordion title="Input requirements">
 - Minimum duration: 4 seconds
@@ -2205,6 +2227,8 @@ This method asynchronously analyzes your videos and generates fully customizable
 
 **When to use this method**:
 
+- Generate custom text from your video using a prompt (Pegasus 1.2 only)
+- Extract timestamped metadata with custom fields from your video (Pegasus 1.5 only)
 - Analyze videos longer than 1 hour
 - Process videos asynchronously without blocking your application
 
@@ -3118,6 +3142,92 @@ await client.embed.v2.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12");
 </details>
 
 ## EntityCollections Entities
+
+<details><summary><code>client.entityCollections.entities.<a href="/src/api/resources/entityCollections/resources/entities/client/Client.ts">listByAsset</a>(assetId, { ...params }) -> core.Page&lt;TwelvelabsApi.Entity&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of entities whose [`asset_ids`](/v1.3/api-reference/entities/entity-collections/entities/retrieve#response.body.asset_ids) array contains the specified asset.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.entityCollections.entities.listByAsset("6298d673f1090f1100476d4c", {
+    page: 1,
+    pageLimit: 10,
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.entityCollections.entities.listByAsset("6298d673f1090f1100476d4c", {
+    page: 1,
+    pageLimit: 10,
+});
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetId:** `string` — The unique identifier of the asset.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.entityCollections.EntitiesListByAssetRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Entities.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
 
 <details><summary><code>client.entityCollections.entities.<a href="/src/api/resources/entityCollections/resources/entities/client/Client.ts">list</a>(entityCollectionId, { ...params }) -> core.Page&lt;TwelvelabsApi.Entity&gt;</code></summary>
 <dl>
@@ -4176,6 +4286,92 @@ await client.indexes.indexedAssets.update("6298d673f1090f1100476d4c", "6298d673f
 <dd>
 
 **request:** `TwelvelabsApi.indexes.IndexedAssetsUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `IndexedAssets.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.indexes.indexedAssets.<a href="/src/api/resources/indexes/resources/indexedAssets/client/Client.ts">listByAsset</a>(assetId, { ...params }) -> core.Page&lt;TwelvelabsApi.IndexedAssetSummary&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of indexed assets that reference the specified asset. Each entry includes the indexed asset ID and the index it belongs to.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.indexes.indexedAssets.listByAsset("6298d673f1090f1100476d4c", {
+    page: 1,
+    pageLimit: 10,
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.indexes.indexedAssets.listByAsset("6298d673f1090f1100476d4c", {
+    page: 1,
+    pageLimit: 10,
+});
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetId:** `string` — The unique identifier of the asset.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.indexes.IndexedAssetsListByAssetRequest`
 
 </dd>
 </dl>

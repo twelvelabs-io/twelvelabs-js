@@ -5,4 +5,6 @@
 export interface IndexedAssetsCreateResponse {
     /** The unique identifier of the indexed asset. Use it to monitor the indexing progress. */
     id?: string;
+    /** The unique identifier of the associated asset. */
+    assetId?: string;
 }

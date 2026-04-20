@@ -5,7 +5,6 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { GeneratedTextData } from "./GeneratedTextData";
 import { FinishReason } from "./FinishReason";
 import { AnalyzeTaskResultUsage } from "./AnalyzeTaskResultUsage";
 
@@ -14,7 +13,7 @@ export const AnalyzeTaskResult: core.serialization.ObjectSchema<
     TwelvelabsApi.AnalyzeTaskResult
 > = core.serialization.object({
     generationId: core.serialization.property("generation_id", core.serialization.string()),
-    data: GeneratedTextData,
+    data: core.serialization.string(),
     finishReason: core.serialization.property("finish_reason", FinishReason),
     usage: AnalyzeTaskResultUsage,
 });
@@ -22,7 +21,7 @@ export const AnalyzeTaskResult: core.serialization.ObjectSchema<
 export declare namespace AnalyzeTaskResult {
     export interface Raw {
         generation_id: string;
-        data: GeneratedTextData.Raw;
+        data: string;
         finish_reason: FinishReason.Raw;
         usage: AnalyzeTaskResultUsage.Raw;
     }

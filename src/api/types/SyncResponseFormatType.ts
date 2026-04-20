@@ -5,7 +5,7 @@
 /**
  * Set this parameter to "json_schema" to receive structured JSON responses.
  */
-export type ResponseFormatType = "json_schema";
-export const ResponseFormatType = {
+export type SyncResponseFormatType = "json_schema";
+export const SyncResponseFormatType = {
     JsonSchema: "json_schema",
 } as const;
