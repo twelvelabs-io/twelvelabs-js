@@ -11,10 +11,12 @@ export const IndexedAssetsCreateResponse: core.serialization.ObjectSchema<
     TwelvelabsApi.indexes.IndexedAssetsCreateResponse
 > = core.serialization.object({
     id: core.serialization.property("_id", core.serialization.string().optional()),
+    assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
 });
 
 export declare namespace IndexedAssetsCreateResponse {
     export interface Raw {
         _id?: string | null;
+        asset_id?: string | null;
     }
 }

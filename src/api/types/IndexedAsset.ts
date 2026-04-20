@@ -10,6 +10,8 @@ import * as TwelvelabsApi from "../index";
 export interface IndexedAsset {
     /** A string representing the unique identifier of your indexed asset. */
     id?: string;
+    /** The unique identifier of the associated asset. */
+    assetId?: string;
     /** A string indicating the date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), that the indexing task was created. */
     createdAt?: string;
     /** A string indicating the date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), that the indexing task was last updated. The platform updates this field every time the indexing task transitions to a different state. */

@@ -5,29 +5,40 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { Entity } from "./Entity";
+import { EntityStatus } from "./EntityStatus";
 
 export const InternalEntity: core.serialization.ObjectSchema<
     serializers.InternalEntity.Raw,
     TwelvelabsApi.InternalEntity
-> = core.serialization
-    .object({
-        entityCollectionId: core.serialization.property("entity_collection_id", core.serialization.string().optional()),
-        entityCollectionName: core.serialization.property(
-            "entity_collection_name",
-            core.serialization.string().optional(),
-        ),
-        assetUrls: core.serialization.property(
-            "asset_urls",
-            core.serialization.list(core.serialization.string()).optional(),
-        ),
-    })
-    .extend(Entity);
+> = core.serialization.object({
+    entityCollectionId: core.serialization.property("entity_collection_id", core.serialization.string().optional()),
+    entityCollectionName: core.serialization.property("entity_collection_name", core.serialization.string().optional()),
+    assetUrls: core.serialization.property(
+        "asset_urls",
+        core.serialization.list(core.serialization.string()).optional(),
+    ),
+    id: core.serialization.property("_id", core.serialization.string().optional()),
+    name: core.serialization.string().optional(),
+    description: core.serialization.string().optional(),
+    metadata: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    assetIds: core.serialization.property("asset_ids", core.serialization.list(core.serialization.string()).optional()),
+    status: EntityStatus.optional(),
+    createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
+    updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
+});
 
 export declare namespace InternalEntity {
-    export interface Raw extends Entity.Raw {
+    export interface Raw {
         entity_collection_id?: string | null;
         entity_collection_name?: string | null;
         asset_urls?: string[] | null;
+        _id?: string | null;
+        name?: string | null;
+        description?: string | null;
+        metadata?: Record<string, unknown> | null;
+        asset_ids?: string[] | null;
+        status?: EntityStatus.Raw | null;
+        created_at?: string | null;
+        updated_at?: string | null;
     }
 }

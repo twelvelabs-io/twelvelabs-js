@@ -6,11 +6,11 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
-export const ResponseFormatType: core.serialization.Schema<
-    serializers.ResponseFormatType.Raw,
-    TwelvelabsApi.ResponseFormatType
+export const SyncResponseFormatType: core.serialization.Schema<
+    serializers.SyncResponseFormatType.Raw,
+    TwelvelabsApi.SyncResponseFormatType
 > = core.serialization.enum_(["json_schema"]);
 
-export declare namespace ResponseFormatType {
+export declare namespace SyncResponseFormatType {
     export type Raw = "json_schema";
 }

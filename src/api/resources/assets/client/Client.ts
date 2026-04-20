@@ -45,18 +45,19 @@ export class Assets {
      * @example
      *     await client.assets.list({
      *         page: 1,
-     *         pageLimit: 10
+     *         pageLimit: 10,
+     *         filename: "meeting"
      *     })
      */
     public async list(
         request: TwelvelabsApi.AssetsListRequest = {},
         requestOptions?: Assets.RequestOptions,
-    ): Promise<core.Page<TwelvelabsApi.Asset>> {
+    ): Promise<core.Page<TwelvelabsApi.AssetDetail>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: TwelvelabsApi.AssetsListRequest,
             ): Promise<core.WithRawResponse<TwelvelabsApi.AssetsListResponse>> => {
-                const { page, pageLimit, assetIds, assetTypes } = request;
+                const { page, pageLimit, assetIds, assetTypes, filename } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (page != null) {
                     _queryParams["page"] = page.toString();
@@ -84,6 +85,9 @@ export class Assets {
                             { unrecognizedObjectKeys: "strip" },
                         );
                     }
+                }
+                if (filename != null) {
+                    _queryParams["filename"] = filename;
                 }
                 const _response = await core.fetcher({
                     url: urlJoin(
@@ -153,7 +157,7 @@ export class Assets {
         );
         let _offset = request?.page != null ? request?.page : 1;
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<TwelvelabsApi.AssetsListResponse, TwelvelabsApi.Asset>({
+        return new core.Pageable<TwelvelabsApi.AssetsListResponse, TwelvelabsApi.AssetDetail>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) => (response?.data ?? []).length > 0,
@@ -222,6 +226,14 @@ export class Assets {
 
         if (request.filename != null) {
             _request.append("filename", request.filename);
+        }
+
+        if (request.enableHls != null) {
+            _request.append("enable_hls", request.enableHls.toString());
+        }
+
+        if (request.enableThumbnail != null) {
+            _request.append("enable_thumbnail", request.enableThumbnail.toString());
         }
 
         const _maybeEncodedRequest = await _request.getRequest();
@@ -307,14 +319,14 @@ export class Assets {
     public retrieve(
         assetId: string,
         requestOptions?: Assets.RequestOptions,
-    ): core.HttpResponsePromise<TwelvelabsApi.Asset> {
+    ): core.HttpResponsePromise<TwelvelabsApi.AssetDetail> {
         return core.HttpResponsePromise.fromPromise(this.__retrieve(assetId, requestOptions));
     }
 
     private async __retrieve(
         assetId: string,
         requestOptions?: Assets.RequestOptions,
-    ): Promise<core.WithRawResponse<TwelvelabsApi.Asset>> {
+    ): Promise<core.WithRawResponse<TwelvelabsApi.AssetDetail>> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -341,7 +353,7 @@ export class Assets {
         });
         if (_response.ok) {
             return {
-                data: serializers.Asset.parseOrThrow(_response.body, {
+                data: serializers.AssetDetail.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -384,22 +396,43 @@ export class Assets {
     /**
      * This method deletes the specified asset. This action cannot be undone.
      *
+     * By default, the platform checks whether any indexed assets reference the asset. If references exist, the platform rejects the request with a `409 Conflict` error. To skip this check and delete the asset anyway, set the `force` query parameter to `true`. The platform unlinks any entity associations.
+     *
+     * Before deleting, you can inspect existing references:
+     * - [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) `/assets/{asset_id}/indexed-assets` returns a list of the indexed assets that will block deletion unless the `force` query parameter is set to `true`.
+     * - [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) `/assets/{asset_id}/entities` returns a list of the entities whose associations the platform will unlink.
+     *
      * @param {string} assetId - The unique identifier of the asset to delete.
+     * @param {TwelvelabsApi.AssetsDeleteRequest} request
      * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.ConflictError}
      *
      * @example
-     *     await client.assets.delete("6298d673f1090f1100476d4c")
+     *     await client.assets.delete("6298d673f1090f1100476d4c", {
+     *         force: true
+     *     })
      */
-    public delete(assetId: string, requestOptions?: Assets.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(assetId, requestOptions));
+    public delete(
+        assetId: string,
+        request: TwelvelabsApi.AssetsDeleteRequest = {},
+        requestOptions?: Assets.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(assetId, request, requestOptions));
     }
 
     private async __delete(
         assetId: string,
+        request: TwelvelabsApi.AssetsDeleteRequest = {},
         requestOptions?: Assets.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { force } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (force != null) {
+            _queryParams["force"] = force.toString();
+        }
+
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -419,6 +452,7 @@ export class Assets {
                 ...requestOptions?.headers,
             },
             contentType: "application/json",
+            queryParameters: _queryParams,
             requestType: "json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -432,6 +466,8 @@ export class Assets {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,

@@ -5,20 +5,20 @@
 import * as serializers from "../../../index";
 import * as TwelvelabsApi from "../../../../api/index";
 import * as core from "../../../../core";
-import { Asset } from "../../../types/Asset";
+import { AssetDetail } from "../../../types/AssetDetail";
 import { PageInfo } from "../../../types/PageInfo";
 
 export const AssetsListResponse: core.serialization.ObjectSchema<
     serializers.AssetsListResponse.Raw,
     TwelvelabsApi.AssetsListResponse
 > = core.serialization.object({
-    data: core.serialization.list(Asset).optional(),
+    data: core.serialization.list(AssetDetail).optional(),
     pageInfo: core.serialization.property("page_info", PageInfo.optional()),
 });
 
 export declare namespace AssetsListResponse {
     export interface Raw {
-        data?: Asset.Raw[] | null;
+        data?: AssetDetail.Raw[] | null;
         page_info?: PageInfo.Raw | null;
     }
 }

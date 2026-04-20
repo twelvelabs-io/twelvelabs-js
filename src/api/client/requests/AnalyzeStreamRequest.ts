@@ -43,6 +43,6 @@ export interface AnalyzeStreamRequest {
     video?: TwelvelabsApi.VideoContext;
     prompt: TwelvelabsApi.AnalyzeTextPrompt;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
-    responseFormat?: TwelvelabsApi.ResponseFormat;
+    responseFormat?: TwelvelabsApi.SyncResponseFormat;
     maxTokens?: TwelvelabsApi.AnalyzeMaxTokens;
 }

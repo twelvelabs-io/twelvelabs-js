@@ -5,22 +5,22 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { ResponseFormatType } from "./ResponseFormatType";
+import { SyncResponseFormatType } from "./SyncResponseFormatType";
 
-export const ResponseFormat: core.serialization.ObjectSchema<
-    serializers.ResponseFormat.Raw,
-    TwelvelabsApi.ResponseFormat
+export const SyncResponseFormat: core.serialization.ObjectSchema<
+    serializers.SyncResponseFormat.Raw,
+    TwelvelabsApi.SyncResponseFormat
 > = core.serialization.object({
-    type: ResponseFormatType,
+    type: SyncResponseFormatType,
     jsonSchema: core.serialization.property(
         "json_schema",
         core.serialization.record(core.serialization.string(), core.serialization.unknown()),
     ),
 });
 
-export declare namespace ResponseFormat {
+export declare namespace SyncResponseFormat {
     export interface Raw {
-        type: ResponseFormatType.Raw;
+        type: SyncResponseFormatType.Raw;
         json_schema: Record<string, unknown>;
     }
 }

@@ -7,8 +7,8 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
 export const AssetMethod: core.serialization.Schema<serializers.AssetMethod.Raw, TwelvelabsApi.AssetMethod> =
-    core.serialization.enum_(["direct", "url"]);
+    core.serialization.enum_(["direct", "url", "multipart"]);
 
 export declare namespace AssetMethod {
-    export type Raw = "direct" | "url";
+    export type Raw = "direct" | "url" | "multipart";
 }

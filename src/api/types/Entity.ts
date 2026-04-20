@@ -10,6 +10,8 @@ import * as TwelvelabsApi from "../index";
 export interface Entity {
     /** The unique identifier of the entity. */
     id?: string;
+    /** The unique identifier of the entity collection this entity belongs to. */
+    entityCollectionId?: string;
     /** The name of the entity. */
     name?: string;
     /** A description of the entity. */

@@ -44,7 +44,10 @@ export class Tasks {
      *     await client.analyzeAsync.tasks.list({
      *         page: 1,
      *         pageLimit: 10,
-     *         status: "queued"
+     *         status: "queued",
+     *         videoUrl: "https://example.com/video.mp4",
+     *         assetId: "69abc123def456789012abcd",
+     *         analysisMode: "time_based_metadata"
      *     })
      */
     public list(
@@ -58,7 +61,7 @@ export class Tasks {
         request: TwelvelabsApi.analyzeAsync.TasksListRequest = {},
         requestOptions?: Tasks.RequestOptions,
     ): Promise<core.WithRawResponse<TwelvelabsApi.analyzeAsync.TasksListResponse>> {
-        const { page, pageLimit, status } = request;
+        const { page, pageLimit, status, videoUrl, assetId, analysisMode } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (page != null) {
             _queryParams["page"] = page.toString();
@@ -72,6 +75,21 @@ export class Tasks {
             _queryParams["status"] = serializers.AnalyzeTaskStatus.jsonOrThrow(status, {
                 unrecognizedObjectKeys: "strip",
             });
+        }
+
+        if (videoUrl != null) {
+            _queryParams["video_url"] = videoUrl;
+        }
+
+        if (assetId != null) {
+            _queryParams["asset_id"] = assetId;
+        }
+
+        if (analysisMode != null) {
+            _queryParams["analysis_mode"] = serializers.analyzeAsync.TasksListRequestAnalysisMode.jsonOrThrow(
+                analysisMode,
+                { unrecognizedObjectKeys: "strip" },
+            );
         }
 
         const _response = await core.fetcher({
@@ -142,7 +160,7 @@ export class Tasks {
     }
 
     /**
-     * This method asynchronously analyzes your videos and generates fully customizable text based on your prompts.
+     * This method asynchronously analyzes your videos. It supports two modes: general analysis (prompt-based text generation) with Pegasus 1.2 and video segmentation with Pegasus 1.5.
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -153,6 +171,8 @@ export class Tasks {
      * </Accordion>
      *
      * **When to use this method**:
+     * - Generate custom text from your video using a prompt (Pegasus 1.2 only)
+     * - Extract timestamped metadata with custom fields from your video (Pegasus 1.5 only)
      * - Analyze videos longer than 1 hour
      * - Process videos asynchronously without blocking your application
      *
@@ -184,6 +204,38 @@ export class Tasks {
      *         prompt: "Generate a detailed summary of this video in 3-4 sentences",
      *         temperature: 0.2,
      *         maxTokens: 1000
+     *     })
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.create({
+     *         modelName: "pegasus1.5",
+     *         video: {
+     *             type: "url",
+     *             url: "https://example.com/video.mp4"
+     *         },
+     *         analysisMode: "time_based_metadata",
+     *         responseFormat: {
+     *             type: "segment_definitions",
+     *             segmentDefinitions: [{
+     *                     id: "scene",
+     *                     description: "A distinct scene or setting change in the video",
+     *                     fields: [{
+     *                             name: "sentiment",
+     *                             type: "string",
+     *                             description: "The emotional tone of this segment",
+     *                             enum: ["positive", "negative", "neutral"]
+     *                         }, {
+     *                             name: "key_objects",
+     *                             type: "array",
+     *                             description: "Notable objects visible in this segment",
+     *                             items: {
+     *                                 type: "string"
+     *                             }
+     *                         }]
+     *                 }]
+     *         },
+     *         minSegmentDuration: 5,
+     *         maxSegmentDuration: 30
      *     })
      */
     public create(
@@ -417,15 +469,7 @@ export class Tasks {
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
-                    throw new TwelvelabsApi.ConflictError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,

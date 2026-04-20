@@ -5,6 +5,8 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { AnalyzeTaskResponseVideoSource } from "./AnalyzeTaskResponseVideoSource";
+import { AnalyzeTaskResponseRequestParams } from "./AnalyzeTaskResponseRequestParams";
 import { AnalyzeTaskStatus } from "./AnalyzeTaskStatus";
 import { AnalyzeTaskResult } from "./AnalyzeTaskResult";
 import { AnalyzeTaskError } from "./AnalyzeTaskError";
@@ -15,6 +17,8 @@ export const AnalyzeTaskResponse: core.serialization.ObjectSchema<
     TwelvelabsApi.AnalyzeTaskResponse
 > = core.serialization.object({
     taskId: core.serialization.property("task_id", core.serialization.string()),
+    videoSource: core.serialization.property("video_source", AnalyzeTaskResponseVideoSource.optional()),
+    requestParams: core.serialization.property("request_params", AnalyzeTaskResponseRequestParams.optional()),
     status: AnalyzeTaskStatus,
     createdAt: core.serialization.property("created_at", core.serialization.date()),
     completedAt: core.serialization.property("completed_at", core.serialization.date().optional()),
@@ -26,6 +30,8 @@ export const AnalyzeTaskResponse: core.serialization.ObjectSchema<
 export declare namespace AnalyzeTaskResponse {
     export interface Raw {
         task_id: string;
+        video_source?: AnalyzeTaskResponseVideoSource.Raw | null;
+        request_params?: AnalyzeTaskResponseRequestParams.Raw | null;
         status: AnalyzeTaskStatus.Raw;
         created_at: string;
         completed_at?: string | null;

@@ -23,4 +23,16 @@ export interface AssetsCreateRequest {
     url?: string;
     /** The optional filename of the asset. If not provided, the platform will determine the filename from the file or URL. */
     filename?: string;
+    /**
+     * When set to `true`, the platform generates an HLS playlist and segments for streaming. Applicable to video and audio assets only.
+     *
+     * **Default**: `false`.
+     */
+    enableHls?: boolean;
+    /**
+     * When set to `true`, the platform generates thumbnail images from the uploaded content.
+     *
+     * **Default**: `false`.
+     */
+    enableThumbnail?: boolean;
 }

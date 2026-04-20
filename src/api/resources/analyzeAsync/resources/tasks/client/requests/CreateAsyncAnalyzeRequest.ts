@@ -15,11 +15,82 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         temperature: 0.2,
  *         maxTokens: 1000
  *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.5",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         analysisMode: "time_based_metadata",
+ *         responseFormat: {
+ *             type: "segment_definitions",
+ *             segmentDefinitions: [{
+ *                     id: "scene",
+ *                     description: "A distinct scene or setting change in the video",
+ *                     fields: [{
+ *                             name: "sentiment",
+ *                             type: "string",
+ *                             description: "The emotional tone of this segment",
+ *                             enum: ["positive", "negative", "neutral"]
+ *                         }, {
+ *                             name: "key_objects",
+ *                             type: "array",
+ *                             description: "Notable objects visible in this segment",
+ *                             items: {
+ *                                 type: "string"
+ *                             }
+ *                         }]
+ *                 }]
+ *         },
+ *         minSegmentDuration: 5,
+ *         maxSegmentDuration: 30
+ *     }
  */
 export interface CreateAsyncAnalyzeRequest {
+    /**
+     * The video understanding model to use for analysis.
+     * - `pegasus1.2` (default): Analyzes pre-indexed videos. Pass a `video_id` to reference your video.
+     * - `pegasus1.5`: Analyzes videos directly from a URL, asset, or base64 string. Supports video segmentation with custom segment definitions.
+     */
+    modelName?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestModelName;
     video: TwelvelabsApi.VideoContext;
-    prompt: TwelvelabsApi.AnalyzeTextPrompt;
+    /**
+     * A natural-language text that provides instructions for analyzing the video. Required for general-mode analysis. Not supported when `analysis_mode` is `time_based_metadata`.
+     *
+     * <Note title="Notes">
+     * - Even though the model behind this endpoint is trained to a high degree of accuracy, the preciseness of the generated text may vary based on the nature and quality of the video and the clarity of the prompt.
+     * - Your prompts can be instructive or descriptive, or you can also phrase them as questions.
+     * - The maximum length of a prompt is 2,000 tokens.
+     * </Note>
+     *
+     * **Examples**:
+     *
+     * - Based on this video, I want to generate five keywords for SEO (Search Engine Optimization).
+     * - I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.
+     */
+    prompt?: string;
+    /** Sets the analysis mode to `time_based_metadata`, which segments your video into time-based intervals and extracts custom metadata for each segment. Requires `model_name` set to `pegasus1.5` and `response_format.type` set to `segment_definitions`. */
+    analysisMode?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestAnalysisMode;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
-    maxTokens?: TwelvelabsApi.AnalyzeMaxTokens;
-    responseFormat?: TwelvelabsApi.ResponseFormat;
+    /**
+     * The maximum number of tokens to generate. The allowed range depends on the model:
+     * - `pegasus1.2`: **Min:** 1, **Max:** 4,096
+     * - `pegasus1.5`: **Min:** 2,048, **Max:** 32,768, **Default:** 32,768
+     */
+    maxTokens?: number;
+    responseFormat?: TwelvelabsApi.AsyncResponseFormat;
+    /**
+     * Minimum duration for each extracted segment, in seconds. Set this to prevent the model from creating very short segments. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+     *
+     * **Min:** 2
+     */
+    minSegmentDuration?: number;
+    /**
+     * Maximum duration for each extracted segment, in seconds. Set this to break long continuous sections into shorter segments. Must be greater than or equal to `min_segment_duration`. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+     *
+     * **Min:** 2
+     */
+    maxSegmentDuration?: number;
 }

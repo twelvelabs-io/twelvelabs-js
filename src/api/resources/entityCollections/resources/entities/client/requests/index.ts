@@ -1,3 +1,4 @@
+export { type EntitiesListByAssetRequest } from "./EntitiesListByAssetRequest";
 export { type EntitiesListRequest } from "./EntitiesListRequest";
 export { type EntitiesCreateRequest } from "./EntitiesCreateRequest";
 export { type EntitiesCreateBulkRequest } from "./EntitiesCreateBulkRequest";

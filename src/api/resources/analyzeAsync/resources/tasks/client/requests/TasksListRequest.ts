@@ -9,7 +9,20 @@ import * as TwelvelabsApi from "../../../../../../index";
  *     {
  *         page: 1,
  *         pageLimit: 10,
- *         status: "queued"
+ *         status: "queued",
+ *         videoUrl: "https://example.com/video.mp4",
+ *         assetId: "69abc123def456789012abcd",
+ *         analysisMode: "time_based_metadata"
+ *     }
+ *
+ * @example
+ *     {
+ *         page: 1,
+ *         pageLimit: 10,
+ *         status: "queued",
+ *         videoUrl: "https://example.com/video.mp4",
+ *         assetId: "69abc123def456789012abcd",
+ *         analysisMode: "time_based_metadata"
  *     }
  */
 export interface TasksListRequest {
@@ -31,4 +44,16 @@ export interface TasksListRequest {
      * Possible values: `queued`, `pending`, `processing`, `ready`, `failed`.
      */
     status?: TwelvelabsApi.AnalyzeTaskStatus;
+    /**
+     * Filter tasks by exact video source URL.
+     */
+    videoUrl?: string;
+    /**
+     * Filter tasks by asset ID.
+     */
+    assetId?: string;
+    /**
+     * Filter tasks by the analysis mode used when creating the task.
+     */
+    analysisMode?: TwelvelabsApi.analyzeAsync.TasksListRequestAnalysisMode;
 }

@@ -7,11 +7,33 @@ import * as TwelvelabsApi from "../index";
 /**
  * An object that extends the Entity schema with additional collection information.
  */
-export interface InternalEntity extends TwelvelabsApi.Entity {
+export interface InternalEntity {
     /** The unique identifier of the entity collection the entity belongs to. */
     entityCollectionId?: string;
     /** The name of the entity collection the entity belongs to. */
     entityCollectionName?: string;
     /** An array of URLs for the assets associated with the entity. */
     assetUrls?: string[];
+    /** The unique identifier of the entity. */
+    id?: string;
+    /** The name of the entity. */
+    name?: string;
+    /** A description of the entity. */
+    description?: string;
+    /** Custom metadata for the entity. */
+    metadata?: Record<string, unknown>;
+    /** An array of asset IDs associated with the entity. */
+    assetIds?: string[];
+    /**
+     * The current status of the entity creation process.
+     *
+     * **Values**:
+     * - `processing`: The entity is being processed and is not yet ready for use in searches.
+     * - `ready`: The entity is fully processed and can be used in search queries.
+     */
+    status?: TwelvelabsApi.EntityStatus;
+    /** The date and time, in RFC 3339 format (“YYYY-MM-DDTHH:mm:ssZ”), when the entity was created. */
+    createdAt?: Date;
+    /** The date and time, in RFC 3339 format (“YYYY-MM-DDTHH:mm:ssZ”), when the entity was last updated. */
+    updatedAt?: Date;
 }

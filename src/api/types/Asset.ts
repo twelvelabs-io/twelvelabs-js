@@ -16,6 +16,7 @@ export interface Asset {
      * **Values**:
      * - `direct`: Uploaded from your local file system
      * - `url`: Uploaded from a publicly accessible URL
+     * - `multipart`: Uploaded using the multipart upload flow
      */
     method?: TwelvelabsApi.AssetMethod;
     /**
@@ -31,6 +32,10 @@ export interface Asset {
     filename?: string;
     /** The MIME type of the asset file. */
     fileType?: string;
+    /** The file size of the asset in bytes. This field is absent while the asset is still being processed. */
+    size?: number;
+    /** The duration of the asset in seconds. Only present for video and audio assets. This field is absent for image assets or while the asset is still being processed. */
+    duration?: number;
     /** The date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the asset was created. */
     createdAt?: Date;
 }

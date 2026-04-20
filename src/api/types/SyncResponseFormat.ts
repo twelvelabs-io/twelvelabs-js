@@ -7,9 +7,9 @@ import * as TwelvelabsApi from "../index";
 /**
  * Specifies the format of the response. When you omit this parameter, the platform returns unstructured text.
  */
-export interface ResponseFormat {
+export interface SyncResponseFormat {
     /** Set this parameter to "json_schema" to receive structured JSON responses. */
-    type: TwelvelabsApi.ResponseFormatType;
+    type: TwelvelabsApi.SyncResponseFormatType;
     /**
      * Contains the JSON schema that defines the response structure. The schema must adhere to the [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12) specification.
      *
