@@ -12,7 +12,7 @@
 <dl>
 <dd>
 
-This method synchronously analyzes your videos and generates fully customizable text based on your prompts.
+This method analyzes your videos and returns the results directly in the response. It generates text based on your prompts and supports both Pegasus 1.2 and Pegasus 1.5 for general analysis (prompt-based text generation).
 
 <Accordion title="Input requirements">
 - Minimum duration: 4 seconds
@@ -25,16 +25,16 @@ This method synchronously analyzes your videos and generates fully customizable 
 **When to use this method**:
 
 - Analyze videos up to 1 hour
-- Retrieve immediate results without waiting for asynchronous processing
-- Stream text fragments in real-time for immediate processing and feedback
+- Retrieve immediate results without polling for task completion
+- Stream text fragments in real time for immediate processing and feedback
 
 **Do not use this method for**:
 
 - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
-- Video segmentation. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with `model_name` set to `pegasus1.5` instead.
+- Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
 
-<Note title="Notes">
-- This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
 </dd>
 </dl>
@@ -50,32 +50,7 @@ This method synchronously analyzes your videos and generates fully customizable 
 <dd>
 
 ```typescript
-await client.analyze({
-    videoId: "6298d673f1090f1100476d4c",
-    prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
-    temperature: 0.2,
-    responseFormat: {
-        type: "json_schema",
-        jsonSchema: {
-            type: "object",
-            properties: {
-                title: {
-                    type: "string",
-                },
-                summary: {
-                    type: "string",
-                },
-                keywords: {
-                    type: "array",
-                    items: {
-                        type: "string",
-                    },
-                },
-            },
-        },
-    },
-    maxTokens: 2000,
-});
+await client.analyze({});
 ```
 
 </dd>
@@ -901,7 +876,11 @@ This method creates an asset by uploading a file to the platform. Assets are med
 - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
 - **Publicly accessible URL**: Set the `method` parameter to `url` and use the `url` parameter to specify the URL of your file.
 
-**File size**: Up to 4 GB.
+**Upload limits**:
+
+- **Video and audio, local files**: Up to 200 MB
+- **Video and audio, public URLs**: Up to 4 GB
+- **Images**: Up to 5 MB
 
 **Additional requirements** depend on your workflow:
 
@@ -1198,11 +1177,11 @@ while (page.hasNextPage()) {
 <dl>
 <dd>
 
-This method creates a multipart upload session.
+This method creates a multipart upload session for a local video file.
 
 **Supported content**: Video
 
-**File size**: 4 GB maximum.
+**Upload limits**: Local video files up to 4 GB.
 
 **Additional requirements** depend on your workflow:
 
@@ -2167,7 +2146,8 @@ await client.analyzeAsync.tasks.list({
     status: "queued",
     videoUrl: "https://example.com/video.mp4",
     assetId: "69abc123def456789012abcd",
-    analysisMode: "time_based_metadata",
+    videoId: "6298d673f1090f1100476d4c",
+    analysisMode: "general",
 });
 ```
 
@@ -2215,7 +2195,7 @@ await client.analyzeAsync.tasks.list({
 <dl>
 <dd>
 
-This method asynchronously analyzes your videos. It supports two modes: general analysis (prompt-based text generation) with Pegasus 1.2 and video segmentation with Pegasus 1.5.
+This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions. Video segmentation requires Pegasus 1.5.
 
 <Accordion title="Input requirements">
 - Minimum duration: 4 seconds
@@ -2227,8 +2207,8 @@ This method asynchronously analyzes your videos. It supports two modes: general 
 
 **When to use this method**:
 
-- Generate custom text from your video using a prompt (Pegasus 1.2 only)
-- Extract timestamped metadata with custom fields from your video (Pegasus 1.5 only)
+- Generate custom text from your video using a prompt (general analysis)
+- Extract timestamped metadata with custom segment definitions from your video (Pegasus 1.5 only)
 - Analyze videos longer than 1 hour
 - Process videos asynchronously without blocking your application
 
@@ -2260,6 +2240,7 @@ This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get
 
 ```typescript
 await client.analyzeAsync.tasks.create({
+    customId: "prod-segment-analysis-42",
     video: {
         type: "url",
         url: "https://example.com/video.mp4",
@@ -2986,7 +2967,7 @@ This endpoint creates embeddings for audio and video content asynchronously.
 
 - Minimum duration: 4 seconds
 - Maximum duration: 4 hours
-- Maximum file size: 2 GB
+- Maximum file size: 4 GB
 - Formats: WAV (uncompressed), MP3 (lossy), FLAC (lossless)
   </Accordion>
 

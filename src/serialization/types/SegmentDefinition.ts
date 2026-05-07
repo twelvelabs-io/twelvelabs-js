@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { SegmentField } from "./SegmentField";
 import { SmeMediaSource } from "./SmeMediaSource";
+import { AnalyzeTimeRange } from "./AnalyzeTimeRange";
 
 export const SegmentDefinition: core.serialization.ObjectSchema<
     serializers.SegmentDefinition.Raw,
@@ -16,6 +17,7 @@ export const SegmentDefinition: core.serialization.ObjectSchema<
     description: core.serialization.string(),
     fields: core.serialization.list(SegmentField).optional(),
     mediaSources: core.serialization.property("media_sources", core.serialization.list(SmeMediaSource).optional()),
+    timeRanges: core.serialization.property("time_ranges", core.serialization.list(AnalyzeTimeRange).optional()),
 });
 
 export declare namespace SegmentDefinition {
@@ -24,5 +26,6 @@ export declare namespace SegmentDefinition {
         description: string;
         fields?: SegmentField.Raw[] | null;
         media_sources?: SmeMediaSource.Raw[] | null;
+        time_ranges?: AnalyzeTimeRange.Raw[] | null;
     }
 }

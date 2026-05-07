@@ -5,9 +5,22 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * The response format you configured. Present only when you included it in the request.
+ * The response format for this task. Present only when the request included a response format.
  */
 export interface AnalyzeTaskResponseRequestParamsResponseFormat {
     type?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatType;
+    /**
+     * The JSON schema for this task. Present only when `type` is `json_schema`.
+     *
+     * - [List](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks): Omitted.
+     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task): Returns the full schema.
+     */
+    jsonSchema?: Record<string, unknown>;
+    /**
+     * The segment definitions for this task. Present only when `type` is `segment_definitions`.
+     *
+     * - [List](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks): Returns only the first element.
+     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task): Returns the full array.
+     */
     segmentDefinitions?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem[];
 }

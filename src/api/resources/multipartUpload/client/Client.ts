@@ -75,8 +75,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.3",
-                        "User-Agent": "twelvelabs-js/1.2.3",
+                        "X-Fern-SDK-Version": "1.2.4",
+                        "User-Agent": "twelvelabs-js/1.2.4",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -86,7 +86,7 @@ export class MultipartUpload {
                     queryParameters: _queryParams,
                     requestType: "json",
                     timeoutMs:
-                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
                     maxRetries: requestOptions?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
                 });
@@ -151,11 +151,11 @@ export class MultipartUpload {
     }
 
     /**
-     * This method creates a multipart upload session.
+     * This method creates a multipart upload session for a local video file.
      *
      * **Supported content**: Video
      *
-     * **File size**: 4 GB maximum.
+     * **Upload limits**: Local video files up to 4 GB.
      *
      * **Additional requirements** depend on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
@@ -198,8 +198,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -208,7 +208,7 @@ export class MultipartUpload {
             contentType: "application/json",
             requestType: "json",
             body: serializers.CreateAssetUploadRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -315,8 +315,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.3",
-                        "User-Agent": "twelvelabs-js/1.2.3",
+                        "X-Fern-SDK-Version": "1.2.4",
+                        "User-Agent": "twelvelabs-js/1.2.4",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -326,7 +326,7 @@ export class MultipartUpload {
                     queryParameters: _queryParams,
                     requestType: "json",
                     timeoutMs:
-                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
                     maxRetries: requestOptions?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
                 });
@@ -440,8 +440,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -450,7 +450,7 @@ export class MultipartUpload {
             contentType: "application/json",
             requestType: "json",
             body: serializers.ReportChunkBatchRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -551,8 +551,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -563,7 +563,7 @@ export class MultipartUpload {
             body: serializers.RequestAdditionalPresignedUrLsRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
             }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });

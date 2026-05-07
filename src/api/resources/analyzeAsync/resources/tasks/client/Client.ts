@@ -47,7 +47,8 @@ export class Tasks {
      *         status: "queued",
      *         videoUrl: "https://example.com/video.mp4",
      *         assetId: "69abc123def456789012abcd",
-     *         analysisMode: "time_based_metadata"
+     *         videoId: "6298d673f1090f1100476d4c",
+     *         analysisMode: "general"
      *     })
      */
     public list(
@@ -61,7 +62,7 @@ export class Tasks {
         request: TwelvelabsApi.analyzeAsync.TasksListRequest = {},
         requestOptions?: Tasks.RequestOptions,
     ): Promise<core.WithRawResponse<TwelvelabsApi.analyzeAsync.TasksListResponse>> {
-        const { page, pageLimit, status, videoUrl, assetId, analysisMode } = request;
+        const { page, pageLimit, status, videoUrl, assetId, videoId, analysisMode } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (page != null) {
             _queryParams["page"] = page.toString();
@@ -85,6 +86,10 @@ export class Tasks {
             _queryParams["asset_id"] = assetId;
         }
 
+        if (videoId != null) {
+            _queryParams["video_id"] = videoId;
+        }
+
         if (analysisMode != null) {
             _queryParams["analysis_mode"] = serializers.analyzeAsync.TasksListRequestAnalysisMode.jsonOrThrow(
                 analysisMode,
@@ -103,8 +108,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -113,7 +118,7 @@ export class Tasks {
             contentType: "application/json",
             queryParameters: _queryParams,
             requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -160,7 +165,7 @@ export class Tasks {
     }
 
     /**
-     * This method asynchronously analyzes your videos. It supports two modes: general analysis (prompt-based text generation) with Pegasus 1.2 and video segmentation with Pegasus 1.5.
+     * This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions. Video segmentation requires Pegasus 1.5.
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -171,8 +176,8 @@ export class Tasks {
      * </Accordion>
      *
      * **When to use this method**:
-     * - Generate custom text from your video using a prompt (Pegasus 1.2 only)
-     * - Extract timestamped metadata with custom fields from your video (Pegasus 1.5 only)
+     * - Generate custom text from your video using a prompt (general analysis)
+     * - Extract timestamped metadata with custom segment definitions from your video (Pegasus 1.5 only)
      * - Analyze videos longer than 1 hour
      * - Process videos asynchronously without blocking your application
      *
@@ -197,6 +202,7 @@ export class Tasks {
      *
      * @example
      *     await client.analyzeAsync.tasks.create({
+     *         customId: "prod-segment-analysis-42",
      *         video: {
      *             type: "url",
      *             url: "https://example.com/video.mp4"
@@ -237,6 +243,61 @@ export class Tasks {
      *         minSegmentDuration: 5,
      *         maxSegmentDuration: 30
      *     })
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.create({
+     *         modelName: "pegasus1.5",
+     *         video: {
+     *             type: "url",
+     *             url: "https://example.com/video.mp4"
+     *         },
+     *         prompt: "Summarize the key events in this clip.",
+     *         maxTokens: 4096,
+     *         startTime: 10,
+     *         endTime: 60
+     *     })
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.create({
+     *         modelName: "pegasus1.5",
+     *         video: {
+     *             type: "url",
+     *             url: "https://example.com/video.mp4"
+     *         },
+     *         analysisMode: "time_based_metadata",
+     *         responseFormat: {
+     *             type: "segment_definitions",
+     *             segmentDefinitions: [{
+     *                     id: "scenes",
+     *                     description: "Scene changes.",
+     *                     timeRanges: [{
+     *                             startTime: 0,
+     *                             endTime: 4
+     *                         }, {
+     *                             startTime: 10,
+     *                             endTime: 14
+     *                         }]
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.create({
+     *         modelName: "pegasus1.5",
+     *         video: {
+     *             type: "url",
+     *             url: "https://example.com/video.mp4"
+     *         },
+     *         promptV2: {
+     *             inputText: "Is there a <@tiger-1> in the video?",
+     *             mediaSources: [{
+     *                     name: "tiger-1",
+     *                     mediaType: "image",
+     *                     url: "https://example.com/tiger.jpg"
+     *                 }]
+     *         },
+     *         maxTokens: 4096
+     *     })
      */
     public create(
         request: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest,
@@ -260,8 +321,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -272,7 +333,7 @@ export class Tasks {
             body: serializers.analyzeAsync.CreateAsyncAnalyzeRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
             }),
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -362,8 +423,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -371,7 +432,7 @@ export class Tasks {
             },
             contentType: "application/json",
             requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -447,8 +508,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -456,7 +517,7 @@ export class Tasks {
             },
             contentType: "application/json",
             requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });

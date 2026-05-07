@@ -9,4 +9,6 @@ export interface AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinition
     description: string;
     fields?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem[];
     mediaSources?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem[];
+    /** The time ranges for this segment definition. Present only when the task was created with `time_ranges`. */
+    timeRanges?: TwelvelabsApi.AnalyzeTimeRange[];
 }

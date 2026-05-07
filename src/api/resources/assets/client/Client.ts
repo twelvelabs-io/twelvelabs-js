@@ -100,8 +100,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.3",
-                        "User-Agent": "twelvelabs-js/1.2.3",
+                        "X-Fern-SDK-Version": "1.2.4",
+                        "User-Agent": "twelvelabs-js/1.2.4",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -111,7 +111,7 @@ export class Assets {
                     queryParameters: _queryParams,
                     requestType: "json",
                     timeoutMs:
-                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+                        requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
                     maxRetries: requestOptions?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
                 });
@@ -178,7 +178,10 @@ export class Assets {
      * - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
      * - **Publicly accessible URL**: Set the `method` parameter to `url` and use the `url` parameter to specify the URL of your file.
      *
-     * **File size**: Up to 4 GB.
+     * **Upload limits**:
+     * - **Video and audio, local files**: Up to 200 MB
+     * - **Video and audio, public URLs**: Up to 4 GB
+     * - **Images**: Up to 5 MB
      *
      * **Additional requirements** depend on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
@@ -248,8 +251,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -259,7 +262,7 @@ export class Assets {
             requestType: "file",
             duplex: _maybeEncodedRequest.duplex,
             body: _maybeEncodedRequest.body,
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -338,8 +341,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -347,7 +350,7 @@ export class Assets {
             },
             contentType: "application/json",
             requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -444,8 +447,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -454,7 +457,7 @@ export class Assets {
             contentType: "application/json",
             queryParameters: _queryParams,
             requestType: "json",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });

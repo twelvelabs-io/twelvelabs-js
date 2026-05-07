@@ -8,6 +8,6 @@
 export interface AnalyzeTaskResultUsage {
     /** The number of tokens in the generated text. */
     outputTokens: number;
-    /** The number of tokens in the input prompt. */
+    /** The number of tokens in the input prompt. Omitted when `model_name` is `pegasus1.5`. */
     inputTokens?: number;
 }

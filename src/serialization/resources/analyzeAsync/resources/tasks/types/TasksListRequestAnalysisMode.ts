@@ -9,8 +9,8 @@ import * as core from "../../../../../../core";
 export const TasksListRequestAnalysisMode: core.serialization.Schema<
     serializers.analyzeAsync.TasksListRequestAnalysisMode.Raw,
     TwelvelabsApi.analyzeAsync.TasksListRequestAnalysisMode
-> = core.serialization.enum_(["time_based_metadata"]);
+> = core.serialization.enum_(["general", "time_based_metadata"]);
 
 export declare namespace TasksListRequestAnalysisMode {
-    export type Raw = "time_based_metadata";
+    export type Raw = "general" | "time_based_metadata";
 }

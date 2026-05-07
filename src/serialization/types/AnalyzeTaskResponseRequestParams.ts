@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AnalyzeTaskResponseRequestParamsAnalysisMode } from "./AnalyzeTaskResponseRequestParamsAnalysisMode";
+import { AnalyzeTaskResponseRequestParamsPromptV2 } from "./AnalyzeTaskResponseRequestParamsPromptV2";
 import { AnalyzeTaskResponseRequestParamsResponseFormat } from "./AnalyzeTaskResponseRequestParamsResponseFormat";
 
 export const AnalyzeTaskResponseRequestParams: core.serialization.ObjectSchema<
@@ -13,6 +14,8 @@ export const AnalyzeTaskResponseRequestParams: core.serialization.ObjectSchema<
     TwelvelabsApi.AnalyzeTaskResponseRequestParams
 > = core.serialization.object({
     analysisMode: core.serialization.property("analysis_mode", AnalyzeTaskResponseRequestParamsAnalysisMode.optional()),
+    prompt: core.serialization.string().optional(),
+    promptV2: core.serialization.property("prompt_v2", AnalyzeTaskResponseRequestParamsPromptV2.optional()),
     responseFormat: core.serialization.property(
         "response_format",
         AnalyzeTaskResponseRequestParamsResponseFormat.optional(),
@@ -21,15 +24,21 @@ export const AnalyzeTaskResponseRequestParams: core.serialization.ObjectSchema<
     maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
     minSegmentDuration: core.serialization.property("min_segment_duration", core.serialization.number().optional()),
     maxSegmentDuration: core.serialization.property("max_segment_duration", core.serialization.number().optional()),
+    startTime: core.serialization.property("start_time", core.serialization.number().optional()),
+    endTime: core.serialization.property("end_time", core.serialization.number().optional()),
 });
 
 export declare namespace AnalyzeTaskResponseRequestParams {
     export interface Raw {
         analysis_mode?: AnalyzeTaskResponseRequestParamsAnalysisMode.Raw | null;
+        prompt?: string | null;
+        prompt_v2?: AnalyzeTaskResponseRequestParamsPromptV2.Raw | null;
         response_format?: AnalyzeTaskResponseRequestParamsResponseFormat.Raw | null;
         temperature?: number | null;
         max_tokens?: number | null;
         min_segment_duration?: number | null;
         max_segment_duration?: number | null;
+        start_time?: number | null;
+        end_time?: number | null;
     }
 }

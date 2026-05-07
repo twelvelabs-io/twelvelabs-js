@@ -5,29 +5,38 @@
 import * as serializers from "../../index";
 import * as TwelvelabsApi from "../../../api/index";
 import * as core from "../../../core";
+import { AnalyzeRequestModelName } from "../../types/AnalyzeRequestModelName";
 import { VideoContext } from "../../types/VideoContext";
 import { AnalyzeTextPrompt } from "../../types/AnalyzeTextPrompt";
+import { AnalyzePromptV2 } from "../../types/AnalyzePromptV2";
 import { AnalyzeTemperature } from "../../types/AnalyzeTemperature";
 import { SyncResponseFormat } from "../../types/SyncResponseFormat";
-import { AnalyzeMaxTokens } from "../../types/AnalyzeMaxTokens";
 
 export const AnalyzeRequest: core.serialization.Schema<serializers.AnalyzeRequest.Raw, TwelvelabsApi.AnalyzeRequest> =
     core.serialization.object({
+        modelName: core.serialization.property("model_name", AnalyzeRequestModelName.optional()),
         videoId: core.serialization.property("video_id", core.serialization.string().optional()),
         video: VideoContext.optional(),
-        prompt: AnalyzeTextPrompt,
+        prompt: AnalyzeTextPrompt.optional(),
+        promptV2: core.serialization.property("prompt_v2", AnalyzePromptV2.optional()),
         temperature: AnalyzeTemperature.optional(),
         responseFormat: core.serialization.property("response_format", SyncResponseFormat.optional()),
-        maxTokens: core.serialization.property("max_tokens", AnalyzeMaxTokens.optional()),
+        maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
+        startTime: core.serialization.property("start_time", core.serialization.number().optional()),
+        endTime: core.serialization.property("end_time", core.serialization.number().optional()),
     });
 
 export declare namespace AnalyzeRequest {
     export interface Raw {
+        model_name?: AnalyzeRequestModelName.Raw | null;
         video_id?: string | null;
         video?: VideoContext.Raw | null;
-        prompt: AnalyzeTextPrompt.Raw;
+        prompt?: AnalyzeTextPrompt.Raw | null;
+        prompt_v2?: AnalyzePromptV2.Raw | null;
         temperature?: AnalyzeTemperature.Raw | null;
         response_format?: SyncResponseFormat.Raw | null;
-        max_tokens?: AnalyzeMaxTokens.Raw | null;
+        max_tokens?: number | null;
+        start_time?: number | null;
+        end_time?: number | null;
     }
 }

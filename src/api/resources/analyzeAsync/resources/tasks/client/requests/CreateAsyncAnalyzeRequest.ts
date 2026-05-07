@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../../../../../index";
 /**
  * @example
  *     {
+ *         customId: "prod-segment-analysis-42",
  *         video: {
  *             type: "url",
  *             url: "https://example.com/video.mp4"
@@ -47,17 +48,87 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         minSegmentDuration: 5,
  *         maxSegmentDuration: 30
  *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.5",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         prompt: "Summarize the key events in this clip.",
+ *         maxTokens: 4096,
+ *         startTime: 10,
+ *         endTime: 60
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.5",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         analysisMode: "time_based_metadata",
+ *         responseFormat: {
+ *             type: "segment_definitions",
+ *             segmentDefinitions: [{
+ *                     id: "scenes",
+ *                     description: "Scene changes.",
+ *                     timeRanges: [{
+ *                             startTime: 0,
+ *                             endTime: 4
+ *                         }, {
+ *                             startTime: 10,
+ *                             endTime: 14
+ *                         }]
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.5",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         promptV2: {
+ *             inputText: "Is there a <@tiger-1> in the video?",
+ *             mediaSources: [{
+ *                     name: "tiger-1",
+ *                     mediaType: "image",
+ *                     url: "https://example.com/tiger.jpg"
+ *                 }]
+ *         },
+ *         maxTokens: 4096
+ *     }
  */
 export interface CreateAsyncAnalyzeRequest {
     /**
      * The video understanding model to use for analysis.
-     * - `pegasus1.2` (default): Analyzes pre-indexed videos. Pass a `video_id` to reference your video.
-     * - `pegasus1.5`: Analyzes videos directly from a URL, asset, or base64 string. Supports video segmentation with custom segment definitions.
+     * - `pegasus1.2`: General analysis (prompt-based text generation).
+     * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, extended token limits, and video segmentation.
+     *
+     * **Default:** `pegasus1.2`
      */
     modelName?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestModelName;
+    /**
+     * An optional identifier that you set when you create the task. Use this field to correlate tasks across responses, for example, to distinguish tasks by type or environment.
+     *
+     * The platform stores this value unchanged and returns it in the following responses:
+     * - The [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint
+     * - The [`GET`](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks) method of the `/analyze/tasks` endpoint
+     * - The `analyze.task.ready` and `analyze.task.failed` webhook payloads
+     *
+     * **Format**: 1–64 characters. Alphanumeric, hyphens (`-`), and underscores (`_`) only. An empty string is rejected with a `400 Bad Request`.
+     *
+     * This field does not enforce uniqueness. You can submit multiple tasks with the same `custom_id`. To prevent duplicate task creation, use an `Idempotency-Key` header instead.
+     */
+    customId?: string;
     video: TwelvelabsApi.VideoContext;
     /**
-     * A natural-language text that provides instructions for analyzing the video. Required for general-mode analysis. Not supported when `analysis_mode` is `time_based_metadata`.
+     * Natural-language instructions for analyzing the video. Required for general analysis (prompt-based text generation). Not supported when `analysis_mode` is `time_based_metadata`. To include reference images in your prompt, use the `prompt_v2` parameter instead (Pegasus 1.5 only). Mutually exclusive with the `prompt_v2` parameter.
      *
      * <Note title="Notes">
      * - Even though the model behind this endpoint is trained to a high degree of accuracy, the preciseness of the generated text may vary based on the nature and quality of the video and the clarity of the prompt.
@@ -71,26 +142,57 @@ export interface CreateAsyncAnalyzeRequest {
      * - I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.
      */
     prompt?: string;
-    /** Sets the analysis mode to `time_based_metadata`, which segments your video into time-based intervals and extracts custom metadata for each segment. Requires `model_name` set to `pegasus1.5` and `response_format.type` set to `segment_definitions`. */
+    promptV2?: TwelvelabsApi.AnalyzePromptV2;
+    /**
+     * The analysis approach for this task.
+     * - `general`: Analyze the video and generate a response based on your prompt. Supports both free-form text and structured output via `response_format`.
+     * - `time_based_metadata`: Segment the video into time-based intervals and extract custom metadata for each segment. Requires `model_name` set to `pegasus1.5` and `response_format.type` set to `segment_definitions`.
+     *
+     * **Default:** `general`
+     */
     analysisMode?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestAnalysisMode;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
     /**
-     * The maximum number of tokens to generate. The allowed range depends on the model:
-     * - `pegasus1.2`: **Min:** 1, **Max:** 4,096
-     * - `pegasus1.5`: **Min:** 2,048, **Max:** 32,768, **Default:** 32,768
+     * The maximum number of tokens to generate. The allowed range depends on the model and analysis mode:
+     *
+     * | Model | Mode | Min | Max | Default |
+     * |-------|------|-----|-----|---------|
+     * | Pegasus 1.2 | — | 1 | 4,096 | 4096 |
+     * | Pegasus 1.5 | `general` | 512 | 65,536 | 4,096 |
+     * | Pegasus 1.5 | `time_based_metadata` | 2,048 | 65,536 | 32,768 |
      */
     maxTokens?: number;
     responseFormat?: TwelvelabsApi.AsyncResponseFormat;
     /**
-     * Minimum duration for each extracted segment, in seconds. Set this to prevent the model from creating very short segments. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+     * Minimum duration for each extracted segment, in seconds. Set this value to enforce a minimum segment length. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`. Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
      *
      * **Min:** 2
      */
     minSegmentDuration?: number;
     /**
-     * Maximum duration for each extracted segment, in seconds. Set this to break long continuous sections into shorter segments. Must be greater than or equal to `min_segment_duration`. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+     * Maximum duration for each extracted segment, in seconds. Set this value to split long continuous sections into shorter segments. Must be greater than or equal to `min_segment_duration`. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`. Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
      *
      * **Min:** 2
      */
     maxSegmentDuration?: number;
+    /**
+     * Start of the analysis window, in seconds. Use with `end_time` to analyze only a portion of the video. Requires `model_name` set to `pegasus1.5`.
+     *
+     * <Note title="Notes">
+     * - If omitted, defaults to `0`.
+     * - Must be less than `end_time` and less than the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
+     * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
+     * </Note>
+     */
+    startTime?: number;
+    /**
+     * End of the analysis window, in seconds. Use with `start_time` to analyze only a portion of the video. Requires `model_name` set to `pegasus1.5`.
+     *
+     * <Note title="Notes">
+     * - If omitted, defaults to the video duration.
+     * - Must be greater than `start_time` and less than or equal to the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
+     * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
+     * </Note>
+     */
+    endTime?: number;
 }
