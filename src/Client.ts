@@ -83,7 +83,7 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This method synchronously analyzes your videos and generates fully customizable text based on your prompts.
+     * This method analyzes your videos and returns the results directly in the response. It generates text based on your prompts and supports both Pegasus 1.2 and Pegasus 1.5 for general analysis (prompt-based text generation).
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -95,15 +95,15 @@ export class TwelvelabsApiClient {
      *
      * **When to use this method**:
      * - Analyze videos up to 1 hour
-     * - Retrieve immediate results without waiting for asynchronous processing
-     * - Stream text fragments in real-time for immediate processing and feedback
+     * - Retrieve immediate results without polling for task completion
+     * - Stream text fragments in real time for immediate processing and feedback
      *
      * **Do not use this method for**:
      * - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
-     * - Video segmentation. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with `model_name` set to `pegasus1.5` instead.
+     * - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
      *
-     * <Note title="Notes">
-     * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * <Note title="Note">
+     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
      * </Note>
      */
     public analyzeStream(
@@ -128,8 +128,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -142,7 +142,7 @@ export class TwelvelabsApiClient {
                 stream: true,
             },
             responseType: "sse",
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -172,6 +172,8 @@ export class TwelvelabsApiClient {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:
@@ -201,7 +203,7 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This method synchronously analyzes your videos and generates fully customizable text based on your prompts.
+     * This method analyzes your videos and returns the results directly in the response. It generates text based on your prompts and supports both Pegasus 1.2 and Pegasus 1.5 for general analysis (prompt-based text generation).
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -213,50 +215,26 @@ export class TwelvelabsApiClient {
      *
      * **When to use this method**:
      * - Analyze videos up to 1 hour
-     * - Retrieve immediate results without waiting for asynchronous processing
-     * - Stream text fragments in real-time for immediate processing and feedback
+     * - Retrieve immediate results without polling for task completion
+     * - Stream text fragments in real time for immediate processing and feedback
      *
      * **Do not use this method for**:
      * - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
-     * - Video segmentation. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with `model_name` set to `pegasus1.5` instead.
+     * - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
      *
-     * <Note title="Notes">
-     * - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * <Note title="Note">
+     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
      * </Note>
      *
      * @param {TwelvelabsApi.AnalyzeRequest} request
      * @param {TwelvelabsApiClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      *
      * @example
-     *     await client.analyze({
-     *         videoId: "6298d673f1090f1100476d4c",
-     *         prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
-     *         temperature: 0.2,
-     *         responseFormat: {
-     *             type: "json_schema",
-     *             jsonSchema: {
-     *                 "type": "object",
-     *                 "properties": {
-     *                     "title": {
-     *                         "type": "string"
-     *                     },
-     *                     "summary": {
-     *                         "type": "string"
-     *                     },
-     *                     "keywords": {
-     *                         "type": "array",
-     *                         "items": {
-     *                             "type": "string"
-     *                         }
-     *                     }
-     *                 }
-     *             }
-     *         },
-     *         maxTokens: 2000
-     *     })
+     *     await client.analyze({})
      */
     public analyze(
         request: TwelvelabsApi.AnalyzeRequest,
@@ -280,8 +258,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.3",
-                "User-Agent": "twelvelabs-js/1.2.3",
+                "X-Fern-SDK-Version": "1.2.4",
+                "User-Agent": "twelvelabs-js/1.2.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -293,7 +271,7 @@ export class TwelvelabsApiClient {
                 ...serializers.AnalyzeRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
                 stream: false,
             },
-            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
@@ -313,6 +291,8 @@ export class TwelvelabsApiClient {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

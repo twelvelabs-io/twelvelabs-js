@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem } from "./AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem";
 import { AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem } from "./AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem";
+import { AnalyzeTimeRange } from "./AnalyzeTimeRange";
 
 export const AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem: core.serialization.ObjectSchema<
     serializers.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem.Raw,
@@ -23,6 +24,7 @@ export const AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsIte
             .list(AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem)
             .optional(),
     ),
+    timeRanges: core.serialization.property("time_ranges", core.serialization.list(AnalyzeTimeRange).optional()),
 });
 
 export declare namespace AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem {
@@ -33,5 +35,6 @@ export declare namespace AnalyzeTaskResponseRequestParamsResponseFormatSegmentDe
         media_sources?:
             | AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem.Raw[]
             | null;
+        time_ranges?: AnalyzeTimeRange.Raw[] | null;
     }
 }

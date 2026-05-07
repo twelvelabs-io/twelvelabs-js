@@ -4,8 +4,10 @@
 
 /**
  * The video understanding model to use for analysis.
- * - `pegasus1.2` (default): Analyzes pre-indexed videos. Pass a `video_id` to reference your video.
- * - `pegasus1.5`: Analyzes videos directly from a URL, asset, or base64 string. Supports video segmentation with custom segment definitions.
+ * - `pegasus1.2`: General analysis (prompt-based text generation).
+ * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, extended token limits, and video segmentation.
+ *
+ * **Default:** `pegasus1.2`
  */
 export type CreateAsyncAnalyzeRequestModelName = "pegasus1.2" | "pegasus1.5";
 export const CreateAsyncAnalyzeRequestModelName = {

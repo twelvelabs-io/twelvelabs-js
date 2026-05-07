@@ -8,11 +8,13 @@ import * as core from "../../core";
 
 export const TokenUsage: core.serialization.ObjectSchema<serializers.TokenUsage.Raw, TwelvelabsApi.TokenUsage> =
     core.serialization.object({
-        outputTokens: core.serialization.property("output_tokens", core.serialization.number().optional()),
+        outputTokens: core.serialization.property("output_tokens", core.serialization.number()),
+        inputTokens: core.serialization.property("input_tokens", core.serialization.number().optional()),
     });
 
 export declare namespace TokenUsage {
     export interface Raw {
-        output_tokens?: number | null;
+        output_tokens: number;
+        input_tokens?: number | null;
     }
 }

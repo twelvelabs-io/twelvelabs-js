@@ -16,6 +16,8 @@ export interface AnalyzeTaskResponseVideoSource {
     assetId?: string;
     /** The video ID. Present when `type` is `video_id`. Deprecated — use `asset_id` instead. */
     videoId?: string;
+    /** The index ID associated with the video. Present when `type` is `video_id`. Deprecated — will be removed when Pegasus 1.2 is sunset. */
+    indexId?: string;
     /** System-extracted video metadata. Present on a best-effort basis once the video has been processed. */
     systemMetadata?: TwelvelabsApi.AnalyzeTaskResponseVideoSourceSystemMetadata;
 }

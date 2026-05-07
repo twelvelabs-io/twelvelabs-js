@@ -12,7 +12,8 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         status: "queued",
  *         videoUrl: "https://example.com/video.mp4",
  *         assetId: "69abc123def456789012abcd",
- *         analysisMode: "time_based_metadata"
+ *         videoId: "6298d673f1090f1100476d4c",
+ *         analysisMode: "general"
  *     }
  *
  * @example
@@ -22,7 +23,8 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         status: "queued",
  *         videoUrl: "https://example.com/video.mp4",
  *         assetId: "69abc123def456789012abcd",
- *         analysisMode: "time_based_metadata"
+ *         videoId: "6298d673f1090f1100476d4c",
+ *         analysisMode: "general"
  *     }
  */
 export interface TasksListRequest {
@@ -52,6 +54,10 @@ export interface TasksListRequest {
      * Filter tasks by asset ID.
      */
     assetId?: string;
+    /**
+     * Filter tasks by video ID for pre-indexed videos (Pegasus 1.2 only). Deprecated — use `asset_id` instead.
+     */
+    videoId?: string;
     /**
      * Filter tasks by the analysis mode used when creating the task.
      */

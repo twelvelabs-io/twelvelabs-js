@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../../../../../../api/index";
 import * as core from "../../../../../../../core";
 import { CreateAsyncAnalyzeRequestModelName } from "../../types/CreateAsyncAnalyzeRequestModelName";
 import { VideoContext } from "../../../../../../types/VideoContext";
+import { AnalyzePromptV2 } from "../../../../../../types/AnalyzePromptV2";
 import { CreateAsyncAnalyzeRequestAnalysisMode } from "../../types/CreateAsyncAnalyzeRequestAnalysisMode";
 import { AnalyzeTemperature } from "../../../../../../types/AnalyzeTemperature";
 import { AsyncResponseFormat } from "../../../../../../types/AsyncResponseFormat";
@@ -16,26 +17,34 @@ export const CreateAsyncAnalyzeRequest: core.serialization.Schema<
     TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest
 > = core.serialization.object({
     modelName: core.serialization.property("model_name", CreateAsyncAnalyzeRequestModelName.optional()),
+    customId: core.serialization.property("custom_id", core.serialization.string().optional()),
     video: VideoContext,
     prompt: core.serialization.string().optional(),
+    promptV2: core.serialization.property("prompt_v2", AnalyzePromptV2.optional()),
     analysisMode: core.serialization.property("analysis_mode", CreateAsyncAnalyzeRequestAnalysisMode.optional()),
     temperature: AnalyzeTemperature.optional(),
     maxTokens: core.serialization.property("max_tokens", core.serialization.number().optional()),
     responseFormat: core.serialization.property("response_format", AsyncResponseFormat.optional()),
     minSegmentDuration: core.serialization.property("min_segment_duration", core.serialization.number().optional()),
     maxSegmentDuration: core.serialization.property("max_segment_duration", core.serialization.number().optional()),
+    startTime: core.serialization.property("start_time", core.serialization.number().optional()),
+    endTime: core.serialization.property("end_time", core.serialization.number().optional()),
 });
 
 export declare namespace CreateAsyncAnalyzeRequest {
     export interface Raw {
         model_name?: CreateAsyncAnalyzeRequestModelName.Raw | null;
+        custom_id?: string | null;
         video: VideoContext.Raw;
         prompt?: string | null;
+        prompt_v2?: AnalyzePromptV2.Raw | null;
         analysis_mode?: CreateAsyncAnalyzeRequestAnalysisMode.Raw | null;
         temperature?: AnalyzeTemperature.Raw | null;
         max_tokens?: number | null;
         response_format?: AsyncResponseFormat.Raw | null;
         min_segment_duration?: number | null;
         max_segment_duration?: number | null;
+        start_time?: number | null;
+        end_time?: number | null;
     }
 }

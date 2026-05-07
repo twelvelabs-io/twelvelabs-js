@@ -13,6 +13,10 @@ export const AnalyzeTaskResponseRequestParamsResponseFormat: core.serialization.
     TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormat
 > = core.serialization.object({
     type: AnalyzeTaskResponseRequestParamsResponseFormatType.optional(),
+    jsonSchema: core.serialization.property(
+        "json_schema",
+        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    ),
     segmentDefinitions: core.serialization.property(
         "segment_definitions",
         core.serialization.list(AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem).optional(),
@@ -22,6 +26,7 @@ export const AnalyzeTaskResponseRequestParamsResponseFormat: core.serialization.
 export declare namespace AnalyzeTaskResponseRequestParamsResponseFormat {
     export interface Raw {
         type?: AnalyzeTaskResponseRequestParamsResponseFormatType.Raw | null;
+        json_schema?: Record<string, unknown> | null;
         segment_definitions?: AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem.Raw[] | null;
     }
 }

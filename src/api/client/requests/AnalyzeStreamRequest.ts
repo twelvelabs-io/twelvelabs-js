@@ -6,43 +6,56 @@ import * as TwelvelabsApi from "../../index";
 
 /**
  * @example
- *     {
- *         videoId: "6298d673f1090f1100476d4c",
- *         prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
- *         temperature: 0.2,
- *         responseFormat: {
- *             type: "json_schema",
- *             jsonSchema: {
- *                 "type": "object",
- *                 "properties": {
- *                     "title": {
- *                         "type": "string"
- *                     },
- *                     "summary": {
- *                         "type": "string"
- *                     },
- *                     "keywords": {
- *                         "type": "array",
- *                         "items": {
- *                             "type": "string"
- *                         }
- *                     }
- *                 }
- *             }
- *         },
- *         maxTokens: 2000
- *     }
+ *     {}
  */
 export interface AnalyzeStreamRequest {
     /**
-     * The unique identifier of the video to analyze.
+     * The video understanding model to use for analysis.
+     * - `pegasus1.2`: General analysis (prompt-based text generation).
+     * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, extended token limits, and video segmentation (async only). Does not support `analysis_mode=time_based_metadata` or `response_format.type=segment_definitions` — use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
+     *
+     * **Default:** `pegasus1.2`
+     */
+    modelName?: TwelvelabsApi.AnalyzeStreamRequestModelName;
+    /**
+     * The unique identifier of the video to analyze. Use this parameter when the `model_name` parameter is `pegasus1.2`. Not supported with `pegasus1.5`.
      *
      * <Info> This parameter will be deprecated and removed in a future version. Use the [`video`](/v1.3/api-reference/analyze-videos/sync-analysis#request.body.video) parameter instead.</Info>
      */
     videoId?: string;
     video?: TwelvelabsApi.VideoContext;
-    prompt: TwelvelabsApi.AnalyzeTextPrompt;
+    /** A text prompt that guides the model on the desired format or content. Works with both Pegasus 1.2 and Pegasus 1.5. To include reference images in your prompt, use the `prompt_v2` parameter instead (Pegasus 1.5 only). Mutually exclusive with the `prompt_v2` parameter. */
+    prompt?: TwelvelabsApi.AnalyzeTextPrompt;
+    /** A structured prompt with `<@name>` placeholders for referencing images. Requires the `model_name` parameter set to `pegasus1.5`. Mutually exclusive with the `prompt` parameter. */
+    promptV2?: TwelvelabsApi.AnalyzePromptV2;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
+    /** Specifies the format of the response. When you omit this parameter, the platform returns unstructured text. Only the `json_schema` type is supported for synchronous analysis. */
     responseFormat?: TwelvelabsApi.SyncResponseFormat;
-    maxTokens?: TwelvelabsApi.AnalyzeMaxTokens;
+    /**
+     * The maximum number of tokens to generate. The allowed range depends on the model:
+     *
+     * | Model | Min | Max | Default |
+     * |-------|-----|-----|---------|
+     * | Pegasus 1.2 | 1 | 4,096 | 4,096 |
+     * | Pegasus 1.5 | 512 | 65,536 | 4,096 |
+     */
+    maxTokens?: number;
+    /**
+     * Start of the analysis window, in seconds. Use with `end_time` to analyze only a portion of the video. Requires `model_name` set to `pegasus1.5`.
+     *
+     * <Note title="Notes">
+     * - If omitted, defaults to `0`.
+     * - Must be less than `end_time` and less than the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
+     * </Note>
+     */
+    startTime?: number;
+    /**
+     * End of the analysis window, in seconds. Use with `start_time` to analyze only a portion of the video. Requires `model_name` set to `pegasus1.5`.
+     *
+     * <Note title="Notes">
+     * - If omitted, defaults to the video duration.
+     * - Must be greater than `start_time` and less than or equal to the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
+     * </Note>
+     */
+    endTime?: number;
 }

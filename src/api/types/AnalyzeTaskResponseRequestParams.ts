@@ -5,12 +5,26 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * The parameters you sent when creating this task. Only present for tasks created with `model_name` set to `pegasus1.5`.
+ * The request parameters for this task.
  */
 export interface AnalyzeTaskResponseRequestParams {
     /** The analysis approach for this task. */
     analysisMode?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsAnalysisMode;
-    /** The response format you configured. Present only when you included it in the request. */
+    /**
+     * The natural-language prompt for this task. Present only when `analysis_mode` is `general` and the task was created with `prompt` (not `prompt_v2`).
+     *
+     * - [List](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks): Truncated to the first 30 characters.
+     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task): Returns the full text.
+     */
+    prompt?: string;
+    /**
+     * The structured prompt for this task. Present only when `analysis_mode` is `general` and the task was created with `prompt_v2`. When present, the response excludes the flat `prompt` field.
+     *
+     * - [List](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks): `input_text` is truncated to the first 30 characters.
+     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task): Returns the full text.
+     */
+    promptV2?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsPromptV2;
+    /** The response format for this task. Present only when the request included a response format. */
     responseFormat?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormat;
     /** The temperature value for this analysis. */
     temperature?: number;
@@ -20,4 +34,8 @@ export interface AnalyzeTaskResponseRequestParams {
     minSegmentDuration?: number;
     /** The maximum segment duration you set, in seconds. Present when `analysis_mode` is `time_based_metadata`. */
     maxSegmentDuration?: number;
+    /** The start of the analysis window, in seconds. Present only when the task was created with `start_time`. */
+    startTime?: number;
+    /** The end of the analysis window, in seconds. Present only when the task was created with `end_time`. */
+    endTime?: number;
 }

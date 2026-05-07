@@ -10,9 +10,11 @@ import * as TwelvelabsApi from "../index";
 export interface AnalyzeTaskResponse {
     /** The unique identifier of the analysis task. */
     taskId: string;
+    /** The identifier you provided in the `custom_id` field when you created the task, or `null` if you did not set one. This key is always present in the response. */
+    customId?: string;
     /** The video source you provided. Only present for tasks that use direct video input (`url`, `base64_string`, or `asset_id`). */
     videoSource?: TwelvelabsApi.AnalyzeTaskResponseVideoSource;
-    /** The parameters you sent when creating this task. Only present for tasks created with `model_name` set to `pegasus1.5`. */
+    /** The request parameters for this task. */
     requestParams?: TwelvelabsApi.AnalyzeTaskResponseRequestParams;
     status: TwelvelabsApi.AnalyzeTaskStatus;
     /** A string representing the date and time, in RFC 3339 format (“YYYY-MM-DDTHH:mm:ssZ”), when the analysis task was created. */

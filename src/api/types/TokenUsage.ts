@@ -7,5 +7,7 @@
  */
 export interface TokenUsage {
     /** The number of tokens in the generated text. */
-    outputTokens?: number;
+    outputTokens: number;
+    /** The number of tokens consumed by the input (prompt and video). Omitted for Pegasus 1.5. */
+    inputTokens?: number;
 }
