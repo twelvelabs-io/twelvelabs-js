@@ -3,9 +3,9 @@
  */
 
 /**
- * The reason for the generation to finish.
- * - `stop`: The generation stopped because the model reached the end of the output text.
- * - `length`: The generation stopped because the model reached the maximum number of tokens. For JSON responses, this may result in truncated, invalid JSON that fails to parse.
+ * The reason the generation stopped.
+ * - `stop`: The generation reached the end of the output text.
+ * - `length`: The response reached the maximum response length or the context window. For JSON responses, this may return truncated JSON that fails to parse.
  */
 export type FinishReason = "stop" | "length";
 export const FinishReason = {

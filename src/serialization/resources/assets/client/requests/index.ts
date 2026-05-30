@@ -1,0 +1,1 @@
+export { AssetsUpdateUserMetadataRequest } from "./AssetsUpdateUserMetadataRequest";

@@ -28,7 +28,7 @@ export interface AnalyzeTaskResponseRequestParams {
     responseFormat?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormat;
     /** The temperature value for this analysis. */
     temperature?: number;
-    /** The maximum number of tokens for the response. */
+    /** The maximum response length you set, in tokens. */
     maxTokens?: number;
     /** The minimum segment duration you set, in seconds. Present when `analysis_mode` is `time_based_metadata`. */
     minSegmentDuration?: number;

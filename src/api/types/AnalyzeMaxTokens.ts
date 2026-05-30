@@ -3,7 +3,7 @@
  */
 
 /**
- * The maximum number of tokens to generate.
+ * The maximum response length, in tokens.
  *
  * **Min**: 1 **Max:** 4096
  */

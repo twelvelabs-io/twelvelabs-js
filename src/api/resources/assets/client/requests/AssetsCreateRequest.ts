@@ -35,4 +35,6 @@ export interface AssetsCreateRequest {
      * **Default**: `false`.
      */
     enableThumbnail?: boolean;
+    /** Metadata that helps you categorize your assets. You can specify a list of keys and values. Keys must be of type `string`, and values can be of the following types: `string`, `integer`, `float`, or `boolean`. Send this value as a JSON-encoded string. */
+    userMetadata?: string;
 }

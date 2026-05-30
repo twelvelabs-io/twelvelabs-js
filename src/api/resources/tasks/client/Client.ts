@@ -8,7 +8,6 @@ import * as TwelvelabsApi from "../../../index";
 import * as serializers from "../../../../serialization/index";
 import urlJoin from "url-join";
 import * as errors from "../../../../errors/index";
-import { Transfers } from "../resources/transfers/client/Client";
 
 export declare namespace Tasks {
     export interface Options {
@@ -31,13 +30,7 @@ export declare namespace Tasks {
 }
 
 export class Tasks {
-    protected _transfers: Transfers | undefined;
-
     constructor(protected readonly _options: Tasks.Options) {}
-
-    public get transfers(): Transfers {
-        return (this._transfers ??= new Transfers(this._options));
-    }
 
     /**
      * This method returns a list of the video indexing tasks in your account. The platform returns your video indexing tasks sorted by creation date, with the newest at the top of the list.
@@ -142,8 +135,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.4",
-                        "User-Agent": "twelvelabs-js/1.2.4",
+                        "X-Fern-SDK-Version": "1.2.5",
+                        "User-Agent": "twelvelabs-js/1.2.5",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -288,8 +281,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -378,8 +371,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -463,8 +456,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

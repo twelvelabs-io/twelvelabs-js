@@ -93,6 +93,34 @@ import * as TwelvelabsApi from "../../../../../../index";
  *             type: "url",
  *             url: "https://example.com/video.mp4"
  *         },
+ *         analysisMode: "time_based_metadata",
+ *         responseFormat: {
+ *             type: "segment_definitions",
+ *             segmentDefinitions: [{
+ *                     id: "scenes",
+ *                     description: "Detect scenes and label them.",
+ *                     fields: [{
+ *                             name: "label",
+ *                             type: "string",
+ *                             description: "A short label for this scene."
+ *                         }, {
+ *                             name: "highlight_at",
+ *                             type: "timestamp",
+ *                             description: "The single most representative moment in this scene.",
+ *                             format: "seconds"
+ *                         }]
+ *                 }],
+ *             segmentTimeFormat: "hh:mm:ss"
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.5",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
  *         promptV2: {
  *             inputText: "Is there a <@tiger-1> in the video?",
  *             mediaSources: [{
@@ -103,12 +131,53 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         },
  *         maxTokens: 4096
  *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.5",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         prompt: "Identify intro, main content, and outro clips.",
+ *         responseFormat: {
+ *             type: "json_schema",
+ *             jsonSchema: {
+ *                 "type": "object",
+ *                 "properties": {
+ *                     "clip_start": {
+ *                         "type": "timestamp",
+ *                         "format": "seconds"
+ *                     },
+ *                     "events": {
+ *                         "type": "array",
+ *                         "items": {
+ *                             "type": "object",
+ *                             "properties": {
+ *                                 "intro_end": {
+ *                                     "type": "timestamp",
+ *                                     "format": "hh:mm:ss"
+ *                                 },
+ *                                 "outro_start": {
+ *                                     "type": "timestamp",
+ *                                     "format": "hh:mm:ss.fff"
+ *                                 },
+ *                                 "label": {
+ *                                     "type": "string"
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     }
  */
 export interface CreateAsyncAnalyzeRequest {
     /**
      * The video understanding model to use for analysis.
      * - `pegasus1.2`: General analysis (prompt-based text generation).
-     * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, extended token limits, and video segmentation.
+     * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, and video segmentation. See the [Pegasus](/v1.3/docs/concepts/models/pegasus#context-window) page for token limits.
      *
      * **Default:** `pegasus1.2`
      */
@@ -130,11 +199,7 @@ export interface CreateAsyncAnalyzeRequest {
     /**
      * Natural-language instructions for analyzing the video. Required for general analysis (prompt-based text generation). Not supported when `analysis_mode` is `time_based_metadata`. To include reference images in your prompt, use the `prompt_v2` parameter instead (Pegasus 1.5 only). Mutually exclusive with the `prompt_v2` parameter.
      *
-     * <Note title="Notes">
-     * - Even though the model behind this endpoint is trained to a high degree of accuracy, the preciseness of the generated text may vary based on the nature and quality of the video and the clarity of the prompt.
-     * - Your prompts can be instructive or descriptive, or you can also phrase them as questions.
-     * - The maximum length of a prompt is 2,000 tokens.
-     * </Note>
+     * Your prompts can be instructive or descriptive, or you can phrase them as questions. Pegasus 1.2 limits prompts to 2,000 tokens. For Pegasus 1.5, this text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
      *
      * **Examples**:
      *
@@ -142,6 +207,11 @@ export interface CreateAsyncAnalyzeRequest {
      * - I want to generate a description for my video with the following format: Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.
      */
     prompt?: string;
+    /**
+     * A structured prompt with `<@name>` placeholders for referencing images. Requires the `model_name` parameter set to `pegasus1.5`. Mutually exclusive with the `prompt` parameter.
+     *
+     * The prompt text and reference images count toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
+     */
     promptV2?: TwelvelabsApi.AnalyzePromptV2;
     /**
      * The analysis approach for this task.
@@ -153,13 +223,13 @@ export interface CreateAsyncAnalyzeRequest {
     analysisMode?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestAnalysisMode;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
     /**
-     * The maximum number of tokens to generate. The allowed range depends on the model and analysis mode:
+     * The maximum response length, in tokens. The allowed range depends on the model and analysis mode:
      *
      * | Model | Mode | Min | Max | Default |
      * |-------|------|-----|-----|---------|
      * | Pegasus 1.2 | — | 1 | 4,096 | 4096 |
-     * | Pegasus 1.5 | `general` | 512 | 65,536 | 4,096 |
-     * | Pegasus 1.5 | `time_based_metadata` | 2,048 | 65,536 | 32,768 |
+     * | Pegasus 1.5 | `general` | 512 | 98,304 | 4,096 |
+     * | Pegasus 1.5 | `time_based_metadata` | 2,048 | 98,304 | 32,768 |
      */
     maxTokens?: number;
     responseFormat?: TwelvelabsApi.AsyncResponseFormat;
@@ -182,6 +252,7 @@ export interface CreateAsyncAnalyzeRequest {
      * - If omitted, defaults to `0`.
      * - Must be less than `end_time` and less than the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
      * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
+     * - Together with `end_time`, this parameter determines the billable video duration. If you omit both, billing uses the full video duration. For details, see the [Frequently asked questions](/v1.3/docs/resources/frequently-asked-questions#how-is-video-segmentation-priced) page.
      * </Note>
      */
     startTime?: number;
@@ -192,6 +263,7 @@ export interface CreateAsyncAnalyzeRequest {
      * - If omitted, defaults to the video duration.
      * - Must be greater than `start_time` and less than or equal to the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
      * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
+     * - Together with `start_time`, this parameter determines the billable video duration. If you omit both, billing uses the full video duration. For details, see the [Frequently asked questions](/v1.3/docs/resources/frequently-asked-questions#how-is-video-segmentation-priced) page.
      * </Note>
      */
     endTime?: number;

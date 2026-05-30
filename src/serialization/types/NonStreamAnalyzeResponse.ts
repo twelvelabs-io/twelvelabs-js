@@ -8,6 +8,7 @@ import * as core from "../../core";
 import { GeneratedTextData } from "./GeneratedTextData";
 import { FinishReason } from "./FinishReason";
 import { TokenUsage } from "./TokenUsage";
+import { AnalyzeTaskError } from "./AnalyzeTaskError";
 
 export const NonStreamAnalyzeResponse: core.serialization.ObjectSchema<
     serializers.NonStreamAnalyzeResponse.Raw,
@@ -17,6 +18,7 @@ export const NonStreamAnalyzeResponse: core.serialization.ObjectSchema<
     data: GeneratedTextData.optional(),
     finishReason: core.serialization.property("finish_reason", FinishReason.optional()),
     usage: TokenUsage.optional(),
+    error: AnalyzeTaskError.optional(),
 });
 
 export declare namespace NonStreamAnalyzeResponse {
@@ -25,5 +27,6 @@ export declare namespace NonStreamAnalyzeResponse {
         data?: GeneratedTextData.Raw | null;
         finish_reason?: FinishReason.Raw | null;
         usage?: TokenUsage.Raw | null;
+        error?: AnalyzeTaskError.Raw | null;
     }
 }

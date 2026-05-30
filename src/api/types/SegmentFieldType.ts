@@ -4,12 +4,15 @@
 
 /**
  * The data type of the field.
+ *
+ * When set to `timestamp`, the `format` property is required and controls the format of the returned value. Requires the `model_name` parameter set to `pegasus1.5`.
  */
-export type SegmentFieldType = "string" | "boolean" | "number" | "integer" | "array";
+export type SegmentFieldType = "string" | "boolean" | "number" | "integer" | "array" | "timestamp";
 export const SegmentFieldType = {
     String: "string",
     Boolean: "boolean",
     Number: "number",
     Integer: "integer",
     Array: "array",
+    Timestamp: "timestamp",
 } as const;

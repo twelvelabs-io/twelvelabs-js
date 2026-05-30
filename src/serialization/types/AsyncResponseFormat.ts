@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AsyncResponseFormatType } from "./AsyncResponseFormatType";
 import { SegmentDefinition } from "./SegmentDefinition";
+import { AsyncResponseFormatSegmentTimeFormat } from "./AsyncResponseFormatSegmentTimeFormat";
 
 export const AsyncResponseFormat: core.serialization.ObjectSchema<
     serializers.AsyncResponseFormat.Raw,
@@ -21,6 +22,10 @@ export const AsyncResponseFormat: core.serialization.ObjectSchema<
         "segment_definitions",
         core.serialization.list(SegmentDefinition).optional(),
     ),
+    segmentTimeFormat: core.serialization.property(
+        "segment_time_format",
+        AsyncResponseFormatSegmentTimeFormat.optional(),
+    ),
 });
 
 export declare namespace AsyncResponseFormat {
@@ -28,5 +33,6 @@ export declare namespace AsyncResponseFormat {
         type: AsyncResponseFormatType.Raw;
         json_schema?: Record<string, unknown> | null;
         segment_definitions?: SegmentDefinition.Raw[] | null;
+        segment_time_format?: AsyncResponseFormatSegmentTimeFormat.Raw | null;
     }
 }

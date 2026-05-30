@@ -13,5 +13,6 @@ export * from "./search/types";
 export * as analyzeAsync from "./analyzeAsync";
 export * as embed from "./embed";
 export * from "./indexes/client/requests";
+export * from "./assets/client/requests";
 export * from "./multipartUpload/client/requests";
 export * from "./entityCollections/client/requests";

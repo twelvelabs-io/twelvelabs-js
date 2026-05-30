@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Required when `type` is `array`. Specifies the type of array elements.
+ * Required when `type` is `array`. Specifies the type of array elements. Not supported when `type` is `timestamp`.
  */
 export interface SegmentFieldItems {
     type: TwelvelabsApi.SegmentFieldItemsType;

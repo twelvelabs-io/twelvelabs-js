@@ -24,6 +24,7 @@ export interface SegmentDefinition {
      * - Ranges within a single definition must not overlap. Touching boundaries are allowed (Example: `[0, 5]` and `[5, 10]`).
      * - Mutually exclusive with the top-level `start_time` / `end_time` fields.
      * - Mutually exclusive with `min_segment_duration` and `max_segment_duration`.
+     * - These time ranges control which portions of the `start_time`–`end_time` window are analyzed; the billable duration is always the full `start_time`–`end_time` span.
      * </Note>
      */
     timeRanges?: TwelvelabsApi.AnalyzeTimeRange[];

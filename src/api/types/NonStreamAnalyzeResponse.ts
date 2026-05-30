@@ -13,4 +13,6 @@ export interface NonStreamAnalyzeResponse {
     data?: TwelvelabsApi.GeneratedTextData;
     finishReason?: TwelvelabsApi.FinishReason;
     usage?: TwelvelabsApi.TokenUsage;
+    /** A warning. Present when `finish_reason` is `length` — the response reached the maximum response length or the [context window](/v1.3/docs/concepts/models/pegasus#context-window). The partial output is returned in `data`. Pegasus 1.2 also returns this field when `finish_reason` is `length`. */
+    error?: TwelvelabsApi.AnalyzeTaskError;
 }

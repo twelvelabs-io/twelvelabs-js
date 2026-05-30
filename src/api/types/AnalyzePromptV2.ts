@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * A structured prompt with `<@name>` placeholders for referencing images. Requires the `model_name` parameter set to `pegasus1.5`. Not supported when the `analysis_mode` parameter is `time_based_metadata`. Mutually exclusive with the `prompt` parameter.
  */
 export interface AnalyzePromptV2 {
-    /** The text of the prompt. Use `<@name>` placeholders to reference images declared in `media_sources` (Example: `"Is there a <@tiger-1> in the video?"`). The maximum length is 2,000 tokens. */
+    /** The text of the prompt. Use `<@name>` placeholders to reference images declared in `media_sources` (Example: `"Is there a <@tiger-1> in the video?"`). For Pegasus 1.5, this text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window). */
     inputText: string;
     /** Reference images for the `<@name>` placeholders in the prompt. Maximum 4 sources. */
     mediaSources?: TwelvelabsApi.SmeMediaSource[];

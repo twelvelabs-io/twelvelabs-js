@@ -38,4 +38,6 @@ export interface Asset {
     duration?: number;
     /** The date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the asset was created. */
     createdAt?: Date;
+    /** User-defined metadata for this asset. This field is absent when no metadata has been set. */
+    userMetadata?: TwelvelabsApi.UserMetadata;
 }

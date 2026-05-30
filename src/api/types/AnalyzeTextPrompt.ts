@@ -5,11 +5,7 @@
 /**
  * A prompt that guides the model on the desired format or content.
  *
- * <Note title="Notes">
- * - Even though the model behind this endpoint is trained to a high degree of accuracy, the preciseness of the generated text may vary based on the nature and quality of the video and the clarity of the prompt.
- * - Your prompts can be instructive or descriptive, or you can also phrase them as questions.
- * - The maximum length of a prompt is 2,000 tokens.
- * </Note>
+ * Your prompts can be instructive or descriptive, or you can phrase them as questions. Pegasus 1.2 limits prompts to 2,000 tokens. For Pegasus 1.5, this text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
  *
  * **Examples**:
  *
