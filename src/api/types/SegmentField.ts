@@ -6,16 +6,42 @@ import * as TwelvelabsApi from "../index";
 
 /**
  * A custom field to extract for each segment.
+ *
+ * **Timestamp fields** (Pegasus 1.5 only)
+ *
+ * Set `type` to `timestamp` and provide a `format` to control the format of the returned value on each segment. See the `format` property for supported values.
+ *
+ * Each segment includes automatic `start_time` and `end_time` keys (floats in seconds) that mark the segment boundary. These names, along with `metadata`, are reserved and cannot be used for `timestamp` fields.
  */
 export interface SegmentField {
     /** The name of the field. */
     name: string;
-    /** The data type of the field. */
+    /**
+     * The data type of the field.
+     *
+     * When set to `timestamp`, the `format` property is required and controls the format of the returned value. Requires the `model_name` parameter set to `pegasus1.5`.
+     */
     type: TwelvelabsApi.SegmentFieldType;
     /** Instructions that guide the model on what this field should contain and how to extract it from the video. */
     description: string;
-    /** Allowed values for this field. Maximum 50 values. */
+    /**
+     * The output format for `timestamp` fields. Required when `type` is `timestamp`. Must be omitted for any other type.
+     *
+     * | `format` | Example output |
+     * |----------|----------------|
+     * | `seconds` | `10.5` (JSON number in seconds) |
+     * | `hh:mm:ss` | `"00:01:23"` (rounded to the nearest second; negative values are converted to `"00:00:00"`) |
+     * | `hh:mm:ss.fff` | `"00:01:23.500"` (millisecond precision) |
+     *
+     * *Validation errors*
+     *
+     * The platform returns `400 parameter_invalid` (with field path `response_format.segment_definitions.fields.format`) when:
+     * - `type` is `timestamp` and `format` is missing, empty, or not one of the supported values.
+     * - `type` is not `timestamp` and `format` is set.
+     */
+    format?: TwelvelabsApi.SegmentFieldFormat;
+    /** Allowed values for this field. Maximum 50 values. Not supported when `type` is `timestamp`. */
     enum?: string[];
-    /** Required when `type` is `array`. Specifies the type of array elements. */
+    /** Required when `type` is `array`. Specifies the type of array elements. Not supported when `type` is `timestamp`. */
     items?: TwelvelabsApi.SegmentFieldItems;
 }

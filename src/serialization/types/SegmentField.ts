@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { SegmentFieldType } from "./SegmentFieldType";
+import { SegmentFieldFormat } from "./SegmentFieldFormat";
 import { SegmentFieldItems } from "./SegmentFieldItems";
 
 export const SegmentField: core.serialization.ObjectSchema<serializers.SegmentField.Raw, TwelvelabsApi.SegmentField> =
@@ -13,6 +14,7 @@ export const SegmentField: core.serialization.ObjectSchema<serializers.SegmentFi
         name: core.serialization.string(),
         type: SegmentFieldType,
         description: core.serialization.string(),
+        format: SegmentFieldFormat.optional(),
         enum: core.serialization.list(core.serialization.string()).optional(),
         items: SegmentFieldItems.optional(),
     });
@@ -22,6 +24,7 @@ export declare namespace SegmentField {
         name: string;
         type: SegmentFieldType.Raw;
         description: string;
+        format?: SegmentFieldFormat.Raw | null;
         enum?: string[] | null;
         items?: SegmentFieldItems.Raw | null;
     }

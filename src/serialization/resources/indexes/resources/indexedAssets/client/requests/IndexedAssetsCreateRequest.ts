@@ -5,6 +5,7 @@
 import * as serializers from "../../../../../../index";
 import * as TwelvelabsApi from "../../../../../../../api/index";
 import * as core from "../../../../../../../core";
+import { UserMetadata } from "../../../../../../types/UserMetadata";
 
 export const IndexedAssetsCreateRequest: core.serialization.Schema<
     serializers.indexes.IndexedAssetsCreateRequest.Raw,
@@ -12,11 +13,13 @@ export const IndexedAssetsCreateRequest: core.serialization.Schema<
 > = core.serialization.object({
     assetId: core.serialization.property("asset_id", core.serialization.string()),
     enableVideoStream: core.serialization.property("enable_video_stream", core.serialization.boolean().optional()),
+    userMetadata: core.serialization.property("user_metadata", UserMetadata.optional()),
 });
 
 export declare namespace IndexedAssetsCreateRequest {
     export interface Raw {
         asset_id: string;
         enable_video_stream?: boolean | null;
+        user_metadata?: UserMetadata.Raw | null;
     }
 }

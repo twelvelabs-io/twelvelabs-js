@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 export interface IndexedAssetDetailed extends TwelvelabsApi.IndexedAsset {
-    /** User-generated metadata about the indexed asset. */
+    /** User-defined metadata for this indexed asset. */
     userMetadata?: Record<string, unknown>;
     hls?: TwelvelabsApi.HlsObject;
     /** Contains the embedding and the associated information. The platform returns this field when the `embedding_option` parameter is specified in the request. */

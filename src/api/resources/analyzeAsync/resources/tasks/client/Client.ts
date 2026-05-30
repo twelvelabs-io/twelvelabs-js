@@ -108,8 +108,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -288,6 +288,34 @@ export class Tasks {
      *             type: "url",
      *             url: "https://example.com/video.mp4"
      *         },
+     *         analysisMode: "time_based_metadata",
+     *         responseFormat: {
+     *             type: "segment_definitions",
+     *             segmentDefinitions: [{
+     *                     id: "scenes",
+     *                     description: "Detect scenes and label them.",
+     *                     fields: [{
+     *                             name: "label",
+     *                             type: "string",
+     *                             description: "A short label for this scene."
+     *                         }, {
+     *                             name: "highlight_at",
+     *                             type: "timestamp",
+     *                             description: "The single most representative moment in this scene.",
+     *                             format: "seconds"
+     *                         }]
+     *                 }],
+     *             segmentTimeFormat: "hh:mm:ss"
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.create({
+     *         modelName: "pegasus1.5",
+     *         video: {
+     *             type: "url",
+     *             url: "https://example.com/video.mp4"
+     *         },
      *         promptV2: {
      *             inputText: "Is there a <@tiger-1> in the video?",
      *             mediaSources: [{
@@ -297,6 +325,47 @@ export class Tasks {
      *                 }]
      *         },
      *         maxTokens: 4096
+     *     })
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.create({
+     *         modelName: "pegasus1.5",
+     *         video: {
+     *             type: "url",
+     *             url: "https://example.com/video.mp4"
+     *         },
+     *         prompt: "Identify intro, main content, and outro clips.",
+     *         responseFormat: {
+     *             type: "json_schema",
+     *             jsonSchema: {
+     *                 "type": "object",
+     *                 "properties": {
+     *                     "clip_start": {
+     *                         "type": "timestamp",
+     *                         "format": "seconds"
+     *                     },
+     *                     "events": {
+     *                         "type": "array",
+     *                         "items": {
+     *                             "type": "object",
+     *                             "properties": {
+     *                                 "intro_end": {
+     *                                     "type": "timestamp",
+     *                                     "format": "hh:mm:ss"
+     *                                 },
+     *                                 "outro_start": {
+     *                                     "type": "timestamp",
+     *                                     "format": "hh:mm:ss.fff"
+     *                                 },
+     *                                 "label": {
+     *                                     "type": "string"
+     *                                 }
+     *                             }
+     *                         }
+     *                     }
+     *                 }
+     *             }
+     *         }
      *     })
      */
     public create(
@@ -321,8 +390,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -423,8 +492,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -508,8 +577,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { FinishReason } from "./FinishReason";
 import { StreamEndResponseMetadata } from "./StreamEndResponseMetadata";
+import { AnalyzeTaskError } from "./AnalyzeTaskError";
 
 export const StreamEndResponse: core.serialization.ObjectSchema<
     serializers.StreamEndResponse.Raw,
@@ -14,11 +15,13 @@ export const StreamEndResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     finishReason: core.serialization.property("finish_reason", FinishReason.optional()),
     metadata: StreamEndResponseMetadata.optional(),
+    error: AnalyzeTaskError.optional(),
 });
 
 export declare namespace StreamEndResponse {
     export interface Raw {
         finish_reason?: FinishReason.Raw | null;
         metadata?: StreamEndResponseMetadata.Raw | null;
+        error?: AnalyzeTaskError.Raw | null;
     }
 }

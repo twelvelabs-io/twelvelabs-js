@@ -11,4 +11,6 @@ export interface StreamEndResponse {
     finishReason?: TwelvelabsApi.FinishReason;
     /** An object containing metadata about the stream. */
     metadata?: TwelvelabsApi.StreamEndResponseMetadata;
+    /** A warning. Present when `finish_reason` is `length` — the response reached the maximum response length or the [context window](/v1.3/docs/concepts/models/pegasus#context-window). The partial output is delivered through the preceding `text_generation` events. Pegasus 1.2 also returns this field when `finish_reason` is `length`. */
+    error?: TwelvelabsApi.AnalyzeTaskError;
 }

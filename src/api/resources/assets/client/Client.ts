@@ -100,8 +100,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.4",
-                        "User-Agent": "twelvelabs-js/1.2.4",
+                        "X-Fern-SDK-Version": "1.2.5",
+                        "User-Agent": "twelvelabs-js/1.2.5",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -239,6 +239,10 @@ export class Assets {
             _request.append("enable_thumbnail", request.enableThumbnail.toString());
         }
 
+        if (request.userMetadata != null) {
+            _request.append("user_metadata", request.userMetadata);
+        }
+
         const _maybeEncodedRequest = await _request.getRequest();
         const _response = await core.fetcher({
             url: urlJoin(
@@ -251,8 +255,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -341,8 +345,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -447,8 +451,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.4",
-                "User-Agent": "twelvelabs-js/1.2.4",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -489,6 +493,192 @@ export class Assets {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling DELETE /assets/{asset_id}.");
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This method deletes the user-defined metadata of the specified asset.
+     *
+     * This action cannot be undone.
+     *
+     * @param {string} assetId - The unique identifier of the asset whose user-defined metadata to delete.
+     * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     *
+     * @example
+     *     await client.assets.deleteUserMetadata("6298d673f1090f1100476d4c")
+     */
+    public deleteUserMetadata(assetId: string, requestOptions?: Assets.RequestOptions): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteUserMetadata(assetId, requestOptions));
+    }
+
+    private async __deleteUserMetadata(
+        assetId: string,
+        requestOptions?: Assets.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `assets/${encodeURIComponent(assetId)}/user-metadata`,
+            ),
+            method: "DELETE",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling DELETE /assets/{asset_id}/user-metadata.",
+                );
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This method updates the user-defined metadata of the specified asset. The platform merges your changes with the existing metadata:
+     * - A key with a value creates or replaces that key.
+     * - A key set to `null` deletes that key.
+     * - A key set to an empty string (`""`) is ignored.
+     * - A key you omit from the request keeps its current value.
+     *
+     * To replace all metadata, first delete it using [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-asset-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint, then use this method to set the new values.
+     *
+     * @param {string} assetId - The unique identifier of the asset whose user-defined metadata to update.
+     * @param {TwelvelabsApi.AssetsUpdateUserMetadataRequest} request
+     * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     *
+     * @example
+     *     await client.assets.updateUserMetadata("6298d673f1090f1100476d4c", {
+     *         userMetadata: {
+     *             "category": "recentlyAdded",
+     *             "batchNumber": 5,
+     *             "rating": 9.3,
+     *             "needsReview": true
+     *         }
+     *     })
+     */
+    public updateUserMetadata(
+        assetId: string,
+        request: TwelvelabsApi.AssetsUpdateUserMetadataRequest,
+        requestOptions?: Assets.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__updateUserMetadata(assetId, request, requestOptions));
+    }
+
+    private async __updateUserMetadata(
+        assetId: string,
+        request: TwelvelabsApi.AssetsUpdateUserMetadataRequest,
+        requestOptions?: Assets.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `assets/${encodeURIComponent(assetId)}/user-metadata`,
+            ),
+            method: "PATCH",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.2.5",
+                "User-Agent": "twelvelabs-js/1.2.5",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: serializers.AssetsUpdateUserMetadataRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling PATCH /assets/{asset_id}/user-metadata.",
+                );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
                     message: _response.error.errorMessage,

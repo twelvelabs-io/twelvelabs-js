@@ -10,6 +10,7 @@ import { VideoVectorSystemMetadata } from "./VideoVectorSystemMetadata";
 export const VideoVector: core.serialization.ObjectSchema<serializers.VideoVector.Raw, TwelvelabsApi.VideoVector> =
     core.serialization.object({
         id: core.serialization.property("_id", core.serialization.string().optional()),
+        assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
         createdAt: core.serialization.property("created_at", core.serialization.string().optional()),
         updatedAt: core.serialization.property("updated_at", core.serialization.string().optional()),
         indexedAt: core.serialization.property("indexed_at", core.serialization.string().optional()),
@@ -19,6 +20,7 @@ export const VideoVector: core.serialization.ObjectSchema<serializers.VideoVecto
 export declare namespace VideoVector {
     export interface Raw {
         _id?: string | null;
+        asset_id?: string | null;
         created_at?: string | null;
         updated_at?: string | null;
         indexed_at?: string | null;

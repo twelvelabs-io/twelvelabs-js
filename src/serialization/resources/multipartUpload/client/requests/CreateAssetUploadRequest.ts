@@ -6,6 +6,7 @@ import * as serializers from "../../../../index";
 import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { CreateAssetUploadRequestType } from "../../types/CreateAssetUploadRequestType";
+import { UserMetadata } from "../../../../types/UserMetadata";
 
 export const CreateAssetUploadRequest: core.serialization.Schema<
     serializers.CreateAssetUploadRequest.Raw,
@@ -16,6 +17,7 @@ export const CreateAssetUploadRequest: core.serialization.Schema<
     totalSize: core.serialization.property("total_size", core.serialization.number()),
     enableHls: core.serialization.property("enable_hls", core.serialization.boolean().optional()),
     enableThumbnail: core.serialization.property("enable_thumbnail", core.serialization.boolean().optional()),
+    userMetadata: core.serialization.property("user_metadata", UserMetadata.optional()),
 });
 
 export declare namespace CreateAssetUploadRequest {
@@ -25,5 +27,6 @@ export declare namespace CreateAssetUploadRequest {
         total_size: number;
         enable_hls?: boolean | null;
         enable_thumbnail?: boolean | null;
+        user_metadata?: UserMetadata.Raw | null;
     }
 }
