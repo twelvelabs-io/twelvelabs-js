@@ -7,5 +7,7 @@ src/wrapper
 src/index.ts
 tsconfig.json
 
+tests/custom.test.ts
+
 README.md
 .github

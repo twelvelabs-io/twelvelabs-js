@@ -135,11 +135,22 @@ export class EmbedTasksWrapper extends Tasks {
             throw new Error("sleepInterval must be greater than 0");
         }
 
-        // Get initial task
-        let task = await this.status(taskId, requestOptions);
-
         // Check if it's already done
         const doneStatuses = ["ready", "failed"];
+
+        // Invoke the callback for every observed status, including the initial fetch
+        const invokeCallback = async (t: TwelvelabsApi.embed.TasksStatusResponse): Promise<void> => {
+            if (callback) {
+                const result = callback(t);
+                if (result instanceof Promise) {
+                    await result;
+                }
+            }
+        };
+
+        // Get initial task and report its status (covers the already-terminal case)
+        let task = await this.status(taskId, requestOptions);
+        await invokeCallback(task);
 
         // Continue checking until it's done
         while (!task.status || doneStatuses.indexOf(task.status) === -1) {
@@ -152,12 +163,7 @@ export class EmbedTasksWrapper extends Tasks {
                 continue;
             }
 
-            if (callback) {
-                const result = callback(task);
-                if (result instanceof Promise) {
-                    await result;
-                }
-            }
+            await invokeCallback(task);
         }
 
         return task;

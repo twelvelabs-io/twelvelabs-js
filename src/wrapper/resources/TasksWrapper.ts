@@ -41,7 +41,7 @@ export class TasksWrapper extends Tasks {
             videoUrls?: string[];
             enableVideoStream?: boolean;
         },
-        requestOptions?: Tasks.RequestOptions
+        requestOptions?: Tasks.RequestOptions,
     ): Promise<TwelvelabsApi.TasksCreateResponse[]> {
         const { indexId, videoFiles, videoUrls, enableVideoStream } = request;
 
@@ -60,7 +60,7 @@ export class TasksWrapper extends Tasks {
                             videoFile,
                             enableVideoStream,
                         },
-                        requestOptions
+                        requestOptions,
                     );
                     tasks.push(task);
                 } catch (e) {
@@ -79,7 +79,7 @@ export class TasksWrapper extends Tasks {
                             videoUrl,
                             enableVideoStream,
                         },
-                        requestOptions
+                        requestOptions,
                     );
                     tasks.push(task);
                 } catch (e) {
@@ -125,7 +125,7 @@ export class TasksWrapper extends Tasks {
             sleepInterval?: number;
             callback?: (task: TwelvelabsApi.TasksRetrieveResponse) => void | Promise<void>;
         },
-        requestOptions?: Tasks.RequestOptions
+        requestOptions?: Tasks.RequestOptions,
     ): Promise<TwelvelabsApi.TasksRetrieveResponse> {
         const sleepInterval = options?.sleepInterval ?? 5.0;
         const callback = options?.callback;
@@ -134,11 +134,22 @@ export class TasksWrapper extends Tasks {
             throw new Error("sleepInterval must be greater than 0");
         }
 
-        // Get initial task
-        let task = await this.retrieve(taskId, requestOptions);
-
         // Check if it's already done
         const doneStatuses = ["ready", "failed"];
+
+        // Invoke the callback for every observed status, including the initial fetch
+        const invokeCallback = async (t: TwelvelabsApi.TasksRetrieveResponse): Promise<void> => {
+            if (callback) {
+                const result = callback(t);
+                if (result instanceof Promise) {
+                    await result;
+                }
+            }
+        };
+
+        // Get initial task and report its status (covers the already-terminal case)
+        let task = await this.retrieve(taskId, requestOptions);
+        await invokeCallback(task);
 
         // Continue checking until it's done
         while (!task.status || doneStatuses.indexOf(task.status) === -1) {
@@ -151,12 +162,7 @@ export class TasksWrapper extends Tasks {
                 continue;
             }
 
-            if (callback) {
-                const result = callback(task);
-                if (result instanceof Promise) {
-                    await result;
-                }
-            }
+            await invokeCallback(task);
         }
 
         return task;
