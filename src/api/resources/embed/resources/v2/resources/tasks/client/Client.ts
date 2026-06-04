@@ -90,8 +90,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.5",
-                        "User-Agent": "twelvelabs-js/1.2.5",
+                        "X-Fern-SDK-Version": "1.2.6",
+                        "User-Agent": "twelvelabs-js/1.2.6",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -279,8 +279,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.5",
-                "User-Agent": "twelvelabs-js/1.2.5",
+                "X-Fern-SDK-Version": "1.2.6",
+                "User-Agent": "twelvelabs-js/1.2.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -383,8 +383,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.5",
-                "User-Agent": "twelvelabs-js/1.2.5",
+                "X-Fern-SDK-Version": "1.2.6",
+                "User-Agent": "twelvelabs-js/1.2.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
