@@ -1085,6 +1085,90 @@ await client.assets.delete("6298d673f1090f1100476d4c", {
 </dl>
 </details>
 
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">replaceUserMetadata</a>(assetId, { ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method replaces the entire user-defined metadata of the specified asset. Unlike the [`PATCH`](/v1.3/api-reference/upload-content/direct-uploads/update-user-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
+
+- A key with a value creates or replaces that key.
+- A key set to an empty string (`""`) or `null` is ignored.
+- A key you omit from the request body is removed.
+
+To clear all metadata, send an empty object (`{}`) in the `user_metadata` field. This produces the same result as the [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-user-metadata) method.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.assets.replaceUserMetadata("6298d673f1090f1100476d4c", {
+    userMetadata: {
+        category: "recentlyAdded",
+        batchNumber: 5,
+        rating: 9.3,
+        needsReview: true,
+    },
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetId:** `string` — The unique identifier of the asset whose user-defined metadata to replace.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.AssetsReplaceUserMetadataRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Assets.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">deleteUserMetadata</a>(assetId) -> void</code></summary>
 <dl>
 <dd>
@@ -1097,7 +1181,7 @@ await client.assets.delete("6298d673f1090f1100476d4c", {
 <dl>
 <dd>
 
-This method deletes the user-defined metadata of the specified asset.
+This method deletes the user-defined metadata of the specified asset. To achieve the same result, you can also send an empty object (`{}`) in the `user_metadata` field of the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-asset-user-metadata) method.
 
 This action cannot be undone.
 
@@ -1169,7 +1253,7 @@ This method updates the user-defined metadata of the specified asset. The platfo
 - A key set to an empty string (`""`) is ignored.
 - A key you omit from the request keeps its current value.
 
-To replace all metadata, first delete it using [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-asset-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint, then use this method to set the new values.
+To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-asset-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
 
 </dd>
 </dl>

@@ -18,7 +18,7 @@ export interface VideosRetrieveResponse {
     /** System-generated metadata about the video. */
     systemMetadata?: TwelvelabsApi.indexes.VideosRetrieveResponseSystemMetadata;
     /** User-defined metadata for this video. */
-    userMetadata?: Record<string, unknown>;
+    userMetadata?: TwelvelabsApi.UserMetadata;
     hls?: TwelvelabsApi.HlsObject;
     /** Contains the embedding and the associated information. The platform returns this field when the `embedding_option` parameter is specified in the request. */
     embedding?: TwelvelabsApi.indexes.VideosRetrieveResponseEmbedding;

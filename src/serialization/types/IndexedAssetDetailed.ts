@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { UserMetadata } from "./UserMetadata";
 import { HlsObject } from "./HlsObject";
 import { IndexedAssetDetailedEmbedding } from "./IndexedAssetDetailedEmbedding";
 import { TranscriptionData } from "./TranscriptionData";
@@ -16,10 +17,7 @@ export const IndexedAssetDetailed: core.serialization.ObjectSchema<
     TwelvelabsApi.IndexedAssetDetailed
 > = core.serialization
     .object({
-        userMetadata: core.serialization.property(
-            "user_metadata",
-            core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
-        ),
+        userMetadata: core.serialization.property("user_metadata", UserMetadata.optional()),
         hls: HlsObject.optional(),
         embedding: IndexedAssetDetailedEmbedding.optional(),
         transcription: TranscriptionData.optional(),
@@ -28,7 +26,7 @@ export const IndexedAssetDetailed: core.serialization.ObjectSchema<
 
 export declare namespace IndexedAssetDetailed {
     export interface Raw extends IndexedAsset.Raw {
-        user_metadata?: Record<string, unknown> | null;
+        user_metadata?: UserMetadata.Raw | null;
         hls?: HlsObject.Raw | null;
         embedding?: IndexedAssetDetailedEmbedding.Raw | null;
         transcription?: TranscriptionData.Raw | null;

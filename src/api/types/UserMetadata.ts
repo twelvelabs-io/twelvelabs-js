@@ -3,7 +3,7 @@
  */
 
 /**
- * Metadata that helps you categorize your assets. You can specify a list of keys and values. Keys must be of type `string`, and values can be of the following types: `string`, `integer`, `float` or `boolean`.
+ * Metadata that helps you categorize your assets. The object contains user-defined keys and values, where keys are strings and values are one of `string`, `integer`, `float`, or `boolean`.
  *
  * **Example**:
  * ```JSON
@@ -16,7 +16,7 @@
  * ```
  *
  * <Note title="Note">
- * If you want to store other types of data such as objects or arrays, you must convert your data into string values.
+ * To store other types of data, such as objects or arrays, convert your data into string values before sending it.
  * </Note>
  */
 export type UserMetadata = Record<string, unknown>;
