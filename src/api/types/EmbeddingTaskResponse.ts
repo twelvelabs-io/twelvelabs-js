@@ -25,4 +25,6 @@ export interface EmbeddingTaskResponse {
     /** An object containing the embedding results, or `null` otherwise. */
     data?: TwelvelabsApi.EmbeddingData[];
     metadata?: TwelvelabsApi.EmbeddingTaskMediaMetadata;
+    /** An object describing why the embedding task failed. Present only when `status` is `failed`. Omitted otherwise. */
+    error?: TwelvelabsApi.EmbeddingTaskResponseError;
 }

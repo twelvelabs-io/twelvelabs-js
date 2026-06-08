@@ -11,3 +11,6 @@ tests/custom.test.ts
 
 README.md
 .github
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes

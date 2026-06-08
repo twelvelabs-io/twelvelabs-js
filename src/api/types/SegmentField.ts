@@ -40,7 +40,7 @@ export interface SegmentField {
      * - `type` is not `timestamp` and `format` is set.
      */
     format?: TwelvelabsApi.SegmentFieldFormat;
-    /** Allowed values for this field. Maximum 50 values. Not supported when `type` is `timestamp`. */
+    /** Allowed values for this field. Maximum 100 values. Not supported when `type` is `timestamp`. */
     enum?: string[];
     /** Required when `type` is `array`. Specifies the type of array elements. Not supported when `type` is `timestamp`. */
     items?: TwelvelabsApi.SegmentFieldItems;

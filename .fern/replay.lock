@@ -1,0 +1,10 @@
+# DO NOT EDIT MANUALLY - Managed by Fern Replay
+version: "1.0"
+generations:
+  - commit_sha: cb9280d6e59b779e8df1b6559287cb5518d247e9
+    tree_hash: 29e77732eac702a416563867c94f18247d8a2f9b
+    timestamp: 2026-06-08T10:48:44.759Z
+    cli_version: unknown
+    generator_versions: {}
+current_generation: cb9280d6e59b779e8df1b6559287cb5518d247e9
+patches: []

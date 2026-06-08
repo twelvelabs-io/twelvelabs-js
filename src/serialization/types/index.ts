@@ -53,6 +53,7 @@ export * from "./EmbeddingDataEmbeddingOption";
 export * from "./EmbeddingDataEmbeddingScope";
 export * from "./EmbeddingData";
 export * from "./EmbeddingTaskResponseStatus";
+export * from "./EmbeddingTaskResponseError";
 export * from "./EmbeddingTaskResponse";
 export * from "./EmbeddingMediaMetadata";
 export * from "./EmbeddingTaskMediaMetadata";
