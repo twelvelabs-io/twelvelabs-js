@@ -44,7 +44,7 @@ export interface AnalyzeRequest {
      *
      * | Model | Min | Max | Default |
      * |-------|-----|-----|---------|
-     * | Pegasus 1.2 | 1 | 4,096 | 4,096 |
+     * | Pegasus 1.2 | 2 | 4,096 | 4,096 |
      * | Pegasus 1.5 | 512 | 98,304 | 4,096 |
      */
     maxTokens?: number;
