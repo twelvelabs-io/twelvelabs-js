@@ -135,8 +135,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.7",
-                        "User-Agent": "twelvelabs-js/1.2.7",
+                        "X-Fern-SDK-Version": "1.2.8",
+                        "User-Agent": "twelvelabs-js/1.2.8",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -226,6 +226,8 @@ export class Tasks {
      * - If you want to both search and analyze your videos, the most restrictive requirements apply.
      * - This method allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
      *
+     * Indexes have limits on video hours and video count. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
+     *
      * <Note title="Note">
      * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
      * </Note>
@@ -281,8 +283,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.7",
-                "User-Agent": "twelvelabs-js/1.2.7",
+                "X-Fern-SDK-Version": "1.2.8",
+                "User-Agent": "twelvelabs-js/1.2.8",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -371,8 +373,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.7",
-                "User-Agent": "twelvelabs-js/1.2.7",
+                "X-Fern-SDK-Version": "1.2.8",
+                "User-Agent": "twelvelabs-js/1.2.8",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -456,8 +458,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.7",
-                "User-Agent": "twelvelabs-js/1.2.7",
+                "X-Fern-SDK-Version": "1.2.8",
+                "User-Agent": "twelvelabs-js/1.2.8",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

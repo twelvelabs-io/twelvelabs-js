@@ -227,7 +227,7 @@ export interface CreateAsyncAnalyzeRequest {
      *
      * | Model | Mode | Min | Max | Default |
      * |-------|------|-----|-----|---------|
-     * | Pegasus 1.2 | — | 1 | 4,096 | 4096 |
+     * | Pegasus 1.2 | — | 2 | 4,096 | 4096 |
      * | Pegasus 1.5 | `general` | 512 | 98,304 | 4,096 |
      * | Pegasus 1.5 | `time_based_metadata` | 2,048 | 98,304 | 32,768 |
      */

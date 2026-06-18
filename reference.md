@@ -33,6 +33,8 @@ This method analyzes your videos and returns the results directly in the respons
 - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
 - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
 
+On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
+
 <Note title="Note">
 This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
@@ -218,6 +220,8 @@ Your video files must meet requirements based on your workflow:
 - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#video-file-requirements).
 - If you want to both search and analyze your videos, the most restrictive requirements apply.
 - This method allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
+
+Indexes have limits on video hours and video count. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
 
 <Note title="Note">
 This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
@@ -2456,6 +2460,8 @@ Analyzing videos asynchronously requires three steps:
 2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`.
 3. Retrieve the results from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
 
+On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
+
 <Note title="Note">
 This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
@@ -2643,6 +2649,487 @@ await client.analyzeAsync.tasks.delete("64f8d2c7e4a1b37f8a9c5d12");
 <dd>
 
 **requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## AnalyzeAsync Batches
+
+<details><summary><code>client.analyzeAsync.batches.<a href="/src/api/resources/analyzeAsync/resources/batches/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.AnalyzeBatchStatusResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to list all the batch objects in your account. The response sorts batches by creation date, with the newest batch first.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.analyzeAsync.batches.list({
+    page: 1,
+    pageLimit: 10,
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.analyzeAsync.batches.list({
+    page: 1,
+    pageLimit: 10,
+});
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.analyzeAsync.BatchesListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.batches.<a href="/src/api/resources/analyzeAsync/resources/batches/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.CreateAnalyzeBatchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to submit many video analysis requests in a single call. Each request creates an analysis task. The response contains one batch identifier and one task identifier per request. Use the batch identifier to check progress and retrieve results.
+
+<Note title="Model requirement">
+You must use Pegasus 1.5 for batch analysis. Set the `model_name` parameter to `pegasus1.5`.
+</Note>
+
+**When to use this method**:
+
+- Run the same model and analysis settings across many videos.
+- Track a single batch instead of many individual analysis tasks.
+
+**Do not use this method for**:
+
+- Single videos that require immediate results. Use the [`POST`](/v1.3/api-reference/analyze-videos/sync-analysis) method of the `/analyze` endpoint instead.
+- Background processing of a single video. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
+
+**Retention and retry**:
+
+- Batches expire 24 hours after creation. You can retrieve results for 30 days after creation.
+- If processing does not finish for some items in time, resubmit them in a new batch.
+
+**Limits**:
+
+- Up to 1,000 requests per batch.
+- Up to 2,000 total content hours per batch.
+- Up to 5 active batches per account.
+  </dd>
+  </dl>
+  </dd>
+  </dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.batches.create({
+    modelName: "pegasus1.5",
+    analysisMode: "general",
+    defaults: {
+        prompt: {
+            inputText: "Generate a 3-sentence executive summary of this video.",
+        },
+        temperature: 0.2,
+        maxTokens: 4096,
+    },
+    requests: [
+        {
+            video: {
+                type: "asset_id",
+                assetId: "6298d673f1090f1100476d4c",
+            },
+            customId: "summary-001",
+        },
+        {
+            video: {
+                type: "asset_id",
+                assetId: "6298d673f1090f1100476d4d",
+            },
+            customId: "summary-002",
+        },
+        {
+            video: {
+                type: "asset_id",
+                assetId: "6298d673f1090f1100476d4e",
+            },
+            customId: "action-003",
+            prompt: {
+                inputText: "List all action items discussed.",
+            },
+        },
+    ],
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.analyzeAsync.CreateAnalyzeBatchRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.batches.<a href="/src/api/resources/analyzeAsync/resources/batches/client/Client.ts">retrieve</a>(batchId) -> TwelvelabsApi.AnalyzeBatchStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to monitor a batch. The response includes the current batch status and counts for queued, processing, ready, failed, and canceled items.
+
+Poll this method until the batch reaches the `completed`, `canceled`, or `expired` status. To retrieve the results, call the [`GET`](/v1.3/api-reference/analyze-videos/batch-analysis/retrieve-batch-results) method of the `/analyze/batches/{batch_id}/results` endpoint.
+
+Do not treat the `completed` status as a success signal. It means processing has finished for every item, not that every analysis succeeded. To see how many items succeeded, failed, or were canceled, check the `ready_items`, `failed_items`, and `canceled_items` fields. A batch never has the `failed` status.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.batches.retrieve("68f4ddaf8aaa60d33df0e800");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.batches.<a href="/src/api/resources/analyzeAsync/resources/batches/client/Client.ts">delete</a>(batchId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to delete a batch and all the tasks associated with it. You can only delete batches with status `completed`, `canceled`, or `expired`.
+
+Deleting a batch does not affect billing. You are billed for every completed analysis regardless of whether you delete the batch afterward.
+
+To stop a batch with the `pending` or `processing` status, use the [`POST`](/v1.3/api-reference/analyze-videos/batch-analysis/cancel-batch) method of the `/analyze/batches/{batch_id}/cancel` endpoint.
+
+Batches are deleted 30 days after creation.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.batches.delete("68f4ddaf8aaa60d33df0e800");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.batches.<a href="/src/api/resources/analyzeAsync/resources/batches/client/Client.ts">results</a>(batchId) -> core.Stream&lt;TwelvelabsApi.BatchResultItem&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to retrieve the results for each item in a batch. You can call it while the batch has the `pending` or `processing` status.
+
+Each result entry has a status. For details on each status, see the [Item statuses](/v1.3/api-reference/analyze-videos/batch-analysis/the-batch-object#item-statuses) section on the **The batch object** page.
+
+Each result entry includes a task identifier in the `task_id` field. Use this value with the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint if you need the full analysis task response.
+
+You can retrieve results for 30 days after batch creation.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.analyzeAsync.batches.results("68f4ddaf8aaa60d33df0e800");
+for await (const item of response) {
+    console.log(item);
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.batches.<a href="/src/api/resources/analyzeAsync/resources/batches/client/Client.ts">cancel</a>(batchId) -> TwelvelabsApi.AnalyzeBatchStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to request cancellation for a batch with the `pending` or `processing` status.
+
+When you invoke this method, the platform performs the following steps:
+
+- Cancels the items in the `queued` status.
+- Finishes the analysis for the items in the `processing` status.
+
+The batch status changes to `canceling` immediately, and to `canceled` after every item reaches `ready`, `failed`, or `canceled`. You are not billed for canceled or failed items.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.batches.cancel("68f4ddaf8aaa60d33df0e800");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
 
 </dd>
 </dl>
@@ -4201,6 +4688,8 @@ Your asset must meet the requirements based on your workflow:
 - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements).
 
 If you want to both search and analyze your videos, the most restrictive requirements apply.
+
+Indexes have limits on video hours and video count. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
 
 <Note title="Note">
 This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.

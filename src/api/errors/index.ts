@@ -4,3 +4,5 @@ export * from "./InternalServerError";
 export * from "./ConflictError";
 export * from "./ForbiddenError";
 export * from "./TooManyRequestsError";
+export * from "./ServiceUnavailableError";
+export * from "./GatewayTimeoutError";
