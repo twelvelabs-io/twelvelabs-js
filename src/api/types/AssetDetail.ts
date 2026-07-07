@@ -10,4 +10,11 @@ import * as TwelvelabsApi from "../index";
 export interface AssetDetail extends TwelvelabsApi.Asset {
     hls?: TwelvelabsApi.AssetHls;
     thumbnail?: TwelvelabsApi.AssetThumbnail;
+    technicalMetadata?: TwelvelabsApi.TechnicalMetadata;
+    /** The file size of the asset in bytes. The platform finalizes this value when the asset reaches the `ready` status. */
+    size?: number;
+    /** The duration of the asset in seconds. Only present for video and audio assets; absent for images. The platform finalizes this value when the asset reaches the `ready` status. */
+    duration?: number;
+    /** The reason the asset failed. The platform returns this field only when `status` is `failed`. */
+    error?: TwelvelabsApi.AssetError;
 }

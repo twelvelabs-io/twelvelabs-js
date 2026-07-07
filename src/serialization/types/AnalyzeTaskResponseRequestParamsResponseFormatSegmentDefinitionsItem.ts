@@ -33,8 +33,7 @@ export declare namespace AnalyzeTaskResponseRequestParamsResponseFormatSegmentDe
         description: string;
         fields?: AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem.Raw[] | null;
         media_sources?:
-            | AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem.Raw[]
-            | null;
+            AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem.Raw[] | null;
         time_ranges?: AnalyzeTimeRange.Raw[] | null;
     }
 }

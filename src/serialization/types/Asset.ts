@@ -16,8 +16,6 @@ export const Asset: core.serialization.ObjectSchema<serializers.Asset.Raw, Twelv
         status: AssetStatus.optional(),
         filename: core.serialization.string().optional(),
         fileType: core.serialization.property("file_type", core.serialization.string().optional()),
-        size: core.serialization.number().optional(),
-        duration: core.serialization.number().optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         userMetadata: core.serialization.property("user_metadata", UserMetadata.optional()),
     });
@@ -29,8 +27,6 @@ export declare namespace Asset {
         status?: AssetStatus.Raw | null;
         filename?: string | null;
         file_type?: string | null;
-        size?: number | null;
-        duration?: number | null;
         created_at?: string | null;
         user_metadata?: UserMetadata.Raw | null;
     }

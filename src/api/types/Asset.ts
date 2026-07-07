@@ -20,22 +20,20 @@ export interface Asset {
      */
     method?: TwelvelabsApi.AssetMethod;
     /**
-     * Indicates the current status of the asset.
+     * Indicates the current processing status of the asset.
+     *
+     * A newly uploaded asset starts in the `processing` status and transitions asynchronously to `ready` on success or to `failed` on error, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status is `ready` before you use the asset in downstream workflows.
      *
      * **Values**:
-     * - `failed`: The platform failed to process the upload
-     * - `processing`: The platform is processing the uploaded file
-     * - `ready`: The asset is ready to use
+     * - `processing`: The asset is not yet usable. This can mean the upload is still in progress (for example, the platform is still fetching the file from a URL, or a multipart upload has not completed), or the upload has finished and the platform is validating the file. The `technical_metadata` field is omitted from the response.
+     * - `ready`: The platform validated the asset successfully, and the asset is ready to use.
+     * - `failed`: The platform could not process the file. The `error` field describes the reason, and the `technical_metadata` field may be partially populated.
      */
     status?: TwelvelabsApi.AssetStatus;
     /** The name of the file used to create the asset. */
     filename?: string;
     /** The MIME type of the asset file. */
     fileType?: string;
-    /** The file size of the asset in bytes. This field is absent while the asset is still being processed. */
-    size?: number;
-    /** The duration of the asset in seconds. Only present for video and audio assets. This field is absent for image assets or while the asset is still being processed. */
-    duration?: number;
     /** The date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the asset was created. */
     createdAt?: Date;
     /** User-defined metadata for this asset. This field is absent when no metadata has been set. */

@@ -3,13 +3,7 @@
  */
 
 export type TasksListRequestStatusItem =
-    | "ready"
-    | "uploading"
-    | "validating"
-    | "pending"
-    | "queued"
-    | "indexing"
-    | "failed";
+    "ready" | "uploading" | "validating" | "pending" | "queued" | "indexing" | "failed";
 export const TasksListRequestStatusItem = {
     Ready: "ready",
     Uploading: "uploading",

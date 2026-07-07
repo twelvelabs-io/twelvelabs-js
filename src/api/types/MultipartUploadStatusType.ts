@@ -5,9 +5,9 @@
 /**
  * The status of your upload session. This field can take one of the following values:
  * - `active`: The upload session is currently in progress. Continue uploading and reporting the completion of each chunk.
- * - `completed`: The upload session is finished, and your asset is now ready for use.
- * - `failed`: The upload session has failed. You must restart with a new session.
- * - `expired`: The upload session has expired after 24 hours, and you must create a new session.
+ * - `completed`: The platform received the file. The asset is created in the `processing` status and is not yet ready to use. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it.
+ * - `failed`: The upload session failed. You must restart with a new session.
+ * - `expired`: The upload session expired after 24 hours. You must create a new session.
  */
 export type MultipartUploadStatusType = "active" | "completed" | "failed" | "expired";
 export const MultipartUploadStatusType = {

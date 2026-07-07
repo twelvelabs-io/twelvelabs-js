@@ -104,7 +104,6 @@ await client.analyze({});
 <dd>
 
 This method returns a list of the video indexing tasks in your account. The platform returns your video indexing tasks sorted by creation date, with the newest at the top of the list.
-
 </dd>
 </dl>
 </dd>
@@ -290,7 +289,6 @@ await client.tasks.create({
 <dd>
 
 This method retrieves a video indexing task.
-
 </dd>
 </dl>
 </dd>
@@ -357,10 +355,11 @@ Note the following about deleting a video indexing task:
 
 - You can only delete video indexing tasks for which the status is `ready` or `failed`.
 - If the status of your video indexing task is `ready`, you must first delete the video vector associated with your video indexing task by calling the [`DELETE`](/v1.3/api-reference/videos/delete) method of the `/indexes/videos` endpoint.
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -421,7 +420,6 @@ await client.tasks.delete("6298d673f1090f1100476d4c");
 <dd>
 
 This method returns a list of the indexes in your account. The platform returns indexes sorted by creation date, with the oldest indexes at the top of the list.
-
 </dd>
 </dl>
 </dd>
@@ -513,7 +511,6 @@ while (page.hasNextPage()) {
 <dd>
 
 This method creates an index.
-
 </dd>
 </dl>
 </dd>
@@ -589,7 +586,6 @@ await client.indexes.create({
 <dd>
 
 This method retrieves details about the specified index.
-
 </dd>
 </dl>
 </dd>
@@ -652,7 +648,6 @@ await client.indexes.retrieve("6298d673f1090f1100476d4c");
 <dd>
 
 This method updates the name of the specified index.
-
 </dd>
 </dl>
 </dd>
@@ -725,7 +720,6 @@ await client.indexes.update("6298d673f1090f1100476d4c", {
 <dd>
 
 This method deletes the specified index and all the videos within it. This action cannot be undone.
-
 </dd>
 </dl>
 </dd>
@@ -792,7 +786,6 @@ await client.indexes.delete("6298d673f1090f1100476d4c");
 This method returns a list of assets in your account.
 
 The platform returns your assets sorted by creation date, with the newest at the top of the list.
-
 </dd>
 </dl>
 </dd>
@@ -873,6 +866,8 @@ while (page.hasNextPage()) {
 
 This method creates an asset by uploading a file to the platform. Assets are media files that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
 
+The platform processes uploads asynchronously. This method returns immediately with the asset in the `processing` status, which then transitions to `ready` on success or to `failed` when the file is invalid or corrupt, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it. This applies to every upload, including small files.
+
 **Supported content**: Video, audio, and images.
 
 **Upload methods**:
@@ -884,7 +879,9 @@ This method creates an asset by uploading a file to the platform. Assets are med
 
 - **Video and audio, local files**: Up to 200 MB
 - **Video and audio, public URLs**: Up to 4 GB
-- **Images**: Up to 5 MB
+- **Images**: Up to 32 MB
+
+Asset creation does not enforce a maximum duration. Each model applies its own file size and duration limits when you index or analyze the asset. For details, see the requirements below.
 
 **Additional requirements** depend on your workflow:
 
@@ -960,7 +957,6 @@ await client.assets.create({
 <dd>
 
 This method retrieves details about the specified asset.
-
 </dd>
 </dl>
 </dd>
@@ -1030,10 +1026,11 @@ Before deleting, you can inspect existing references:
 
 - [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) `/assets/{asset_id}/indexed-assets` returns a list of the indexed assets that will block deletion unless the `force` query parameter is set to `true`.
 - [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) `/assets/{asset_id}/entities` returns a list of the entities whose associations the platform will unlink.
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1108,7 +1105,6 @@ This method replaces the entire user-defined metadata of the specified asset. Un
 - A key you omit from the request body is removed.
 
 To clear all metadata, send an empty object (`{}`) in the `user_metadata` field. This produces the same result as the [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-user-metadata) method.
-
 </dd>
 </dl>
 </dd>
@@ -1185,10 +1181,9 @@ await client.assets.replaceUserMetadata("6298d673f1090f1100476d4c", {
 <dl>
 <dd>
 
-This method deletes the user-defined metadata of the specified asset. To achieve the same result, you can also send an empty object (`{}`) in the `user_metadata` field of the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-asset-user-metadata) method.
+This method deletes the user-defined metadata of the specified asset. To achieve the same result, you can also send an empty object (`{}`) in the `user_metadata` field of the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-user-metadata) method.
 
 This action cannot be undone.
-
 </dd>
 </dl>
 </dd>
@@ -1257,8 +1252,7 @@ This method updates the user-defined metadata of the specified asset. The platfo
 - A key set to an empty string (`""`) is ignored.
 - A key you omit from the request keeps its current value.
 
-To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-asset-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
-
+To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
 </dd>
 </dl>
 </dd>
@@ -1338,7 +1332,6 @@ await client.assets.updateUserMetadata("6298d673f1090f1100476d4c", {
 <dd>
 
 This method returns a list of all incomplete multipart upload sessions in your account.
-
 </dd>
 </dl>
 </dd>
@@ -1419,17 +1412,18 @@ This method creates a multipart upload session for a local video file.
 
 **Supported content**: Video
 
-**Upload limits**: Local video files up to 4 GB.
+**Upload limits**: Local video files up to 10 GB.
 
 **Additional requirements** depend on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
 - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
 - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1501,8 +1495,7 @@ Use this method to:
 - Determine if the session has expired
 - Retrieve the status information for each chunk
 
-You must call this method after reporting chunk completion to confirm the upload has transitioned to the `completed` status before using the asset.
-
+After you report chunk completion, call this method to confirm the upload session reached the `completed` status. This status means the platform received the file, not that the asset is ready to use. The platform then validates the asset asynchronously. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it.
 </dd>
 </dl>
 </dd>
@@ -1590,7 +1583,6 @@ while (page.hasNextPage()) {
 This method reports successfully uploaded chunks to the platform. The platform finalizes the upload after you report all chunks.
 
 For optimal performance, report chunks in batches and in any order.
-
 </dd>
 </dl>
 </dd>
@@ -1674,12 +1666,13 @@ This method generates new presigned URLs for specific chunks that require upload
 - Your initial URLs have expired (URLs expire after one hour).
 - The initial set of presigned URLs does not include URLs for all chunks.
 - You need to retry failed chunk uploads with new URLs.
-To specify which chunks need URLs, use the `start` and `count` parameters. For example, to generate URLs for chunks 21 to 30, use `start=21` and `count=10`.
-The response will provide new URLs, each with a fresh expiration time of one hour.
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+  To specify which chunks need URLs, use the `start` and `count` parameters. For example, to generate URLs for chunks 21 to 30, use `start=21` and `count=10`.
+  The response will provide new URLs, each with a fresh expiration time of one hour.
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -1751,7 +1744,6 @@ await client.multipartUpload.getAdditionalPresignedUrls("507f1f77bcf86cd79943901
 <dd>
 
 This method returns a list of the entity collections in your account.
-
 </dd>
 </dl>
 </dd>
@@ -1835,7 +1827,6 @@ while (page.hasNextPage()) {
 <dd>
 
 This method creates an entity collection.
-
 </dd>
 </dl>
 </dd>
@@ -1900,7 +1891,6 @@ await client.entityCollections.create({
 <dd>
 
 This method retrieves details about the specified entity collection.
-
 </dd>
 </dl>
 </dd>
@@ -1963,7 +1953,6 @@ await client.entityCollections.retrieve("6298d673f1090f1100476d4c");
 <dd>
 
 This method deletes the specified entity collection. This action cannot be undone.
-
 </dd>
 </dl>
 </dd>
@@ -2026,7 +2015,6 @@ await client.entityCollections.delete("6298d673f1090f1100476d4c");
 <dd>
 
 This method updates the specified entity collection.
-
 </dd>
 </dl>
 </dd>
@@ -2363,7 +2351,6 @@ await client.search.retrieve("1234567890", {
 <dd>
 
 This method returns a list of the analysis tasks in your account. The platform returns your analysis tasks sorted by creation date, with the newest at the top of the list.
-
 </dd>
 </dl>
 </dd>
@@ -2546,7 +2533,6 @@ This method retrieves the status and results of an analysis task.
 - `failed`: The task failed. No results were generated.
 
 Poll this method until `status` is `ready` or `failed`. When `status` is `ready`, use the results from the response.
-
 </dd>
 </dl>
 </dd>
@@ -2609,7 +2595,6 @@ await client.analyzeAsync.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12");
 <dd>
 
 This method deletes an analysis task. You can only delete tasks that are not currently being processed.
-
 </dd>
 </dl>
 </dd>
@@ -2674,7 +2659,6 @@ await client.analyzeAsync.tasks.delete("64f8d2c7e4a1b37f8a9c5d12");
 <dd>
 
 Use this method to list all the batch objects in your account. The response sorts batches by creation date, with the newest batch first.
-
 </dd>
 </dl>
 </dd>
@@ -2777,10 +2761,11 @@ You must use Pegasus 1.5 for batch analysis. Set the `model_name` parameter to `
 - Up to 1,000 requests per batch.
 - Up to 2,000 total content hours per batch.
 - Up to 5 active batches per account.
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2879,7 +2864,6 @@ Use this method to monitor a batch. The response includes the current batch stat
 Poll this method until the batch reaches the `completed`, `canceled`, or `expired` status. To retrieve the results, call the [`GET`](/v1.3/api-reference/analyze-videos/batch-analysis/retrieve-batch-results) method of the `/analyze/batches/{batch_id}/results` endpoint.
 
 Do not treat the `completed` status as a success signal. It means processing has finished for every item, not that every analysis succeeded. To see how many items succeeded, failed, or were canceled, check the `ready_items`, `failed_items`, and `canceled_items` fields. A batch never has the `failed` status.
-
 </dd>
 </dl>
 </dd>
@@ -2948,7 +2932,6 @@ Deleting a batch does not affect billing. You are billed for every completed ana
 To stop a batch with the `pending` or `processing` status, use the [`POST`](/v1.3/api-reference/analyze-videos/batch-analysis/cancel-batch) method of the `/analyze/batches/{batch_id}/cancel` endpoint.
 
 Batches are deleted 30 days after creation.
-
 </dd>
 </dl>
 </dd>
@@ -3017,7 +3000,6 @@ Each result entry has a status. For details on each status, see the [Item status
 Each result entry includes a task identifier in the `task_id` field. Use this value with the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint if you need the full analysis task response.
 
 You can retrieve results for 30 days after batch creation.
-
 </dd>
 </dl>
 </dd>
@@ -3090,7 +3072,6 @@ When you invoke this method, the platform performs the following steps:
 - Finishes the analysis for the items in the `processing` status.
 
 The batch status changes to `canceling` immediately, and to `canceled` after every item reaches `ready`, `failed`, or `canceled`. You are not billed for canceled or failed items.
-
 </dd>
 </dl>
 </dd>
@@ -3342,10 +3323,11 @@ A task can have one of the following statuses:
 - `processing`: The platform is creating the embeddings.
 - `ready`: Processing is complete. Retrieve the embeddings by invoking the [`GET`](/v1.3/api-reference/create-embeddings-v1/video-embeddings/retrieve-video-embeddings) method of the `/embed/tasks/{task_id} endpoint`.
 - `failed`: The task could not be completed, and the embeddings haven't been created.
-  </dd>
-  </dl>
-  </dd>
-  </dl>
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3404,7 +3386,6 @@ await client.embed.tasks.status("663da73b31cdd0c1f638a8e6");
 <dd>
 
 This method retrieves embeddings for a specific video embedding task. Ensure the task status is `ready` before invoking this method. Refer to the [Retrieve the status of a video embedding tasks](/v1.3/api-reference/create-embeddings-v1/video-embeddings/retrieve-video-embedding-task-status) page for instructions on checking the task status.
-
 </dd>
 </dl>
 </dd>
@@ -3699,6 +3680,7 @@ Creating embeddings asynchronously requires three steps:
 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
 
   <Note title="Notes">
+  - Creating a task validates only basic metadata and playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
   - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
   - Embeddings are stored for seven days.
   </Note>
@@ -3783,13 +3765,7 @@ await client.embed.v2.tasks.create({
 
 This method retrieves the status and the results of an async embedding task.
 
-**Task statuses**:
-
-- `processing`: The platform is creating the embeddings.
-- `ready`: Processing is complete. Embeddings are available in the response.
-- `failed`: The task failed. Embeddings were not created.
-
-Invoke this method repeatedly until the `status` field is `ready`. When `status` is `ready`, use the embeddings from the response.
+Invoke this method repeatedly until the `status` field is `ready` or `failed`. When the status is `ready`, use the embeddings from the response. When the status is `failed`, the `error.message` field contains the reason.
 
 <Note title="Note">
 Embeddings are stored for seven days.
@@ -3858,7 +3834,6 @@ await client.embed.v2.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12");
 <dd>
 
 This method returns a list of entities whose [`asset_ids`](/v1.3/api-reference/entities/entity-collections/entities/retrieve#response.body.asset_ids) array contains the specified asset.
-
 </dd>
 </dl>
 </dd>
@@ -3944,7 +3919,6 @@ while (page.hasNextPage()) {
 <dd>
 
 This method returns a list of the entities in the specified entity collection.
-
 </dd>
 </dl>
 </dd>
@@ -4038,7 +4012,6 @@ while (page.hasNextPage()) {
 <dd>
 
 This method creates an entity within a specified entity collection. Each entity must be associated with at least one asset.
-
 </dd>
 </dl>
 </dd>
@@ -4112,7 +4085,6 @@ await client.entityCollections.entities.create("6298d673f1090f1100476d4c", {
 <dd>
 
 This method creates multiple entities within a specified entity collection in a single request. Each entity must be associated with at least one asset. This endpoint is useful for efficiently adding multiple entities, such as a roster of players or a group of characters.
-
 </dd>
 </dl>
 </dd>
@@ -4190,7 +4162,6 @@ await client.entityCollections.entities.createBulk("6298d673f1090f1100476d4c", {
 <dd>
 
 This method retrieves details about the specified entity.
-
 </dd>
 </dl>
 </dd>
@@ -4261,7 +4232,6 @@ await client.entityCollections.entities.retrieve("6298d673f1090f1100476d4c", "62
 <dd>
 
 This method deletes a specific entity from an entity collection. It permanently removes the entity and its associated data, but does not affect the assets associated with this entity.
-
 </dd>
 </dl>
 </dd>
@@ -4332,7 +4302,6 @@ await client.entityCollections.entities.delete("6298d673f1090f1100476d4c", "6298
 <dd>
 
 This method updates the specified entity within an entity collection. This operation allows modification of the entity's name, description, or metadata. Note that this endpoint does not affect the assets associated with the entity.
-
 </dd>
 </dl>
 </dd>
@@ -4413,7 +4382,6 @@ await client.entityCollections.entities.update("6298d673f1090f1100476d4c", "6298
 This method adds assets to the specified entity within an entity collection. Assets are used to identify the entity in media content, and adding multiple assets can improve the accuracy of entity recognition in searches.
 
 When assets are added, the entity may temporarily enter the "processing" state while the platform updates the necessary data. Once processing is complete, the entity status will return to "ready."
-
 </dd>
 </dl>
 </dd>
@@ -4583,7 +4551,6 @@ await client.entityCollections.entities.deleteAssets("6298d673f1090f1100476d4c",
 <dd>
 
 This method returns a list of the indexed assets in the specified index. By default, the platform returns your indexed assets sorted by creation date, with the newest at the top of the list.
-
 </dd>
 </dl>
 </dd>
@@ -4784,10 +4751,11 @@ Use this method to:
 
 - Retrieve transcriptions:
     - Set the `transcription` parameter to `true` to retrieve spoken words from your video
-      </dd>
-      </dl>
-      </dd>
-      </dl>
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -4864,7 +4832,6 @@ await client.indexes.indexedAssets.retrieve("6298d673f1090f1100476d4c", "6298d67
 <dd>
 
 This method deletes all the information about the specified indexed asset. This action cannot be undone.
-
 </dd>
 </dl>
 </dd>
@@ -4935,7 +4902,6 @@ await client.indexes.indexedAssets.delete("6298d673f1090f1100476d4c", "6298d673f
 <dd>
 
 This method updates one or more fields of the metadata of an indexed asset. Also, can delete a field by setting it to `null`.
-
 </dd>
 </dl>
 </dd>
@@ -5021,7 +4987,6 @@ await client.indexes.indexedAssets.update("6298d673f1090f1100476d4c", "6298d673f
 <dd>
 
 This method returns a list of indexed assets that reference the specified asset. Each entry includes the indexed asset ID and the index it belongs to.
-
 </dd>
 </dl>
 </dd>
@@ -5111,7 +5076,6 @@ while (page.hasNextPage()) {
 <Info>This method will be deprecated in a future version. New implementations should use the [List indexed assets](/v1.3/api-reference/index-content/list) method.</Info>
 
 This method returns a list of the videos in the specified index. By default, the platform returns your videos sorted by creation date, with the newest at the top of the list.
-
 </dd>
 </dl>
 </dd>
@@ -5209,7 +5173,6 @@ while (page.hasNextPage()) {
 <Info> This method will be deprecated in a future version. New implementations should use the [Retrieve an indexed asset](/v1.3/api-reference/index-content/retrieve) method.</Info>
 
 This method retrieves information about the specified video.
-
 </dd>
 </dl>
 </dd>
@@ -5292,7 +5255,6 @@ await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f
 <Info>This method will be deprecated in a future version. New implementations should use the [Delete an indexed asset](/v1.3/api-reference/index-content/delete) method.</Info>
 
 This method deletes all the information about the specified indexed video. This action cannot be undone.
-
 </dd>
 </dl>
 </dd>
@@ -5365,7 +5327,6 @@ await client.indexes.videos.delete("6298d673f1090f1100476d4c", "6298d673f1090f11
 <Info>This method will be deprecated in a future version. New implementations should use the [Partial update indexed asset](/v1.3/api-reference/index-content/update) method.</Info>
 
 This method updates one or more fields of the metadata of a video. Also, can delete a field by setting it to `null`.
-
 </dd>
 </dl>
 </dd>
