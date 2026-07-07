@@ -17,7 +17,7 @@ export interface EmbeddingTaskResponse {
      * **Values**:
      * - `processing`: The platform is creating the embeddings
      * - `ready`: Processing is complete. Embeddings are available in the `data` field
-     * - `failed`: The task failed. The `data` field is `null`
+     * - `failed`: The task failed. The `data` field is `null`, and the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason
      */
     status: TwelvelabsApi.EmbeddingTaskResponseStatus;
     createdAt?: TwelvelabsApi.CreatedAt;

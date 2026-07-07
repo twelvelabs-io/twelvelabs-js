@@ -100,8 +100,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.8",
-                        "User-Agent": "twelvelabs-js/1.2.8",
+                        "X-Fern-SDK-Version": "1.2.9",
+                        "User-Agent": "twelvelabs-js/1.2.9",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -172,6 +172,8 @@ export class Assets {
     /**
      * This method creates an asset by uploading a file to the platform. Assets are media files that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
      *
+     * The platform processes uploads asynchronously. This method returns immediately with the asset in the `processing` status, which then transitions to `ready` on success or to `failed` when the file is invalid or corrupt, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it. This applies to every upload, including small files.
+     *
      * **Supported content**: Video, audio, and images.
      *
      * **Upload methods**:
@@ -181,7 +183,9 @@ export class Assets {
      * **Upload limits**:
      * - **Video and audio, local files**: Up to 200 MB
      * - **Video and audio, public URLs**: Up to 4 GB
-     * - **Images**: Up to 5 MB
+     * - **Images**: Up to 32 MB
+     *
+     * Asset creation does not enforce a maximum duration. Each model applies its own file size and duration limits when you index or analyze the asset. For details, see the requirements below.
      *
      * **Additional requirements** depend on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
@@ -255,8 +259,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -345,8 +349,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -451,8 +455,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -550,8 +554,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -605,7 +609,7 @@ export class Assets {
     }
 
     /**
-     * This method deletes the user-defined metadata of the specified asset. To achieve the same result, you can also send an empty object (`{}`) in the `user_metadata` field of the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-asset-user-metadata) method.
+     * This method deletes the user-defined metadata of the specified asset. To achieve the same result, you can also send an empty object (`{}`) in the `user_metadata` field of the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-user-metadata) method.
      *
      * This action cannot be undone.
      *
@@ -637,8 +641,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -695,7 +699,7 @@ export class Assets {
      * - A key set to an empty string (`""`) is ignored.
      * - A key you omit from the request keeps its current value.
      *
-     * To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-asset-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
+     * To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
      *
      * @param {string} assetId - The unique identifier of the asset whose user-defined metadata to update.
      * @param {TwelvelabsApi.AssetsUpdateUserMetadataRequest} request
@@ -738,8 +742,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

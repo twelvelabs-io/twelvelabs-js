@@ -8,8 +8,7 @@ import * as TwelvelabsApi from "../index";
  * Metadata for the media input.
  */
 export type EmbeddingTaskMediaMetadata =
-    | TwelvelabsApi.EmbeddingTaskMediaMetadata.Audio
-    | TwelvelabsApi.EmbeddingTaskMediaMetadata.Video;
+    TwelvelabsApi.EmbeddingTaskMediaMetadata.Audio | TwelvelabsApi.EmbeddingTaskMediaMetadata.Video;
 
 export namespace EmbeddingTaskMediaMetadata {
     export interface Audio extends TwelvelabsApi.EmbeddingAudioMetadata {

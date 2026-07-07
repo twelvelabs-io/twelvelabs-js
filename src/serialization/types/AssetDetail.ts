@@ -7,6 +7,8 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AssetHls } from "./AssetHls";
 import { AssetThumbnail } from "./AssetThumbnail";
+import { TechnicalMetadata } from "./TechnicalMetadata";
+import { AssetError } from "./AssetError";
 import { Asset } from "./Asset";
 
 export const AssetDetail: core.serialization.ObjectSchema<serializers.AssetDetail.Raw, TwelvelabsApi.AssetDetail> =
@@ -14,6 +16,10 @@ export const AssetDetail: core.serialization.ObjectSchema<serializers.AssetDetai
         .object({
             hls: AssetHls.optional(),
             thumbnail: AssetThumbnail.optional(),
+            technicalMetadata: core.serialization.property("technical_metadata", TechnicalMetadata.optional()),
+            size: core.serialization.number().optional(),
+            duration: core.serialization.number().optional(),
+            error: AssetError.optional(),
         })
         .extend(Asset);
 
@@ -21,5 +27,9 @@ export declare namespace AssetDetail {
     export interface Raw extends Asset.Raw {
         hls?: AssetHls.Raw | null;
         thumbnail?: AssetThumbnail.Raw | null;
+        technical_metadata?: TechnicalMetadata.Raw | null;
+        size?: number | null;
+        duration?: number | null;
+        error?: AssetError.Raw | null;
     }
 }

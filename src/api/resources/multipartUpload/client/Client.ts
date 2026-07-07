@@ -75,8 +75,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.8",
-                        "User-Agent": "twelvelabs-js/1.2.8",
+                        "X-Fern-SDK-Version": "1.2.9",
+                        "User-Agent": "twelvelabs-js/1.2.9",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -155,7 +155,7 @@ export class MultipartUpload {
      *
      * **Supported content**: Video
      *
-     * **Upload limits**: Local video files up to 4 GB.
+     * **Upload limits**: Local video files up to 10 GB.
      *
      * **Additional requirements** depend on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
@@ -198,8 +198,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -270,7 +270,7 @@ export class MultipartUpload {
      * - Determine if the session has expired
      * - Retrieve the status information for each chunk
      *
-     * You must call this method after reporting chunk completion to confirm the upload has transitioned to the `completed` status before using the asset.
+     * After you report chunk completion, call this method to confirm the upload session reached the `completed` status. This status means the platform received the file, not that the asset is ready to use. The platform then validates the asset asynchronously. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it.
      *
      * @param {string} uploadId - The unique identifier of the upload session.
      * @param {TwelvelabsApi.MultipartUploadGetStatusRequest} request
@@ -315,8 +315,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.8",
-                        "User-Agent": "twelvelabs-js/1.2.8",
+                        "X-Fern-SDK-Version": "1.2.9",
+                        "User-Agent": "twelvelabs-js/1.2.9",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -440,8 +440,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -551,8 +551,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.8",
-                "User-Agent": "twelvelabs-js/1.2.8",
+                "X-Fern-SDK-Version": "1.2.9",
+                "User-Agent": "twelvelabs-js/1.2.9",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

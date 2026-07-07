@@ -25,9 +25,7 @@ export const StreamAnalyzeResponse: core.serialization.Schema<
 
 export declare namespace StreamAnalyzeResponse {
     export type Raw =
-        | StreamAnalyzeResponse.StreamStart
-        | StreamAnalyzeResponse.TextGeneration
-        | StreamAnalyzeResponse.StreamEnd;
+        StreamAnalyzeResponse.StreamStart | StreamAnalyzeResponse.TextGeneration | StreamAnalyzeResponse.StreamEnd;
 
     export interface StreamStart extends StreamStartResponse.Raw {
         event_type: "stream_start";
