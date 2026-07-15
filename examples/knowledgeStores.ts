@@ -18,8 +18,12 @@
 import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
 import {
   cleanupKnowledgeStore,
+  createAssetFromFile,
   makeClient,
-  setupReadyKnowledgeStore,
+  waitForAssetReady,
+  waitForItemReady,
+  VIDEO_PATH,
+  IMAGE_PATH,
 } from "./_ksHelpers";
 
 function printSearchResponse(resp: any, label: string) {
@@ -115,8 +119,36 @@ async function demoCrud(client: TwelveLabs) {
   await cleanupKnowledgeStore(client, ks.id!);
 }
 
-async function demoItems(client: TwelveLabs, ksId: string, items: Record<string, string>) {
+async function demoItems(client: TwelveLabs, ksId: string): Promise<Record<string, string>> {
   console.log("\n=== Items ===");
+  const items: Record<string, string> = {};
+
+  // Add a video and an image to the knowledge store. Upload each file as an
+  // asset, wait for it to be ready, then create a knowledge store item from it.
+  const videoAssetId = await createAssetFromFile(client, VIDEO_PATH);
+  await waitForAssetReady(client, videoAssetId);
+  const videoItem = await client.knowledgeStoreItems.create(ksId, {
+    assetId: videoAssetId,
+    assetType: "video",
+  });
+  items.video = videoItem.id!;
+  console.log(`  created video item: id=${videoItem.id}`);
+
+  const imageAssetId = await createAssetFromFile(client, IMAGE_PATH);
+  await waitForAssetReady(client, imageAssetId);
+  const imageItem = await client.knowledgeStoreItems.create(ksId, {
+    assetId: imageAssetId,
+    assetType: "image",
+  });
+  items.image = imageItem.id!;
+  console.log(`  created image item: id=${imageItem.id}`);
+
+  // Wait for both items to finish processing.
+  for (const [kind, itemId] of Object.entries(items)) {
+    console.log(`  waiting for ${kind} item ${itemId} to be ready ...`);
+    await waitForItemReady(client, ksId, itemId);
+  }
+
   console.log("  list all items:");
   const listed = await client.knowledgeStoreItems.list(ksId, {
     page: 1,
@@ -134,13 +166,14 @@ async function demoItems(client: TwelveLabs, ksId: string, items: Record<string,
   });
   console.log(`    ${(ready.data ?? []).length} ready item(s)`);
 
-  const anyItemId = Object.values(items)[0];
-  const single = await client.knowledgeStoreItems.retrieve(ksId, anyItemId);
+  const single = await client.knowledgeStoreItems.retrieve(ksId, items.video);
   console.log(
     `  retrieved item ${single.id}: type=${single.assetType} systemMetadata=${
       single.systemMetadata !== undefined
     }`
   );
+
+  return items;
 }
 
 async function demoItemCollections(
@@ -206,10 +239,7 @@ async function demoItemCollections(
 async function demoSearch(client: TwelveLabs, ksId: string, items: Record<string, string>) {
   console.log("\n=== Search ===");
 
-  // NOTE: the spec/SDK document `searchOptions` as optional (videos default to
-  // visual matching when omitted), but the deployed API (both prod and dev as of
-  // this writing) returns 400 "The search_options parameter is required but was
-  // not provided" when it is omitted. Every call below passes searchOptions.
+  // `searchOptions` selects which video modalities to match on.
   const visualOnly: TwelvelabsApi.SearchKnowledgeStoreOptions = {
     video: { modalities: ["visual"] },
   };
@@ -248,14 +278,7 @@ async function demoSearch(client: TwelveLabs, ksId: string, items: Record<string
     printSearchResponse(resp, `itemId in [${items.video}]`);
   }
 
-  // Pagination. NOTES across environments:
-  //  - prod (as of this writing) does NOT return a nextPageToken on a truncated
-  //    page, so the page-2 branch is skipped there.
-  //  - where cursor pagination is available (e.g. dev), a truncated page returns
-  //    a token, but fetching the next page can currently fail to deserialize:
-  //    the server may omit `modalities` on a match while the SDK marks
-  //    VideoMatch.modalities as required. The page-2 fetch is guarded so this
-  //    example degrades gracefully instead of throwing.
+  // Paginate with a small page size, then fetch the next page with the token.
   resp = await client.knowledgeStores.search(ksId, {
     query: { text: "a person or animal moving" },
     searchOptions: visualOnly,
@@ -263,20 +286,13 @@ async function demoSearch(client: TwelveLabs, ksId: string, items: Record<string
   });
   printSearchResponse(resp, "pageSize=1");
   if (resp.nextPageToken) {
-    try {
-      const page2 = await client.knowledgeStores.search(ksId, {
-        query: { text: "a person or animal moving" },
-        searchOptions: visualOnly,
-        pageSize: 1,
-        pageToken: resp.nextPageToken,
-      });
-      printSearchResponse(page2, "page 2 (via nextPageToken)");
-    } catch (err) {
-      console.log(
-        `  page 2 fetch failed to deserialize: ${(err as Error).name} ` +
-          "(likely a match missing the required `modalities` field)"
-      );
-    }
+    const page2 = await client.knowledgeStores.search(ksId, {
+      query: { text: "a person or animal moving" },
+      searchOptions: visualOnly,
+      pageSize: 1,
+      pageToken: resp.nextPageToken,
+    });
+    printSearchResponse(page2, "page 2 (via nextPageToken)");
   }
 }
 
@@ -286,25 +302,16 @@ async function main() {
   await demoIngestionConfigVariants(client);
   await demoCrud(client);
 
-  // Full flow: create a store with a ready video, then exercise items,
-  // collections, and search against it.
-  //
-  // NOTE on image items (assetType: "image"), as of this writing:
-  //  - prod rejects them with 422 "The asset_type parameter is invalid".
-  //  - dev accepts the create call, but the image can stay `queued` a long time
-  //    (image ingestion lag), so waiting for `ready` may time out.
-  // Kept video-only here so the example runs cleanly everywhere. Set
-  // addImage: true on an environment where image items are fully supported.
-  const setup = await setupReadyKnowledgeStore(client, {
-    name: `ks-search-${Date.now()}`,
-    addImage: false,
-  });
+  // Full flow: create a store, add a video and an image item, then exercise
+  // items, collections, and search against it.
+  const ks = await client.knowledgeStores.create({ name: `ks-search-${Date.now()}` });
+  console.log(`\nCreated knowledge store: id=${ks.id} name=${ks.name}`);
   try {
-    await demoItems(client, setup.knowledgeStoreId, setup.items);
-    await demoItemCollections(client, setup.knowledgeStoreId, setup.items);
-    await demoSearch(client, setup.knowledgeStoreId, setup.items);
+    const items = await demoItems(client, ks.id!);
+    await demoItemCollections(client, ks.id!, items);
+    await demoSearch(client, ks.id!, items);
   } finally {
-    await cleanupKnowledgeStore(client, setup.knowledgeStoreId);
+    await cleanupKnowledgeStore(client, ks.id!);
   }
 }
 

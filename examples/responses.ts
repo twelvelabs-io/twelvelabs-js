@@ -36,8 +36,8 @@ function headerValue(rawResponse: any, name: string): string | undefined {
 
 /**
  * createResponse with automatic retry on HTTP 429. The /responses endpoint is
- * rate-limited (observed: ~4 requests/minute), so a script that fires several
- * calls in a row gets a 429. This honors the retry-after header.
+ * rate-limited, so a script that fires several calls in a row may get a 429.
+ * This honors the retry-after header and retries.
  */
 async function createResponse(client: TwelveLabs, request: any): Promise<any> {
   for (;;) {
@@ -242,12 +242,9 @@ async function demoStreaming(client: TwelveLabs, ksId: string) {
 async function main() {
   const client = makeClient();
 
-  // video-only: image items (assetType: "image") are rejected on prod and
-  // process slowly on dev as of this writing. Set addImage: true where image
-  // items are fully supported.
+  // Create a knowledge store with a ready video and image item to reason over.
   const setup = await setupReadyKnowledgeStore(client, {
     name: `ks-responses-${Date.now()}`,
-    addImage: false,
   });
   const { knowledgeStoreId: ksId, items } = setup;
   try {
