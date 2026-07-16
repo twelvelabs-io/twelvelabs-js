@@ -12,6 +12,7 @@ import * as TwelvelabsApi from "../../../../index";
  *         sortBy: "created_at",
  *         sortOption: "desc",
  *         indexId: "630aff993fcee0532cb809d0",
+ *         status: ["ready", "failed"],
  *         filename: "01.mp4",
  *         duration: 531.998133,
  *         width: 640,

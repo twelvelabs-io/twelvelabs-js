@@ -13,14 +13,14 @@ export interface AnalyzeTaskResponseRequestParamsResponseFormat {
      * The JSON schema for this task. Present only when `type` is `json_schema`.
      *
      * - [List](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks): Omitted.
-     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task): Returns the full schema.
+     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results): Returns the full schema.
      */
     jsonSchema?: Record<string, unknown>;
     /**
      * The segment definitions for this task. Present only when `type` is `segment_definitions`.
      *
      * - [List](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks): Returns only the first element.
-     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task): Returns the full array.
+     * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results): Returns the full array.
      */
     segmentDefinitions?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem[];
 }

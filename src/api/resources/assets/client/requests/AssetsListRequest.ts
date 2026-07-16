@@ -9,6 +9,8 @@ import * as TwelvelabsApi from "../../../../index";
  *     {
  *         page: 1,
  *         pageLimit: 10,
+ *         assetIds: ["6298d673f1090f1100476d4c", "6298d673f1090f1100476d4d"],
+ *         assetTypes: ["image", "video"],
  *         filename: "meeting"
  *     }
  */

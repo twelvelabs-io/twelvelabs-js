@@ -6,7 +6,9 @@ import * as TwelvelabsApi from "../../../../../../index";
 
 /**
  * @example
- *     {}
+ *     {
+ *         embeddingOption: ["visual"]
+ *     }
  */
 export interface TasksRetrieveRequest {
     /**

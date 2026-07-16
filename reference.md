@@ -124,6 +124,7 @@ const response = await client.tasks.list({
     sortBy: "created_at",
     sortOption: "desc",
     indexId: "630aff993fcee0532cb809d0",
+    status: ["ready", "failed"],
     filename: "01.mp4",
     duration: 531.998133,
     width: 640,
@@ -142,6 +143,7 @@ const page = await client.tasks.list({
     sortBy: "created_at",
     sortOption: "desc",
     indexId: "630aff993fcee0532cb809d0",
+    status: ["ready", "failed"],
     filename: "01.mp4",
     duration: 531.998133,
     width: 640,
@@ -803,6 +805,8 @@ The platform returns your assets sorted by creation date, with the newest at the
 const response = await client.assets.list({
     page: 1,
     pageLimit: 10,
+    assetIds: ["6298d673f1090f1100476d4c", "6298d673f1090f1100476d4d"],
+    assetTypes: ["image", "video"],
     filename: "meeting",
 });
 for await (const item of response) {
@@ -813,6 +817,8 @@ for await (const item of response) {
 const page = await client.assets.list({
     page: 1,
     pageLimit: 10,
+    assetIds: ["6298d673f1090f1100476d4c", "6298d673f1090f1100476d4d"],
+    assetTypes: ["image", "video"],
     filename: "meeting",
 });
 while (page.hasNextPage()) {
@@ -2072,6 +2078,1412 @@ await client.entityCollections.update("6298d673f1090f1100476d4c");
 </dl>
 </details>
 
+## Knowledge stores
+
+<details><summary><code>client.knowledgeStores.<a href="/src/api/resources/knowledgeStores/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;TwelvelabsApi.KnowledgeStore&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of the knowledge stores in your account.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.knowledgeStores.list({
+    page: 1,
+    pageLimit: 10,
+    sortBy: "created_at",
+    sortOption: "desc",
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.knowledgeStores.list({
+    page: 1,
+    pageLimit: 10,
+    sortBy: "created_at",
+    sortOption: "desc",
+});
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoresListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStores.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStores.<a href="/src/api/resources/knowledgeStores/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.KnowledgeStore</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method creates a knowledge store.
+
+Provide a name. Optionally include a description, a metadata map, and an `ingestion_config` object that controls how content added to the store is processed. The `ingestion_config` object is immutable after creation.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStores.create({
+    name: "Product Demo Analysis",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoresCreateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStores.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStores.<a href="/src/api/resources/knowledgeStores/client/Client.ts">retrieve</a>(knowledgeStoreId) -> TwelvelabsApi.KnowledgeStore</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves the details of a specific knowledge store.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStores.retrieve("ks_069e9869-1ea3-7481-8000-dae72bf6be6e");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStores.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStores.<a href="/src/api/resources/knowledgeStores/client/Client.ts">delete</a>(knowledgeStoreId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method deletes the specified knowledge store and all its items.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStores.delete("ks_069e9869-1ea3-7481-8000-dae72bf6be6e");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStores.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStores.<a href="/src/api/resources/knowledgeStores/client/Client.ts">update</a>(knowledgeStoreId, { ...params }) -> TwelvelabsApi.KnowledgeStore</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method updates the specified knowledge store. Only the `name`, `description`, and `metadata` fields can be updated.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStores.update("ks_069e9869-1ea3-7481-8000-dae72bf6be6e");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoresUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStores.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStores.<a href="/src/api/resources/knowledgeStores/client/Client.ts">search</a>(knowledgeStoreId, { ...params }) -> TwelvelabsApi.SearchKnowledgeStoreResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method searches a knowledge store using natural language and returns matching video clips and images ranked by relevance.
+
+Provide your natural-language query in the `query.text` field. Use the `filter` parameter to choose which items to search: by type of item (the `asset_type` field) or by specific items (the `item_id` field). Use the optional `search_options` parameter to control how videos are matched (by visual content, audio, or both). If you omit it, videos are matched on their visual content. Images are always matched on their visual content.
+
+By default, each result is an individual match: a video clip or an image. Set the `group_by` parameter to `item` to group clips under their parent item.
+
+<Note title="Note">
+This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+</Note>
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStores.search("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    query: {
+        text: "A person cooking pasta",
+    },
+    searchOptions: {
+        video: {
+            modalities: ["visual", "audio"],
+        },
+    },
+    groupBy: "none",
+    pageSize: 10,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.SearchKnowledgeStoreRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStores.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Knowledge store items
+
+<details><summary><code>client.knowledgeStoreItems.<a href="/src/api/resources/knowledgeStoreItems/client/Client.ts">list</a>(knowledgeStoreId, { ...params }) -> core.Page&lt;TwelvelabsApi.KnowledgeStoreItem&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of items in the specified knowledge store.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.knowledgeStoreItems.list("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    page: 1,
+    pageLimit: 10,
+    sortBy: "created_at",
+    sortOption: "desc",
+    status: ["queued"],
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.knowledgeStoreItems.list("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    page: 1,
+    pageLimit: 10,
+    sortBy: "created_at",
+    sortOption: "desc",
+    status: ["queued"],
+});
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemsListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItems.<a href="/src/api/resources/knowledgeStoreItems/client/Client.ts">create</a>(knowledgeStoreId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItem</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method adds an asset to a knowledge store for processing.
+The operation is asynchronous. The item is created immediately with the `queued`
+status and processed in the background.
+
+The asset must not exceed 5 GB.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItems.create("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    assetId: "6298d673f1090f1100476d4c",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemsCreateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItems.<a href="/src/api/resources/knowledgeStoreItems/client/Client.ts">retrieve</a>(knowledgeStoreId, itemId) -> TwelvelabsApi.KnowledgeStoreItem</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves the details of a specific knowledge store item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItems.retrieve(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItems.<a href="/src/api/resources/knowledgeStoreItems/client/Client.ts">delete</a>(knowledgeStoreId, itemId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method deletes the specified knowledge store item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItems.delete(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Knowledge store item collections
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">list</a>(knowledgeStoreId, { ...params }) -> core.Page&lt;TwelvelabsApi.KnowledgeStoreItemCollection&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of the item collections in the specified knowledge store.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.knowledgeStoreItemCollections.list("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    page: 1,
+    pageLimit: 10,
+    sortBy: "created_at",
+    sortOption: "desc",
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.knowledgeStoreItemCollections.list("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    page: 1,
+    pageLimit: 10,
+    sortBy: "created_at",
+    sortOption: "desc",
+});
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemCollectionsListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">create</a>(knowledgeStoreId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItemCollection</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates an item collection in the specified knowledge store. An item collection is a named collection of items. Use item collections to organize and reference subsets of items together.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemCollections.create("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+    name: "Q1 highlights",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemCollectionsCreateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">retrieve</a>(knowledgeStoreId, collectionId) -> TwelvelabsApi.KnowledgeStoreItemCollection</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the details of a specific item collection.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemCollections.retrieve(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionId:** `string` — The unique identifier of the knowledge store item collection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">delete</a>(knowledgeStoreId, collectionId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes the specified item collection. The items themselves remain in the knowledge store.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemCollections.delete(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionId:** `string` — The unique identifier of the knowledge store item collection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">update</a>(knowledgeStoreId, collectionId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItemCollection</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the `name`, `description`, and `metadata` fields of the specified item collection.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemCollections.update(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionId:** `string` — The unique identifier of the knowledge store item collection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemCollectionsUpdateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">listItems</a>(knowledgeStoreId, collectionId, { ...params }) -> core.Page&lt;TwelvelabsApi.KnowledgeStoreItem&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of the items in the specified item collection.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.knowledgeStoreItemCollections.listItems(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        page: 1,
+        pageLimit: 10,
+    },
+);
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.knowledgeStoreItemCollections.listItems(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        page: 1,
+        pageLimit: 10,
+    },
+);
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionId:** `string` — The unique identifier of the knowledge store item collection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemCollectionsListItemsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">addItems</a>(knowledgeStoreId, collectionId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItemCollection</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds one or more items to the specified item collection. This operation is idempotent — items already in the collection are skipped. Every identifier must reference an existing item in the knowledge store.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemCollections.addItems(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        itemIds: ["ksi_069e9870-3c4d-7abc-9012-3456789abcde"],
+    },
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionId:** `string` — The unique identifier of the knowledge store item collection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemCollectionsAddItemsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemCollections.<a href="/src/api/resources/knowledgeStoreItemCollections/client/Client.ts">removeItems</a>(knowledgeStoreId, collectionId, { ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes one or more items from the specified item collection. This operation is idempotent — identifiers that do not match a member of the collection are ignored. The items themselves remain in the knowledge store.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemCollections.removeItems(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksic_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        itemIds: ["ksi_069e9870-3c4d-7abc-9012-3456789abcde"],
+    },
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**collectionId:** `string` — The unique identifier of the knowledge store item collection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemCollectionsRemoveItemsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemCollections.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 ## Embed
 
 <details><summary><code>client.embed.<a href="/src/api/resources/embed/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.EmbeddingResponse</code></summary>
@@ -2326,6 +3738,279 @@ await client.search.retrieve("1234567890", {
 <dd>
 
 **requestOptions:** `Search.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Responses
+
+<details><summary><code>client.responses.<a href="/src/api/resources/responses/client/Client.ts">createStream</a>({ ...params }) -> core.Stream&lt;TwelvelabsApi.ResponseStreamEvent&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method uses [Jockey](/v1.3/agents/concepts/jockey) to reason over content in a knowledge store and create a response. It uses [Open Responses](https://www.openresponses.org/specification) conventions for input items and streaming events.
+
+Before you use this method, you must create an asset, create a knowledge store, and add the asset to the knowledge store as an item.
+
+**Multi-turn conversations**: Supported via a session identifier. The first request implicitly creates a session; subsequent requests pass the returned identifier to continue the conversation.
+
+**Selections**: By default, Jockey reasons over every item in the knowledge store. To narrow the scope, set the optional `selections` parameter to specific items or item collections, then reference each one with a `{{sel:N}}` token in the `content` field of an `input` item (`N` is the zero-based position in the `selections` array). The narrowing is applied at the prompt level; the knowledge store does not block access to other items.
+
+**Streaming**: Set the `stream` parameter to `true` to receive the response as [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE). The reply streams in as a sequence of typed events and ends with a `data: [DONE]` message.
+
+<Accordion title="Example response">
+```json
+{
+  "id": "resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff",
+  "type": "response",
+  "status": "completed",
+  "session_id": "sess_019f4f2a-b69b-7a01-9018-cc51681121ea",
+  "knowledge_store_id": "ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56",
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0",
+      "status": "completed",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [00:00-00:09]."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 12625,
+    "output_tokens": 289
+  },
+  "created_at": "2026-07-11T03:13:57Z"
+}
+```
+</Accordion>
+
+<Accordion title="Example streamed response (SSE)">
+```
+event: response.created
+data: {"type":"response.created","sequence_number":0,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","status":"in_progress","output":[],"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:47Z"}}
+
+event: response.output_item.added
+data: {"type":"response.output_item.added","sequence_number":2,"output_index":0,"item":{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"in_progress","role":"assistant","content":[{"type":"output_text","text":""}]}}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","sequence_number":4,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"delta":"The video captures a heated sideline moment"}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","sequence_number":5,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"delta":" during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid."}
+
+event: response.output_text.done
+data: {"type":"response.output_text.done","sequence_number":124,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [00:00-00:09]."}
+
+event: response.completed
+data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","status":"completed","output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [00:00-00:09]."}]}],"usage":{"input_tokens":12625,"output_tokens":289},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
+
+data: [DONE]
+
+````
+</Accordion>
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.responses.createStream({
+    knowledgeStoreId: "ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56",
+    input: [{
+            type: "message",
+            role: "user",
+            content: "Give me the highlight."
+        }]
+});
+for await (const item of response) {
+    console.log(item);
+}
+
+````
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ResponsesCreateStreamRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Responses.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.responses.<a href="/src/api/resources/responses/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.ResponseObject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method uses [Jockey](/v1.3/agents/concepts/jockey) to reason over content in a knowledge store and create a response. It uses [Open Responses](https://www.openresponses.org/specification) conventions for input items and streaming events.
+
+Before you use this method, you must create an asset, create a knowledge store, and add the asset to the knowledge store as an item.
+
+**Multi-turn conversations**: Supported via a session identifier. The first request implicitly creates a session; subsequent requests pass the returned identifier to continue the conversation.
+
+**Selections**: By default, Jockey reasons over every item in the knowledge store. To narrow the scope, set the optional `selections` parameter to specific items or item collections, then reference each one with a `{{sel:N}}` token in the `content` field of an `input` item (`N` is the zero-based position in the `selections` array). The narrowing is applied at the prompt level; the knowledge store does not block access to other items.
+
+**Streaming**: Set the `stream` parameter to `true` to receive the response as [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE). The reply streams in as a sequence of typed events and ends with a `data: [DONE]` message.
+
+<Accordion title="Example response">
+```json
+{
+  "id": "resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff",
+  "type": "response",
+  "status": "completed",
+  "session_id": "sess_019f4f2a-b69b-7a01-9018-cc51681121ea",
+  "knowledge_store_id": "ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56",
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0",
+      "status": "completed",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [00:00-00:09]."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 12625,
+    "output_tokens": 289
+  },
+  "created_at": "2026-07-11T03:13:57Z"
+}
+```
+</Accordion>
+
+<Accordion title="Example streamed response (SSE)">
+```
+event: response.created
+data: {"type":"response.created","sequence_number":0,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","status":"in_progress","output":[],"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:47Z"}}
+
+event: response.output_item.added
+data: {"type":"response.output_item.added","sequence_number":2,"output_index":0,"item":{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"in_progress","role":"assistant","content":[{"type":"output_text","text":""}]}}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","sequence_number":4,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"delta":"The video captures a heated sideline moment"}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","sequence_number":5,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"delta":" during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid."}
+
+event: response.output_text.done
+data: {"type":"response.output_text.done","sequence_number":124,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [00:00-00:09]."}
+
+event: response.completed
+data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","status":"completed","output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [00:00-00:09]."}]}],"usage":{"input_tokens":12625,"output_tokens":289},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
+
+data: [DONE]
+
+````
+</Accordion>
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.responses.create({
+    knowledgeStoreId: "ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56",
+    input: [{
+            type: "message",
+            role: "user",
+            content: "Give me the highlight."
+        }]
+});
+
+````
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ResponsesCreateRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Responses.RequestOptions`
 
 </dd>
 </dl>
@@ -2676,6 +4361,8 @@ Use this method to list all the batch objects in your account. The response sort
 const response = await client.analyzeAsync.batches.list({
     page: 1,
     pageLimit: 10,
+    status: ["processing", "canceling"],
+    analysisMode: ["general", "time_based_metadata"],
 });
 for await (const item of response) {
     console.log(item);
@@ -2685,6 +4372,8 @@ for await (const item of response) {
 const page = await client.analyzeAsync.batches.list({
     page: 1,
     pageLimit: 10,
+    status: ["processing", "canceling"],
+    analysisMode: ["general", "time_based_metadata"],
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();
@@ -3400,7 +5089,9 @@ This method retrieves embeddings for a specific video embedding task. Ensure the
 <dd>
 
 ```typescript
-await client.embed.tasks.retrieve("663da73b31cdd0c1f638a8e6");
+await client.embed.tasks.retrieve("663da73b31cdd0c1f638a8e6", {
+    embeddingOption: ["visual"],
+});
 ```
 
 </dd>
@@ -4570,6 +6261,7 @@ const response = await client.indexes.indexedAssets.list("6298d673f1090f1100476d
     pageLimit: 10,
     sortBy: "created_at",
     sortOption: "desc",
+    status: ["ready"],
     filename: "01.mp4",
     createdAt: "2024-08-16T16:53:59Z",
     updatedAt: "2024-08-16T16:53:59Z",
@@ -4584,6 +6276,7 @@ const page = await client.indexes.indexedAssets.list("6298d673f1090f1100476d4c",
     pageLimit: 10,
     sortBy: "created_at",
     sortOption: "desc",
+    status: ["ready"],
     filename: "01.mp4",
     createdAt: "2024-08-16T16:53:59Z",
     updatedAt: "2024-08-16T16:53:59Z",
@@ -4767,6 +6460,7 @@ Use this method to:
 
 ```typescript
 await client.indexes.indexedAssets.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
+    embeddingOption: ["visual"],
     transcription: true,
 });
 ```
@@ -5188,6 +6882,7 @@ This method retrieves information about the specified video.
 
 ```typescript
 await client.indexes.videos.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
+    embeddingOption: ["visual"],
     transcription: true,
 });
 ```

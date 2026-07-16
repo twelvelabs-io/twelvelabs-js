@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../../../../../index";
 /**
  * @example
  *     {
+ *         embeddingOption: ["visual"],
  *         transcription: true
  *     }
  */

@@ -8,7 +8,9 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         page: 1,
- *         pageLimit: 10
+ *         pageLimit: 10,
+ *         status: ["processing", "canceling"],
+ *         analysisMode: ["general", "time_based_metadata"]
  *     }
  */
 export interface BatchesListRequest {
