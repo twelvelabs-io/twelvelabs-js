@@ -14,8 +14,12 @@ import { Indexes } from "./api/resources/indexes/client/Client";
 import { Assets } from "./api/resources/assets/client/Client";
 import { MultipartUpload } from "./api/resources/multipartUpload/client/Client";
 import { EntityCollections } from "./api/resources/entityCollections/client/Client";
+import { KnowledgeStores } from "./api/resources/knowledgeStores/client/Client";
+import { KnowledgeStoreItems } from "./api/resources/knowledgeStoreItems/client/Client";
+import { KnowledgeStoreItemCollections } from "./api/resources/knowledgeStoreItemCollections/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
+import { Responses } from "./api/resources/responses/client/Client";
 import { AnalyzeAsync } from "./api/resources/analyzeAsync/client/Client";
 
 export declare namespace TwelvelabsApiClient {
@@ -44,8 +48,12 @@ export class TwelvelabsApiClient {
     protected _assets: Assets | undefined;
     protected _multipartUpload: MultipartUpload | undefined;
     protected _entityCollections: EntityCollections | undefined;
+    protected _knowledgeStores: KnowledgeStores | undefined;
+    protected _knowledgeStoreItems: KnowledgeStoreItems | undefined;
+    protected _knowledgeStoreItemCollections: KnowledgeStoreItemCollections | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
+    protected _responses: Responses | undefined;
     protected _analyzeAsync: AnalyzeAsync | undefined;
 
     constructor(protected readonly _options: TwelvelabsApiClient.Options) {}
@@ -70,12 +78,28 @@ export class TwelvelabsApiClient {
         return (this._entityCollections ??= new EntityCollections(this._options));
     }
 
+    public get knowledgeStores(): KnowledgeStores {
+        return (this._knowledgeStores ??= new KnowledgeStores(this._options));
+    }
+
+    public get knowledgeStoreItems(): KnowledgeStoreItems {
+        return (this._knowledgeStoreItems ??= new KnowledgeStoreItems(this._options));
+    }
+
+    public get knowledgeStoreItemCollections(): KnowledgeStoreItemCollections {
+        return (this._knowledgeStoreItemCollections ??= new KnowledgeStoreItemCollections(this._options));
+    }
+
     public get embed(): Embed {
         return (this._embed ??= new Embed(this._options));
     }
 
     public get search(): Search {
         return (this._search ??= new Search(this._options));
+    }
+
+    public get responses(): Responses {
+        return (this._responses ??= new Responses(this._options));
     }
 
     public get analyzeAsync(): AnalyzeAsync {
@@ -130,8 +154,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.9",
-                "User-Agent": "twelvelabs-js/1.2.9",
+                "X-Fern-SDK-Version": "1.3.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -262,8 +286,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.9",
-                "User-Agent": "twelvelabs-js/1.2.9",
+                "X-Fern-SDK-Version": "1.3.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

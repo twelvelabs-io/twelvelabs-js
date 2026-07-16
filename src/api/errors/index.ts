@@ -3,6 +3,7 @@ export * from "./NotFoundError";
 export * from "./InternalServerError";
 export * from "./ConflictError";
 export * from "./ForbiddenError";
+export * from "./GoneError";
 export * from "./TooManyRequestsError";
 export * from "./ServiceUnavailableError";
 export * from "./GatewayTimeoutError";

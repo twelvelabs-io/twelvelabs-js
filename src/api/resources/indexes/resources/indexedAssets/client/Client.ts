@@ -48,6 +48,7 @@ export class IndexedAssets {
      *         pageLimit: 10,
      *         sortBy: "created_at",
      *         sortOption: "desc",
+     *         status: ["ready"],
      *         filename: "01.mp4",
      *         createdAt: "2024-08-16T16:53:59Z",
      *         updatedAt: "2024-08-16T16:53:59Z"
@@ -168,8 +169,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.9",
-                        "User-Agent": "twelvelabs-js/1.2.9",
+                        "X-Fern-SDK-Version": "1.3.0-beta.0",
+                        "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -293,8 +294,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.9",
-                "User-Agent": "twelvelabs-js/1.2.9",
+                "X-Fern-SDK-Version": "1.3.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -388,6 +389,7 @@ export class IndexedAssets {
      *
      * @example
      *     await client.indexes.indexedAssets.retrieve("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
+     *         embeddingOption: ["visual"],
      *         transcription: true
      *     })
      */
@@ -438,8 +440,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.9",
-                "User-Agent": "twelvelabs-js/1.2.9",
+                "X-Fern-SDK-Version": "1.3.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -534,8 +536,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.9",
-                "User-Agent": "twelvelabs-js/1.2.9",
+                "X-Fern-SDK-Version": "1.3.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -629,8 +631,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.2.9",
-                "User-Agent": "twelvelabs-js/1.2.9",
+                "X-Fern-SDK-Version": "1.3.0-beta.0",
+                "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -724,8 +726,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.2.9",
-                        "User-Agent": "twelvelabs-js/1.2.9",
+                        "X-Fern-SDK-Version": "1.3.0-beta.0",
+                        "User-Agent": "twelvelabs-js/1.3.0-beta.0",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),

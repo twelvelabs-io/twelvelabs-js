@@ -11,6 +11,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         pageLimit: 10,
  *         sortBy: "created_at",
  *         sortOption: "desc",
+ *         status: ["ready"],
  *         filename: "01.mp4",
  *         createdAt: "2024-08-16T16:53:59Z",
  *         updatedAt: "2024-08-16T16:53:59Z"

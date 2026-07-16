@@ -16,6 +16,10 @@ export class TwelveLabs {
     public readonly embed: EmbedWrapper;
     public readonly assets: TwelvelabsApiClient["assets"];
     public readonly entityCollections: TwelvelabsApiClient["entityCollections"];
+    public readonly knowledgeStores: TwelvelabsApiClient["knowledgeStores"];
+    public readonly knowledgeStoreItems: TwelvelabsApiClient["knowledgeStoreItems"];
+    public readonly knowledgeStoreItemCollections: TwelvelabsApiClient["knowledgeStoreItemCollections"];
+    public readonly responses: TwelvelabsApiClient["responses"];
     public readonly multipartUpload: MultipartUploadWrapper;
     public readonly analyze: TwelvelabsApiClient["analyze"];
     public readonly analyzeStream: TwelvelabsApiClient["analyzeStream"];
@@ -41,6 +45,14 @@ export class TwelveLabs {
         
         this.assets = this.client.assets;
         this.entityCollections = this.client.entityCollections;
+
+        // Knowledge stores + responses (Agents API) need no custom behavior — pass
+        // the generated resource clients straight through. `responses` carries both
+        // `create` and `createStream`.
+        this.knowledgeStores = this.client.knowledgeStores;
+        this.knowledgeStoreItems = this.client.knowledgeStoreItems;
+        this.knowledgeStoreItemCollections = this.client.knowledgeStoreItemCollections;
+        this.responses = this.client.responses;
 
         // Use custom wrappers instead of default clients
         this.tasks = new TasksWrapper(clientOptions);

@@ -5,6 +5,7 @@
 import * as TwelvelabsApi from "../../../../../index";
 
 export interface TasksRetrieveResponse {
+    /** An object containing the metadata associated with the embedding. */
     videoEmbedding?: TwelvelabsApi.embed.TasksRetrieveResponseVideoEmbedding;
     /** The unique identifier of the video embedding task. */
     id?: string;

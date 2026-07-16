@@ -4,6 +4,9 @@
 
 import * as TwelvelabsApi from "../../../../../index";
 
+/**
+ * An object containing the metadata associated with the embedding.
+ */
 export interface TasksRetrieveResponseVideoEmbedding {
     metadata?: TwelvelabsApi.VideoEmbeddingMetadata;
     /** An array of objects containing the embeddings for each video segment and the associated information. */
