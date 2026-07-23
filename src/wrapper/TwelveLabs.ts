@@ -16,6 +16,8 @@ export class TwelveLabs {
     public readonly embed: EmbedWrapper;
     public readonly assets: TwelvelabsApiClient["assets"];
     public readonly entityCollections: TwelvelabsApiClient["entityCollections"];
+    public readonly dataConnectors: TwelvelabsApiClient["dataConnectors"];
+    public readonly imports: TwelvelabsApiClient["imports"];
     public readonly knowledgeStores: TwelvelabsApiClient["knowledgeStores"];
     public readonly knowledgeStoreItems: TwelvelabsApiClient["knowledgeStoreItems"];
     public readonly knowledgeStoreItemCollections: TwelvelabsApiClient["knowledgeStoreItemCollections"];
@@ -45,6 +47,8 @@ export class TwelveLabs {
         
         this.assets = this.client.assets;
         this.entityCollections = this.client.entityCollections;
+        this.dataConnectors = this.client.dataConnectors;
+        this.imports = this.client.imports;
 
         // Knowledge stores + responses (Agents API) need no custom behavior — pass
         // the generated resource clients straight through. `responses` carries both

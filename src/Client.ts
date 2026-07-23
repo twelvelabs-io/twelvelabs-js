@@ -20,6 +20,8 @@ import { KnowledgeStoreItemCollections } from "./api/resources/knowledgeStoreIte
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
 import { Responses } from "./api/resources/responses/client/Client";
+import { DataConnectors } from "./api/resources/dataConnectors/client/Client";
+import { Imports } from "./api/resources/imports/client/Client";
 import { AnalyzeAsync } from "./api/resources/analyzeAsync/client/Client";
 
 export declare namespace TwelvelabsApiClient {
@@ -54,6 +56,8 @@ export class TwelvelabsApiClient {
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
     protected _responses: Responses | undefined;
+    protected _dataConnectors: DataConnectors | undefined;
+    protected _imports: Imports | undefined;
     protected _analyzeAsync: AnalyzeAsync | undefined;
 
     constructor(protected readonly _options: TwelvelabsApiClient.Options) {}
@@ -100,6 +104,14 @@ export class TwelvelabsApiClient {
 
     public get responses(): Responses {
         return (this._responses ??= new Responses(this._options));
+    }
+
+    public get dataConnectors(): DataConnectors {
+        return (this._dataConnectors ??= new DataConnectors(this._options));
+    }
+
+    public get imports(): Imports {
+        return (this._imports ??= new Imports(this._options));
     }
 
     public get analyzeAsync(): AnalyzeAsync {
@@ -154,8 +166,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.0",
-                "User-Agent": "twelvelabs-js/1.3.0",
+                "X-Fern-SDK-Version": "1.3.1",
+                "User-Agent": "twelvelabs-js/1.3.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -286,8 +298,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.0",
-                "User-Agent": "twelvelabs-js/1.3.0",
+                "X-Fern-SDK-Version": "1.3.1",
+                "User-Agent": "twelvelabs-js/1.3.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

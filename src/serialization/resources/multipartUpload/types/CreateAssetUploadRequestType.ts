@@ -9,8 +9,8 @@ import * as core from "../../../../core";
 export const CreateAssetUploadRequestType: core.serialization.Schema<
     serializers.CreateAssetUploadRequestType.Raw,
     TwelvelabsApi.CreateAssetUploadRequestType
-> = core.serialization.enum_(["video"]);
+> = core.serialization.enum_(["video", "audio", "image"]);
 
 export declare namespace CreateAssetUploadRequestType {
-    export type Raw = "video";
+    export type Raw = "video" | "audio" | "image";
 }

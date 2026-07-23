@@ -3,8 +3,10 @@
  */
 
 export interface NotFoundErrorBody {
-    /** Represents the code associated with the error. See the [Error codes](/v1.3/api-reference/error-codes) page for details. */
+    /** A string representing the code associated with the error. See the [Error codes](/v1.3/api-reference/error-codes) page for details. */
     code?: string;
-    /** A human-readable string describing the error. */
+    /** A human-readable string describing the error, intended to be suitable for display in a user interface. */
     message?: string;
+    /** The URL of the relevant documentation page. */
+    docsUrl?: string;
 }

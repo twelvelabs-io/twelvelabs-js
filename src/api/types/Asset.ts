@@ -38,4 +38,6 @@ export interface Asset {
     createdAt?: Date;
     /** User-defined metadata for this asset. This field is absent when no metadata has been set. */
     userMetadata?: TwelvelabsApi.UserMetadata;
+    /** Describes where the asset came from. Present only for assets imported through a connector; absent for assets uploaded directly to the `/assets` endpoint. */
+    source?: TwelvelabsApi.AssetSource;
 }
