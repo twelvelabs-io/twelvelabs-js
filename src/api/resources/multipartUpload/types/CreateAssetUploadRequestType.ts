@@ -5,7 +5,9 @@
 /**
  * The type of asset you want to upload.
  */
-export type CreateAssetUploadRequestType = "video";
+export type CreateAssetUploadRequestType = "video" | "audio" | "image";
 export const CreateAssetUploadRequestType = {
     Video: "video",
+    Audio: "audio",
+    Image: "image",
 } as const;

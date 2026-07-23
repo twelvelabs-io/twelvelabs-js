@@ -7,3 +7,4 @@ export * from "./GoneError";
 export * from "./TooManyRequestsError";
 export * from "./ServiceUnavailableError";
 export * from "./GatewayTimeoutError";
+export * from "./UnprocessableEntityError";

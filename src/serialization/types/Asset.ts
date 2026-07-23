@@ -8,6 +8,7 @@ import * as core from "../../core";
 import { AssetMethod } from "./AssetMethod";
 import { AssetStatus } from "./AssetStatus";
 import { UserMetadata } from "./UserMetadata";
+import { AssetSource } from "./AssetSource";
 
 export const Asset: core.serialization.ObjectSchema<serializers.Asset.Raw, TwelvelabsApi.Asset> =
     core.serialization.object({
@@ -18,6 +19,7 @@ export const Asset: core.serialization.ObjectSchema<serializers.Asset.Raw, Twelv
         fileType: core.serialization.property("file_type", core.serialization.string().optional()),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         userMetadata: core.serialization.property("user_metadata", UserMetadata.optional()),
+        source: AssetSource.optional(),
     });
 
 export declare namespace Asset {
@@ -29,5 +31,6 @@ export declare namespace Asset {
         file_type?: string | null;
         created_at?: string | null;
         user_metadata?: UserMetadata.Raw | null;
+        source?: AssetSource.Raw | null;
     }
 }

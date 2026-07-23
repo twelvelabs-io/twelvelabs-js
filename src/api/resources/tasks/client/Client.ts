@@ -33,6 +33,8 @@ export class Tasks {
     constructor(protected readonly _options: Tasks.Options) {}
 
     /**
+     * <Info>This method will be removed in a future version.</Info>
+     *
      * This method returns a list of the video indexing tasks in your account. The platform returns your video indexing tasks sorted by creation date, with the newest at the top of the list.
      *
      * @param {TwelvelabsApi.TasksListRequest} request
@@ -136,8 +138,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.0",
-                        "User-Agent": "twelvelabs-js/1.3.0",
+                        "X-Fern-SDK-Version": "1.3.1",
+                        "User-Agent": "twelvelabs-js/1.3.1",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -206,16 +208,10 @@ export class Tasks {
     }
 
     /**
+     *
+     * <Info>This method will be removed in a future version. New implementations should use [direct](/v1.3/api-reference/upload-content/direct-uploads) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) uploads followed by [separate indexing](/v1.3/api-reference/index-content/create).</Info>
+     *
      * This method creates a video indexing task that uploads and indexes a video in a single operation.
-     *
-     * <Warning title="Legacy endpoint">
-     * This endpoint bundles two operations (upload and indexing) together. In the next major API release, this endpoint will be removed in favor of a separated workflow:
-     * 1. Upload your video using the [`POST /assets`](/v1.3/api-reference/upload-content/direct-uploads/create) endpoint
-     * 2. Index the uploaded video using the [`POST /indexes/{index-id}/indexed-assets`](/v1.3/api-reference/index-content/create) endpoint
-     *
-     * This separation provides better control, reusability of assets, and improved error handling. New implementations should use the new workflow.
-     * </Warning>
-     *
      *
      * Upload options:
      * - **Local file**: Use the `video_file` parameter.
@@ -284,8 +280,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.0",
-                "User-Agent": "twelvelabs-js/1.3.0",
+                "X-Fern-SDK-Version": "1.3.1",
+                "User-Agent": "twelvelabs-js/1.3.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -342,6 +338,8 @@ export class Tasks {
     }
 
     /**
+     * <Info>This method will be removed in a future version.</Info>
+     *
      * This method retrieves a video indexing task.
      *
      * @param {string} taskId - The unique identifier of the video indexing task to retrieve.
@@ -374,8 +372,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.0",
-                "User-Agent": "twelvelabs-js/1.3.0",
+                "X-Fern-SDK-Version": "1.3.1",
+                "User-Agent": "twelvelabs-js/1.3.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -430,6 +428,8 @@ export class Tasks {
     }
 
     /**
+     * <Info>This method will be removed in a future version.</Info>
+     *
      * This action cannot be undone.
      * Note the following about deleting a video indexing task:
      * - You can only delete video indexing tasks for which the status is `ready` or `failed`.
@@ -459,8 +459,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.0",
-                "User-Agent": "twelvelabs-js/1.3.0",
+                "X-Fern-SDK-Version": "1.3.1",
+                "User-Agent": "twelvelabs-js/1.3.1",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -103,6 +103,8 @@ await client.analyze({});
 <dl>
 <dd>
 
+<Info>This method will be removed in a future version.</Info>
+
 This method returns a list of the video indexing tasks in your account. The platform returns your video indexing tasks sorted by creation date, with the newest at the top of the list.
 </dd>
 </dl>
@@ -200,15 +202,9 @@ while (page.hasNextPage()) {
 <dl>
 <dd>
 
+<Info>This method will be removed in a future version. New implementations should use [direct](/v1.3/api-reference/upload-content/direct-uploads) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) uploads followed by [separate indexing](/v1.3/api-reference/index-content/create).</Info>
+
 This method creates a video indexing task that uploads and indexes a video in a single operation.
-
-<Warning title="Legacy endpoint">
-This endpoint bundles two operations (upload and indexing) together. In the next major API release, this endpoint will be removed in favor of a separated workflow:
-1. Upload your video using the [`POST /assets`](/v1.3/api-reference/upload-content/direct-uploads/create) endpoint
-2. Index the uploaded video using the [`POST /indexes/{index-id}/indexed-assets`](/v1.3/api-reference/index-content/create) endpoint
-
-This separation provides better control, reusability of assets, and improved error handling. New implementations should use the new workflow.
-</Warning>
 
 Upload options:
 
@@ -290,6 +286,8 @@ await client.tasks.create({
 <dl>
 <dd>
 
+<Info>This method will be removed in a future version.</Info>
+
 This method retrieves a video indexing task.
 </dd>
 </dl>
@@ -351,6 +349,8 @@ await client.tasks.retrieve("6298d673f1090f1100476d4c");
 
 <dl>
 <dd>
+
+<Info>This method will be removed in a future version.</Info>
 
 This action cannot be undone.
 Note the following about deleting a video indexing task:
@@ -887,7 +887,7 @@ The platform processes uploads asynchronously. This method returns immediately w
 - **Video and audio, public URLs**: Up to 4 GB
 - **Images**: Up to 32 MB
 
-Asset creation does not enforce a maximum duration. Each model applies its own file size and duration limits when you index or analyze the asset. For details, see the requirements below.
+Asset creation does not enforce a maximum duration. Each model applies its own file size and duration limits. For details, see the requirements below.
 
 **Additional requirements** depend on your workflow:
 
@@ -1414,16 +1414,20 @@ while (page.hasNextPage()) {
 <dl>
 <dd>
 
-This method creates a multipart upload session for a local video file.
+This method creates a multipart upload session for a local file.
 
-**Supported content**: Video
+**Supported content**: Video, audio, and images.
 
-**Upload limits**: Local video files up to 10 GB.
+**Upload limits**:
+
+- **Video and audio**: Up to 10 GB
+- **Images**: Up to 32 MB
 
 **Additional requirements** depend on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
 - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+- **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements)
 - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
 
 </dd>
@@ -4011,6 +4015,744 @@ await client.responses.create({
 <dd>
 
 **requestOptions:** `Responses.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Data connectors
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">authorizeConnection</a>({ ...params }) -> TwelvelabsApi.AuthorizeConnectionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method starts the OAuth authorization flow for a data connector. The platform returns an authorization URL. Redirect the user to this URL so they can grant access to their account.
+
+After the user grants or denies access, the platform redirects them to the redirect URI you provided, with the outcome appended to that URI as query parameters. Read these parameters from the redirect that your application receives:
+
+- `connection_id`: The identifier of the new connection, returned on success. Store this value and pass it as the `connection_id` path parameter in later requests.
+- `status`: The `ok` value, returned on success.
+- `custom_id`: The label you supplied, returned on success when you provided one.
+- `error`: An error code, returned instead of the other parameters when the user denies access or the flow fails.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.authorizeConnection({
+    provider: "google_drive",
+    redirectUri: "https://app.example.com/oauth/done",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.AuthorizeConnectionRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">listConnections</a>({ ...params }) -> TwelvelabsApi.ListConnectionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of the connections in your account. The platform returns your connections sorted by creation date, with the newest at the top of the list.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.listConnections({
+    page: 1,
+    pageLimit: 10,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ListConnectionsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">retrieveConnection</a>(connectionId) -> TwelvelabsApi.Connection</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves details about the specified connection.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.retrieveConnection("665f0a2c9b1e4d0012a3f7c9");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**connectionId:** `string` — The unique identifier of the connection to retrieve.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">deleteConnection</a>(connectionId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method disconnects the specified connection. The platform revokes access at the provider and deletes the stored tokens. Assets imported through this connection are retained.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.deleteConnection("665f0a2c9b1e4d0012a3f7c9");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**connectionId:** `string` — The unique identifier of the connection to delete.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">createConnectionPickerToken</a>(connectionId) -> TwelvelabsApi.CreateConnectionPickerTokenResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method generates a short-lived, read-only access token that you use with the provider's file picker, such as the Google Drive Picker. The platform never returns the refresh token of the connection.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.createConnectionPickerToken("665f0a2c9b1e4d0012a3f7c9");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**connectionId:** `string` — The unique identifier of the connection.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">listRedirectUris</a>({ ...params }) -> TwelvelabsApi.ListRedirectUrisResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns your authorized redirect URIs, sorted by creation date with the newest at the top. Each one is a redirect URI the [Authorize a connection](/v1.3/api-reference/data-connectors/authorize-a-connection) method accepts.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.listRedirectUris({
+    page: 1,
+    pageLimit: 10,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ListRedirectUrisRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">createRedirectUri</a>({ ...params }) -> TwelvelabsApi.RedirectUri</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method registers a redirect URI so the [Authorize a connection](/v1.3/api-reference/data-connectors/authorize-a-connection) method accepts it.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.createRedirectUri({
+    redirectUri: "https://app.example.com/oauth/done",
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.CreateRedirectUriRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.dataConnectors.<a href="/src/api/resources/dataConnectors/client/Client.ts">deleteRedirectUri</a>(redirectUriId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method removes a redirect URI from your authorized redirect URIs. After deletion, the [Authorize a connection](/v1.3/api-reference/data-connectors/authorize-a-connection) method no longer accepts it. This action cannot be undone.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.dataConnectors.deleteRedirectUri("665f0a2c9b1e4d0012a3f7c9");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**redirectUriId:** `string` — The unique identifier of the redirect URI to delete.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DataConnectors.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Imports
+
+<details><summary><code>client.imports.<a href="/src/api/resources/imports/client/Client.ts">listImports</a>(connectionId, { ...params }) -> TwelvelabsApi.ListImportsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns a list of the imports for the specified connection. The platform returns the imports sorted by creation date, with the newest at the top of the list. Each import in the list is a summary that omits the `items` array. To see the status of each file, use the [Retrieve an import](/v1.3/api-reference/data-connectors/imports/retrieve-an-import) endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.imports.listImports("665f0a2c9b1e4d0012a3f7c9", {
+    page: 1,
+    pageLimit: 10,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**connectionId:** `string` — The unique identifier of the connection to list imports for.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ListImportsRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Imports.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.imports.<a href="/src/api/resources/imports/client/Client.ts">importFiles</a>(connectionId, { ...params }) -> TwelvelabsApi.ImportResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method imports one or more files from the connected provider account into the platform as assets. Video files can be up to 10 GB, audio files up to 4 GB, and images up to 32 MB. Each newly imported file creates an asset in the `processing` status and is downloaded asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, which may be `ready`, without downloading the file again. The response returns one entry per requested file, in request order.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.imports.importFiles("665f0a2c9b1e4d0012a3f7c9", {
+    items: [
+        {
+            sourceId: "1AbCDef_drive_file_id_x",
+        },
+    ],
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**connectionId:** `string` — The unique identifier of the connection to import through.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ImportFilesRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Imports.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.imports.<a href="/src/api/resources/imports/client/Client.ts">retrieveImport</a>(connectionId, importId) -> TwelvelabsApi.ImportDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves a single import, including the current status of each asset in the import.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.imports.retrieveImport("665f0a2c9b1e4d0012a3f7c9", "665f0afe9b1e4d0012a3f7d0");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**connectionId:** `string` — The unique identifier of the connection the import belongs to.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**importId:** `string` — The unique identifier of the import to retrieve.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Imports.RequestOptions`
 
 </dd>
 </dl>

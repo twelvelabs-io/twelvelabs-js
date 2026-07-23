@@ -22,6 +22,10 @@ export interface CreateAssetUploadRequest {
      * - Calculate the optimal chunk size.
      * - Determine the total number of chunks required
      * - Generate the initial set of presigned URLs
+     *
+     * **Upload limits**:
+     * - **Video and audio**: Up to 10 GB
+     * - **Images**: Up to 32 MB
      */
     totalSize: number;
     /**
