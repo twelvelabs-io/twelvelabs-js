@@ -9,8 +9,8 @@ import * as core from "../../../../../../core";
 export const CreateAsyncAnalyzeRequestModelName: core.serialization.Schema<
     serializers.analyzeAsync.CreateAsyncAnalyzeRequestModelName.Raw,
     TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestModelName
-> = core.serialization.enum_(["pegasus1.2", "pegasus1.5"]);
+> = core.serialization.enum_(["pegasus1.5"]);
 
 export declare namespace CreateAsyncAnalyzeRequestModelName {
-    export type Raw = "pegasus1.2" | "pegasus1.5";
+    export type Raw = "pegasus1.5";
 }

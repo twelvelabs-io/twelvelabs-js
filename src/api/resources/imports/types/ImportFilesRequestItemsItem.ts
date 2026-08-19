@@ -3,6 +3,6 @@
  */
 
 export interface ImportFilesRequestItemsItem {
-    /** The identifier of the file at the provider. For Google Drive, this is the Drive file identifier. */
+    /** The identifier of the file at the provider. For Google Drive, this is the identifier Google Drive assigns to the file. */
     sourceId: string;
 }

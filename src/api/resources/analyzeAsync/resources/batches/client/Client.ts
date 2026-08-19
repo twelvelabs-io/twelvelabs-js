@@ -101,8 +101,8 @@ export class Batches {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.1",
-                        "User-Agent": "twelvelabs-js/1.3.1",
+                        "X-Fern-SDK-Version": "1.3.2",
+                        "User-Agent": "twelvelabs-js/1.3.2",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -178,12 +178,8 @@ export class Batches {
     /**
      * Use this method to submit many video analysis requests in a single call. Each request creates an analysis task. The response contains one batch identifier and one task identifier per request. Use the batch identifier to check progress and retrieve results.
      *
-     * <Note title="Model requirement">
-     * You must use Pegasus 1.5 for batch analysis. Set the `model_name` parameter to `pegasus1.5`.
-     * </Note>
-     *
      * **When to use this method**:
-     * - Run the same model and analysis settings across many videos.
+     * - Run the same analysis settings across many videos.
      * - Track a single batch instead of many individual analysis tasks.
      *
      * **Do not use this method for**:
@@ -312,8 +308,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -433,8 +429,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -527,8 +523,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -609,8 +605,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -717,8 +713,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

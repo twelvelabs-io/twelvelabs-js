@@ -119,7 +119,7 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This method analyzes your videos and returns the results directly in the response. It generates text based on your prompts and supports both Pegasus 1.2 and Pegasus 1.5 for general analysis (prompt-based text generation).
+     * This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -136,7 +136,7 @@ export class TwelvelabsApiClient {
      *
      * **Do not use this method for**:
      * - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
-     * - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
+     * - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
      *
      * On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
      *
@@ -166,8 +166,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -241,7 +241,7 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This method analyzes your videos and returns the results directly in the response. It generates text based on your prompts and supports both Pegasus 1.2 and Pegasus 1.5 for general analysis (prompt-based text generation).
+     * This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -258,7 +258,7 @@ export class TwelvelabsApiClient {
      *
      * **Do not use this method for**:
      * - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
-     * - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
+     * - Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
      *
      * On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
      *
@@ -298,8 +298,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

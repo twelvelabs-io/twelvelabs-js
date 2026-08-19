@@ -5,12 +5,14 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { ImportItemAction } from "./ImportItemAction";
 import { ImportItemStatus } from "./ImportItemStatus";
 import { ImportItemError } from "./ImportItemError";
 
 export const ImportItem: core.serialization.ObjectSchema<serializers.ImportItem.Raw, TwelvelabsApi.ImportItem> =
     core.serialization.object({
         sourceId: core.serialization.property("source_id", core.serialization.string().optional()),
+        action: ImportItemAction.optional(),
         assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
         status: ImportItemStatus.optional(),
         error: ImportItemError.optional(),
@@ -19,6 +21,7 @@ export const ImportItem: core.serialization.ObjectSchema<serializers.ImportItem.
 export declare namespace ImportItem {
     export interface Raw {
         source_id?: string | null;
+        action?: ImportItemAction.Raw | null;
         asset_id?: string | null;
         status?: ImportItemStatus.Raw | null;
         error?: ImportItemError.Raw | null;

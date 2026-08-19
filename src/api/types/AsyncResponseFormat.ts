@@ -7,13 +7,13 @@ import * as TwelvelabsApi from "../index";
 /**
  * Controls the response format. When you omit this parameter, you receive unstructured text.
  * - `json_schema`: Return structured JSON that conforms to your schema.
- * - `segment_definitions`: Extract timestamped metadata with custom fields from your video. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+ * - `segment_definitions`: Extract timestamped metadata with custom fields from your video. Requires `analysis_mode` set to `time_based_metadata`.
  */
 export interface AsyncResponseFormat {
     /**
      * The response format to use.
      * - `json_schema`: Return structured JSON that conforms to your schema.
-     * - `segment_definitions`: Extract timestamped metadata with custom fields from your video. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+     * - `segment_definitions`: Extract timestamped metadata with custom fields from your video. Requires `analysis_mode` set to `time_based_metadata`.
      */
     type: TwelvelabsApi.AsyncResponseFormatType;
     /**
@@ -27,7 +27,7 @@ export interface AsyncResponseFormat {
      * - `number`
      * - `object`
      * - `string`
-     * - `timestamp` (Pegasus 1.5 only)
+     * - `timestamp`
      *
      * **Supported constraints**
      *
@@ -35,7 +35,7 @@ export interface AsyncResponseFormat {
      * |------|-------------------|-------|
      * | `integer` | `maximum`, `exclusiveMaximum`, `minimum`, `exclusiveMinimum`. | - `maximum`: Sets the highest allowed value (inclusive).<br/>- `exclusiveMaximum`: Sets the highest allowed value (exclusive).<br/>- `minimum`: Sets the lowest allowed value (inclusive).<br/>- `exclusiveMinimum`: Sets the lowest allowed value (exclusive).<br/>These constraints are supported only for the `integer` type. |
      * | `string` | `pattern`, `format` | - `pattern`: A regular expression that the string must match.<br/>- `format`: Validates predefined formats. It accepts the following values: `uuid`, `date-time`, `date`, and `time`.<br/>See string limitations below. |
-     * | `object` | `properties`, `required` | - `properties`: Defines object properties and their schemas. - `required`: Specifies mandatory properties.<br/>See object limitations below. |
+     * | `object` | `properties`, `required` | - `properties`: Defines object properties and their schemas.<br/>- `required`: Specifies mandatory properties.<br/>See object limitations below. |
      * | `array` | `items`, `minItems` | `minItems` accepts only `0` or `1`.<br/>See array limitations below. |
      * | `timestamp` | `format` | `format` (required): Sets the output format. Accepted values: `seconds`, `hh:mm:ss`, `hh:mm:ss.fff`.<br/>See the **Timestamp type** section below. |
      *
@@ -87,7 +87,7 @@ export interface AsyncResponseFormat {
      * For details, see the [JSON Schema documentation on $defs](https://json-schema.org/understanding-json-schema/structuring#defs).
      *
      *
-     * **Timestamp type (Pegasus 1.5 only)**
+     * **Timestamp type**
      *
      * Declare a property as `{"type": "timestamp", "format": "<format>"}` to control the format of the returned value.
      *
@@ -121,7 +121,7 @@ export interface AsyncResponseFormat {
      *
      * **Reserved property names (`start_time` / `end_time`)**
      *
-     * For Pegasus 1.5, properties named `start_time` or `end_time` in your response schema receive special type handling at any nesting depth (including inside array `items`). These are unrelated to the top-level `start_time` / `end_time` request parameters or `time_ranges`. The platform returns the value in a format determined by the declared type:
+     * The `start_time` and `end_time` properties in your response schema receive special type handling at any nesting depth (including inside array `items`). These are unrelated to the top-level `start_time` / `end_time` request parameters or `time_ranges`. The platform returns the value in a format determined by the declared type:
      *
      * *Allowed declarations:*
      *
@@ -152,7 +152,7 @@ export interface AsyncResponseFormat {
     /** Define the types of segments to extract from your video. Minimum 1, maximum 20 definitions. The number of segment definitions affects billing. For details, see the [Frequently asked questions](/v1.3/docs/resources/frequently-asked-questions#how-is-video-segmentation-priced) page. */
     segmentDefinitions?: TwelvelabsApi.SegmentDefinition[];
     /**
-     * Set the output format for the automatic `start_time` and `end_time` keys returned on each segment. Requires the `type` parameter set to `segment_definitions` and the `model_name` parameter set to `pegasus1.5`. Omitting this parameter is equivalent to setting it to `seconds` — both return JSON numbers in seconds.
+     * Set the output format for the automatic `start_time` and `end_time` keys returned on each segment. Requires the `type` parameter set to `segment_definitions`. Omitting this parameter is equivalent to setting it to `seconds`. Both return JSON numbers in seconds.
      *
      * | `segment_time_format` | Auto boundary output |
      * |-----------------------|----------------------|

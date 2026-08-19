@@ -5,13 +5,12 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Specifies how the platform divides the video into segments.
+ * Specifies how the platform divides the video into segments. The `strategy` field selects one variant:
+ *
+ * - `strategy: fixed` - Creates segments of equal, predetermined length. Use this for consistent timing.
+ * - `strategy: dynamic` - Creates segments of variable length that align with scene boundaries. Use this for content-aware segmentation.
  */
-export type VideoSegmentation =
-    | TwelvelabsApi.VideoSegmentation.Dynamic
-    /**
-     * Configuration for fixed segmentation. This field is required when `strategy` is `fixed`. */
-    | TwelvelabsApi.VideoSegmentation.Fixed;
+export type VideoSegmentation = TwelvelabsApi.VideoSegmentation.Dynamic | TwelvelabsApi.VideoSegmentation.Fixed;
 
 export namespace VideoSegmentation {
     export interface Dynamic extends TwelvelabsApi.VideoSegmentationDynamic {

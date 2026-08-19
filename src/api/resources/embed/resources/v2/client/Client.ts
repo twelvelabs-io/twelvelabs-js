@@ -57,7 +57,7 @@ export class V2 {
      *   **Images**:
      *   - Formats: JPEG, PNG
      *   - Minimum size: 128x128 pixels
-     *   - Maximum file size: 5 MB
+     *   - Maximum file size: 32 MB
      *
      *   **Audio and video**:
      *   - Maximum duration: 10 minutes
@@ -156,7 +156,7 @@ export class V2 {
      *             segmentation: {
      *                 strategy: "dynamic",
      *                 dynamic: {
-     *                     minDurationSec: 4
+     *                     minDurationSec: 1
      *                 }
      *             },
      *             embeddingOption: ["visual", "audio", "transcription"],
@@ -273,8 +273,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

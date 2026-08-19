@@ -15,8 +15,6 @@ export const AnalyzeTaskResponseVideoSource: core.serialization.ObjectSchema<
     type: AnalyzeTaskResponseVideoSourceType.optional(),
     url: core.serialization.string().optional(),
     assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
-    videoId: core.serialization.property("video_id", core.serialization.string().optional()),
-    indexId: core.serialization.property("index_id", core.serialization.string().optional()),
     systemMetadata: core.serialization.property(
         "system_metadata",
         AnalyzeTaskResponseVideoSourceSystemMetadata.optional(),
@@ -28,8 +26,6 @@ export declare namespace AnalyzeTaskResponseVideoSource {
         type?: AnalyzeTaskResponseVideoSourceType.Raw | null;
         url?: string | null;
         asset_id?: string | null;
-        video_id?: string | null;
-        index_id?: string | null;
         system_metadata?: AnalyzeTaskResponseVideoSourceSystemMetadata.Raw | null;
     }
 }

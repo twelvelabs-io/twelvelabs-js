@@ -4,7 +4,7 @@
 
 /**
  * The analysis approach for every item in this batch.
- * - `general`: Generate text from each video based on the prompt (the item's `prompt` field if set, otherwise `defaults.prompt`). Supports structured JSON output by using `json_schema` in the `response_format.type` field.
+ * - `general`: Generate text from each video based on the prompt (the `prompt` field of the item if set, otherwise `defaults.prompt`). Supports structured JSON output by using `json_schema` in the `response_format.type` field.
  * - `time_based_metadata`: Extract timestamped metadata by using `segment_definitions` in the `response_format.type` field.
  *
  * Batches with mixed modes are not supported.

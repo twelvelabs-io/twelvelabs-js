@@ -33,7 +33,7 @@ export class Imports {
     constructor(protected readonly _options: Imports.Options) {}
 
     /**
-     * This method returns a list of the imports for the specified connection. The platform returns the imports sorted by creation date, with the newest at the top of the list. Each import in the list is a summary that omits the `items` array. To see the status of each file, use the [Retrieve an import](/v1.3/api-reference/data-connectors/imports/retrieve-an-import) endpoint.
+     * This method returns a list of the imports for the specified connection. The platform returns the imports sorted by creation date, with the newest at the top of the list. Each import in the list is a summary and does not include the per-file details. To see them, use the [Retrieve an import](/v1.3/api-reference/data-connectors/imports/retrieve-an-import) endpoint.
      *
      * @param {string} connectionId - The unique identifier of the connection to list imports for.
      * @param {TwelvelabsApi.ListImportsRequest} request
@@ -82,8 +82,8 @@ export class Imports {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -143,7 +143,7 @@ export class Imports {
     }
 
     /**
-     * This method imports one or more files from the connected provider account into the platform as assets. Video files can be up to 10 GB, audio files up to 4 GB, and images up to 32 MB. Each newly imported file creates an asset in the `processing` status and is downloaded asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, which may be `ready`, without downloading the file again. The response returns one entry per requested file, in request order.
+     * This method imports one or more files from the connected provider account into the platform as assets. Video files can be up to 10 GB, audio files up to 4 GB, and images up to 32 MB. For each newly imported file, the platform creates an asset in the `processing` status and fetches the file asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, without fetching the file again. If the earlier fetch had failed, the platform fetches the file again. The response contains one entry per requested file, in request order. Use the `action` field of each entry to identify which files were newly imported and which were already imported.
      *
      * @param {string} connectionId - The unique identifier of the connection to import through.
      * @param {TwelvelabsApi.ImportFilesRequest} request
@@ -184,8 +184,8 @@ export class Imports {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -247,9 +247,9 @@ export class Imports {
     }
 
     /**
-     * This method retrieves a single import, including the current status of each asset in the import.
+     * This method retrieves a single import. For each file, the response includes the `action` field, which indicates the outcome of the import operation, and the `status` field, which reflects the current status of the asset each time you retrieve the import.
      *
-     * @param {string} connectionId - The unique identifier of the connection the import belongs to.
+     * @param {string} connectionId - The unique identifier of the connection to retrieve the import from.
      * @param {string} importId - The unique identifier of the import to retrieve.
      * @param {Imports.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -283,8 +283,8 @@ export class Imports {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

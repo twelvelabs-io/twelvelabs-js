@@ -14,7 +14,7 @@ export interface Connection {
     provider?: TwelvelabsApi.ConnectionProvider;
     /** The status of the connection. See [The connection object](/v1.3/api-reference/data-connectors/the-connection-object#connection-statuses) for the possible values. */
     status?: TwelvelabsApi.ConnectionStatus;
-    /** The label you supplied when creating the connection. The platform does not interpret this value, and it does not need to be unique. Multiple connections can share the same `custom_id` value. */
+    /** The label you supplied when you [authorized the connection](/v1.3/api-reference/data-connectors/authorize-a-connection). The platform does not interpret this value, and it does not need to be unique. Multiple connections can share the same `custom_id` value. */
     customId?: string;
     /** Information about the connected provider account. */
     account?: TwelvelabsApi.ConnectionAccount;

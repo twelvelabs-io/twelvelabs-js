@@ -82,7 +82,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *             segmentation: {
  *                 strategy: "dynamic",
  *                 dynamic: {
- *                     minDurationSec: 4
+ *                     minDurationSec: 1
  *                 }
  *             },
  *             embeddingOption: ["visual", "audio", "transcription"],

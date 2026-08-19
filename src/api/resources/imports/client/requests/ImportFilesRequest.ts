@@ -13,6 +13,6 @@ import * as TwelvelabsApi from "../../../../index";
  *     }
  */
 export interface ImportFilesRequest {
-    /** The files to import. Provide an array of one item for a single import, or multiple items for a batch import. A maximum of 100 items can be imported per request. Each `source_id` must be unique within a request. */
+    /** The files to import. Provide an array of one item for a single import, or multiple items for a batch import. A maximum of 100 items can be imported per request. The `source_id` field of each item must be unique within a request. */
     items: TwelvelabsApi.ImportFilesRequestItemsItem[];
 }

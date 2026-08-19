@@ -7,7 +7,7 @@ import * as TwelvelabsApi from "../index";
 /**
  * A custom field to extract for each segment.
  *
- * **Timestamp fields** (Pegasus 1.5 only)
+ * **Timestamp fields**
  *
  * Set `type` to `timestamp` and provide a `format` to control the format of the returned value on each segment. See the `format` property for supported values.
  *
@@ -19,7 +19,7 @@ export interface SegmentField {
     /**
      * The data type of the field.
      *
-     * When set to `timestamp`, the `format` property is required and controls the format of the returned value. Requires the `model_name` parameter set to `pegasus1.5`.
+     * When set to `timestamp`, the `format` property is required and controls the format of the returned value.
      */
     type: TwelvelabsApi.SegmentFieldType;
     /** Instructions that guide the model on what this field should contain and how to extract it from the video. */

@@ -5,7 +5,7 @@
 /**
  * The response format to use.
  * - `json_schema`: Return structured JSON that conforms to your schema.
- * - `segment_definitions`: Extract timestamped metadata with custom fields from your video. Requires `model_name` set to `pegasus1.5` and `analysis_mode` set to `time_based_metadata`.
+ * - `segment_definitions`: Extract timestamped metadata with custom fields from your video. Requires `analysis_mode` set to `time_based_metadata`.
  */
 export type AsyncResponseFormatType = "json_schema" | "segment_definitions";
 export const AsyncResponseFormatType = {

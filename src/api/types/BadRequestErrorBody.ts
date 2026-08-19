@@ -7,6 +7,4 @@ export interface BadRequestErrorBody {
     code?: string;
     /** A human-readable string describing the error, intended to be suitable for display in a user interface. */
     message?: string;
-    /** The URL of the relevant documentation page. */
-    docsUrl?: string;
 }
