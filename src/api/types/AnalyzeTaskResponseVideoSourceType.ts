@@ -5,10 +5,9 @@
 /**
  * The type of video source.
  */
-export type AnalyzeTaskResponseVideoSourceType = "url" | "base64_string" | "asset_id" | "video_id";
+export type AnalyzeTaskResponseVideoSourceType = "url" | "base64_string" | "asset_id";
 export const AnalyzeTaskResponseVideoSourceType = {
     Url: "url",
     Base64String: "base64_string",
     AssetId: "asset_id",
-    VideoId: "video_id",
 } as const;

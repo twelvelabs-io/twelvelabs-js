@@ -11,9 +11,6 @@ import * as TwelvelabsApi from "../../../../index";
  *         models: [{
  *                 modelName: "marengo3.0",
  *                 modelOptions: ["visual", "audio"]
- *             }, {
- *                 modelName: "pegasus1.2",
- *                 modelOptions: ["visual", "audio"]
  *             }],
  *         addons: ["thumbnail"]
  *     }

@@ -15,7 +15,6 @@ import { SyncResponseFormat } from "../../types/SyncResponseFormat";
 export const AnalyzeRequest: core.serialization.Schema<serializers.AnalyzeRequest.Raw, TwelvelabsApi.AnalyzeRequest> =
     core.serialization.object({
         modelName: core.serialization.property("model_name", AnalyzeRequestModelName.optional()),
-        videoId: core.serialization.property("video_id", core.serialization.string().optional()),
         video: VideoContext.optional(),
         prompt: AnalyzeTextPrompt.optional(),
         promptV2: core.serialization.property("prompt_v2", AnalyzePromptV2.optional()),
@@ -29,7 +28,6 @@ export const AnalyzeRequest: core.serialization.Schema<serializers.AnalyzeReques
 export declare namespace AnalyzeRequest {
     export interface Raw {
         model_name?: AnalyzeRequestModelName.Raw | null;
-        video_id?: string | null;
         video?: VideoContext.Raw | null;
         prompt?: AnalyzeTextPrompt.Raw | null;
         prompt_v2?: AnalyzePromptV2.Raw | null;

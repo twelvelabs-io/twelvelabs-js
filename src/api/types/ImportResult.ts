@@ -10,8 +10,8 @@ import * as TwelvelabsApi from "../index";
 export interface ImportResult {
     /** The unique identifier of the import created for this request. */
     id?: string;
-    /** Whether any item was rejected before an asset was created. When `true`, inspect the `error` object of each item to identify the rejected ones. */
+    /** Whether at least one item was rejected before an asset was created. When `true`, inspect the `error` object of each item to identify the rejected ones. An item the platform skipped as a duplicate is not a failure. */
     hasFailures?: boolean;
-    /** One entry per requested file, in request order. */
+    /** One entry per requested file, in request order, with its `action` value and the current status of its asset. */
     items?: TwelvelabsApi.ImportItem[];
 }

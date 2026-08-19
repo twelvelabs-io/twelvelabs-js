@@ -3,7 +3,7 @@
  */
 
 /**
- * The video understanding model to use for every item in this batch. Batch analysis requires Pegasus 1.5.
+ * The video understanding model to use for every item in this batch.
  */
 export type CreateAnalyzeBatchRequestModelName = "pegasus1.5";
 export const CreateAnalyzeBatchRequestModelName = {

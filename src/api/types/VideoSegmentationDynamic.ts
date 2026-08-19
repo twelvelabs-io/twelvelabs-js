@@ -4,6 +4,9 @@
 
 import * as TwelvelabsApi from "../index";
 
+/**
+ * Divides the video into segments of variable length that align with scene boundaries. Use this for content-aware segmentation.
+ */
 export interface VideoSegmentationDynamic {
     /** Configuration for dynamic segmentation. This object is required when `strategy` is `dynamic`. */
     dynamic: TwelvelabsApi.VideoSegmentationDynamicDynamic;

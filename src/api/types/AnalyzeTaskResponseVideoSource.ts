@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * The video source you provided. Only present for tasks that use direct video input (`url`, `base64_string`, or `asset_id`).
+ * The video source you provided.
  */
 export interface AnalyzeTaskResponseVideoSource {
     /** The type of video source. */
@@ -14,10 +14,6 @@ export interface AnalyzeTaskResponseVideoSource {
     url?: string;
     /** The asset ID. Present when `type` is `asset_id`. */
     assetId?: string;
-    /** The video ID. Present when `type` is `video_id`. Deprecated — use `asset_id` instead. */
-    videoId?: string;
-    /** The index ID associated with the video. Present when `type` is `video_id`. Deprecated — will be removed when Pegasus 1.2 is sunset. */
-    indexId?: string;
     /** System-extracted video metadata. Present on a best-effort basis once the video has been processed. */
     systemMetadata?: TwelvelabsApi.AnalyzeTaskResponseVideoSourceSystemMetadata;
 }

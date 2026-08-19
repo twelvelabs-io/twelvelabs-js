@@ -5,7 +5,7 @@
 /**
  * A prompt that guides the model on the desired format or content.
  *
- * Your prompts can be instructive or descriptive, or you can phrase them as questions. Pegasus 1.2 limits prompts to 2,000 tokens. For Pegasus 1.5, this text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
+ * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
  *
  * **Examples**:
  *

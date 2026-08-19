@@ -12,13 +12,11 @@ export const BadRequestErrorBody: core.serialization.ObjectSchema<
 > = core.serialization.object({
     code: core.serialization.string().optional(),
     message: core.serialization.string().optional(),
-    docsUrl: core.serialization.property("docs_url", core.serialization.string().optional()),
 });
 
 export declare namespace BadRequestErrorBody {
     export interface Raw {
         code?: string | null;
         message?: string | null;
-        docs_url?: string | null;
     }
 }

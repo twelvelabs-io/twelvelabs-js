@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const AnalyzeTaskResponseVideoSourceType: core.serialization.Schema<
     serializers.AnalyzeTaskResponseVideoSourceType.Raw,
     TwelvelabsApi.AnalyzeTaskResponseVideoSourceType
-> = core.serialization.enum_(["url", "base64_string", "asset_id", "video_id"]);
+> = core.serialization.enum_(["url", "base64_string", "asset_id"]);
 
 export declare namespace AnalyzeTaskResponseVideoSourceType {
-    export type Raw = "url" | "base64_string" | "asset_id" | "video_id";
+    export type Raw = "url" | "base64_string" | "asset_id";
 }

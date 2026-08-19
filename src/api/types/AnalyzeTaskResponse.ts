@@ -12,7 +12,7 @@ export interface AnalyzeTaskResponse {
     taskId: string;
     /** The identifier you provided in the `custom_id` field when you created the task, or `null` if you did not set one. This key is always present in the response. */
     customId?: string;
-    /** The video source you provided. Only present for tasks that use direct video input (`url`, `base64_string`, or `asset_id`). */
+    /** The video source you provided. */
     videoSource?: TwelvelabsApi.AnalyzeTaskResponseVideoSource;
     /** The request parameters for this task. */
     requestParams?: TwelvelabsApi.AnalyzeTaskResponseRequestParams;
@@ -26,10 +26,10 @@ export interface AnalyzeTaskResponse {
     /**
      * A message attached to the task response. The platform sets this field in two cases:
      *
-     * - **Task failure** — `status` is `failed`. The `message` field describes the failure reason.
-     * - **Truncation warning** — `status` is `ready` and `result.finish_reason` is `length`. The `message` field describes the truncation cause (either the maximum response length was reached or the context window was reached). The partial output is in `result.data`.
+     * - **Task failure**: `status` is `failed`. The `message` field describes the failure reason.
+     * - **Truncation warning**: `status` is `ready` and `result.finish_reason` is `length`. The `message` field describes the truncation cause (either the maximum response length was reached or the context window was reached). The partial output is in `result.data`.
      *
-     * Not set when `status` is `ready` and `result.finish_reason` is `stop`. Both Pegasus 1.5 and Pegasus 1.2 return this field when `result.finish_reason` is `length`.
+     * Not set when `status` is `ready` and `result.finish_reason` is `stop`. Set when `result.finish_reason` is `length`.
      */
     error?: TwelvelabsApi.AnalyzeTaskError;
     /** The delivery status of each webhook endpoint. The platform omits this field when no webhooks are configured. You can register webhooks through the Playground. See the [Webhooks](/v1.3/docs/advanced/webhooks) page for details. */

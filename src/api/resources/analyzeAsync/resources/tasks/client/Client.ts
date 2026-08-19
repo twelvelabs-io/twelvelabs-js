@@ -47,7 +47,6 @@ export class Tasks {
      *         status: "queued",
      *         videoUrl: "https://example.com/video.mp4",
      *         assetId: "69abc123def456789012abcd",
-     *         videoId: "6298d673f1090f1100476d4c",
      *         analysisMode: "general"
      *     })
      */
@@ -62,7 +61,7 @@ export class Tasks {
         request: TwelvelabsApi.analyzeAsync.TasksListRequest = {},
         requestOptions?: Tasks.RequestOptions,
     ): Promise<core.WithRawResponse<TwelvelabsApi.analyzeAsync.TasksListResponse>> {
-        const { page, pageLimit, status, videoUrl, assetId, videoId, analysisMode } = request;
+        const { page, pageLimit, status, videoUrl, assetId, analysisMode } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (page != null) {
             _queryParams["page"] = page.toString();
@@ -86,10 +85,6 @@ export class Tasks {
             _queryParams["asset_id"] = assetId;
         }
 
-        if (videoId != null) {
-            _queryParams["video_id"] = videoId;
-        }
-
         if (analysisMode != null) {
             _queryParams["analysis_mode"] = serializers.analyzeAsync.TasksListRequestAnalysisMode.jsonOrThrow(
                 analysisMode,
@@ -108,8 +103,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -165,7 +160,7 @@ export class Tasks {
     }
 
     /**
-     * This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions. Video segmentation requires Pegasus 1.5.
+     * This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions.
      *
      * <Accordion title="Input requirements">
      * - Minimum duration: 4 seconds
@@ -177,7 +172,7 @@ export class Tasks {
      *
      * **When to use this method**:
      * - Generate custom text from your video using a prompt (general analysis)
-     * - Extract timestamped metadata with custom segment definitions from your video (Pegasus 1.5 only)
+     * - Extract timestamped metadata with custom segment definitions from your video
      * - Analyze videos longer than 1 hour
      * - Process videos asynchronously without blocking your application
      *
@@ -392,8 +387,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -494,8 +489,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -579,8 +574,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

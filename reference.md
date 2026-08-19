@@ -12,7 +12,7 @@
 <dl>
 <dd>
 
-This method analyzes your videos and returns the results directly in the response. It generates text based on your prompts and supports both Pegasus 1.2 and Pegasus 1.5 for general analysis (prompt-based text generation).
+This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
 
 <Accordion title="Input requirements">
 - Minimum duration: 4 seconds
@@ -31,7 +31,7 @@ This method analyzes your videos and returns the results directly in the respons
 **Do not use this method for**:
 
 - Videos longer than 1 hour. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
-- Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint with the `model_name` parameter set to `pegasus1.5` instead.
+- Video segmentation with custom segment definitions. Use the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint instead.
 
 On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
 
@@ -205,6 +205,10 @@ while (page.hasNextPage()) {
 <Info>This method will be removed in a future version. New implementations should use [direct](/v1.3/api-reference/upload-content/direct-uploads) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) uploads followed by [separate indexing](/v1.3/api-reference/index-content/create).</Info>
 
 This method creates a video indexing task that uploads and indexes a video in a single operation.
+
+<Note title="Adding videos to existing indexes">
+You can no longer add videos to an index that has only Pegasus 1.2 enabled. When you add videos to an index that has both Marengo and Pegasus 1.2 enabled, the platform indexes them with Marengo only.
+</Note>
 
 Upload options:
 
@@ -532,10 +536,6 @@ await client.indexes.create({
     models: [
         {
             modelName: "marengo3.0",
-            modelOptions: ["visual", "audio"],
-        },
-        {
-            modelName: "pegasus1.2",
             modelOptions: ["visual", "audio"],
         },
     ],
@@ -4556,7 +4556,7 @@ await client.dataConnectors.deleteRedirectUri("665f0a2c9b1e4d0012a3f7c9");
 <dl>
 <dd>
 
-This method returns a list of the imports for the specified connection. The platform returns the imports sorted by creation date, with the newest at the top of the list. Each import in the list is a summary that omits the `items` array. To see the status of each file, use the [Retrieve an import](/v1.3/api-reference/data-connectors/imports/retrieve-an-import) endpoint.
+This method returns a list of the imports for the specified connection. The platform returns the imports sorted by creation date, with the newest at the top of the list. Each import in the list is a summary and does not include the per-file details. To see them, use the [Retrieve an import](/v1.3/api-reference/data-connectors/imports/retrieve-an-import) endpoint.
 </dd>
 </dl>
 </dd>
@@ -4629,7 +4629,7 @@ await client.imports.listImports("665f0a2c9b1e4d0012a3f7c9", {
 <dl>
 <dd>
 
-This method imports one or more files from the connected provider account into the platform as assets. Video files can be up to 10 GB, audio files up to 4 GB, and images up to 32 MB. Each newly imported file creates an asset in the `processing` status and is downloaded asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, which may be `ready`, without downloading the file again. The response returns one entry per requested file, in request order.
+This method imports one or more files from the connected provider account into the platform as assets. Video files can be up to 10 GB, audio files up to 4 GB, and images up to 32 MB. For each newly imported file, the platform creates an asset in the `processing` status and fetches the file asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, without fetching the file again. If the earlier fetch had failed, the platform fetches the file again. The response contains one entry per requested file, in request order. Use the `action` field of each entry to identify which files were newly imported and which were already imported.
 </dd>
 </dl>
 </dd>
@@ -4705,7 +4705,7 @@ await client.imports.importFiles("665f0a2c9b1e4d0012a3f7c9", {
 <dl>
 <dd>
 
-This method retrieves a single import, including the current status of each asset in the import.
+This method retrieves a single import. For each file, the response includes the `action` field, which indicates the outcome of the import operation, and the `status` field, which reflects the current status of the asset each time you retrieve the import.
 </dd>
 </dl>
 </dd>
@@ -4736,7 +4736,7 @@ await client.imports.retrieveImport("665f0a2c9b1e4d0012a3f7c9", "665f0afe9b1e4d0
 <dl>
 <dd>
 
-**connectionId:** `string` — The unique identifier of the connection the import belongs to.
+**connectionId:** `string` — The unique identifier of the connection to retrieve the import from.
 
 </dd>
 </dl>
@@ -4798,7 +4798,6 @@ await client.analyzeAsync.tasks.list({
     status: "queued",
     videoUrl: "https://example.com/video.mp4",
     assetId: "69abc123def456789012abcd",
-    videoId: "6298d673f1090f1100476d4c",
     analysisMode: "general",
 });
 ```
@@ -4847,7 +4846,7 @@ await client.analyzeAsync.tasks.list({
 <dl>
 <dd>
 
-This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions. Video segmentation requires Pegasus 1.5.
+This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions.
 
 <Accordion title="Input requirements">
 - Minimum duration: 4 seconds
@@ -4860,7 +4859,7 @@ This method asynchronously analyzes your videos. It supports two analysis modes:
 **When to use this method**:
 
 - Generate custom text from your video using a prompt (general analysis)
-- Extract timestamped metadata with custom segment definitions from your video (Pegasus 1.5 only)
+- Extract timestamped metadata with custom segment definitions from your video
 - Analyze videos longer than 1 hour
 - Process videos asynchronously without blocking your application
 
@@ -5168,13 +5167,9 @@ while (page.hasNextPage()) {
 
 Use this method to submit many video analysis requests in a single call. Each request creates an analysis task. The response contains one batch identifier and one task identifier per request. Use the batch identifier to check progress and retrieve results.
 
-<Note title="Model requirement">
-You must use Pegasus 1.5 for batch analysis. Set the `model_name` parameter to `pegasus1.5`.
-</Note>
-
 **When to use this method**:
 
-- Run the same model and analysis settings across many videos.
+- Run the same analysis settings across many videos.
 - Track a single batch instead of many individual analysis tasks.
 
 **Do not use this method for**:
@@ -5910,7 +5905,7 @@ This endpoint synchronously creates embeddings for multimodal content and return
 
 - Formats: JPEG, PNG
 - Minimum size: 128x128 pixels
-- Maximum file size: 5 MB
+- Maximum file size: 32 MB
 
 **Audio and video**:
 
@@ -7083,6 +7078,10 @@ while (page.hasNextPage()) {
 This method indexes an uploaded asset to make it searchable and analyzable. Indexing processes your content and extracts information that enables the platform to search and analyze your videos.
 
 This operation is asynchronous. The platform returns an indexed asset ID immediately and processes your content in the background. Monitor the indexing status to know when your content is ready to use.
+
+<Note title="Adding videos to existing indexes">
+You can no longer add videos to an index that has only Pegasus 1.2 enabled. When you add videos to an index that has both Marengo and Pegasus 1.2 enabled, the platform indexes them with Marengo only.
+</Note>
 
 Your asset must meet the requirements based on your workflow:
 

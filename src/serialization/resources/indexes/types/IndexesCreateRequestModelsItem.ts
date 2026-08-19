@@ -5,18 +5,19 @@
 import * as serializers from "../../../index";
 import * as TwelvelabsApi from "../../../../api/index";
 import * as core from "../../../../core";
+import { IndexesCreateRequestModelsItemModelName } from "./IndexesCreateRequestModelsItemModelName";
 
 export const IndexesCreateRequestModelsItem: core.serialization.ObjectSchema<
     serializers.IndexesCreateRequestModelsItem.Raw,
     TwelvelabsApi.IndexesCreateRequestModelsItem
 > = core.serialization.object({
-    modelName: core.serialization.property("model_name", core.serialization.string()),
+    modelName: core.serialization.property("model_name", IndexesCreateRequestModelsItemModelName),
     modelOptions: core.serialization.property("model_options", core.serialization.list(core.serialization.string())),
 });
 
 export declare namespace IndexesCreateRequestModelsItem {
     export interface Raw {
-        model_name: string;
+        model_name: IndexesCreateRequestModelsItemModelName.Raw;
         model_options: string[];
     }
 }

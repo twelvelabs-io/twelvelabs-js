@@ -6,7 +6,7 @@
  * Details of the rejection. Present when the item was rejected before an asset was created, in which case the `status` field is absent.
  */
 export interface ImportItemError {
-    /** A string representing the code associated with the error. See the [Error codes](/v1.3/api-reference/error-codes) page for details. Possible values include `source_unavailable`, `source_not_authorized`, `unsupported_media_type`, `video_filesize_too_large`, `audio_filesize_too_large`, and `media_filesize_too_large`. */
+    /** A string representing the code associated with the error. For the possible values, see the [Error codes](/v1.3/api-reference/error-codes#the-connections-endpoints) page. */
     code?: string;
     /** A human-readable string describing the error, intended to be suitable for display in a user interface. */
     message?: string;

@@ -28,6 +28,7 @@ export * from "./ImportProvider";
 export * from "./Import";
 export * from "./ImportDetail";
 export * from "./ImportResult";
+export * from "./ImportItemAction";
 export * from "./ImportItemStatus";
 export * from "./ImportItemError";
 export * from "./ImportItem";

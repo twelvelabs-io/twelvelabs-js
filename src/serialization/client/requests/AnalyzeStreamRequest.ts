@@ -17,7 +17,6 @@ export const AnalyzeStreamRequest: core.serialization.Schema<
     TwelvelabsApi.AnalyzeStreamRequest
 > = core.serialization.object({
     modelName: core.serialization.property("model_name", AnalyzeStreamRequestModelName.optional()),
-    videoId: core.serialization.property("video_id", core.serialization.string().optional()),
     video: VideoContext.optional(),
     prompt: AnalyzeTextPrompt.optional(),
     promptV2: core.serialization.property("prompt_v2", AnalyzePromptV2.optional()),
@@ -31,7 +30,6 @@ export const AnalyzeStreamRequest: core.serialization.Schema<
 export declare namespace AnalyzeStreamRequest {
     export interface Raw {
         model_name?: AnalyzeStreamRequestModelName.Raw | null;
-        video_id?: string | null;
         video?: VideoContext.Raw | null;
         prompt?: AnalyzeTextPrompt.Raw | null;
         prompt_v2?: AnalyzePromptV2.Raw | null;

@@ -169,8 +169,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.1",
-                        "User-Agent": "twelvelabs-js/1.3.1",
+                        "X-Fern-SDK-Version": "1.3.2",
+                        "User-Agent": "twelvelabs-js/1.3.2",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -245,6 +245,10 @@ export class IndexedAssets {
      *
      * This operation is asynchronous. The platform returns an indexed asset ID immediately and processes your content in the background. Monitor the indexing status to know when your content is ready to use.
      *
+     * <Note title="Adding videos to existing indexes">
+     * You can no longer add videos to an index that has only Pegasus 1.2 enabled. When you add videos to an index that has both Marengo and Pegasus 1.2 enabled, the platform indexes them with Marengo only.
+     * </Note>
+     *
      * Your asset must meet the requirements based on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
      * - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements).
@@ -294,8 +298,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -440,8 +444,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -536,8 +540,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -631,8 +635,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.1",
-                "User-Agent": "twelvelabs-js/1.3.1",
+                "X-Fern-SDK-Version": "1.3.2",
+                "User-Agent": "twelvelabs-js/1.3.2",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -726,8 +730,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.1",
-                        "User-Agent": "twelvelabs-js/1.3.1",
+                        "X-Fern-SDK-Version": "1.3.2",
+                        "User-Agent": "twelvelabs-js/1.3.2",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),

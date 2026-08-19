@@ -5,8 +5,9 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Configuration for fixed segmentation. This field is required when `strategy` is `fixed`.
+ * Divides the video into segments of equal, predetermined length. Use this for consistent timing.
  */
 export interface VideoSegmentationFixed {
+    /** Configuration for fixed segmentation. This object is required when `strategy` is `fixed`. */
     fixed: TwelvelabsApi.VideoSegmentationFixedFixed;
 }

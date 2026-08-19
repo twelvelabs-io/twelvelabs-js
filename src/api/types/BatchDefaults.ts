@@ -11,7 +11,7 @@ export interface BatchDefaults {
     prompt?: TwelvelabsApi.BatchPrompt;
     responseFormat?: TwelvelabsApi.AsyncResponseFormat;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
-    /** The maximum number of tokens to generate per item. The allowed range depends on the model and analysis mode (see the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint for the per-mode table). */
+    /** The maximum number of tokens to generate per item. The allowed range depends on the analysis mode (see the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint for the per-mode table). */
     maxTokens?: number;
     /**
      * Minimum duration for each extracted segment, in seconds. Applies only when the `analysis_mode` field is `time_based_metadata`.
