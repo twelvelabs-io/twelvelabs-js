@@ -102,8 +102,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.2",
-                        "User-Agent": "twelvelabs-js/1.3.2",
+                        "X-Fern-SDK-Version": "1.3.3",
+                        "User-Agent": "twelvelabs-js/1.3.3",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -261,8 +261,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.2",
-                "User-Agent": "twelvelabs-js/1.3.2",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -351,8 +351,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.2",
-                "User-Agent": "twelvelabs-js/1.3.2",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -457,8 +457,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.2",
-                "User-Agent": "twelvelabs-js/1.3.2",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -499,6 +499,126 @@ export class Assets {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling DELETE /assets/{asset_id}.");
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This method retrieves the transcription of a video or audio asset. An asset that has a transcription returns `200` with the current transcription status. The endpoint returns `404` when the asset cannot be found or has no transcription.
+     *
+     * The platform generates transcriptions asynchronously. Poll this endpoint to monitor the transcription status.
+     *
+     * When the status is `ready`, the response contains the segmentations you requested that the transcription supports. A transcription does not always support every segmentation, so read the segmentations the response returns rather than assuming every requested one is present.
+     *
+     * @param {string} assetId - The unique identifier of the asset.
+     * @param {TwelvelabsApi.AssetsRetrieveTranscriptionRequest} request
+     * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     *
+     * @example
+     *     await client.assets.retrieveTranscription("6298d673f1090f1100476d4c", {
+     *         include: ["words", "utterances"]
+     *     })
+     */
+    public retrieveTranscription(
+        assetId: string,
+        request: TwelvelabsApi.AssetsRetrieveTranscriptionRequest = {},
+        requestOptions?: Assets.RequestOptions,
+    ): core.HttpResponsePromise<TwelvelabsApi.AssetTranscriptionResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__retrieveTranscription(assetId, request, requestOptions));
+    }
+
+    private async __retrieveTranscription(
+        assetId: string,
+        request: TwelvelabsApi.AssetsRetrieveTranscriptionRequest = {},
+        requestOptions?: Assets.RequestOptions,
+    ): Promise<core.WithRawResponse<TwelvelabsApi.AssetTranscriptionResponse>> {
+        const { include } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (include != null) {
+            if (Array.isArray(include)) {
+                _queryParams["include"] = include.map((item) =>
+                    serializers.AssetsRetrieveTranscriptionRequestIncludeItem.jsonOrThrow(item, {
+                        unrecognizedObjectKeys: "strip",
+                    }),
+                );
+            } else {
+                _queryParams["include"] = serializers.AssetsRetrieveTranscriptionRequestIncludeItem.jsonOrThrow(
+                    include,
+                    { unrecognizedObjectKeys: "strip" },
+                );
+            }
+        }
+
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `assets/${encodeURIComponent(assetId)}/transcription`,
+            ),
+            method: "GET",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AssetTranscriptionResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling GET /assets/{asset_id}/transcription.",
+                );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
                     message: _response.error.errorMessage,
@@ -556,8 +676,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.2",
-                "User-Agent": "twelvelabs-js/1.3.2",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -643,8 +763,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.2",
-                "User-Agent": "twelvelabs-js/1.3.2",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -744,8 +864,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.2",
-                "User-Agent": "twelvelabs-js/1.3.2",
+                "X-Fern-SDK-Version": "1.3.3",
+                "User-Agent": "twelvelabs-js/1.3.3",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

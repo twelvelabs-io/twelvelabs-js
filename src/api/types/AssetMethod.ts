@@ -3,16 +3,18 @@
  */
 
 /**
- * Indicates how you uploaded the asset.
+ * Indicates how the asset was uploaded or imported.
  *
  * **Values**:
  * - `direct`: Uploaded from your local file system
  * - `url`: Uploaded from a publicly accessible URL
  * - `multipart`: Uploaded using the multipart upload flow
+ * - `connector`: Imported through a data connector
  */
-export type AssetMethod = "direct" | "url" | "multipart";
+export type AssetMethod = "direct" | "url" | "multipart" | "connector";
 export const AssetMethod = {
     Direct: "direct",
     Url: "url",
     Multipart: "multipart",
+    Connector: "connector",
 } as const;
