@@ -11,12 +11,13 @@ export interface Asset {
     /** The unique identifier of the asset. */
     id?: string;
     /**
-     * Indicates how you uploaded the asset.
+     * Indicates how the asset was uploaded or imported.
      *
      * **Values**:
      * - `direct`: Uploaded from your local file system
      * - `url`: Uploaded from a publicly accessible URL
      * - `multipart`: Uploaded using the multipart upload flow
+     * - `connector`: Imported through a data connector
      */
     method?: TwelvelabsApi.AssetMethod;
     /**

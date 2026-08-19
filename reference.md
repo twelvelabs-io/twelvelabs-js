@@ -1092,6 +1092,82 @@ await client.assets.delete("6298d673f1090f1100476d4c", {
 </dl>
 </details>
 
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">retrieveTranscription</a>(assetId, { ...params }) -> TwelvelabsApi.AssetTranscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves the transcription of a video or audio asset. An asset that has a transcription returns `200` with the current transcription status. The endpoint returns `404` when the asset cannot be found or has no transcription.
+
+The platform generates transcriptions asynchronously. Poll this endpoint to monitor the transcription status.
+
+When the status is `ready`, the response contains the segmentations you requested that the transcription supports. A transcription does not always support every segmentation, so read the segmentations the response returns rather than assuming every requested one is present.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.assets.retrieveTranscription("6298d673f1090f1100476d4c", {
+    include: ["words", "utterances"],
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetId:** `string` — The unique identifier of the asset.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.AssetsRetrieveTranscriptionRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Assets.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">replaceUserMetadata</a>(assetId, { ...params }) -> void</code></summary>
 <dl>
 <dd>
