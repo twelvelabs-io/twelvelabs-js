@@ -90,8 +90,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.3",
-                        "User-Agent": "twelvelabs-js/1.3.3",
+                        "X-Fern-SDK-Version": "1.3.4",
+                        "User-Agent": "twelvelabs-js/1.3.4",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -162,45 +162,137 @@ export class Tasks {
     }
 
     /**
-     * This endpoint creates embeddings for audio and video content asynchronously.
+     * This method creates embeddings for audio, video, images, and documents asynchronously.
      *
-     * **When to use this endpoint**:
-     * - Process audio or video files longer than 10 minutes
-     * - Process files up to 4 hours in duration
+     * Use this method to embed content at scale, such as long files or the media files you want to make searchable. For a query, or for results you need in the same request, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint instead.
      *
-     * <Accordion title="Input requirements">
-     *   **Video**:
-     *   - Minimum duration: 4 seconds
-     *   - Maximum duration: 4 hours
-     *   - Maximum file size: 4 GB
-     *   - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
-     *   - Resolution: 360x360 to 5184x2160 pixels
-     *   - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1
+     * The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and PDF files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
      *
-     *   **Audio**:
-     *   - Minimum duration: 4 seconds
-     *   - Maximum duration: 4 hours
-     *   - Maximum file size: 4 GB
-     *   - Formats: WAV (uncompressed), MP3 (lossy), FLAC (lossless)
-     * </Accordion>
+     * Creating embeddings asynchronously requires three steps:
      *
-     *   Creating embeddings asynchronously requires three steps:
+     * 1. Create a task using this method. The platform returns a task identifier.
+     * 2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Wait until the status is `ready`.
+     * 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
      *
-     *   1. Create a task using this endpoint. The platform returns a task ID.
-     *   2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Wait until the status is `ready`.
-     *   3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
-     *
-     *   <Note title="Notes">
-     *   - Creating a task validates only basic metadata and playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
-     *   - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-     *   - Embeddings are stored for seven days.
-     *   </Note>
+     * <Note title="Notes">
+     * - Creating a task validates only basic metadata and playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
+     * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
+     * - Embeddings are stored for seven days.
+     * </Note>
      *
      * @param {TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequest} request
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "audio",
+     *         modelName: "marengo3.5",
+     *         audio: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/audio/long-audio.wav"
+     *             },
+     *             startSec: 0,
+     *             endSec: 3600,
+     *             segmentation: {
+     *                 temporal: {
+     *                     strategy: "fixed",
+     *                     fixed: {
+     *                         durationSec: 1
+     *                     }
+     *                 }
+     *             },
+     *             embeddingOption: ["audio"],
+     *             embeddingScope: ["clip", "asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "video",
+     *         modelName: "marengo3.5",
+     *         video: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/video/long-video.mp4"
+     *             },
+     *             startSec: 0,
+     *             endSec: 7200,
+     *             segmentation: {
+     *                 temporal: {
+     *                     strategy: "dynamic",
+     *                     dynamic: {
+     *                         minDurationSec: 1
+     *                     }
+     *                 }
+     *             },
+     *             embeddingOption: ["visual", "audio"],
+     *             embeddingScope: ["clip", "asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "video",
+     *         modelName: "marengo3.5",
+     *         video: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/video/long-video.mp4"
+     *             },
+     *             embeddingOption: ["visual", "audio"],
+     *             embeddingScope: ["clip", "asset"],
+     *             embeddingType: ["separate_embedding", "fused_embedding"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "video",
+     *         modelName: "marengo3.5",
+     *         embeddingUncertainty: true,
+     *         video: {
+     *             mediaSource: {
+     *                 assetId: "vid_nba_lakers_celtics_2026_03_14"
+     *             },
+     *             embeddingOption: ["visual", "audio"],
+     *             embeddingScope: ["clip"],
+     *             embeddingType: ["separate_embedding", "fused_embedding"],
+     *             timeBasedMetadata: [{
+     *                     start: 42.3,
+     *                     end: 42.3,
+     *                     text: "Shot made. LeBron James dunk. Assist: D'Angelo Russell. +2 LAL. 88-84."
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "document",
+     *         modelName: "marengo3.5",
+     *         embeddingUncertainty: true,
+     *         document: {
+     *             mediaSource: {
+     *                 assetId: "doc_annual_report_2025"
+     *             },
+     *             embeddingOption: ["visual"],
+     *             embeddingType: ["separate_embedding"],
+     *             embeddingScope: ["local"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "image",
+     *         modelName: "marengo3.5",
+     *         embeddingUncertainty: true,
+     *         image: {
+     *             mediaSource: {
+     *                 assetId: "img_brand_logo_primary"
+     *             }
+     *         }
+     *     })
      *
      * @example
      *     await client.embed.v2.tasks.create({
@@ -243,20 +335,6 @@ export class Tasks {
      *             embeddingScope: ["clip", "asset"]
      *         }
      *     })
-     *
-     * @example
-     *     await client.embed.v2.tasks.create({
-     *         inputType: "video",
-     *         modelName: "marengo3.0",
-     *         video: {
-     *             mediaSource: {
-     *                 url: "https://user-bucket.com/video/long-video.mp4"
-     *             },
-     *             embeddingOption: ["visual", "audio"],
-     *             embeddingScope: ["clip", "asset"],
-     *             embeddingType: ["separate_embedding", "fused_embedding"]
-     *         }
-     *     })
      */
     public create(
         request: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequest,
@@ -280,8 +358,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -312,6 +390,8 @@ export class Tasks {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 default:
@@ -379,8 +459,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

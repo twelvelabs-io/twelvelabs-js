@@ -29,7 +29,7 @@ export interface CreateAssetUploadRequest {
      */
     totalSize: number;
     /**
-     * When set to `true`, the platform generates an HLS playlist and segments for streaming. Applicable to video and audio assets only.
+     * When set to `true`, the platform generates an HLS playlist and segments for streaming. Applicable to video and audio assets only. The platform ignores this flag for other asset types.
      *
      * **Default**: `false`.
      */

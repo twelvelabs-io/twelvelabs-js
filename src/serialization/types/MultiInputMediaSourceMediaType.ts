@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const MultiInputMediaSourceMediaType: core.serialization.Schema<
     serializers.MultiInputMediaSourceMediaType.Raw,
     TwelvelabsApi.MultiInputMediaSourceMediaType
-> = core.serialization.enum_(["image"]);
+> = core.serialization.enum_(["image", "video", "audio"]);
 
 export declare namespace MultiInputMediaSourceMediaType {
-    export type Raw = "image";
+    export type Raw = "image" | "video" | "audio";
 }

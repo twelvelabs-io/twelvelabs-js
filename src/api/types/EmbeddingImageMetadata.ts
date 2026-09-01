@@ -3,11 +3,11 @@
  */
 
 /**
- * Metadata for image embeddings
+ * Metadata for image embeddings.
  */
 export interface EmbeddingImageMetadata {
-    /** The publicly accessible URL for the image */
+    /** The publicly accessible URL for the image file. */
     inputUrl?: string;
-    /** The name of the image file */
+    /** The name of the image file. */
     inputFilename?: string;
 }

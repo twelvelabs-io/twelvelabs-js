@@ -9,8 +9,8 @@ import * as core from "../../../../../../../../core";
 export const CreateAsyncEmbeddingRequestInputType: core.serialization.Schema<
     serializers.embed.v2.CreateAsyncEmbeddingRequestInputType.Raw,
     TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestInputType
-> = core.serialization.enum_(["audio", "video"]);
+> = core.serialization.enum_(["audio", "video", "document", "image"]);
 
 export declare namespace CreateAsyncEmbeddingRequestInputType {
-    export type Raw = "audio" | "video";
+    export type Raw = "audio" | "video" | "document" | "image";
 }

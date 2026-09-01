@@ -5,9 +5,14 @@
 /**
  * The type of media.
  *
- * **Value**: `image`
+ * **Values**:
+ * - `image`: An image file. Works with both Marengo 3.0 and Marengo 3.5.
+ * - `video`: A video file. Requires Marengo 3.5.
+ * - `audio`: An audio file. Requires Marengo 3.5.
  */
-export type MultiInputMediaSourceMediaType = "image";
+export type MultiInputMediaSourceMediaType = "image" | "video" | "audio";
 export const MultiInputMediaSourceMediaType = {
     Image: "image",
+    Video: "video",
+    Audio: "audio",
 } as const;

@@ -9,8 +9,8 @@ import * as core from "../../../../../../../../core";
 export const CreateAsyncEmbeddingRequestModelName: core.serialization.Schema<
     serializers.embed.v2.CreateAsyncEmbeddingRequestModelName.Raw,
     TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestModelName
-> = core.serialization.enum_(["marengo3.0"]);
+> = core.serialization.enum_(["marengo3.0", "marengo3.5"]);
 
 export declare namespace CreateAsyncEmbeddingRequestModelName {
-    export type Raw = "marengo3.0";
+    export type Raw = "marengo3.0" | "marengo3.5";
 }

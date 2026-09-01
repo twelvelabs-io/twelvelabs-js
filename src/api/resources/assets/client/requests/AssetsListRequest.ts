@@ -10,7 +10,7 @@ import * as TwelvelabsApi from "../../../../index";
  *         page: 1,
  *         pageLimit: 10,
  *         assetIds: ["6298d673f1090f1100476d4c", "6298d673f1090f1100476d4d"],
- *         assetTypes: ["image", "video"],
+ *         assetTypes: ["image", "video", "document"],
  *         filename: "meeting"
  *     }
  */
@@ -29,7 +29,7 @@ export interface AssetsListRequest {
      */
     pageLimit?: number;
     /**
-     * Filters the response to include only assets with the specified IDs. Provide one or more asset IDs. When you specify multiple IDs, the platform returns all matching assets.
+     * Filters the response to include only assets with the specified identifiers. Provide one or more asset identifiers. When you specify multiple identifiers, the platform returns all matching assets.
      */
     assetIds?: string | string[];
     /**

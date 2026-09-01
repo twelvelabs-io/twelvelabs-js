@@ -5,7 +5,7 @@
 /**
  * Indicates the current processing status of the asset.
  *
- * A newly uploaded asset starts in the `processing` status and transitions asynchronously to `ready` on success or to `failed` on error, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status is `ready` before you use the asset in downstream workflows.
+ * A newly uploaded asset starts in the `processing` status and transitions asynchronously to `ready` on success or to `failed` on error, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status is `ready` before you use the asset in different workflows.
  *
  * **Values**:
  * - `processing`: The asset is not yet usable. This can mean the upload is still in progress (for example, the platform is still fetching the file from a URL, or a multipart upload has not completed), or the upload has finished and the platform is validating the file. The `technical_metadata` field is omitted from the response.

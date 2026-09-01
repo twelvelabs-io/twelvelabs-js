@@ -7,8 +7,10 @@ import * as TwelvelabsApi from "../../../../../../../../../api/index";
 import * as core from "../../../../../../../../../core";
 import { CreateAsyncEmbeddingRequestInputType } from "../../types/CreateAsyncEmbeddingRequestInputType";
 import { CreateAsyncEmbeddingRequestModelName } from "../../types/CreateAsyncEmbeddingRequestModelName";
-import { AudioInputRequest } from "../../../../../../../../types/AudioInputRequest";
-import { VideoInputRequest } from "../../../../../../../../types/VideoInputRequest";
+import { AsyncAudioInputRequest } from "../../../../../../../../types/AsyncAudioInputRequest";
+import { AsyncVideoInputRequest } from "../../../../../../../../types/AsyncVideoInputRequest";
+import { AsyncDocumentInputRequest } from "../../../../../../../../types/AsyncDocumentInputRequest";
+import { AsyncImageInputRequest } from "../../../../../../../../types/AsyncImageInputRequest";
 
 export const CreateAsyncEmbeddingRequest: core.serialization.Schema<
     serializers.embed.v2.CreateAsyncEmbeddingRequest.Raw,
@@ -16,15 +18,21 @@ export const CreateAsyncEmbeddingRequest: core.serialization.Schema<
 > = core.serialization.object({
     inputType: core.serialization.property("input_type", CreateAsyncEmbeddingRequestInputType),
     modelName: core.serialization.property("model_name", CreateAsyncEmbeddingRequestModelName),
-    audio: AudioInputRequest.optional(),
-    video: VideoInputRequest.optional(),
+    embeddingUncertainty: core.serialization.property("embedding_uncertainty", core.serialization.boolean().optional()),
+    audio: AsyncAudioInputRequest.optional(),
+    video: AsyncVideoInputRequest.optional(),
+    document: AsyncDocumentInputRequest.optional(),
+    image: AsyncImageInputRequest.optional(),
 });
 
 export declare namespace CreateAsyncEmbeddingRequest {
     export interface Raw {
         input_type: CreateAsyncEmbeddingRequestInputType.Raw;
         model_name: CreateAsyncEmbeddingRequestModelName.Raw;
-        audio?: AudioInputRequest.Raw | null;
-        video?: VideoInputRequest.Raw | null;
+        embedding_uncertainty?: boolean | null;
+        audio?: AsyncAudioInputRequest.Raw | null;
+        video?: AsyncVideoInputRequest.Raw | null;
+        document?: AsyncDocumentInputRequest.Raw | null;
+        image?: AsyncImageInputRequest.Raw | null;
     }
 }

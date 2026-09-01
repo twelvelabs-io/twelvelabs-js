@@ -103,8 +103,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -181,7 +181,7 @@ export class Tasks {
      *
      * Analyzing videos asynchronously requires three steps:
      *
-     * 1. Create an analysis task using this method. The platform returns a task ID.
+     * 1. Create an analysis task using this method. The platform returns a task identifier.
      * 2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`.
      * 3. Retrieve the results from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
      *
@@ -387,8 +387,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -489,8 +489,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -574,8 +574,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

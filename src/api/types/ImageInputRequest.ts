@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * This field is required if the  `input_type` parameter is `image`.
+ * This field is required if the `input_type` parameter is `image`.
  */
 export interface ImageInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;

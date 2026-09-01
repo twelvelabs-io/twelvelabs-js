@@ -11,6 +11,9 @@ export interface AudioSegmentationFixed {
     /**
      * The duration in seconds for each segment. The platform divides the audio into segments of this exact length. The final segment may be shorter if the audio duration is not evenly divisible.
      *
+     * **Min**: `2`.
+     * **Max**: `10`.
+     *
      *  **Example**: With `duration_sec: 5`, a 12-second audio file produces segments: [0-5s], [5-10s], [10-12s].
      */
     durationSec: number;

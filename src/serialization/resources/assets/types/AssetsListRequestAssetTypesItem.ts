@@ -9,8 +9,8 @@ import * as core from "../../../../core";
 export const AssetsListRequestAssetTypesItem: core.serialization.Schema<
     serializers.AssetsListRequestAssetTypesItem.Raw,
     TwelvelabsApi.AssetsListRequestAssetTypesItem
-> = core.serialization.enum_(["image", "video", "audio"]);
+> = core.serialization.enum_(["image", "video", "audio", "document"]);
 
 export declare namespace AssetsListRequestAssetTypesItem {
-    export type Raw = "image" | "video" | "audio";
+    export type Raw = "image" | "video" | "audio" | "document";
 }

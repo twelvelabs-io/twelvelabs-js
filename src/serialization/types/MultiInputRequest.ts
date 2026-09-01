@@ -12,12 +12,15 @@ export const MultiInputRequest: core.serialization.ObjectSchema<
     TwelvelabsApi.MultiInputRequest
 > = core.serialization.object({
     inputText: core.serialization.property("input_text", core.serialization.string().optional()),
-    mediaSources: core.serialization.property("media_sources", core.serialization.list(MultiInputMediaSource)),
+    mediaSources: core.serialization.property(
+        "media_sources",
+        core.serialization.list(MultiInputMediaSource).optional(),
+    ),
 });
 
 export declare namespace MultiInputRequest {
     export interface Raw {
         input_text?: string | null;
-        media_sources: MultiInputMediaSource.Raw[];
+        media_sources?: MultiInputMediaSource.Raw[] | null;
     }
 }

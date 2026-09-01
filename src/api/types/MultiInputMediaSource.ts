@@ -5,24 +5,29 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * An object specifying an image source for multi-input embeddings. You must provide exactly one of `url`, `base64_string`, or `asset_id`.
+ * An object specifying a media source for multi-input embeddings. You must provide exactly one of `url`, `base64_string`, or `asset_id`.
+ *
+ * With Marengo 3.5, each media source can be up to 32 MB, whichever of the three fields you use. Audio and video can be up to 30 seconds. Content above either limit returns a `400` error.
  */
 export interface MultiInputMediaSource {
     /**
      * The unique identifier for this media source.
      *
-     * This field is required when `input_type` references this image.
+     * This field is required when `input_text` references this media source.
      */
     name?: string;
     /**
      * The type of media.
      *
-     * **Value**: `image`
+     * **Values**:
+     * - `image`: An image file. Works with both Marengo 3.0 and Marengo 3.5.
+     * - `video`: A video file. Requires Marengo 3.5.
+     * - `audio`: An audio file. Requires Marengo 3.5.
      */
     mediaType: TwelvelabsApi.MultiInputMediaSourceMediaType;
-    /** The publicly accessible URL of the image file  Use direct links to raw image files. Image hosting platforms and cloud storage sharing links are not supported. */
+    /** The publicly accessible URL of the media file. Use direct links to raw files. Media hosting platforms and cloud storage sharing links are not supported. */
     url?: string;
-    /** The base64-encoded image data. */
+    /** The base64-encoded media data. */
     base64String?: string;
     /** The unique identifier of an asset from a [direct](/v1.3/api-reference/upload-content) or [multipart](/v1.3/api-reference/upload-content/multipart-uploads) upload. */
     assetId?: string;

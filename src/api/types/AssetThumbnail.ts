@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Thumbnail details for the asset. Present only when thumbnail generation has been requested. Omitted otherwise.
+ * Thumbnail details for the asset. Present only when thumbnail generation has been requested. PDF files use the first page for the representative thumbnail; text and Markdown files do not produce thumbnails.
  */
 export interface AssetThumbnail {
     /** The URL of the representative thumbnail image. Only present when the status of the thumbnail is `ready`. */

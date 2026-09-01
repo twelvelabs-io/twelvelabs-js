@@ -40,36 +40,14 @@ export class V2 {
     }
 
     /**
-     * This endpoint synchronously creates embeddings for multimodal content and returns the results immediately in the response.
+     * This method synchronously creates embeddings for multimodal content and returns the results immediately in the response.
      *
-     * **When to use this endpoint**:
-     * - Create embeddings for text, images, audio, or video content
-     * - Retrieve immediate results without waiting for background processing
-     * - Process audio or video content up to 10 minutes in duration
+     * Use this method to embed a query for retrieving matching content. With Marengo 3.5, audio and video can be up to 30 seconds. With Marengo 3.0, they can be up to 10 minutes. For longer content, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
      *
-     * **Do not use this endpoint for**:
-     * - Audio or video content longer than 10 minutes. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
-     *
-     * <Accordion title="Input requirements">
-     *   **Text**:
-     *   - Maximum length: 500 tokens
-     *
-     *   **Images**:
-     *   - Formats: JPEG, PNG
-     *   - Minimum size: 128x128 pixels
-     *   - Maximum file size: 32 MB
-     *
-     *   **Audio and video**:
-     *   - Maximum duration: 10 minutes
-     *   - Maximum file size for base64 encoded strings: 36 MB
-     *   - Audio formats: WAV (uncompressed), MP3 (lossy), FLAC (lossless)
-     *   - Video formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
-     *   - Video resolution: 360x360 to 5184x2160 pixels
-     *   - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1
-     * </Accordion>
+     * The content this method accepts depends on the model. With Marengo 3.5, this method accepts only the `multi_input` input type; provide text, images, audio, or video as media sources. With Marengo 3.0, use the individual input types. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
      *
      * <Note title="Note">
-     * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+     * This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A request can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
      * </Note>
      *
      * @param {TwelvelabsApi.embed.CreateEmbeddingsRequest} request
@@ -78,6 +56,110 @@ export class V2 {
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             inputText: "man walking a dog"
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             mediaSources: [{
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/folder/dog.jpg"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             mediaSources: [{
+     *                     mediaType: "image",
+     *                     assetId: "1234567890"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             inputText: "man walking a dog",
+     *             mediaSources: [{
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/folder/dog.jpg"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             mediaSources: [{
+     *                     mediaType: "audio",
+     *                     url: "https://user-bucket.com/audio/a.wav"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             mediaSources: [{
+     *                     mediaType: "video",
+     *                     url: "https://user-bucket.com/video/clip.mp4"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             inputText: "A person cooking in the kitchen",
+     *             mediaSources: [{
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/person.jpg"
+     *                 }, {
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/kitchen.jpg"
+     *                 }]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "multi_input",
+     *         modelName: "marengo3.5",
+     *         multiInput: {
+     *             inputText: "A person wearing <@outfit> and holding <@accessory>",
+     *             mediaSources: [{
+     *                     name: "outfit",
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/outfit.jpg"
+     *                 }, {
+     *                     name: "accessory",
+     *                     mediaType: "image",
+     *                     url: "https://user-bucket.com/images/accessory.jpg"
+     *                 }]
+     *         }
+     *     })
      *
      * @example
      *     await client.embed.v2.create({
@@ -101,6 +183,17 @@ export class V2 {
      *
      * @example
      *     await client.embed.v2.create({
+     *         inputType: "image",
+     *         modelName: "marengo3.0",
+     *         image: {
+     *             mediaSource: {
+     *                 assetId: "1234567890"
+     *             }
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
      *         inputType: "text_image",
      *         modelName: "marengo3.0",
      *         textImage: {
@@ -108,17 +201,6 @@ export class V2 {
      *                 url: "https://user-bucket.com/folder/dog.jpg"
      *             },
      *             inputText: "man walking a dog"
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.create({
-     *         inputType: "image",
-     *         modelName: "marengo3.0",
-     *         image: {
-     *             mediaSource: {
-     *                 assetId: "1234567890"
-     *             }
      *         }
      *     })
      *
@@ -140,6 +222,19 @@ export class V2 {
      *             },
      *             embeddingOption: ["audio", "transcription"],
      *             embeddingScope: ["clip", "asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.create({
+     *         inputType: "audio",
+     *         modelName: "marengo3.0",
+     *         audio: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/audio/speech.wav"
+     *             },
+     *             embeddingOption: ["transcription"],
+     *             embeddingScope: ["asset"]
      *         }
      *     })
      *
@@ -177,19 +272,6 @@ export class V2 {
      *
      * @example
      *     await client.embed.v2.create({
-     *         inputType: "audio",
-     *         modelName: "marengo3.0",
-     *         audio: {
-     *             mediaSource: {
-     *                 url: "https://user-bucket.com/audio/speech.wav"
-     *             },
-     *             embeddingOption: ["transcription"],
-     *             embeddingScope: ["asset"]
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.create({
      *         inputType: "video",
      *         modelName: "marengo3.0",
      *         video: {
@@ -199,55 +281,6 @@ export class V2 {
      *             embeddingOption: ["visual", "audio"],
      *             embeddingScope: ["clip"],
      *             embeddingType: ["separate_embedding", "fused_embedding"]
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.create({
-     *         inputType: "multi_input",
-     *         modelName: "marengo3.0",
-     *         multiInput: {
-     *             inputText: "A person cooking in the kitchen",
-     *             mediaSources: [{
-     *                     mediaType: "image",
-     *                     url: "https://user-bucket.com/images/person.jpg"
-     *                 }, {
-     *                     mediaType: "image",
-     *                     url: "https://user-bucket.com/images/kitchen.jpg"
-     *                 }]
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.create({
-     *         inputType: "multi_input",
-     *         modelName: "marengo3.0",
-     *         multiInput: {
-     *             inputText: "A person wearing <@outfit> and holding <@accessory>",
-     *             mediaSources: [{
-     *                     name: "outfit",
-     *                     mediaType: "image",
-     *                     url: "https://user-bucket.com/images/outfit.jpg"
-     *                 }, {
-     *                     name: "accessory",
-     *                     mediaType: "image",
-     *                     url: "https://user-bucket.com/images/accessory.jpg"
-     *                 }]
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.create({
-     *         inputType: "multi_input",
-     *         modelName: "marengo3.0",
-     *         multiInput: {
-     *             mediaSources: [{
-     *                     mediaType: "image",
-     *                     url: "https://user-bucket.com/images/image1.jpg"
-     *                 }, {
-     *                     mediaType: "image",
-     *                     base64String: "iVBORw0KGgoAAAANSUhEUgAA..."
-     *                 }]
      *         }
      *     })
      */
@@ -273,8 +306,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

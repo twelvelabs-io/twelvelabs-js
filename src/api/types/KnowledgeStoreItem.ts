@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * A knowledge store item is an asset added to a knowledge store for processing. You can use it in downstream workflows once its `status` is `ready`.
+ * A knowledge store item is an asset added to a knowledge store for processing. You can use it in different workflows once its `status` is `ready`.
  */
 export interface KnowledgeStoreItem {
     /** The unique identifier of the knowledge store item. */

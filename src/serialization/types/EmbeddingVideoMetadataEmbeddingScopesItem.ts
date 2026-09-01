@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const EmbeddingVideoMetadataEmbeddingScopesItem: core.serialization.Schema<
     serializers.EmbeddingVideoMetadataEmbeddingScopesItem.Raw,
     TwelvelabsApi.EmbeddingVideoMetadataEmbeddingScopesItem
-> = core.serialization.enum_(["clip", "asset"]);
+> = core.serialization.enum_(["clip", "local", "asset"]);
 
 export declare namespace EmbeddingVideoMetadataEmbeddingScopesItem {
-    export type Raw = "clip" | "asset";
+    export type Raw = "clip" | "local" | "asset";
 }

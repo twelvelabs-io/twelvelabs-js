@@ -6,7 +6,7 @@
  * An object specifying the source of the media file. You must provide exactly one of `url`, `base64_string`, or `asset_id`.
  */
 export interface MediaSource {
-    /** The base64-encoded media data. */
+    /** The base64-encoded media data. The decoded file can be up to 36 MB; encoded, it can be up to 48 MB. */
     base64String?: string;
     /**
      * The publicly accessible URL of the media file.

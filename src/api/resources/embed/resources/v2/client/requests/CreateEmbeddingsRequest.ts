@@ -7,6 +7,110 @@ import * as TwelvelabsApi from "../../../../../../index";
 /**
  * @example
  *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             inputText: "man walking a dog"
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             mediaSources: [{
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/folder/dog.jpg"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             mediaSources: [{
+ *                     mediaType: "image",
+ *                     assetId: "1234567890"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             inputText: "man walking a dog",
+ *             mediaSources: [{
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/folder/dog.jpg"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             mediaSources: [{
+ *                     mediaType: "audio",
+ *                     url: "https://user-bucket.com/audio/a.wav"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             mediaSources: [{
+ *                     mediaType: "video",
+ *                     url: "https://user-bucket.com/video/clip.mp4"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             inputText: "A person cooking in the kitchen",
+ *             mediaSources: [{
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/person.jpg"
+ *                 }, {
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/kitchen.jpg"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
+ *             inputText: "A person wearing <@outfit> and holding <@accessory>",
+ *             mediaSources: [{
+ *                     name: "outfit",
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/outfit.jpg"
+ *                 }, {
+ *                     name: "accessory",
+ *                     mediaType: "image",
+ *                     url: "https://user-bucket.com/images/accessory.jpg"
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
  *         inputType: "text",
  *         modelName: "marengo3.0",
  *         text: {
@@ -27,6 +131,17 @@ import * as TwelvelabsApi from "../../../../../../index";
  *
  * @example
  *     {
+ *         inputType: "image",
+ *         modelName: "marengo3.0",
+ *         image: {
+ *             mediaSource: {
+ *                 assetId: "1234567890"
+ *             }
+ *         }
+ *     }
+ *
+ * @example
+ *     {
  *         inputType: "text_image",
  *         modelName: "marengo3.0",
  *         textImage: {
@@ -34,17 +149,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  *                 url: "https://user-bucket.com/folder/dog.jpg"
  *             },
  *             inputText: "man walking a dog"
- *         }
- *     }
- *
- * @example
- *     {
- *         inputType: "image",
- *         modelName: "marengo3.0",
- *         image: {
- *             mediaSource: {
- *                 assetId: "1234567890"
- *             }
  *         }
  *     }
  *
@@ -66,6 +170,19 @@ import * as TwelvelabsApi from "../../../../../../index";
  *             },
  *             embeddingOption: ["audio", "transcription"],
  *             embeddingScope: ["clip", "asset"]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "audio",
+ *         modelName: "marengo3.0",
+ *         audio: {
+ *             mediaSource: {
+ *                 url: "https://user-bucket.com/audio/speech.wav"
+ *             },
+ *             embeddingOption: ["transcription"],
+ *             embeddingScope: ["asset"]
  *         }
  *     }
  *
@@ -103,19 +220,6 @@ import * as TwelvelabsApi from "../../../../../../index";
  *
  * @example
  *     {
- *         inputType: "audio",
- *         modelName: "marengo3.0",
- *         audio: {
- *             mediaSource: {
- *                 url: "https://user-bucket.com/audio/speech.wav"
- *             },
- *             embeddingOption: ["transcription"],
- *             embeddingScope: ["asset"]
- *         }
- *     }
- *
- * @example
- *     {
  *         inputType: "video",
  *         modelName: "marengo3.0",
  *         video: {
@@ -131,93 +235,53 @@ import * as TwelvelabsApi from "../../../../../../index";
  * @example
  *     {
  *         inputType: "multi_input",
- *         modelName: "marengo3.0",
+ *         modelName: "marengo3.5",
  *         multiInput: {
- *             inputText: "A person cooking in the kitchen",
- *             mediaSources: [{
- *                     mediaType: "image",
- *                     url: "https://user-bucket.com/images/person.jpg"
- *                 }, {
- *                     mediaType: "image",
- *                     url: "https://user-bucket.com/images/kitchen.jpg"
- *                 }]
+ *             inputText: "man walking a dog"
  *         }
  *     }
  *
  * @example
  *     {
  *         inputType: "multi_input",
- *         modelName: "marengo3.0",
+ *         modelName: "marengo3.5",
  *         multiInput: {
- *             inputText: "A person wearing <@outfit> and holding <@accessory>",
- *             mediaSources: [{
- *                     name: "outfit",
- *                     mediaType: "image",
- *                     url: "https://user-bucket.com/images/outfit.jpg"
- *                 }, {
- *                     name: "accessory",
- *                     mediaType: "image",
- *                     url: "https://user-bucket.com/images/accessory.jpg"
- *                 }]
+ *             inputText: "man walking a dog"
  *         }
  *     }
  *
  * @example
  *     {
  *         inputType: "multi_input",
- *         modelName: "marengo3.0",
+ *         modelName: "marengo3.5",
  *         multiInput: {
- *             mediaSources: [{
- *                     mediaType: "image",
- *                     url: "https://user-bucket.com/images/image1.jpg"
- *                 }, {
- *                     mediaType: "image",
- *                     base64String: "iVBORw0KGgoAAAANSUhEUgAA..."
- *                 }]
- *         }
- *     }
- *
- * @example
- *     {
- *         inputType: "text",
- *         modelName: "marengo3.0",
- *         text: {
  *             inputText: "man walking a dog"
  *         }
  *     }
  *
  * @example
  *     {
- *         inputType: "text",
- *         modelName: "marengo3.0",
- *         text: {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
  *             inputText: "man walking a dog"
  *         }
  *     }
  *
  * @example
  *     {
- *         inputType: "text",
- *         modelName: "marengo3.0",
- *         text: {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
  *             inputText: "man walking a dog"
  *         }
  *     }
  *
  * @example
  *     {
- *         inputType: "text",
- *         modelName: "marengo3.0",
- *         text: {
- *             inputText: "man walking a dog"
- *         }
- *     }
- *
- * @example
- *     {
- *         inputType: "text",
- *         modelName: "marengo3.0",
- *         text: {
+ *         inputType: "multi_input",
+ *         modelName: "marengo3.5",
+ *         multiInput: {
  *             inputText: "man walking a dog"
  *         }
  *     }
@@ -226,18 +290,37 @@ export interface CreateEmbeddingsRequest {
     /**
      * The type of content for the embeddings.
      *
-     *
      * **Values**:
-     * - `audio`: Creates embeddings for an audio file
-     * - `video`: Creates embeddings for a video file
-     * - `image`: Creates embeddings for an image file
-     * - `text`: Creates embeddings for text input
-     * - `text_image`: Creates embeddings for text and an image
-     * - `multi_input`: Creates a single embedding from up to 10 images. You can optionally include text to provide context. To reference specific images in your text, use placeholders in the following format: `<@name>`, where `name` matches the `name` field of a media source
+     * - `multi_input`: Text and up to 10 media sources, combined into a single embedding. To reference a specific media source from your text, use a placeholder in the following format: `<@name>`, where `name` matches the `name` field of a media source. Marengo 3.5 accepts images, video, and audio as media sources. Marengo 3.0 accepts images.
+     * - `audio`: An audio file. Requires Marengo 3.0.
+     * - `video`: A video file. Requires Marengo 3.0.
+     * - `image`: An image file. Requires Marengo 3.0.
+     * - `text`: Text input. Requires Marengo 3.0.
+     * - `text_image`: Text and an image. Requires Marengo 3.0.
      */
     inputType: TwelvelabsApi.embed.CreateEmbeddingsRequestInputType;
-    /** The video understanding model to use. Value: "marengo3.0". */
+    /**
+     * The embedding model to use.
+     *
+     * **Values**:
+     * - `marengo3.5`: For details about this version, see the [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5) page.
+     * - `marengo3.0`: For details about this version, see the [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0) page.
+     */
     modelName: TwelvelabsApi.embed.CreateEmbeddingsRequestModelName;
+    /**
+     * Controls the behavior of the platform when the text in your request exceeds 2,000 tokens. Requires Marengo 3.5.
+     *
+     * **Values**:
+     * - `false`: Return a `400` error.
+     * - `true`: Truncate your text to fit the limit, and set the [`usage.truncated`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#response.body.usage.truncated) field to `true` in the response.
+     */
+    autoTruncate?: boolean;
+    /**
+     * Set this parameter to `true` to receive a [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#response.body.data.embedding-uncertainty) field in the response, representing a per-dimension uncertainty vector with the same length as the `embedding` array. A higher value shows lower confidence in that dimension. Requires Marengo 3.5.
+     *
+     * Set this parameter to `true` only when your request embeds text only, or media only. Requests that combine text with media sources return a `400` error.
+     */
+    embeddingUncertainty?: boolean;
     text?: TwelvelabsApi.TextInputRequest;
     image?: TwelvelabsApi.ImageInputRequest;
     textImage?: TwelvelabsApi.TextImageInputRequest;

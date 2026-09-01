@@ -3,6 +3,6 @@
  */
 
 /**
- * Metadata for multi-input embeddings
+ * Metadata for multi-input embeddings.
  */
 export interface EmbeddingMultiInputMetadata {}

@@ -18,6 +18,7 @@ export const ResponseOutputItem: core.serialization.ObjectSchema<
     id: core.serialization.string(),
     status: ResponseStatus,
     role: ResponseOutputItemRole.optional(),
+    phase: core.serialization.string().optional(),
     content: core.serialization.list(ResponseOutputContentPart).optional(),
     name: core.serialization.string().optional(),
     callId: core.serialization.property("call_id", core.serialization.string().optional()),
@@ -31,6 +32,7 @@ export declare namespace ResponseOutputItem {
         id: string;
         status: ResponseStatus.Raw;
         role?: ResponseOutputItemRole.Raw | null;
+        phase?: string | null;
         content?: ResponseOutputContentPart.Raw[] | null;
         name?: string | null;
         call_id?: string | null;

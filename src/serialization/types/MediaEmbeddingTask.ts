@@ -9,6 +9,8 @@ import { CreatedAt } from "./CreatedAt";
 import { UpdatedAt } from "./UpdatedAt";
 import { MediaEmbeddingTaskVideoEmbedding } from "./MediaEmbeddingTaskVideoEmbedding";
 import { MediaEmbeddingTaskAudioEmbedding } from "./MediaEmbeddingTaskAudioEmbedding";
+import { MediaEmbeddingTaskDocumentEmbedding } from "./MediaEmbeddingTaskDocumentEmbedding";
+import { MediaEmbeddingTaskImageEmbedding } from "./MediaEmbeddingTaskImageEmbedding";
 
 export const MediaEmbeddingTask: core.serialization.ObjectSchema<
     serializers.MediaEmbeddingTask.Raw,
@@ -21,6 +23,11 @@ export const MediaEmbeddingTask: core.serialization.ObjectSchema<
     updatedAt: core.serialization.property("updated_at", UpdatedAt.optional()),
     videoEmbedding: core.serialization.property("video_embedding", MediaEmbeddingTaskVideoEmbedding.optional()),
     audioEmbedding: core.serialization.property("audio_embedding", MediaEmbeddingTaskAudioEmbedding.optional()),
+    documentEmbedding: core.serialization.property(
+        "document_embedding",
+        MediaEmbeddingTaskDocumentEmbedding.optional(),
+    ),
+    imageEmbedding: core.serialization.property("image_embedding", MediaEmbeddingTaskImageEmbedding.optional()),
 });
 
 export declare namespace MediaEmbeddingTask {
@@ -32,5 +39,7 @@ export declare namespace MediaEmbeddingTask {
         updated_at?: UpdatedAt.Raw | null;
         video_embedding?: MediaEmbeddingTaskVideoEmbedding.Raw | null;
         audio_embedding?: MediaEmbeddingTaskAudioEmbedding.Raw | null;
+        document_embedding?: MediaEmbeddingTaskDocumentEmbedding.Raw | null;
+        image_embedding?: MediaEmbeddingTaskImageEmbedding.Raw | null;
     }
 }

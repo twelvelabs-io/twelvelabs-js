@@ -12,12 +12,12 @@ export const AudioEmbeddingMetadata: core.serialization.ObjectSchema<
     TwelvelabsApi.AudioEmbeddingMetadata
 > = core.serialization
     .object({
-        audioEmbeddingOptions: core.serialization.property(
-            "audio_embedding_options",
+        audioEmbeddingOption: core.serialization.property(
+            "audio_embedding_option",
             core.serialization.list(core.serialization.string()).optional(),
         ),
-        audioEmbeddingScopes: core.serialization.property(
-            "audio_embedding_scopes",
+        audioEmbeddingScope: core.serialization.property(
+            "audio_embedding_scope",
             core.serialization.list(core.serialization.string()).optional(),
         ),
         duration: core.serialization.number().optional(),
@@ -28,8 +28,8 @@ export const AudioEmbeddingMetadata: core.serialization.ObjectSchema<
 
 export declare namespace AudioEmbeddingMetadata {
     export interface Raw extends BaseEmbeddingMetadata.Raw {
-        audio_embedding_options?: string[] | null;
-        audio_embedding_scopes?: string[] | null;
+        audio_embedding_option?: string[] | null;
+        audio_embedding_scope?: string[] | null;
         duration?: number | null;
         start_offset_sec?: number | null;
         end_offset_sec?: number | null;

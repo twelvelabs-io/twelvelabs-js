@@ -9,6 +9,6 @@ import * as TwelvelabsApi from "../index";
  */
 export interface TextImageInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;
-    /** The text for which you wish to create an embedding. The maximul length is 500 tokens. */
+    /** The text for which you wish to create an embedding. The maximum length is 500 tokens. */
     inputText: string;
 }

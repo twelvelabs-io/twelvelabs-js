@@ -6,6 +6,6 @@
  * This field is required if the `input_type` parameter is `text`.
  */
 export interface TextInputRequest {
-    /** The text for which you wish to create an embedding. The maximul length is 500 tokens. */
+    /** The text for which you wish to create an embedding. The maximum length is 500 tokens. */
     inputText: string;
 }

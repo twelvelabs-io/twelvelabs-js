@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * A reference file (image, audio, or video) that you upload to the platform for use in downstream workflows such as indexing, analyzing video content, and creating entities.
+ * A reusable file (image, audio, video, or document) that you upload to the platform for use in different workflows.
  */
 export interface Asset {
     /** The unique identifier of the asset. */
@@ -23,7 +23,7 @@ export interface Asset {
     /**
      * Indicates the current processing status of the asset.
      *
-     * A newly uploaded asset starts in the `processing` status and transitions asynchronously to `ready` on success or to `failed` on error, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status is `ready` before you use the asset in downstream workflows.
+     * A newly uploaded asset starts in the `processing` status and transitions asynchronously to `ready` on success or to `failed` on error, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status is `ready` before you use the asset in different workflows.
      *
      * **Values**:
      * - `processing`: The asset is not yet usable. This can mean the upload is still in progress (for example, the platform is still fetching the file from a URL, or a multipart upload has not completed), or the upload has finished and the platform is validating the file. The `technical_metadata` field is omitted from the response.
@@ -33,7 +33,7 @@ export interface Asset {
     status?: TwelvelabsApi.AssetStatus;
     /** The name of the file used to create the asset. */
     filename?: string;
-    /** The MIME type of the asset file. */
+    /** The MIME type of the asset file. For documents, this is `application/pdf`, `text/plain`, or `text/markdown`. */
     fileType?: string;
     /** The date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the asset was created. */
     createdAt?: Date;

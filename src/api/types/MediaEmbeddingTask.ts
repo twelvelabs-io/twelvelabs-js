@@ -12,7 +12,7 @@ export interface MediaEmbeddingTask {
     id?: string;
     /** The name of the video understanding model the platform used to create the embedding. */
     modelName?: string;
-    /** A string indicating the status of the emedding task. It can take one of the following values: `processing`, `ready` or `failed`. */
+    /** A string indicating the status of the embedding task. It can take one of the following values: `processing`, `ready` or `failed`. */
     status?: string;
     createdAt?: TwelvelabsApi.CreatedAt;
     updatedAt?: TwelvelabsApi.UpdatedAt;
@@ -20,4 +20,8 @@ export interface MediaEmbeddingTask {
     videoEmbedding?: TwelvelabsApi.MediaEmbeddingTaskVideoEmbedding;
     /** An object containing the metadata associated with the embedding. */
     audioEmbedding?: TwelvelabsApi.MediaEmbeddingTaskAudioEmbedding;
+    /** An object containing the metadata associated with the embedding. Present only for `document` tasks created with Marengo 3.5. */
+    documentEmbedding?: TwelvelabsApi.MediaEmbeddingTaskDocumentEmbedding;
+    /** An object containing the metadata associated with the embedding. Present only for `image` tasks created with Marengo 3.5. */
+    imageEmbedding?: TwelvelabsApi.MediaEmbeddingTaskImageEmbedding;
 }

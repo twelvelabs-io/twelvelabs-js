@@ -14,5 +14,10 @@ export interface ResponseStreamContentPartAddedEvent extends TwelvelabsApi.Respo
     outputIndex?: number;
     /** The index of the content part within the item. */
     contentIndex?: number;
+    /**
+     * The content part when it starts. No text has been generated yet, so the
+     * `annotations` array is empty. This does not mean the content has no
+     * citations. You receive them on the `response.content_part.done` event.
+     */
     part?: TwelvelabsApi.ResponseOutputContentPart;
 }

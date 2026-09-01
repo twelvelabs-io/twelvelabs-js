@@ -24,6 +24,8 @@ export interface EmbeddingTaskResponse {
     updatedAt?: TwelvelabsApi.UpdatedAt;
     /** An object containing the embedding results, or `null` otherwise. */
     data?: TwelvelabsApi.EmbeddingData[];
+    /** Token counts for the request. Only Marengo 3.5 returns this field. */
+    usage?: TwelvelabsApi.EmbeddingUsage;
     metadata?: TwelvelabsApi.EmbeddingTaskMediaMetadata;
     /** An object describing why the embedding task failed. Present only when `status` is `failed`. Omitted otherwise. */
     error?: TwelvelabsApi.EmbeddingTaskResponseError;

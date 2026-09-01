@@ -5,14 +5,13 @@
 /**
  * The type of content for the embeddings.
  *
- *
  * **Values**:
- * - `audio`: Creates embeddings for an audio file
- * - `video`: Creates embeddings for a video file
- * - `image`: Creates embeddings for an image file
- * - `text`: Creates embeddings for text input
- * - `text_image`: Creates embeddings for text and an image
- * - `multi_input`: Creates a single embedding from up to 10 images. You can optionally include text to provide context. To reference specific images in your text, use placeholders in the following format: `<@name>`, where `name` matches the `name` field of a media source
+ * - `multi_input`: Text and up to 10 media sources, combined into a single embedding. To reference a specific media source from your text, use a placeholder in the following format: `<@name>`, where `name` matches the `name` field of a media source. Marengo 3.5 accepts images, video, and audio as media sources. Marengo 3.0 accepts images.
+ * - `audio`: An audio file. Requires Marengo 3.0.
+ * - `video`: A video file. Requires Marengo 3.0.
+ * - `image`: An image file. Requires Marengo 3.0.
+ * - `text`: Text input. Requires Marengo 3.0.
+ * - `text_image`: Text and an image. Requires Marengo 3.0.
  */
 export type CreateEmbeddingsRequestInputType = "text" | "image" | "text_image" | "audio" | "video" | "multi_input";
 export const CreateEmbeddingsRequestInputType = {

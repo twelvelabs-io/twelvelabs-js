@@ -6,11 +6,15 @@
  * The type of content for the embeddings.
  *
  * **Values**:
- * - `audio`: Audio files
- * - `video`: Video content
+ * - `audio`: An audio file.
+ * - `video`: A video file.
+ * - `document`: A PDF file. Requires Marengo 3.5.
+ * - `image`: An image file. Requires Marengo 3.5.
  */
-export type CreateAsyncEmbeddingRequestInputType = "audio" | "video";
+export type CreateAsyncEmbeddingRequestInputType = "audio" | "video" | "document" | "image";
 export const CreateAsyncEmbeddingRequestInputType = {
     Audio: "audio",
     Video: "video",
+    Document: "document",
+    Image: "image",
 } as const;

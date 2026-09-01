@@ -7,5 +7,7 @@ import * as TwelvelabsApi from "../index";
 export interface EmbeddingSuccessResponse {
     /** Array of embedding results */
     data: TwelvelabsApi.EmbeddingData[];
+    /** Token counts for the request. Only Marengo 3.5 returns this field. */
+    usage?: TwelvelabsApi.EmbeddingUsage;
     metadata?: TwelvelabsApi.EmbeddingMediaMetadata;
 }

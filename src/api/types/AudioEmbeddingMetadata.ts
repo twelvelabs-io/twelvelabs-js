@@ -9,9 +9,9 @@ import * as TwelvelabsApi from "../index";
  */
 export interface AudioEmbeddingMetadata extends TwelvelabsApi.BaseEmbeddingMetadata {
     /** The type of the embedding. It can take one of the following values: ['audio'] or ['transcription']. */
-    audioEmbeddingOptions?: string[];
+    audioEmbeddingOption?: string[];
     /** The scope you've specified in the request. */
-    audioEmbeddingScopes?: string[];
+    audioEmbeddingScope?: string[];
     /** The total duration of the audio in seconds. */
     duration?: number;
     /** The start offset in seconds from the beginning of the audio where processing should begin. */

@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * A video object that contains information about the video.
  */
 export interface VideoVector {
-    /** A string representing the unique identifier of a video. The platform creates a new `video_vector` object and assigns it a unique identifier when the video has successfully been indexed. Note that video IDs are different from task IDs. */
+    /** A string representing the unique identifier of a video. The platform creates a new `video_vector` object and assigns it a unique identifier when the video has successfully been indexed. Note that video identifiers are different from task identifiers. */
     id?: string;
     /** The unique identifier of the associated asset. */
     assetId?: string;
