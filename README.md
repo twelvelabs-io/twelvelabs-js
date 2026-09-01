@@ -6,7 +6,7 @@
 
 The TwelveLabs JavaScript SDK provides a set of intuitive classes and methods that streamline platform interaction, minimizing the need for boilerplate code.
 
-> **Note**: The examples in this guide show only the required parameters. For the complete guides, see the [Search](https://docs.twelvelabs.io/docs/guides/search) and [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos) pages.
+> **Note**: The examples in this guide show only the required parameters. For the complete guides, see the [Search](https://docs.twelvelabs.io/docs/guides/search), [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos), and [Create embeddings](https://docs.twelvelabs.io/docs/guides/create-embeddings) pages.
 
 # Prerequisites
 
@@ -49,7 +49,7 @@ npm install twelvelabs-js
 
 # Use the SDK
 
-Upload your video, then follow the section for your task: search or analyze. See [our documentation](https://docs.twelvelabs.io/docs) for the complete list of features the platform provides.
+Upload your video, then follow the section for your task: search, analyze, or create embeddings. See [our documentation](https://docs.twelvelabs.io/docs) for the complete list of features the platform provides.
 
 ## Upload a video
 
@@ -316,6 +316,50 @@ console.log(result.data);
 The `client.analyze` method returns an object where the `data` field contains the complete generated text string (up to 4,096 tokens).
 
 For the complete guide, see the [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos) page.
+
+## Create embeddings
+
+Embeddings are vector representations of your content. Create them from video, audio, images, documents, and text, then use them for similarity search, classification, clustering, recommendations, or Retrieval-Augmented Generation (RAG).
+
+**Embed a query**
+
+Embed the text and media you search with. The platform processes your request synchronously and returns the embedding in the response.
+
+```js
+const response = await client.embed.v2.create({
+  inputType: "multi_input",
+  modelName: "marengo3.5",
+  multiInput: { inputText: "<YOUR_QUERY>" }
+});
+console.log(`Dimensions: ${response.data[0].embedding.length}`);
+```
+
+The `data` field contains one embedding. To combine text with images, video, and audio in a single embedding, reference a media source from your text, or request an uncertainty vector, see the [Embed a query](https://docs.twelvelabs.io/docs/guides/create-embeddings/query) guide.
+
+**Embed content at scale**
+
+Embed the files you search through. The platform processes each file asynchronously, one file per request, so poll each task until it is ready.
+
+```js
+const task = await client.embed.v2.tasks.create({
+  inputType: "video",
+  modelName: "marengo3.5",
+  video: { mediaSource: { assetId: asset.id } }
+});
+
+console.log("Waiting for the embedding task to be ready...");
+let embeddingTask = await client.embed.v2.tasks.retrieve(task.id);
+while (embeddingTask.status !== "ready" && embeddingTask.status !== "failed") {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  embeddingTask = await client.embed.v2.tasks.retrieve(task.id);
+}
+if (embeddingTask.status === "failed") {
+  throw new Error(`Embedding task failed: id=${task.id}`);
+}
+console.log(`Embeddings: ${embeddingTask.data?.length}`);
+```
+
+This example embeds a video. The method also accepts `"audio"`, `"image"`, and `"document"` for PDF files. For the request each type takes, and for segmentation and scope options, see the [Embed content at scale](https://docs.twelvelabs.io/docs/guides/create-embeddings/at-scale) guide.
 
 ## Error Handling
 
