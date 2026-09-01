@@ -47,7 +47,7 @@ export class Assets {
      *         page: 1,
      *         pageLimit: 10,
      *         assetIds: ["6298d673f1090f1100476d4c", "6298d673f1090f1100476d4d"],
-     *         assetTypes: ["image", "video"],
+     *         assetTypes: ["image", "video", "document"],
      *         filename: "meeting"
      *     })
      */
@@ -102,8 +102,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.3",
-                        "User-Agent": "twelvelabs-js/1.3.3",
+                        "X-Fern-SDK-Version": "1.3.4",
+                        "User-Agent": "twelvelabs-js/1.3.4",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -172,11 +172,15 @@ export class Assets {
     }
 
     /**
-     * This method creates an asset by uploading a file to the platform. Assets are media files that you can use in downstream workflows, including indexing, analyzing video content, and creating entities.
+     * This method creates an asset by uploading a file to the platform. Assets are reusable files that you can use in different workflows.
      *
-     * The platform processes uploads asynchronously. This method returns immediately with the asset in the `processing` status, which then transitions to `ready` on success or to `failed` when the file is invalid or corrupt, typically within a few seconds to a few minutes. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it. This applies to every upload, including small files.
+     * The platform processes uploads asynchronously. This method returns immediately with the asset in the `processing` status, which then transitions to the `ready` status on success or to the `failed` status when the file is invalid, corrupt, or unreadable. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it. This applies to every upload, including small files.
      *
-     * **Supported content**: Video, audio, and images.
+     * **Supported content**:
+     * - Video, audio, and image files.
+     * - PDF, text, and Markdown files.
+     *
+     * Filename extension matching is case-insensitive; for example, `notes.MD` and `notes.md` are treated the same. The platform rejects unsupported formats. For documents, it also rejects files whose extensions don't match the detected content.
      *
      * **Upload methods**:
      * - **Local file**: Set the `method` parameter to `direct` and use the `file` parameter to specify the file.
@@ -186,14 +190,16 @@ export class Assets {
      * - **Video and audio, local files**: Up to 200 MB
      * - **Video and audio, public URLs**: Up to 4 GB
      * - **Images**: Up to 32 MB
+     * - **Documents, local files**: Up to 200 MB
+     * - **Documents, public URLs**: Up to 512 MB
      *
-     * Asset creation does not enforce a maximum duration. Each model applies its own file size and duration limits. For details, see the requirements below.
+     * Asset creation does not enforce a maximum duration for video and audio files. Each model applies its own file size and duration limits. For details, see the requirements below.
      *
      * **Additional requirements** depend on your workflow:
-     * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#video-file-requirements)
+     * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements)
      * - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
-     * - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo#image-file-requirements)
-     * - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo#input-requirements)
+     * - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements)
+     * - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements)
      *
      * <Note title="Note">
      * This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
@@ -261,8 +267,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -325,6 +331,7 @@ export class Assets {
      * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
      *
      * @example
      *     await client.assets.retrieve("6298d673f1090f1100476d4c")
@@ -351,8 +358,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -380,6 +387,8 @@ export class Assets {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -457,8 +466,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -567,8 +576,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -676,8 +685,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -763,8 +772,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -864,8 +873,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.3",
-                "User-Agent": "twelvelabs-js/1.3.3",
+                "X-Fern-SDK-Version": "1.3.4",
+                "User-Agent": "twelvelabs-js/1.3.4",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

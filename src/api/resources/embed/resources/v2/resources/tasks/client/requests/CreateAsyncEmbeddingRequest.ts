@@ -8,6 +8,113 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  * @example
  *     {
  *         inputType: "audio",
+ *         modelName: "marengo3.5",
+ *         audio: {
+ *             mediaSource: {
+ *                 url: "https://user-bucket.com/audio/long-audio.wav"
+ *             },
+ *             startSec: 0,
+ *             endSec: 3600,
+ *             segmentation: {
+ *                 temporal: {
+ *                     strategy: "fixed",
+ *                     fixed: {
+ *                         durationSec: 1
+ *                     }
+ *                 }
+ *             },
+ *             embeddingOption: ["audio"],
+ *             embeddingScope: ["clip", "asset"]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "video",
+ *         modelName: "marengo3.5",
+ *         video: {
+ *             mediaSource: {
+ *                 url: "https://user-bucket.com/video/long-video.mp4"
+ *             },
+ *             startSec: 0,
+ *             endSec: 7200,
+ *             segmentation: {
+ *                 temporal: {
+ *                     strategy: "dynamic",
+ *                     dynamic: {
+ *                         minDurationSec: 1
+ *                     }
+ *                 }
+ *             },
+ *             embeddingOption: ["visual", "audio"],
+ *             embeddingScope: ["clip", "asset"]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "video",
+ *         modelName: "marengo3.5",
+ *         video: {
+ *             mediaSource: {
+ *                 url: "https://user-bucket.com/video/long-video.mp4"
+ *             },
+ *             embeddingOption: ["visual", "audio"],
+ *             embeddingScope: ["clip", "asset"],
+ *             embeddingType: ["separate_embedding", "fused_embedding"]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "video",
+ *         modelName: "marengo3.5",
+ *         embeddingUncertainty: true,
+ *         video: {
+ *             mediaSource: {
+ *                 assetId: "vid_nba_lakers_celtics_2026_03_14"
+ *             },
+ *             embeddingOption: ["visual", "audio"],
+ *             embeddingScope: ["clip"],
+ *             embeddingType: ["separate_embedding", "fused_embedding"],
+ *             timeBasedMetadata: [{
+ *                     start: 42.3,
+ *                     end: 42.3,
+ *                     text: "Shot made. LeBron James dunk. Assist: D'Angelo Russell. +2 LAL. 88-84."
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "document",
+ *         modelName: "marengo3.5",
+ *         embeddingUncertainty: true,
+ *         document: {
+ *             mediaSource: {
+ *                 assetId: "doc_annual_report_2025"
+ *             },
+ *             embeddingOption: ["visual"],
+ *             embeddingType: ["separate_embedding"],
+ *             embeddingScope: ["local"]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "image",
+ *         modelName: "marengo3.5",
+ *         embeddingUncertainty: true,
+ *         image: {
+ *             mediaSource: {
+ *                 assetId: "img_brand_logo_primary"
+ *             }
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         inputType: "audio",
  *         modelName: "marengo3.0",
  *         audio: {
  *             mediaSource: {
@@ -46,32 +153,34 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *             embeddingScope: ["clip", "asset"]
  *         }
  *     }
- *
- * @example
- *     {
- *         inputType: "video",
- *         modelName: "marengo3.0",
- *         video: {
- *             mediaSource: {
- *                 url: "https://user-bucket.com/video/long-video.mp4"
- *             },
- *             embeddingOption: ["visual", "audio"],
- *             embeddingScope: ["clip", "asset"],
- *             embeddingType: ["separate_embedding", "fused_embedding"]
- *         }
- *     }
  */
 export interface CreateAsyncEmbeddingRequest {
     /**
      * The type of content for the embeddings.
      *
      * **Values**:
-     * - `audio`: Audio files
-     * - `video`: Video content
+     * - `audio`: An audio file.
+     * - `video`: A video file.
+     * - `document`: A PDF file. Requires Marengo 3.5.
+     * - `image`: An image file. Requires Marengo 3.5.
      */
     inputType: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestInputType;
-    /** The model you wish to use. Value: `"marengo3.0"`. */
+    /**
+     * The embedding model to use.
+     *
+     * **Values**:
+     * - `marengo3.5`: For details about this version, see the [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5) page.
+     * - `marengo3.0`: For details about this version, see the [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0) page.
+     */
     modelName: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestModelName;
-    audio?: TwelvelabsApi.AudioInputRequest;
-    video?: TwelvelabsApi.VideoInputRequest;
+    /**
+     * Set this parameter to `true` to receive a [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.data.embedding-uncertainty) field in the response, representing a per-dimension uncertainty vector with the same length as the `embedding` array. A higher value shows lower confidence in that dimension. Requires Marengo 3.5.
+     *
+     * To use this parameter with audio or video input, exclude the `asset` scope from the `embedding_scope` field. For example, set `video.embedding_scope` to `["clip"]`. The field defaults to `["clip", "asset"]`, so a request that keeps the default returns a `400` error. This restriction does not apply to `document` and `image` input.
+     */
+    embeddingUncertainty?: boolean;
+    audio?: TwelvelabsApi.AsyncAudioInputRequest;
+    video?: TwelvelabsApi.AsyncVideoInputRequest;
+    document?: TwelvelabsApi.AsyncDocumentInputRequest;
+    image?: TwelvelabsApi.AsyncImageInputRequest;
 }

@@ -19,7 +19,33 @@ export interface ResponseObject {
     sessionId?: string;
     /** The object type. Always `response`. */
     type?: TwelvelabsApi.ResponseObjectType;
+    /**
+     * The object type, always `response`. Carries the same value as `type`, which
+     * predates it and which the Open Responses specification does not name.
+     *
+     * Both fields are permanent; neither will be removed. Read whichever your client
+     * already uses.
+     *
+     * This is the only object with an `object` field. Output items, annotations and
+     * stream events are keyed on `type` alone, so do not expect `object` one level
+     * down.
+     */
+    object?: TwelvelabsApi.ResponseObjectObject;
     status?: TwelvelabsApi.ResponseStatus;
+    /**
+     * Why the response stopped before the answer was whole. Always sent. Non-null only
+     * when `status` is `incomplete`; `null` on every other status, including
+     * `in_progress` and `failed` — so `null` means "this answer was not truncated",
+     * not "this platform does not report the reason".
+     *
+     * A `null` on `status: failed` is not a claim that nothing went wrong. This field
+     * reports truncation only; a failure is reported by the status itself.
+     *
+     * Values may be added to `reason` as new ways of truncating an answer are
+     * reported. Treat an unrecognized `reason` as "truncated for a reason this client
+     * does not know" rather than as an error.
+     */
+    incompleteDetails?: TwelvelabsApi.ResponseIncompleteDetails;
     /**
      * The response output items. By default, only the final message is included.
      * Set `include` to `["intermediate_outputs"]` in the request to receive function call items.

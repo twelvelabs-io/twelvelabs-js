@@ -3,9 +3,14 @@
  */
 
 /**
- * The video understanding model to use. Value: "marengo3.0".
+ * The embedding model to use.
+ *
+ * **Values**:
+ * - `marengo3.5`: For details about this version, see the [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5) page.
+ * - `marengo3.0`: For details about this version, see the [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0) page.
  */
-export type CreateEmbeddingsRequestModelName = "marengo3.0";
+export type CreateEmbeddingsRequestModelName = "marengo3.0" | "marengo3.5";
 export const CreateEmbeddingsRequestModelName = {
     Marengo30: "marengo3.0",
+    Marengo35: "marengo3.5",
 } as const;

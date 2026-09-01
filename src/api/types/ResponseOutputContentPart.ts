@@ -9,7 +9,24 @@ import * as TwelvelabsApi from "../index";
  */
 export interface ResponseOutputContentPart {
     /** The type of content part. */
-    type?: TwelvelabsApi.ResponseOutputContentPartType;
-    /** The text content. */
-    text?: string;
+    type: TwelvelabsApi.ResponseOutputContentPartType;
+    /**
+     * The text content. It may contain citation markers, each a number in square
+     * brackets such as `[1]`. The `start_index` and `end_index` fields of a citation
+     * indicate the location of its marker. To resolve a marker, find the citation at
+     * that location. Not every marker has a matching citation; when a marker has
+     * none, treat it as a citation you cannot display, not as an error.
+     */
+    text: string;
+    /**
+     * Citations that tie spans of the `text` field to what they cite, in order of
+     * appearance. Always present, and may be empty.
+     *
+     * The `start_index` and `end_index` fields locate the marker within the
+     * `text` field of this content part, not within the whole response.
+     *
+     * Different citations can cover the same or overlapping video ranges. Each
+     * marker in the `text` field still resolves to at most one citation.
+     */
+    annotations: TwelvelabsApi.ResponseAnnotation[];
 }

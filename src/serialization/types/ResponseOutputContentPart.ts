@@ -6,18 +6,21 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { ResponseOutputContentPartType } from "./ResponseOutputContentPartType";
+import { ResponseAnnotation } from "./ResponseAnnotation";
 
 export const ResponseOutputContentPart: core.serialization.ObjectSchema<
     serializers.ResponseOutputContentPart.Raw,
     TwelvelabsApi.ResponseOutputContentPart
 > = core.serialization.object({
-    type: ResponseOutputContentPartType.optional(),
-    text: core.serialization.string().optional(),
+    type: ResponseOutputContentPartType,
+    text: core.serialization.string(),
+    annotations: core.serialization.list(ResponseAnnotation),
 });
 
 export declare namespace ResponseOutputContentPart {
     export interface Raw {
-        type?: ResponseOutputContentPartType.Raw | null;
-        text?: string | null;
+        type: ResponseOutputContentPartType.Raw;
+        text: string;
+        annotations: ResponseAnnotation.Raw[];
     }
 }

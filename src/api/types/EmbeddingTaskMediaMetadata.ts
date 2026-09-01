@@ -8,7 +8,10 @@ import * as TwelvelabsApi from "../index";
  * Metadata for the media input.
  */
 export type EmbeddingTaskMediaMetadata =
-    TwelvelabsApi.EmbeddingTaskMediaMetadata.Audio | TwelvelabsApi.EmbeddingTaskMediaMetadata.Video;
+    | TwelvelabsApi.EmbeddingTaskMediaMetadata.Audio
+    | TwelvelabsApi.EmbeddingTaskMediaMetadata.Video
+    | TwelvelabsApi.EmbeddingTaskMediaMetadata.Document
+    | TwelvelabsApi.EmbeddingTaskMediaMetadata.Image;
 
 export namespace EmbeddingTaskMediaMetadata {
     export interface Audio extends TwelvelabsApi.EmbeddingAudioMetadata {
@@ -17,5 +20,13 @@ export namespace EmbeddingTaskMediaMetadata {
 
     export interface Video extends TwelvelabsApi.EmbeddingVideoMetadata {
         inputType: "video";
+    }
+
+    export interface Document extends TwelvelabsApi.AsyncDocumentMetadata {
+        inputType: "document";
+    }
+
+    export interface Image extends TwelvelabsApi.AsyncImageMetadata {
+        inputType: "image";
     }
 }

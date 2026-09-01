@@ -14,5 +14,10 @@ export interface ResponseStreamContentPartDoneEvent extends TwelvelabsApi.Respon
     outputIndex?: number;
     /** The index of the content part. */
     contentIndex?: number;
+    /**
+     * The completed content part. The `annotations` array is populated.
+     * Citations do not stream in with the text. You receive all of them on this
+     * event, when the content part is complete.
+     */
     part?: TwelvelabsApi.ResponseOutputContentPart;
 }

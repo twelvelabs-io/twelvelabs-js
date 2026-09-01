@@ -17,6 +17,10 @@ export const VideoEmbeddingMetadata: core.serialization.ObjectSchema<
             "video_embedding_scope",
             core.serialization.list(core.serialization.string()).optional(),
         ),
+        videoEmbeddingOption: core.serialization.property(
+            "video_embedding_option",
+            core.serialization.list(core.serialization.string()).optional(),
+        ),
         duration: core.serialization.number().optional(),
     })
     .extend(BaseEmbeddingMetadata);
@@ -25,6 +29,7 @@ export declare namespace VideoEmbeddingMetadata {
     export interface Raw extends BaseEmbeddingMetadata.Raw {
         video_clip_length?: number | null;
         video_embedding_scope?: string[] | null;
+        video_embedding_option?: string[] | null;
         duration?: number | null;
     }
 }

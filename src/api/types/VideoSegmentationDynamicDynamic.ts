@@ -11,6 +11,9 @@ export interface VideoSegmentationDynamicDynamic {
      *
      * The platform divides the video into segments that are at least this long. Segments adapt to scene changes and content boundaries and may be longer than the minimum.
      *
+     * **Min**: `2`.
+     * **Max**: `5`.
+     *
      * **Example**: With `min_duration_sec: 3`, segments might be: [0-3.2s], [3.2-7.8s], [7.8-12.1s]
      */
     minDurationSec: number;

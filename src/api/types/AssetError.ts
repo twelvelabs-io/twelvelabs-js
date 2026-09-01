@@ -3,7 +3,7 @@
  */
 
 /**
- * An object that describes why an asset failed processing.
+ * An object that describes why the processing failed.
  */
 export interface AssetError {
     /** A human-readable message describing the failure, such as a corrupted or unsupported file, a file the platform could not access, or a video that failed a playability check. The exact text is not part of the contract. Do not parse it. */

@@ -5,23 +5,23 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Metadata for video embeddings
+ * Metadata for video embeddings.
  */
 export interface EmbeddingVideoMetadata {
-    /** The publicly accessible URL for the video file */
+    /** The publicly accessible URL for the video file. */
     inputUrl?: string;
-    /** The name of the video file */
+    /** The name of the video file. */
     inputFilename?: string;
     /** Length of each video clip in seconds. Only available for fixed segmentation. */
     clipLength?: number;
-    /** Video embedding scopes */
+    /** The `embedding_scope` values used to generate the embedding. */
     embeddingScopes: TwelvelabsApi.EmbeddingVideoMetadataEmbeddingScopesItem[];
-    /** Video embedding options used for generating the embedding */
+    /** The `embedding_option` values used to generate the embedding. */
     embeddingOptions: string[];
-    /** Duration of the video in seconds */
+    /** The duration of the video in seconds. */
     duration: number;
-    /** Start offset in seconds */
+    /** The start offset in seconds. */
     startOffsetSec?: number;
-    /** End offset in seconds */
+    /** The end offset in seconds. */
     endOffsetSec?: number;
 }

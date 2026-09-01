@@ -6,7 +6,9 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { ResponseObjectType } from "./ResponseObjectType";
+import { ResponseObjectObject } from "./ResponseObjectObject";
 import { ResponseStatus } from "./ResponseStatus";
+import { ResponseIncompleteDetails } from "./ResponseIncompleteDetails";
 import { ResponseOutputItem } from "./ResponseOutputItem";
 import { ResponseUsage } from "./ResponseUsage";
 
@@ -18,7 +20,9 @@ export const ResponseObject: core.serialization.ObjectSchema<
     knowledgeStoreId: core.serialization.property("knowledge_store_id", core.serialization.string().optional()),
     sessionId: core.serialization.property("session_id", core.serialization.string().optional()),
     type: ResponseObjectType.optional(),
+    object: ResponseObjectObject.optional(),
     status: ResponseStatus.optional(),
+    incompleteDetails: core.serialization.property("incomplete_details", ResponseIncompleteDetails.optional()),
     output: core.serialization.list(ResponseOutputItem).optional(),
     usage: ResponseUsage.optional(),
     createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
@@ -30,7 +34,9 @@ export declare namespace ResponseObject {
         knowledge_store_id?: string | null;
         session_id?: string | null;
         type?: ResponseObjectType.Raw | null;
+        object?: ResponseObjectObject.Raw | null;
         status?: ResponseStatus.Raw | null;
+        incomplete_details?: ResponseIncompleteDetails.Raw | null;
         output?: ResponseOutputItem.Raw[] | null;
         usage?: ResponseUsage.Raw | null;
         created_at?: string | null;

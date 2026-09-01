@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const EmbeddingDataEmbeddingOption: core.serialization.Schema<
     serializers.EmbeddingDataEmbeddingOption.Raw,
     TwelvelabsApi.EmbeddingDataEmbeddingOption
-> = core.serialization.enum_(["visual", "audio", "transcription", "fused"]);
+> = core.serialization.enum_(["visual", "audio", "transcription", "text", "fused"]);
 
 export declare namespace EmbeddingDataEmbeddingOption {
-    export type Raw = "visual" | "audio" | "transcription" | "fused";
+    export type Raw = "visual" | "audio" | "transcription" | "text" | "fused";
 }

@@ -5,16 +5,16 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * An asset with additional processing details such as HLS streaming and thumbnail information.
+ * An asset with additional processing details such as HLS streaming for video and audio assets, thumbnail information, and technical metadata.
  */
 export interface AssetDetail extends TwelvelabsApi.Asset {
     hls?: TwelvelabsApi.AssetHls;
     thumbnail?: TwelvelabsApi.AssetThumbnail;
     technicalMetadata?: TwelvelabsApi.TechnicalMetadata;
-    /** The file size of the asset in bytes. The platform finalizes this value when the asset reaches the `ready` status. */
+    /** The file size of the asset in bytes. The platform sets this value when the asset reaches the `ready` status. */
     size?: number;
-    /** The duration of the asset in seconds. Only present for video and audio assets; absent for images. The platform finalizes this value when the asset reaches the `ready` status. */
+    /** The duration of the asset in seconds. Only present for video and audio assets; absent for images and documents. The platform sets this value when the asset reaches the `ready` status. */
     duration?: number;
-    /** The reason the asset failed. The platform returns this field only when `status` is `failed`. */
+    /** The reason the processing failed. The platform returns this field only when `status` is `failed`. */
     error?: TwelvelabsApi.AssetError;
 }

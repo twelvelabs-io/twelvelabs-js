@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingData } from "./EmbeddingData";
+import { EmbeddingUsage } from "./EmbeddingUsage";
 import { EmbeddingMediaMetadata } from "./EmbeddingMediaMetadata";
 
 export const EmbeddingSuccessResponse: core.serialization.ObjectSchema<
@@ -13,12 +14,14 @@ export const EmbeddingSuccessResponse: core.serialization.ObjectSchema<
     TwelvelabsApi.EmbeddingSuccessResponse
 > = core.serialization.object({
     data: core.serialization.list(EmbeddingData),
+    usage: EmbeddingUsage.optional(),
     metadata: EmbeddingMediaMetadata.optional(),
 });
 
 export declare namespace EmbeddingSuccessResponse {
     export interface Raw {
         data: EmbeddingData.Raw[];
+        usage?: EmbeddingUsage.Raw | null;
         metadata?: EmbeddingMediaMetadata.Raw | null;
     }
 }

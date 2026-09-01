@@ -5,18 +5,18 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Technical metadata read from the media file of the asset, covering the container, the individual video and audio streams, image properties, and derived attributes.
+ * Technical metadata read from the source file of the asset, covering the container, video and audio streams, image properties, document properties, and derived attributes.
  *
- * The platform populates this object asynchronously after the upload completes. It is omitted from the response while the status of the asset is `processing`, and it may be partially populated when the status is `failed`. A field is absent when it does not apply to the media type of the asset, or when the source file did not carry the corresponding information.
+ * The platform populates this object asynchronously after the upload completes. It is omitted from the response while the status of the asset is `processing`, and it may be partially populated when the status is `failed`. A field is absent when it does not apply to the type of the asset or when the source file did not contain the corresponding information.
  */
 export interface TechnicalMetadata {
-    /** The size of the source media file in bytes. */
+    /** The size of the source file in bytes. */
     fileSizeBytes?: number;
-    /** The MIME type detected for the source media file. */
+    /** The MIME type detected for the source file. */
     fileMimeType?: string;
-    /** The container format of the source media file. When a container maps to several format names, the platform reports them as a comma-separated list. */
+    /** The container format of the source file. When a container maps to several format names, the platform reports them as a comma-separated list. */
     fileContainerFormat?: string;
-    /** The creation time recorded in the media container, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when present. */
+    /** The creation time recorded in the source file container, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when present. */
     containerCreationTime?: Date;
     /** The video streams contained in the media file. */
     videoStreams?: TwelvelabsApi.VideoStream[];
@@ -80,4 +80,34 @@ export interface TechnicalMetadata {
     geospatialLongitude?: number;
     /** The GPS altitude embedded in the source media, in meters. Present only when the source media carries location metadata. */
     geospatialAltitudeMeters?: number;
+    /** The number of pages in the PDF file. */
+    documentPageCount?: number;
+    /** The PDF version specified in the file. */
+    documentPdfVersion?: string;
+    /** The width of the first page, in points. */
+    documentPageWidthPt?: number;
+    /** The height of the first page, in points. */
+    documentPageHeightPt?: number;
+    /** Whether the PDF file is tagged for accessibility. An explicit `false` is meaningful. */
+    documentIsTagged?: boolean;
+    /** Whether the PDF file is encrypted. An explicit `false` is meaningful. */
+    documentIsEncrypted?: boolean;
+    /** The language specified in the PDF file, when present. */
+    documentLanguage?: string;
+    /** The title from the PDF metadata, when present. */
+    documentTitle?: string;
+    /** The author from the PDF metadata, when present. */
+    documentAuthor?: string;
+    /** The subject from the PDF metadata, when present. */
+    documentSubject?: string;
+    /** The keywords from the PDF metadata, when present. */
+    documentKeywords?: string;
+    /** The application that created the PDF file, when present. */
+    documentCreatorTool?: string;
+    /** The application that produced the PDF file, when present. */
+    documentProducer?: string;
+    /** The normalized creation date from the PDF file, in RFC 3339 format, when present. */
+    documentCreationDate?: Date;
+    /** The normalized modification date from the PDF file, in RFC 3339 format, when present. */
+    documentModificationDate?: Date;
 }

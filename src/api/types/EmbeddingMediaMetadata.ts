@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Metadata for the media input. Available for image, text_image, audio, video, and multi_input inputs.
+ * Metadata for the media input. Available for the `image`, `text_image`, `audio`, `video`, and `multi_input` input types.
  */
 export type EmbeddingMediaMetadata =
     | TwelvelabsApi.EmbeddingMediaMetadata.Image

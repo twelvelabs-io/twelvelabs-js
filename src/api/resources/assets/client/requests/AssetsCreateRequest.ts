@@ -10,6 +10,11 @@ import * as fs from "fs";
  *     {
  *         method: "direct"
  *     }
+ *
+ * @example
+ *     {
+ *         method: "direct"
+ *     }
  */
 export interface AssetsCreateRequest {
     /** Specifies the upload method for the asset. Use `direct` to upload a local file or `url` for a publicly accessible URL. */
@@ -18,19 +23,21 @@ export interface AssetsCreateRequest {
     /**
      * Specify this parameter to upload a file from a publicly accessible URL. This parameter is required when `method` is set to `url`.
      *
-     * Public video and audio URLs support up to 4 GB. Image URLs support up to 32 MB.
+     * Public video and audio URLs support up to 4 GB. Image URLs support up to 32 MB. Document URLs support up to 512 MB.
      */
     url?: string;
-    /** The optional filename of the asset. If not provided, the platform will determine the filename from the file or URL. */
+    /** The filename of the asset. If you provide a filename, the platform preserves it. If you omit it, the platform determines one from the file or URL. */
     filename?: string;
     /**
-     * When set to `true`, the platform generates an HLS playlist and segments for streaming. Applicable to video and audio assets only.
+     * When set to `true`, the platform generates an HLS playlist and segments for streaming. Applicable to video and audio assets only. The platform ignores this flag for other asset types.
      *
      * **Default**: `false`.
      */
     enableHls?: boolean;
     /**
      * When set to `true`, the platform generates thumbnail images from the uploaded content.
+     *
+     * For PDF files, the platform generates a representative thumbnail from the first page. Text and Markdown files do not produce thumbnails; the platform ignores this flag for them.
      *
      * **Default**: `false`.
      */

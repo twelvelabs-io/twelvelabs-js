@@ -9,6 +9,7 @@ import { EmbeddingTaskResponseStatus } from "./EmbeddingTaskResponseStatus";
 import { CreatedAt } from "./CreatedAt";
 import { UpdatedAt } from "./UpdatedAt";
 import { EmbeddingData } from "./EmbeddingData";
+import { EmbeddingUsage } from "./EmbeddingUsage";
 import { EmbeddingTaskMediaMetadata } from "./EmbeddingTaskMediaMetadata";
 import { EmbeddingTaskResponseError } from "./EmbeddingTaskResponseError";
 
@@ -21,6 +22,7 @@ export const EmbeddingTaskResponse: core.serialization.ObjectSchema<
     createdAt: core.serialization.property("created_at", CreatedAt.optional()),
     updatedAt: core.serialization.property("updated_at", UpdatedAt.optional()),
     data: core.serialization.list(EmbeddingData).optional(),
+    usage: EmbeddingUsage.optional(),
     metadata: EmbeddingTaskMediaMetadata.optional(),
     error: EmbeddingTaskResponseError.optional(),
 });
@@ -32,6 +34,7 @@ export declare namespace EmbeddingTaskResponse {
         created_at?: CreatedAt.Raw | null;
         updated_at?: UpdatedAt.Raw | null;
         data?: EmbeddingData.Raw[] | null;
+        usage?: EmbeddingUsage.Raw | null;
         metadata?: EmbeddingTaskMediaMetadata.Raw | null;
         error?: EmbeddingTaskResponseError.Raw | null;
     }

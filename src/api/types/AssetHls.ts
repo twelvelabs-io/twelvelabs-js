@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * HLS streaming details for the asset. Present only when HLS generation has been requested. Omitted otherwise.
+ * HLS streaming details for video and audio assets. Present only when HLS generation has been requested.
  */
 export interface AssetHls {
     /** The URL of the HLS manifest file for streaming. Only present when the status of the HLS stream is `ready`. */

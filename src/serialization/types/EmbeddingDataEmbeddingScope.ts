@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const EmbeddingDataEmbeddingScope: core.serialization.Schema<
     serializers.EmbeddingDataEmbeddingScope.Raw,
     TwelvelabsApi.EmbeddingDataEmbeddingScope
-> = core.serialization.enum_(["clip", "asset"]);
+> = core.serialization.enum_(["clip", "page", "asset"]);
 
 export declare namespace EmbeddingDataEmbeddingScope {
-    export type Raw = "clip" | "asset";
+    export type Raw = "clip" | "page" | "asset";
 }

@@ -5,21 +5,21 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Metadata for audio embeddings
+ * Metadata for audio embeddings.
  */
 export interface EmbeddingAudioMetadata {
-    /** The publicly accessible URL for the audio file */
+    /** The publicly accessible URL for the audio file. */
     inputUrl?: string;
-    /** The name of the audio file */
+    /** The name of the audio file. */
     inputFilename?: string;
-    /** Audio embedding options used for generating the embedding */
+    /** The `embedding_option` values used to generate the embedding. */
     embeddingOptions: string[];
-    /** Audio embedding scopes */
+    /** The `embedding_scope` values used to generate the embedding. */
     embeddingScopes: TwelvelabsApi.EmbeddingAudioMetadataEmbeddingScopesItem[];
-    /** Duration of the audio in seconds */
+    /** The duration of the audio in seconds. */
     duration: number;
-    /** Start offset in seconds */
+    /** The start offset in seconds. */
     startOffsetSec?: number;
-    /** End offset in seconds */
+    /** The end offset in seconds. */
     endOffsetSec?: number;
 }

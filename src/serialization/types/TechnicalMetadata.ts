@@ -50,6 +50,27 @@ export const TechnicalMetadata: core.serialization.ObjectSchema<
         "geospatial_altitude_meters",
         core.serialization.number().optional(),
     ),
+    documentPageCount: core.serialization.property("document_page_count", core.serialization.number().optional()),
+    documentPdfVersion: core.serialization.property("document_pdf_version", core.serialization.string().optional()),
+    documentPageWidthPt: core.serialization.property("document_page_width_pt", core.serialization.number().optional()),
+    documentPageHeightPt: core.serialization.property(
+        "document_page_height_pt",
+        core.serialization.number().optional(),
+    ),
+    documentIsTagged: core.serialization.property("document_is_tagged", core.serialization.boolean().optional()),
+    documentIsEncrypted: core.serialization.property("document_is_encrypted", core.serialization.boolean().optional()),
+    documentLanguage: core.serialization.property("document_language", core.serialization.string().optional()),
+    documentTitle: core.serialization.property("document_title", core.serialization.string().optional()),
+    documentAuthor: core.serialization.property("document_author", core.serialization.string().optional()),
+    documentSubject: core.serialization.property("document_subject", core.serialization.string().optional()),
+    documentKeywords: core.serialization.property("document_keywords", core.serialization.string().optional()),
+    documentCreatorTool: core.serialization.property("document_creator_tool", core.serialization.string().optional()),
+    documentProducer: core.serialization.property("document_producer", core.serialization.string().optional()),
+    documentCreationDate: core.serialization.property("document_creation_date", core.serialization.date().optional()),
+    documentModificationDate: core.serialization.property(
+        "document_modification_date",
+        core.serialization.date().optional(),
+    ),
 });
 
 export declare namespace TechnicalMetadata {
@@ -89,5 +110,20 @@ export declare namespace TechnicalMetadata {
         geospatial_latitude?: number | null;
         geospatial_longitude?: number | null;
         geospatial_altitude_meters?: number | null;
+        document_page_count?: number | null;
+        document_pdf_version?: string | null;
+        document_page_width_pt?: number | null;
+        document_page_height_pt?: number | null;
+        document_is_tagged?: boolean | null;
+        document_is_encrypted?: boolean | null;
+        document_language?: string | null;
+        document_title?: string | null;
+        document_author?: string | null;
+        document_subject?: string | null;
+        document_keywords?: string | null;
+        document_creator_tool?: string | null;
+        document_producer?: string | null;
+        document_creation_date?: string | null;
+        document_modification_date?: string | null;
     }
 }

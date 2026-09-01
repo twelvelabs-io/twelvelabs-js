@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const EmbeddingAudioMetadataEmbeddingScopesItem: core.serialization.Schema<
     serializers.EmbeddingAudioMetadataEmbeddingScopesItem.Raw,
     TwelvelabsApi.EmbeddingAudioMetadataEmbeddingScopesItem
-> = core.serialization.enum_(["clip", "asset"]);
+> = core.serialization.enum_(["clip", "local", "asset"]);
 
 export declare namespace EmbeddingAudioMetadataEmbeddingScopesItem {
-    export type Raw = "clip" | "asset";
+    export type Raw = "clip" | "local" | "asset";
 }

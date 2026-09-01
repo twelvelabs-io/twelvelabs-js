@@ -10,28 +10,38 @@ import * as TwelvelabsApi from "../index";
 export interface EmbeddingData {
     /** The embedding vector for the content. */
     embedding: number[];
+    /** A per-dimension uncertainty vector with the same length as the `embedding` array. A higher value shows lower confidence in that dimension. Present when the request sets [`embedding_uncertainty: true`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#request.body.embedding-uncertainty). Only Marengo 3.5 returns this field. */
+    embeddingUncertainty?: number[];
     /**
      * The modality used to generate this embedding.
      *
-     *   **Values**:
-     *  - `visual`: Embedding based on visual content (video only)
-     *  - `audio`: Embedding based on audio content
-     *  - `transcription`: Embedding based on transcribed speech
-     *  - `fused`: Embedding based on a combination of the modalities specified in the request. The platform returns this embedding only for video and audio content, and only when the `embedding_type` parameter in the request includes `fused_embedding`.
-     *  - `null`: For text and image embeddings
+     * **Values**:
+     * - `visual`: Embedding based on visual content (a video, a page of a PDF file, or an image embedded asynchronously).
+     * - `audio`: Embedding based on audio content.
+     * - `text`: The platform does not return this value.
+     * - `transcription`: Embedding based on transcribed speech. Returned only for content embedded with Marengo 3.0.
+     * - `fused`: Embedding based on a combination of the modalities specified in the request. The platform returns this embedding only for video and audio input, and only when the `embedding_type` parameter includes the `fused_embedding` value.
+     * - `null`: For text embeddings and images embedded synchronously.
      */
     embeddingOption?: TwelvelabsApi.EmbeddingDataEmbeddingOption;
     /**
      * The scope for which the embedding was generated.
      *
      * **Values**:
-     * - `clip`: Embedding for a segment
-     * - `asset`: Embedding for the entire file. Use this scope for videos up to 10-30 seconds to maintain optimal performance.
-     * - `null`: For text and image embeddings
+     * - `clip`: Embedding for a segment. For video and audio input, one embedding per detected segment.
+     * - `page`: Embedding for one page of a document. The platform returns this value only for PDF files embedded asynchronously.
+     * - `asset`: Embedding for the entire file. For video and audio input, use this scope for content up to 10-30 seconds to maintain optimal performance.
+     * - `null`: For text embeddings and images embedded synchronously.
+     *
+     * When you request the `local` scope, the platform returns `clip` for audio and video, and `page` for PDF files. For audio, video, and document input, the `metadata.embedding_scopes` field contains the scopes you requested.
      */
     embeddingScope?: TwelvelabsApi.EmbeddingDataEmbeddingScope;
     /** The start time in seconds for this segment. This field is `null` for text and image embeddings. */
     startSec?: number;
     /** The end time in seconds for this segment. This field is `null` for text and image embeddings. */
     endSec?: number;
+    /** The first page this embedding covers, counting from 1. The platform returns this field only for page-level embeddings of a PDF file, and `null` in every other case. */
+    startPageNumber?: number;
+    /** The last page this embedding covers, counting from 1 and including that page. This field matches the `start_page_number` field when the embedding covers a single page. The platform returns this field only for page-level embeddings of a PDF file, and `null` in every other case. */
+    endPageNumber?: number;
 }

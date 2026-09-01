@@ -7,6 +7,8 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingAudioMetadata } from "./EmbeddingAudioMetadata";
 import { EmbeddingVideoMetadata } from "./EmbeddingVideoMetadata";
+import { AsyncDocumentMetadata } from "./AsyncDocumentMetadata";
+import { AsyncImageMetadata } from "./AsyncImageMetadata";
 
 export const EmbeddingTaskMediaMetadata: core.serialization.Schema<
     serializers.EmbeddingTaskMediaMetadata.Raw,
@@ -15,6 +17,8 @@ export const EmbeddingTaskMediaMetadata: core.serialization.Schema<
     .union(core.serialization.discriminant("inputType", "input_type"), {
         audio: EmbeddingAudioMetadata,
         video: EmbeddingVideoMetadata,
+        document: AsyncDocumentMetadata,
+        image: AsyncImageMetadata,
     })
     .transform<TwelvelabsApi.EmbeddingTaskMediaMetadata>({
         transform: (value) => value,
@@ -22,7 +26,11 @@ export const EmbeddingTaskMediaMetadata: core.serialization.Schema<
     });
 
 export declare namespace EmbeddingTaskMediaMetadata {
-    export type Raw = EmbeddingTaskMediaMetadata.Audio | EmbeddingTaskMediaMetadata.Video;
+    export type Raw =
+        | EmbeddingTaskMediaMetadata.Audio
+        | EmbeddingTaskMediaMetadata.Video
+        | EmbeddingTaskMediaMetadata.Document
+        | EmbeddingTaskMediaMetadata.Image;
 
     export interface Audio extends EmbeddingAudioMetadata.Raw {
         input_type: "audio";
@@ -30,5 +38,13 @@ export declare namespace EmbeddingTaskMediaMetadata {
 
     export interface Video extends EmbeddingVideoMetadata.Raw {
         input_type: "video";
+    }
+
+    export interface Document extends AsyncDocumentMetadata.Raw {
+        input_type: "document";
+    }
+
+    export interface Image extends AsyncImageMetadata.Raw {
+        input_type: "image";
     }
 }

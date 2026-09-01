@@ -13,18 +13,27 @@ export const EmbeddingData: core.serialization.ObjectSchema<
     TwelvelabsApi.EmbeddingData
 > = core.serialization.object({
     embedding: core.serialization.list(core.serialization.number()),
+    embeddingUncertainty: core.serialization.property(
+        "embedding_uncertainty",
+        core.serialization.list(core.serialization.number()).optional(),
+    ),
     embeddingOption: core.serialization.property("embedding_option", EmbeddingDataEmbeddingOption.optional()),
     embeddingScope: core.serialization.property("embedding_scope", EmbeddingDataEmbeddingScope.optional()),
     startSec: core.serialization.property("start_sec", core.serialization.number().optional()),
     endSec: core.serialization.property("end_sec", core.serialization.number().optional()),
+    startPageNumber: core.serialization.property("start_page_number", core.serialization.number().optional()),
+    endPageNumber: core.serialization.property("end_page_number", core.serialization.number().optional()),
 });
 
 export declare namespace EmbeddingData {
     export interface Raw {
         embedding: number[];
+        embedding_uncertainty?: number[] | null;
         embedding_option?: EmbeddingDataEmbeddingOption.Raw | null;
         embedding_scope?: EmbeddingDataEmbeddingScope.Raw | null;
         start_sec?: number | null;
         end_sec?: number | null;
+        start_page_number?: number | null;
+        end_page_number?: number | null;
     }
 }

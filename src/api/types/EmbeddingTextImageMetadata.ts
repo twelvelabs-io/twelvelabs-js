@@ -3,11 +3,11 @@
  */
 
 /**
- * Metadata for text-image embeddings
+ * Metadata for text-image embeddings.
  */
 export interface EmbeddingTextImageMetadata {
-    /** The publicly accessible URL for the image */
+    /** The publicly accessible URL for the image file. */
     inputUrl?: string;
-    /** The name of the image file */
+    /** The name of the image file. */
     inputFilename?: string;
 }

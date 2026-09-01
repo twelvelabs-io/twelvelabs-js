@@ -12,6 +12,8 @@ export interface VideoEmbeddingMetadata extends TwelvelabsApi.BaseEmbeddingMetad
     videoClipLength?: number;
     /** The scope you've specified in the request. */
     videoEmbeddingScope?: string[];
+    /** The `embedding_option` values used to generate the embedding. */
+    videoEmbeddingOption?: string[];
     /** The total duration of the video in seconds. */
     duration?: number;
 }
