@@ -6,7 +6,7 @@
 
 The TwelveLabs JavaScript SDK provides a set of intuitive classes and methods that streamline platform interaction, minimizing the need for boilerplate code.
 
-> **Note**: The examples in this guide show only the required parameters. For the complete guides, see the [Search](https://docs.twelvelabs.io/docs/guides/search) and [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos) pages.
+> **Note**: The examples in this guide show only the required parameters. For the complete guides, see the [Search](https://docs.twelvelabs.io/docs/guides/search), [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos), and [Create embeddings](https://docs.twelvelabs.io/docs/guides/create-embeddings) pages.
 
 # Prerequisites
 
@@ -49,47 +49,14 @@ npm install twelvelabs-js
 
 # Use the SDK
 
-To get started with the SDK, follow these basic steps:
+Upload your video, then follow the section for your task: search, analyze, or create embeddings. See [our documentation](https://docs.twelvelabs.io/docs) for the complete list of features the platform provides.
 
-1. Create an index.
-2. Upload videos.
-3. Perform downstream tasks, such as searching or analyzing videos to generate text based on their content.
-
-## Create an index
-
-Indexes store and organize your video data, allowing you to group related videos. When you create an index, configure which video understanding models process your videos and what modalities those models analyze.
-
-To create an index, call the `client.indexes.create` method with the following parameters:
-
-- **`indexName`**: The name of the index.
-- **`models`**: An array of models to enable. Each entry has two fields:
-  - **`modelName`**: The model to enable. Use `"marengo3.0"` for search or `"pegasus1.2"` for text generation.
-  - **`modelOptions`**: The modalities to analyze.
-
-```js
-const index = await client.indexes.create({
-  indexName: "<YOUR_INDEX_NAME>",
-  models: [
-    { modelName: "marengo3.0", modelOptions: ["visual", "audio"] },
-    { modelName: "pegasus1.2", modelOptions: ["visual", "audio"] }
-  ]
-});
-if (!index.id) {
-  throw new Error("Failed to create an index.");
-}
-console.log(`Created index: id=${index.id}`);
-```
-
-The `client.indexes.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your new index.
-
-See the [Indexes](https://docs.twelvelabs.io/docs/concepts/indexes) page for more details.
-
-## Upload videos
+## Upload a video
 
 To upload a video, call the `client.assets.create` method with the following parameters:
 
 - **`method`**: Upload method. Use `"url"` for publicly accessible URLs or `"direct"` for local files.
-- **`url`** or **`file`**: The video URL or a readable stream. Use direct links to raw media files. Hosting platform links and cloud storage sharing links are not supported.
+- **`url`** or **`file`**: The video URL or a readable stream.
 
 ```js
 // Uncomment the next line if uploading a local file
@@ -97,19 +64,19 @@ To upload a video, call the `client.assets.create` method with the following par
 
 const asset = await client.assets.create({
   method: "url",
-  url: "<YOUR_VIDEO_URL>"
+  url: "<YOUR_VIDEO_URL>" // Use direct links to raw media files. Video hosting platforms and cloud storage sharing links are not supported
   // Or use method: "direct" and file: fs.createReadStream("<PATH_TO_VIDEO_FILE>") to upload a local file.
 });
 console.log(`Created asset: id=${asset.id}`);
 ```
 
-The `client.assets.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your asset. Use this identifier in subsequent steps.
+The `client.assets.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your asset. Use this identifier in the sections that follow.
 
-## Check the status of the asset
+### Check the status of the asset
 
 You only need this step for files larger than 200 MB. The platform processes files up to 200 MB synchronously and sets the asset status to ready. For larger files, check the asset status until it is ready.
 
-To check the status of the asset, call the `client.assets.retrieve` method with the unique identifier of your asset as a paremeter:
+To check the status of the asset, call the `client.assets.retrieve` method with the unique identifier of your asset as a parameter:
 
 ```js
 console.log("Waiting for asset to be ready...");
@@ -124,9 +91,41 @@ if (readyAsset.status === "failed") {
 console.log("Asset is ready");
 ```
 
-## Index your video
+## Search
 
-To index your video, call the `client.indexes.indexedAssets.create` method with the following parameters:
+Search finds matching moments within an index. Create an index, add your uploaded video to it, then run queries.
+
+### Create an index
+
+Indexes store and organize your video data, allowing you to group related videos. When you create an index, configure which Marengo model processes your videos and which modalities it analyzes.
+
+To create an index, call the `client.indexes.create` method with the following parameters:
+
+- **`indexName`**: The name of the index.
+- **`models`**: An array of models to enable. Each entry has two fields:
+  - **`modelName`**: The model to enable. Use `"marengo3.0"` for search.
+  - **`modelOptions`**: The modalities to analyze.
+
+```js
+const index = await client.indexes.create({
+  indexName: "<YOUR_INDEX_NAME>",
+  models: [
+    { modelName: "marengo3.0", modelOptions: ["visual", "audio"] }
+  ]
+});
+if (!index.id) {
+  throw new Error("Failed to create an index.");
+}
+console.log(`Created index: id=${index.id}`);
+```
+
+The `client.indexes.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your new index.
+
+See the [Indexes](https://docs.twelvelabs.io/docs/concepts/indexes) page for more details.
+
+### Add your video to the index
+
+Add the video you uploaded to your index. Call the `client.indexes.indexedAssets.create` method with the following parameters:
 
 - **`indexId`**: The unique identifier of your index.
 - **`assetId`**: The unique identifier of the asset to index.
@@ -140,7 +139,7 @@ console.log(`Created indexed asset: id=${indexedAsset.id}`);
 
 The `client.indexes.indexedAssets.create` method returns an object that includes, among other information, a field named `id` representing the unique identifier of your indexed asset.
 
-## Monitor the indexing process
+### Monitor the indexing process
 
 The platform indexes videos asynchronously. To monitor the indexing process, call the `client.indexes.indexedAssets.retrieve` method with the following parameters:
 
@@ -165,15 +164,11 @@ while (true) {
 }
 ```
 
-The `client.indexes.indexedAssets.retrieve` method returns an object that includes, among other information, a field named `status` representing the status of the indexing process. Poll this method until `status` is `"ready"` before performing downstream tasks.
+The `client.indexes.indexedAssets.retrieve` method returns an object that includes, among other information, a field named `status` representing the status of the indexing process. Poll this method until `status` is `"ready"` before you run queries.
 
-## Perform downstream tasks
+### Run a query
 
-The sections below show the most common downstream tasks. See [our documentation](https://docs.twelvelabs.io/docs) for the complete list of features the platform provides.
-
-### Search
-
-Use natural language, images, or both to find matching video segments. Search operates within a single index.
+Use natural language, images, or both to find matching video segments.
 
 **Text queries**
 
@@ -268,29 +263,33 @@ for await (const clip of searchResults) {
 
 The response is similar to that received when using text queries.
 
-### Analyze videos
+## Analyze videos
 
 The platform uses a multimodal approach to analyze video content, processing visuals, sounds, spoken words, and on-screen text. Use a custom prompt to generate summaries, extract insights, answer questions, or produce structured output.
 
+> **Migrating from Pegasus 1.2?** Pegasus 1.5 analyzes an asset directly and does not use an index or a `videoId`. For upgrade instructions, see the [Migrate from Pegasus 1.2 to Pegasus 1.5](https://docs.twelvelabs.io/v1.3/docs/get-started/migration-guide) guide.
+
 Note the following about using these methods:
 
-- The Pegasus model must be enabled for the index.
+- Pegasus 1.5 analyzes the asset you uploaded. You do not need an index.
 - Your prompts can be instructive or descriptive, or you can phrase them as questions.
 - The maximum length of a prompt is 2,000 tokens.
 
 **Streaming responses**
 
-Streaming delivers text fragments in real-time. Use it for live transcription or when you need immediate output.
+Streaming delivers text fragments in real time. Use it for live transcription or when you need immediate output.
 
 To analyze a video with streaming responses, call the `client.analyzeStream` method with the following parameters:
 
-- **`videoId`**: The unique identifier of the indexed asset.
-- **`prompt`**: Guides text generation, and it can be instructive, descriptive, or a question. The maximum length is 2,000 tokens.
+- **`modelName`**: The model to use. Use `"pegasus1.5"`.
+- **`video`**: An object that identifies the asset to analyze. Set `type` to `"asset_id"` and `assetId` to the unique identifier of your asset.
+- **`promptV2`**: A structured prompt. Set `inputText` to your prompt. The maximum length is 2,000 tokens.
 
 ```js
 const textStream = await client.analyzeStream({
-  videoId: indexedAsset.id,
-  prompt: "<YOUR_PROMPT>"
+  modelName: "pegasus1.5",
+  video: { type: "asset_id", assetId: asset.id },
+  promptV2: { inputText: "<YOUR_PROMPT>" }
 });
 for await (const text of textStream) {
   if ("text" in text) {
@@ -307,8 +306,9 @@ Non-streaming returns the complete text in a single response. Use it for reports
 
 ```js
 const result = await client.analyze({
-  videoId: indexedAsset.id,
-  prompt: "<YOUR_PROMPT>"
+  modelName: "pegasus1.5",
+  video: { type: "asset_id", assetId: asset.id },
+  promptV2: { inputText: "<YOUR_PROMPT>" }
 });
 console.log(result.data);
 ```
@@ -316,6 +316,50 @@ console.log(result.data);
 The `client.analyze` method returns an object where the `data` field contains the complete generated text string (up to 4,096 tokens).
 
 For the complete guide, see the [Analyze videos](https://docs.twelvelabs.io/docs/guides/analyze-videos) page.
+
+## Create embeddings
+
+Embeddings are vector representations of your content. Create them from video, audio, images, documents, and text, then use them for similarity search, classification, clustering, recommendations, or Retrieval-Augmented Generation (RAG).
+
+**Embed a query**
+
+Embed the text and media you search with. The platform processes your request synchronously and returns the embedding in the response.
+
+```js
+const response = await client.embed.v2.create({
+  inputType: "multi_input",
+  modelName: "marengo3.5",
+  multiInput: { inputText: "<YOUR_QUERY>" }
+});
+console.log(`Dimensions: ${response.data[0].embedding.length}`);
+```
+
+The `data` field contains one embedding. To combine text with images, video, and audio in a single embedding, reference a media source from your text, or request an uncertainty vector, see the [Embed a query](https://docs.twelvelabs.io/docs/guides/create-embeddings/query) guide.
+
+**Embed content at scale**
+
+Embed the files you search through. The platform processes each file asynchronously, one file per request, so poll each task until it is ready.
+
+```js
+const task = await client.embed.v2.tasks.create({
+  inputType: "video",
+  modelName: "marengo3.5",
+  video: { mediaSource: { assetId: asset.id } }
+});
+
+console.log("Waiting for the embedding task to be ready...");
+let embeddingTask = await client.embed.v2.tasks.retrieve(task.id);
+while (embeddingTask.status !== "ready" && embeddingTask.status !== "failed") {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  embeddingTask = await client.embed.v2.tasks.retrieve(task.id);
+}
+if (embeddingTask.status === "failed") {
+  throw new Error(`Embedding task failed: id=${task.id}`);
+}
+console.log(`Embeddings: ${embeddingTask.data?.length}`);
+```
+
+This example embeds a video. The method also accepts `"audio"`, `"image"`, and `"document"` for PDF files. For the request each type takes, and for segmentation and scope options, see the [Embed content at scale](https://docs.twelvelabs.io/docs/guides/create-embeddings/at-scale) guide.
 
 ## Error Handling
 
