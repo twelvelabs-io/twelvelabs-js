@@ -18,11 +18,14 @@ const MODEL = "pegasus1.5" as const;
   const assetId = process.env.ASSET_ID ?? "<YOUR_ASSET_ID>";
   const video: TwelvelabsApi.VideoContext = { type: "asset_id", assetId };
 
+  // A task is done once it leaves these states.
+  const IN_FLIGHT = ["queued", "pending", "processing"];
+
   const waitFor = async (taskId: string, timeoutMs = 900_000) => {
     const deadline = Date.now() + timeoutMs;
     while (Date.now() < deadline) {
       const task = await client.analyzeAsync.tasks.retrieve(taskId);
-      if (!["queued", "processing"].includes(task.status!)) return task;
+      if (!IN_FLIGHT.includes(task.status!)) return task;
       await new Promise((r) => setTimeout(r, 5_000));
     }
     throw new Error(`task ${taskId} did not finish`);

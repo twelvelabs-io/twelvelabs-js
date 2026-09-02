@@ -69,12 +69,25 @@ const IMAGE_URL = "https://www.gstatic.com/webp/gallery/1.jpg";
   console.log(`  ${JSON.stringify((await client.assets.retrieve(video.id!)).userMetadata)}`);
 
   // --- Transcription --------------------------------------------------------
-  // Three granularities: words, sentences and utterances (utterances add speaker).
+  // Transcription runs as its own job after the asset is ready, so poll for it.
+  // `include` selects the granularity and defaults to `words`, so request whichever
+  // ones you intend to read. Utterances add a `speaker` field.
   console.log("\nTranscription:");
-  const transcription = await client.assets.retrieveTranscription(video.id!);
+  const fetchTranscription = () =>
+    client.assets.retrieveTranscription(video.id!, {
+      include: ["sentences", "utterances"],
+    });
+  let transcription = await fetchTranscription();
+  while (transcription.status === "pending" || transcription.status === "processing") {
+    await new Promise((r) => setTimeout(r, 5_000));
+    transcription = await fetchTranscription();
+  }
   console.log(`  status=${transcription.status}`);
   for (const sentence of (transcription.sentences ?? []).slice(0, 2)) {
     console.log(`    [${sentence.start}-${sentence.end}] ${sentence.value}`);
+  }
+  for (const utterance of (transcription.utterances ?? []).slice(0, 2)) {
+    console.log(`    speaker=${utterance.speaker} [${utterance.start}] ${utterance.value}`);
   }
 
   // --- Multipart upload -----------------------------------------------------
