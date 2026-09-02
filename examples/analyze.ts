@@ -1,113 +1,44 @@
-import { TwelveLabs } from "twelvelabs-js";
+/**
+ * Pegasus 1.5 analysis — synchronous and streaming.
+ *
+ * Run:
+ *   export TWELVE_LABS_API_KEY=...
+ *   export ASSET_ID=...
+ *   npx ts-node examples/analyze.ts
+ */
+import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
 
 (async () => {
   const client = new TwelveLabs({ apiKey: process.env.TWELVE_LABS_API_KEY });
+  const assetId = process.env.ASSET_ID ?? "<YOUR_ASSET_ID>";
 
-    const videoId = "<YOUR_VIDEO_ID>";
+  // `video` is a discriminated union — `type` is required. tsc rejects the object
+  // if you omit it.
+  const video: TwelvelabsApi.VideoContext = { type: "asset_id", assetId };
+  // Also available: { type: "url", url: ... }, { type: "base64_string", base64String: ... }
 
-  let summarizeResp = await client.summarize({
-    videoId,
-    type: "summary",
+  // --- Analyze -------------------------------------------------------------
+  console.log("Analysis:");
+  const res = await client.analyze({
+    modelName: "pegasus1.5",
+    video,
+    prompt: "Describe this video in one sentence.",
   });
-  if (summarizeResp.summarizeType === "summary") {
-    console.log(`Summary: ${summarizeResp.summary}`);
-  }
+  console.log(`  ${res.data}`);
+  console.log(`  usage=${JSON.stringify(res.usage)}`);
 
-  summarizeResp = await client.summarize({
-    videoId,
-    type: "chapter",
+  // --- Stream the same analysis --------------------------------------------
+  console.log("\nStreaming:");
+  const stream = await client.analyzeStream({
+    modelName: "pegasus1.5",
+    video,
+    prompt: "List three facts about this video.",
   });
-  if (summarizeResp.summarizeType === "chapter") {
-    for (const chapter of summarizeResp.chapters!) {
-      console.log(
-        `Chapter: ${chapter.chapterNumber} ${chapter.chapterTitle} ${chapter.chapterSummary}`
-      );
-    }
-  }
-
-  const gist = await client.gist({
-    videoId,
-    types: ["title", "topic", "hashtag"],
-  });
-  console.log(`Gist: title=${gist.title} topics=${gist.topics} hashtags=${gist.hashtags}`);
-
-  // Basic analyze example
-  const basicAnalyze = await client.analyze({
-    videoId,
-    prompt: "What happened?",
-  });
-  console.log("Basic analyze result:");
-  console.log(JSON.stringify(basicAnalyze, null, 2));
-
-  // Advanced analyze with structured output and max_tokens
-  const advancedAnalyze = await client.analyze({
-    videoId,
-    prompt: "I want to generate a description for my video with the following format - Title of the video, followed by a summary in 2-3 sentences, highlighting the main topic, key events, and concluding remarks.",
-    temperature: 0.2,
-    responseFormat: {
-      type: "json_schema",
-      jsonSchema: {
-        type: "object",
-        properties: {
-          title: { type: "string" },
-          summary: { type: "string" },
-          keywords: { type: "array", items: { type: "string" } },
-        },
-      },
-    },
-    maxTokens: 2000,
-  });
-  console.log("\nStructured analyze result:");
-  console.log(JSON.stringify(advancedAnalyze, null, 2));
-
-  // Basic streaming analyze example
-  const textStream = await client.analyzeStream({
-    videoId,
-    prompt: "What happened?",
-  });
-
-  console.log("Streaming analyze result:");
-  for await (const chunk of textStream) {
-    if (chunk.eventType === "stream_start") {
-      console.log("Stream started");
-    } else if (chunk.eventType === "text_generation" && "text" in chunk) {
-      process.stdout.write(chunk.text!);
+  for await (const chunk of stream) {
+    if (chunk.eventType === "text_generation") {
+      process.stdout.write(chunk.text ?? "");
     } else if (chunk.eventType === "stream_end") {
-      console.log(`\nFinish reason: ${chunk.finishReason}`);
-      if (chunk.metadata && chunk.metadata.usage) {
-        console.log(`Usage: ${JSON.stringify(chunk.metadata.usage)}`);
-      }
-    }
-  }
-
-  // Streaming with structured output
-  const structuredStream = await client.analyzeStream({
-    videoId,
-    prompt: "Analyze this video and provide a structured breakdown of the main topics, key insights, and action items.",
-    temperature: 0.3,
-    responseFormat: {
-      type: "json_schema",
-      jsonSchema: {
-        type: "object",
-        properties: {
-          main_topics: { type: "array", items: { type: "string" } },
-          key_insights: { type: "array", items: { type: "string" } },
-          action_items: { type: "array", items: { type: "string" } },
-        },
-      },
-    },
-    maxTokens: 1500,
-  });
-
-  console.log("\nStreaming structured analyze result:");
-  for await (const chunk of structuredStream) {
-    if (chunk.eventType === "text_generation" && "text" in chunk) {
-      process.stdout.write(chunk.text!);
-    } else if (chunk.eventType === "stream_end") {
-      console.log(`\nFinish reason: ${chunk.finishReason}`);
-      if (chunk.metadata && chunk.metadata.usage) {
-        console.log(`Usage: ${JSON.stringify(chunk.metadata.usage)}`);
-      }
+      console.log(`\n  finishReason=${chunk.finishReason}`);
     }
   }
 })();

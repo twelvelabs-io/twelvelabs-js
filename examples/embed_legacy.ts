@@ -28,7 +28,6 @@ import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
   let res = await client.embed.create({
     modelName,
     text: "man walking across the street",
-    textTruncate: "start",
   });
   console.log("Created text embedding");
   if ("textEmbedding" in res && res.textEmbedding?.segments) {
@@ -71,7 +70,7 @@ import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
   console.log(`Embedding done: ${status.status}`);
 
   const videoWithEmbeddings = await client.embed.tasks.retrieve(task.id!, {
-    embeddingOption: ["visual-text", "audio"],
+    embeddingOption: ["visual", "audio"],
   });
   if (videoWithEmbeddings.videoEmbedding?.segments) {
     printSegments(videoWithEmbeddings.videoEmbedding.segments);

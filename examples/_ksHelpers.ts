@@ -20,7 +20,7 @@ export const VIDEO_PATH = path.join(ASSETS_DIR, "example.mp4");
 export const IMAGE_PATH = path.join(ASSETS_DIR, "search_sample.png");
 
 export const PUBLIC_VIDEO_URL =
-  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  "https://github.com/twelvelabs-io/twelvelabs-js/raw/refs/heads/main/examples/assets/example.mp4";
 
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
