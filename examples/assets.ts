@@ -99,8 +99,11 @@ const IMAGE_URL = "https://www.gstatic.com/webp/gallery/1.jpg";
   console.log(`  assetId=${large.assetId}`);
 
   // --- Clean up -------------------------------------------------------------
-  // `force` deletes even when the asset is referenced elsewhere.
+  // Remove everything this example created, so re-running it does not pile up
+  // assets. `force` deletes even when the asset is referenced elsewhere.
   console.log("\nCleanup:");
-  await client.assets.delete(image.id!, { force: true });
-  console.log(`  deleted ${image.id}`);
+  for (const assetId of [video.id!, image.id!, large.assetId!]) {
+    await client.assets.delete(assetId, { force: true });
+    console.log(`  deleted ${assetId}`);
+  }
 })();
