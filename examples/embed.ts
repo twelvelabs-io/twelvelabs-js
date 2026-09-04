@@ -138,7 +138,7 @@ import { TwelveLabs, TwelvelabsApi } from "twelvelabs-js";
         modelName,
         video: {
             mediaSource: {
-                url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                url: "https://github.com/twelvelabs-io/twelvelabs-js/raw/refs/heads/main/examples/assets/example.mp4",
             },
         },
     });

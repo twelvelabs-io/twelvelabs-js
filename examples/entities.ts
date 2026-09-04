@@ -25,7 +25,9 @@ const sampleImageUrls = [
 
     // Create entity collection
     const entityCollection = await client.entityCollections.create({
-        name: "Sample Entity Collection",
+        // Collection names must be unique, so suffix it — otherwise a second run
+        // fails with entity_collection_name_already_exists.
+        name: `Sample Entity Collection ${Date.now()}`,
     });
     console.log(`Created entity collection: id=${entityCollection.id}`);
 

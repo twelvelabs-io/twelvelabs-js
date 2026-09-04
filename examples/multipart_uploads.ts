@@ -133,17 +133,17 @@ async function uploadWithWaitExample(): Promise<void> {
 async function downloadSampleVideos(): Promise<string> {
     const videoUrls = [
         {
-            url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            url: "https://github.com/twelvelabs-io/twelvelabs-js/raw/refs/heads/main/examples/assets/example.mp4",
             filename: "example_video.mp4",
             title: "For Bigger Blazes",
         },
         {
-            url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            url: "https://github.com/twelvelabs-io/twelvelabs-js/raw/refs/heads/main/examples/assets/example.mp4",
             filename: "video1.mp4",
             title: "For Bigger Escape",
         },
         {
-            url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+            url: "https://github.com/twelvelabs-io/twelvelabs-js/raw/refs/heads/main/examples/assets/example.mp4",
             filename: "video2.mp4",
             title: "For Bigger Fun",
         },
