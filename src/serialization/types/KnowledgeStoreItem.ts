@@ -8,6 +8,7 @@ import * as core from "../../core";
 import { KnowledgeStoreItemAssetType } from "./KnowledgeStoreItemAssetType";
 import { KnowledgeStoreItemStatus } from "./KnowledgeStoreItemStatus";
 import { KnowledgeStoreItemSystemMetadata } from "./KnowledgeStoreItemSystemMetadata";
+import { KnowledgeStoreMetadataValue } from "./KnowledgeStoreMetadataValue";
 
 export const KnowledgeStoreItem: core.serialization.ObjectSchema<
     serializers.KnowledgeStoreItem.Raw,
@@ -18,7 +19,7 @@ export const KnowledgeStoreItem: core.serialization.ObjectSchema<
     assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
     status: KnowledgeStoreItemStatus.optional(),
     systemMetadata: core.serialization.property("system_metadata", KnowledgeStoreItemSystemMetadata.optional()),
-    metadata: core.serialization.record(core.serialization.string(), core.serialization.string()).optional(),
+    metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
     createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
     updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
 });
@@ -30,7 +31,7 @@ export declare namespace KnowledgeStoreItem {
         asset_id?: string | null;
         status?: KnowledgeStoreItemStatus.Raw | null;
         system_metadata?: KnowledgeStoreItemSystemMetadata.Raw | null;
-        metadata?: Record<string, string> | null;
+        metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
         created_at?: string | null;
         updated_at?: string | null;
     }

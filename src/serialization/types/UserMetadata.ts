@@ -5,10 +5,11 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { UserMetadataValue } from "./UserMetadataValue";
 
 export const UserMetadata: core.serialization.Schema<serializers.UserMetadata.Raw, TwelvelabsApi.UserMetadata> =
-    core.serialization.record(core.serialization.string(), core.serialization.unknown());
+    core.serialization.record(core.serialization.string(), UserMetadataValue.optional());
 
 export declare namespace UserMetadata {
-    export type Raw = Record<string, unknown>;
+    export type Raw = Record<string, UserMetadataValue.Raw | null | undefined>;
 }

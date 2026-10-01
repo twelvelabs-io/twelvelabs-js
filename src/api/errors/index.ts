@@ -5,6 +5,8 @@ export * from "./ConflictError";
 export * from "./ForbiddenError";
 export * from "./GoneError";
 export * from "./TooManyRequestsError";
+export * from "./UnauthorizedError";
 export * from "./ServiceUnavailableError";
 export * from "./GatewayTimeoutError";
+export * from "./ContentTooLargeError";
 export * from "./UnprocessableEntityError";

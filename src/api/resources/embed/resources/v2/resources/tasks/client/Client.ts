@@ -90,8 +90,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.4",
-                        "User-Agent": "twelvelabs-js/1.3.4",
+                        "X-Fern-SDK-Version": "1.3.5",
+                        "User-Agent": "twelvelabs-js/1.3.5",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -166,7 +166,7 @@ export class Tasks {
      *
      * Use this method to embed content at scale, such as long files or the media files you want to make searchable. For a query, or for results you need in the same request, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint instead.
      *
-     * The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and PDF files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
+     * The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and documents: PDF, plain text, and Markdown files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
      *
      * Creating embeddings asynchronously requires three steps:
      *
@@ -175,7 +175,7 @@ export class Tasks {
      * 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
      *
      * <Note title="Notes">
-     * - Creating a task validates only basic metadata and playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
+     * - Creating a task validates only basic metadata and, for audio and video sources, playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
      * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
      * - Embeddings are stored for seven days.
      * </Note>
@@ -284,6 +284,84 @@ export class Tasks {
      *
      * @example
      *     await client.embed.v2.tasks.create({
+     *         inputType: "document",
+     *         modelName: "marengo3.5",
+     *         embeddingDimension: 256,
+     *         document: {
+     *             mediaSource: {
+     *                 assetId: "doc_annual_report_2025"
+     *             },
+     *             segmentation: {
+     *                 spatial: {
+     *                     strategy: "quadrants"
+     *                 }
+     *             },
+     *             embeddingOption: ["visual"],
+     *             embeddingScope: ["local"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "document",
+     *         modelName: "marengo3.5",
+     *         document: {
+     *             mediaSource: {
+     *                 assetId: "doc_annual_report_2025"
+     *             },
+     *             embeddingOption: ["visual"],
+     *             embeddingScope: ["asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "document",
+     *         modelName: "marengo3.5",
+     *         document: {
+     *             mediaSource: {
+     *                 assetId: "doc_annual_report_2025"
+     *             },
+     *             embeddingOption: ["visual", "text"],
+     *             embeddingScope: ["asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "document",
+     *         modelName: "marengo3.5",
+     *         document: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/folder/release-notes.txt"
+     *             },
+     *             embeddingOption: ["text"],
+     *             embeddingScope: ["asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "document",
+     *         modelName: "marengo3.5",
+     *         document: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/folder/release-notes.txt"
+     *             },
+     *             segmentation: {
+     *                 sequential: {
+     *                     strategy: "sentence",
+     *                     maxSentences: 5,
+     *                     overlapSentences: 1
+     *                 }
+     *             },
+     *             embeddingOption: ["text"],
+     *             embeddingScope: ["local"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
      *         inputType: "image",
      *         modelName: "marengo3.5",
      *         embeddingUncertainty: true,
@@ -358,8 +436,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -459,8 +537,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

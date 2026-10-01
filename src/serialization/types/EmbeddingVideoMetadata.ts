@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingVideoMetadataEmbeddingScopesItem } from "./EmbeddingVideoMetadataEmbeddingScopesItem";
+import { EmbeddingDimension } from "./EmbeddingDimension";
 
 export const EmbeddingVideoMetadata: core.serialization.ObjectSchema<
     serializers.EmbeddingVideoMetadata.Raw,
@@ -25,6 +26,7 @@ export const EmbeddingVideoMetadata: core.serialization.ObjectSchema<
     duration: core.serialization.number(),
     startOffsetSec: core.serialization.property("start_offset_sec", core.serialization.number().optional()),
     endOffsetSec: core.serialization.property("end_offset_sec", core.serialization.number().optional()),
+    embeddingDimension: core.serialization.property("embedding_dimension", EmbeddingDimension.optional()),
 });
 
 export declare namespace EmbeddingVideoMetadata {
@@ -37,5 +39,6 @@ export declare namespace EmbeddingVideoMetadata {
         duration: number;
         start_offset_sec?: number | null;
         end_offset_sec?: number | null;
+        embedding_dimension?: EmbeddingDimension.Raw | null;
     }
 }

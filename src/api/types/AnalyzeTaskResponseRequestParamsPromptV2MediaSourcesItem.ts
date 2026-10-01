@@ -7,6 +7,6 @@ export interface AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem {
     mediaType: string;
     /** Present when the source was provided as a URL. */
     url?: string;
-    /** Present when the source was provided as an asset ID. */
+    /** Present when the source was provided as an asset identifier. */
     assetId?: string;
 }

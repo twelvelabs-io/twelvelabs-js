@@ -41,7 +41,7 @@ export interface TasksListRequest {
     pageLimit?: number;
     /**
      * Filter analysis tasks by status.
-     * Possible values: `queued`, `pending`, `processing`, `ready`, `failed`.
+     * Possible values: `queued`, `pending`, `processing`, `ready`, `failed`, `canceled`.
      */
     status?: TwelvelabsApi.AnalyzeTaskStatus;
     /**

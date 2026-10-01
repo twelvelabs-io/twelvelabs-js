@@ -10,6 +10,7 @@ import { HlsObject } from "./HlsObject";
 import { IndexedAssetDetailedEmbedding } from "./IndexedAssetDetailedEmbedding";
 import { TranscriptionData } from "./TranscriptionData";
 import { IndexedAsset } from "./IndexedAsset";
+import { UserMetadataValue } from "./UserMetadataValue";
 import { TranscriptionDataItem } from "./TranscriptionDataItem";
 
 export const IndexedAssetDetailed: core.serialization.ObjectSchema<

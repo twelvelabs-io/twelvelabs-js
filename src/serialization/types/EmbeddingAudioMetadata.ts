@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingAudioMetadataEmbeddingScopesItem } from "./EmbeddingAudioMetadataEmbeddingScopesItem";
+import { EmbeddingDimension } from "./EmbeddingDimension";
 
 export const EmbeddingAudioMetadata: core.serialization.ObjectSchema<
     serializers.EmbeddingAudioMetadata.Raw,
@@ -24,6 +25,7 @@ export const EmbeddingAudioMetadata: core.serialization.ObjectSchema<
     duration: core.serialization.number(),
     startOffsetSec: core.serialization.property("start_offset_sec", core.serialization.number().optional()),
     endOffsetSec: core.serialization.property("end_offset_sec", core.serialization.number().optional()),
+    embeddingDimension: core.serialization.property("embedding_dimension", EmbeddingDimension.optional()),
 });
 
 export declare namespace EmbeddingAudioMetadata {
@@ -35,5 +37,6 @@ export declare namespace EmbeddingAudioMetadata {
         duration: number;
         start_offset_sec?: number | null;
         end_offset_sec?: number | null;
+        embedding_dimension?: EmbeddingDimension.Raw | null;
     }
 }

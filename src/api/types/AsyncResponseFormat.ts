@@ -144,9 +144,9 @@ export interface AsyncResponseFormat {
      *
      * **Response validation**
      *
-     * Check the `FinishReason` field to verify your JSON response is complete:
-     * - When `FinishReason` is `stop`, the generation completed normally, and the JSON is valid and complete.
-     * - When `FinishReason` is `length`, the platform truncates the response at the maximum response length or the context window. This may result in truncated, invalid JSON that fails to parse.
+     * Check the `finish_reason` field to verify your JSON response is complete:
+     * - When `finish_reason` is `stop`, the generation completed normally, and the JSON is valid and complete.
+     * - When `finish_reason` is `length`, the generation reached the maximum response length or the context window. The output may be truncated and fail to parse.
      */
     jsonSchema?: Record<string, unknown>;
     /** Define the types of segments to extract from your video. Minimum 1, maximum 20 definitions. The number of segment definitions affects billing. For details, see the [Frequently asked questions](/v1.3/docs/resources/frequently-asked-questions#how-is-video-segmentation-priced) page. */

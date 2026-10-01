@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { KnowledgeStoreMetadataValue } from "./KnowledgeStoreMetadataValue";
 
 export const KnowledgeStoreItemCollection: core.serialization.ObjectSchema<
     serializers.KnowledgeStoreItemCollection.Raw,
@@ -14,7 +15,7 @@ export const KnowledgeStoreItemCollection: core.serialization.ObjectSchema<
     knowledgeStoreId: core.serialization.property("knowledge_store_id", core.serialization.string().optional()),
     name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
-    metadata: core.serialization.record(core.serialization.string(), core.serialization.string()).optional(),
+    metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
     memberCount: core.serialization.property("member_count", core.serialization.number().optional()),
     createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
     updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
@@ -26,7 +27,7 @@ export declare namespace KnowledgeStoreItemCollection {
         knowledge_store_id?: string | null;
         name?: string | null;
         description?: string | null;
-        metadata?: Record<string, string> | null;
+        metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
         member_count?: number | null;
         created_at?: string | null;
         updated_at?: string | null;

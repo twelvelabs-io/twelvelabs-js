@@ -22,4 +22,5 @@ export interface EmbeddingAudioMetadata {
     startOffsetSec?: number;
     /** The end offset in seconds. */
     endOffsetSec?: number;
+    embeddingDimension?: TwelvelabsApi.EmbeddingDimension;
 }

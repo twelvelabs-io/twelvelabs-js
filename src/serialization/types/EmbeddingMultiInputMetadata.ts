@@ -5,12 +5,17 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { EmbeddingDimension } from "./EmbeddingDimension";
 
 export const EmbeddingMultiInputMetadata: core.serialization.ObjectSchema<
     serializers.EmbeddingMultiInputMetadata.Raw,
     TwelvelabsApi.EmbeddingMultiInputMetadata
-> = core.serialization.object({});
+> = core.serialization.object({
+    embeddingDimension: core.serialization.property("embedding_dimension", EmbeddingDimension.optional()),
+});
 
 export declare namespace EmbeddingMultiInputMetadata {
-    export interface Raw {}
+    export interface Raw {
+        embedding_dimension?: EmbeddingDimension.Raw | null;
+    }
 }

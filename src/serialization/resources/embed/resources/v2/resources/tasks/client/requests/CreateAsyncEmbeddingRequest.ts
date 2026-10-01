@@ -19,6 +19,7 @@ export const CreateAsyncEmbeddingRequest: core.serialization.Schema<
     inputType: core.serialization.property("input_type", CreateAsyncEmbeddingRequestInputType),
     modelName: core.serialization.property("model_name", CreateAsyncEmbeddingRequestModelName),
     embeddingUncertainty: core.serialization.property("embedding_uncertainty", core.serialization.boolean().optional()),
+    embeddingDimension: core.serialization.property("embedding_dimension", core.serialization.number().optional()),
     audio: AsyncAudioInputRequest.optional(),
     video: AsyncVideoInputRequest.optional(),
     document: AsyncDocumentInputRequest.optional(),
@@ -30,6 +31,7 @@ export declare namespace CreateAsyncEmbeddingRequest {
         input_type: CreateAsyncEmbeddingRequestInputType.Raw;
         model_name: CreateAsyncEmbeddingRequestModelName.Raw;
         embedding_uncertainty?: boolean | null;
+        embedding_dimension?: number | null;
         audio?: AsyncAudioInputRequest.Raw | null;
         video?: AsyncVideoInputRequest.Raw | null;
         document?: AsyncDocumentInputRequest.Raw | null;

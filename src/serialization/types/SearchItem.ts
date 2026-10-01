@@ -11,6 +11,7 @@ import { Rank } from "./Rank";
 import { ThumbnailUrl } from "./ThumbnailUrl";
 import { UserMetadata } from "./UserMetadata";
 import { SearchItemClipsItem } from "./SearchItemClipsItem";
+import { UserMetadataValue } from "./UserMetadataValue";
 
 export const SearchItem: core.serialization.ObjectSchema<serializers.SearchItem.Raw, TwelvelabsApi.SearchItem> =
     core.serialization.object({

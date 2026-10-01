@@ -26,21 +26,23 @@ export interface BatchDefaults {
      */
     maxSegmentDuration?: number;
     /**
-     * Start of the analysis window, in seconds, applied to every item. Use with `end_time` to analyze only the `[start_time, end_time)` portion of each video.
+     * Start of the analysis window, in seconds, applied to every item. Use with `end_time` to analyze only a portion of each video.
      *
      * <Note title="Notes">
      * - If omitted, defaults to `0`.
      * - Must be less than `end_time`.
+     * - The window (`end_time - start_time`) must be at least 1 second and at most 2 hours for each item. Each video may be up to 4 hours as long as the window stays within that limit.
      * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
      * </Note>
      */
     startTime?: number;
     /**
-     * End of the analysis window, in seconds, applied to every item. Use with `start_time` to analyze only the `[start_time, end_time)` portion of each video.
+     * End of the analysis window, in seconds, applied to every item. Use with `start_time` to analyze only a portion of each video.
      *
      * <Note title="Notes">
      * - If omitted, defaults to the video duration.
      * - Must be greater than `start_time`.
+     * - The window (`end_time - start_time`) must be at least 1 second and at most 2 hours for each item. Each video may be up to 4 hours as long as the window stays within that limit.
      * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
      * </Note>
      */

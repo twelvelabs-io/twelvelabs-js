@@ -25,8 +25,8 @@ export interface KnowledgeStoreItem {
      * always matches the item's top-level `asset_type` field.
      */
     systemMetadata?: TwelvelabsApi.KnowledgeStoreItemSystemMetadata;
-    /** Custom metadata for the item. */
-    metadata?: Record<string, string>;
+    /** Custom metadata for the item. Keys are strings; each value is a string, a number, a boolean, or an array of strings. */
+    metadata?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
     /** The date and time when the item was created, in the RFC 3339 format. */
     createdAt?: Date;
     /** The date and time when the item was last updated, in the RFC 3339 format. */

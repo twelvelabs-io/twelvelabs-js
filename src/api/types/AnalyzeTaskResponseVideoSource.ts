@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * The video source you provided.
+ * The public video source associated with the task. When the video was uploaded using the [`POST`](/v1.3/api-reference/index-content/create) method of the `/tasks` endpoint, the source type is `video_id`. Otherwise, the source type is `url`, `base64_string`, or `asset_id`.
  */
 export interface AnalyzeTaskResponseVideoSource {
     /** The type of video source. */
@@ -14,6 +14,10 @@ export interface AnalyzeTaskResponseVideoSource {
     url?: string;
     /** The asset ID. Present when `type` is `asset_id`. */
     assetId?: string;
-    /** System-extracted video metadata. Present on a best-effort basis once the video has been processed. */
+    /** The video identifier. Present when `type` is `video_id`. */
+    videoId?: string;
+    /** The identifier of the index associated with the video. Present on a best-effort basis when `type` is `video_id`. */
+    indexId?: string;
+    /** Video metadata that the platform extracted during processing, such as its duration. Present on a best-effort basis once the video has been processed. */
     systemMetadata?: TwelvelabsApi.AnalyzeTaskResponseVideoSourceSystemMetadata;
 }

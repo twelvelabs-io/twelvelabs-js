@@ -10,6 +10,7 @@ import { EndTime } from "./EndTime";
 import { Rank } from "./Rank";
 import { ThumbnailUrl } from "./ThumbnailUrl";
 import { UserMetadata } from "./UserMetadata";
+import { UserMetadataValue } from "./UserMetadataValue";
 
 export const SearchItemClipsItem: core.serialization.ObjectSchema<
     serializers.SearchItemClipsItem.Raw,

@@ -13,6 +13,7 @@ import { ResponseStreamOutputTextDoneEvent } from "./ResponseStreamOutputTextDon
 import { ResponseStreamContentPartDoneEvent } from "./ResponseStreamContentPartDoneEvent";
 import { ResponseStreamOutputItemDoneEvent } from "./ResponseStreamOutputItemDoneEvent";
 import { ResponseStreamFuncCallArgsDoneEvent } from "./ResponseStreamFuncCallArgsDoneEvent";
+import { ResponseStreamKeepAliveEvent } from "./ResponseStreamKeepAliveEvent";
 
 export const ResponseStreamEvent: core.serialization.Schema<
     serializers.ResponseStreamEvent.Raw,
@@ -30,6 +31,7 @@ export const ResponseStreamEvent: core.serialization.Schema<
         "response.content_part.done": ResponseStreamContentPartDoneEvent,
         "response.output_item.done": ResponseStreamOutputItemDoneEvent,
         "response.function_call_arguments.done": ResponseStreamFuncCallArgsDoneEvent,
+        keepalive: ResponseStreamKeepAliveEvent,
     })
     .transform<TwelvelabsApi.ResponseStreamEvent>({
         transform: (value) => value,
@@ -48,7 +50,8 @@ export declare namespace ResponseStreamEvent {
         | ResponseStreamEvent.ResponseOutputTextDone
         | ResponseStreamEvent.ResponseContentPartDone
         | ResponseStreamEvent.ResponseOutputItemDone
-        | ResponseStreamEvent.ResponseFunctionCallArgumentsDone;
+        | ResponseStreamEvent.ResponseFunctionCallArgumentsDone
+        | ResponseStreamEvent.Keepalive;
 
     export interface ResponseCreated extends ResponseStreamResponseEvent.Raw {
         type: "response.created";
@@ -92,5 +95,9 @@ export declare namespace ResponseStreamEvent {
 
     export interface ResponseFunctionCallArgumentsDone extends ResponseStreamFuncCallArgsDoneEvent.Raw {
         type: "response.function_call_arguments.done";
+    }
+
+    export interface Keepalive extends ResponseStreamKeepAliveEvent.Raw {
+        type: "keepalive";
     }
 }

@@ -6,19 +6,19 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { ImageSearchSystemMetadata } from "./ImageSearchSystemMetadata";
-import { UserMetadata } from "./UserMetadata";
+import { KnowledgeStoreMetadataValue } from "./KnowledgeStoreMetadataValue";
 
 export const ImageSearchItemMetadata: core.serialization.ObjectSchema<
     serializers.ImageSearchItemMetadata.Raw,
     TwelvelabsApi.ImageSearchItemMetadata
 > = core.serialization.object({
     system: ImageSearchSystemMetadata.optional(),
-    user: UserMetadata.optional(),
+    user: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace ImageSearchItemMetadata {
     export interface Raw {
         system?: ImageSearchSystemMetadata.Raw | null;
-        user?: UserMetadata.Raw | null;
+        user?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

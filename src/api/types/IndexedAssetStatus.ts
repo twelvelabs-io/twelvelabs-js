@@ -5,11 +5,12 @@
 /**
  * The status of the indexing task.
  */
-export type IndexedAssetStatus = "ready" | "pending" | "queued" | "indexing" | "failed";
+export type IndexedAssetStatus = "ready" | "pending" | "queued" | "indexing" | "validating" | "failed";
 export const IndexedAssetStatus = {
     Ready: "ready",
     Pending: "pending",
     Queued: "queued",
     Indexing: "indexing",
+    Validating: "validating",
     Failed: "failed",
 } as const;

@@ -97,7 +97,7 @@ export interface SearchKnowledgeStoreRequest {
     /**
      * Pagination token used to retrieve the next page of results. Omit it on the first request. To fetch the next page, set it to the `next_page_token` field returned in the previous response and send the request again.
      *
-     * A malformed or unrecognized token returns a `400` error. A token that has expired returns a `410` error (make a new search request to obtain a fresh page token).
+     * If a token is malformed or unrecognized, the platform returns a `400` error. If a token has expired, the platform returns a `410` error (make a new search request to obtain a fresh page token).
      */
     pageToken?: string;
     /** Set to `true` to include metadata in each result. Each result includes a `metadata` object with a `system` field (platform-derived file properties such as duration and resolution) and a `user` field (metadata you attached to the item). */

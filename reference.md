@@ -15,7 +15,7 @@
 This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
 
 <Accordion title="Input requirements">
-- Minimum duration: 4 seconds
+- Minimum duration: 1 second
 - Maximum duration: 1 hour
 - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
 - Resolution: 360x360 to 5184x2160 pixels
@@ -215,7 +215,7 @@ Upload options:
 - **Local file**: Use the `video_file` parameter.
 - **Publicly accessible URL**: Use the `video_url` parameter.
 
-Your video files must meet requirements based on your workflow:
+Your videos must meet requirements based on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements).
 - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#video-file-requirements).
@@ -876,7 +876,7 @@ The platform processes uploads asynchronously. This method returns immediately w
 
 **Supported content**:
 
-- Video, audio, and image files.
+- Video, audio, and images.
 - PDF, text, and Markdown files.
 
 Filename extension matching is case-insensitive; for example, `notes.MD` and `notes.md` are treated the same. The platform rejects unsupported formats. For documents, it also rejects files whose extensions don't match the detected content.
@@ -1190,7 +1190,7 @@ await client.assets.retrieveTranscription("6298d673f1090f1100476d4c", {
 This method replaces the entire user-defined metadata of the specified asset. Unlike the [`PATCH`](/v1.3/api-reference/upload-content/direct-uploads/update-user-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
 
 - A key with a value creates or replaces that key.
-- A key set to an empty string (`""`) or `null` is ignored.
+- A key set to an empty string (`""`), an empty array (`[]`), or `null` is ignored.
 - A key you omit from the request body is removed.
 
 To clear all metadata, send an empty object (`{}`) in the `user_metadata` field. This produces the same result as the [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-user-metadata) method.
@@ -1214,6 +1214,7 @@ await client.assets.replaceUserMetadata("6298d673f1090f1100476d4c", {
         batchNumber: 5,
         rating: 9.3,
         needsReview: true,
+        hashtags: ["summer", "vlog"],
     },
 });
 ```
@@ -1338,7 +1339,7 @@ This method updates the user-defined metadata of the specified asset. The platfo
 
 - A key with a value creates or replaces that key.
 - A key set to `null` deletes that key.
-- A key set to an empty string (`""`) is ignored.
+- A key set to an empty string (`""`) or an empty array (`[]`) is ignored.
 - A key you omit from the request keeps its current value.
 
 To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
@@ -1362,6 +1363,7 @@ await client.assets.updateUserMetadata("6298d673f1090f1100476d4c", {
         batchNumber: 5,
         rating: 9.3,
         needsReview: true,
+        hashtags: ["summer", "vlog"],
     },
 });
 ```
@@ -2706,7 +2708,11 @@ This method adds an asset to a knowledge store for processing.
 The operation is asynchronous. The item is created immediately with the `queued`
 status and processed in the background.
 
-The asset must not exceed 5 GB.
+**Asset size limits**:
+
+- **Video**: Up to 10 GB
+- **Images**: Up to 32 MB
+
 </dd>
 </dl>
 </dd>
@@ -3594,7 +3600,7 @@ This method creates embeddings for text, image, and audio content.
 Ensure your media files meet the following requirements:
 
 - [Audio files](/v1.3/docs/concepts/models/marengo/marengo-3-0#audio-file-requirements).
-- [Image files](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements).
+- [Images](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements).
 
 Parameters for embeddings:
 
@@ -3704,7 +3710,7 @@ Use this endpoint to search for relevant matches in an index using text, media, 
 - To find a specific person in your videos, enclose the unique identifier of the entity you want to find in the `query_text` parameter.
 
 <Note title="Notes">
-- When using images in your search queries (either as media queries or in composed searches), ensure your image files meet the [requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements).
+- When using images in your search queries (either as media queries or in composed searches), ensure your images meet the [requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements).
 - This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
 </Note>
 </dd>
@@ -4756,7 +4762,7 @@ await client.imports.listImports("665f0a2c9b1e4d0012a3f7c9", {
 <dl>
 <dd>
 
-This method imports one or more files from the connected provider account into the platform as assets. Video files can be up to 10 GB, audio files up to 4 GB, and images up to 32 MB. For each newly imported file, the platform creates an asset in the `processing` status and fetches the file asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, without fetching the file again. If the earlier fetch had failed, the platform fetches the file again. The response contains one entry per requested file, in request order. Use the `action` field of each entry to identify which files were newly imported and which were already imported.
+This method imports one or more files from the connected provider account into the platform as assets. Videos can be up to 10 GB, audio up to 4 GB, and images up to 32 MB. For each newly imported file, the platform creates an asset in the `processing` status and fetches the file asynchronously. If you import a file that was already imported through this account, the platform returns the existing asset with its current status, without fetching the file again. If the earlier fetch had failed, the platform fetches the file again. The response contains one entry per requested file, in request order. Use the `action` field of each entry to identify which files were newly imported and which were already imported.
 </dd>
 </dl>
 </dd>
@@ -4976,8 +4982,7 @@ await client.analyzeAsync.tasks.list({
 This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions.
 
 <Accordion title="Input requirements">
-- Minimum duration: 4 seconds
-- Maximum duration: 2 hours
+- The video can be up to 2 hours long, or up to 4 hours when you analyze only a portion of it. You can analyze between 1 second and 2 hours of the video. HLS and base64 videos are limited to 2 hours.
 - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
 - Resolution: 360x360 to 5184x2160 pixels
 - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
@@ -4987,7 +4992,7 @@ This method asynchronously analyzes your videos. It supports two analysis modes:
 
 - Generate custom text from your video using a prompt (general analysis)
 - Extract timestamped metadata with custom segment definitions from your video
-- Analyze videos longer than 1 hour
+- Analyze videos longer than 1 hour, or a portion of a video up to 4 hours long
 - Process videos asynchronously without blocking your application
 
 **Do not use this method for**:
@@ -4997,8 +5002,8 @@ This method asynchronously analyzes your videos. It supports two analysis modes:
 Analyzing videos asynchronously requires three steps:
 
 1. Create an analysis task using this method. The platform returns a task identifier.
-2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`.
-3. Retrieve the results from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
+2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`, `failed`, or `canceled`.
+3. When the status is `ready`, retrieve the results using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
 
 On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
 
@@ -5083,9 +5088,10 @@ This method retrieves the status and results of an analysis task.
 - `pending`: The task is queued and waiting to start.
 - `processing`: The platform is analyzing the video.
 - `ready`: Processing is complete. Results are available in the response.
-- `failed`: The task failed. No results were generated.
+- `failed`: The task failed. No result is available. The `error` field describes the failure.
+- `canceled`: The task was canceled. No result is available. The `error` field describes the cancellation reason, if available.
 
-Poll this method until `status` is `ready` or `failed`. When `status` is `ready`, use the results from the response.
+Poll this method until `status` is `ready`, `failed`, or `canceled`. When `status` is `ready`, use the results from the response.
 </dd>
 </dl>
 </dd>
@@ -5179,6 +5185,74 @@ await client.analyzeAsync.tasks.delete("64f8d2c7e4a1b37f8a9c5d12");
 <dd>
 
 **taskId:** `string` — The unique identifier of the analyze task.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.analyzeAsync.tasks.<a href="/src/api/resources/analyzeAsync/resources/tasks/client/Client.ts">cancel</a>(taskId) -> TwelvelabsApi.CancelAnalyzeTaskResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to cancel an asynchronous analysis task in your account. To cancel a task created as part of a batch, use the [`POST`](/v1.3/api-reference/analyze-videos/batch-analysis/cancel-batch) method of the `/analyze/batches/{batch_id}/cancel` endpoint.
+
+You can cancel a task with the `queued`, `pending`, or `processing` status. This action cannot be undone.
+
+Processing that has already started can continue briefly after cancellation.
+
+When you cancel a task, the platform can send an `analyze.task.canceled` webhook. Delivery is best-effort: a `200` response is not a delivery guarantee. When you receive the event, retrieve the task for its current state.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.analyzeAsync.tasks.cancel("64f8d2c7e4a1b37f8a9c5d12");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskId:** `string` — The unique identifier of the analysis task you want to cancel.
 
 </dd>
 </dl>
@@ -5308,12 +5382,14 @@ Use this method to submit many video analysis requests in a single call. Each re
 
 - Batches expire 24 hours after creation. You can retrieve results for 30 days after creation.
 - If processing does not finish for some items in time, resubmit them in a new batch.
+- An item whose analysis window exceeds 2 hours fails on its own. The error code is `video_duration_too_long`. The rest of the batch is still submitted.
 
 **Limits**:
 
 - Up to 1,000 requests per batch.
 - Up to 2,000 total content hours per batch.
 - Up to 5 active batches per account.
+- The duration limits of the [`POST`](/v1.3/api-reference/analyze-videos/create-async-analysis-task) method of the `/analyze/tasks` endpoint apply to each item.
 
 </dd>
 </dl>
@@ -5796,7 +5872,7 @@ Upload options:
 
 Specify at least one option. If both are provided, `video_url` takes precedence.
 
-Your video files must meet the [requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements).
+Your videos must meet the [requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements).
 This endpoint allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
 
 <Note title="Notes">
@@ -6016,7 +6092,7 @@ This method synchronously creates embeddings for multimodal content and returns 
 
 Use this method to embed a query for retrieving matching content. With Marengo 3.5, audio and video can be up to 30 seconds. With Marengo 3.0, they can be up to 10 minutes. For longer content, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
 
-The content this method accepts depends on the model. With Marengo 3.5, this method accepts only the `multi_input` input type; provide text, images, audio, or video as media sources. With Marengo 3.0, use the individual input types. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
+The content this method accepts depends on the model. With Marengo 3.5, this method accepts only the `multi_input` input type; provide text, images, audio, video, or documents as media sources. With Marengo 3.0, use the individual input types. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
 
 <Note title="Note">
 This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A request can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
@@ -6182,7 +6258,7 @@ This method creates embeddings for audio, video, images, and documents asynchron
 
 Use this method to embed content at scale, such as long files or the media files you want to make searchable. For a query, or for results you need in the same request, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint instead.
 
-The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and PDF files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
+The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and documents: PDF, plain text, and Markdown files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
 
 Creating embeddings asynchronously requires three steps:
 
@@ -6191,7 +6267,7 @@ Creating embeddings asynchronously requires three steps:
 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
 
 <Note title="Notes">
-- Creating a task validates only basic metadata and playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
+- Creating a task validates only basic metadata and, for audio and video sources, playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
 - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
 - Embeddings are stored for seven days.
 </Note>
@@ -7442,6 +7518,7 @@ await client.indexes.indexedAssets.update("6298d673f1090f1100476d4c", "6298d673f
         batchNumber: 5,
         rating: 9.3,
         needsReview: true,
+        hashtags: ["summer", "vlog"],
     },
 });
 ```
@@ -7868,6 +7945,7 @@ await client.indexes.videos.update("6298d673f1090f1100476d4c", "6298d673f1090f11
         batchNumber: 5,
         rating: 9.3,
         needsReview: true,
+        hashtags: ["summer", "vlog"],
     },
 });
 ```

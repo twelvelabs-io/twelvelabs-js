@@ -9,10 +9,12 @@
  * - `image`: An image file. Works with both Marengo 3.0 and Marengo 3.5.
  * - `video`: A video file. Requires Marengo 3.5.
  * - `audio`: An audio file. Requires Marengo 3.5.
+ * - `document`: A PDF (`.pdf`), plain text (`.txt`), or Markdown (`.md`) file. Requires Marengo 3.5. For the rules on combining a document with other sources, see the [`multi_input`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#request.body.multi-input) field.
  */
-export type MultiInputMediaSourceMediaType = "image" | "video" | "audio";
+export type MultiInputMediaSourceMediaType = "image" | "video" | "audio" | "document";
 export const MultiInputMediaSourceMediaType = {
     Image: "image",
     Video: "video",
     Audio: "audio",
+    Document: "document",
 } as const;

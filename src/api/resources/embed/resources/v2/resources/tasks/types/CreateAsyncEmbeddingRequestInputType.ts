@@ -8,7 +8,7 @@
  * **Values**:
  * - `audio`: An audio file.
  * - `video`: A video file.
- * - `document`: A PDF file. Requires Marengo 3.5.
+ * - `document`: A PDF, plain text, or Markdown file. Requires Marengo 3.5.
  * - `image`: An image file. Requires Marengo 3.5.
  */
 export type CreateAsyncEmbeddingRequestInputType = "audio" | "video" | "document" | "image";

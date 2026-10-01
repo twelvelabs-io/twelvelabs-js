@@ -20,6 +20,10 @@ export interface AnalyzeTaskResult {
      *   - `metadata` (object): The custom fields you defined in the request's `segment_definitions[].fields`.
      */
     data: string;
+    /**
+     * When the task uses general analysis, `length` means the response reached the maximum response length or the context window. The partial output is in `data`, and a warning is in the task's `error` field.
+     * With video segmentation, if the analysis reaches either limit, the task fails and `length` never occurs.
+     */
     finishReason: TwelvelabsApi.FinishReason;
     /** The number of tokens used in the generation. */
     usage: TwelvelabsApi.AnalyzeTaskResultUsage;

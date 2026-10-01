@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingDataEmbeddingOption } from "./EmbeddingDataEmbeddingOption";
 import { EmbeddingDataEmbeddingScope } from "./EmbeddingDataEmbeddingScope";
+import { EmbeddingDataQuadrant } from "./EmbeddingDataQuadrant";
 
 export const EmbeddingData: core.serialization.ObjectSchema<
     serializers.EmbeddingData.Raw,
@@ -23,6 +24,8 @@ export const EmbeddingData: core.serialization.ObjectSchema<
     endSec: core.serialization.property("end_sec", core.serialization.number().optional()),
     startPageNumber: core.serialization.property("start_page_number", core.serialization.number().optional()),
     endPageNumber: core.serialization.property("end_page_number", core.serialization.number().optional()),
+    quadrant: EmbeddingDataQuadrant.optional(),
+    chunkIndex: core.serialization.property("chunk_index", core.serialization.number().optional()),
 });
 
 export declare namespace EmbeddingData {
@@ -35,5 +38,7 @@ export declare namespace EmbeddingData {
         end_sec?: number | null;
         start_page_number?: number | null;
         end_page_number?: number | null;
+        quadrant?: EmbeddingDataQuadrant.Raw | null;
+        chunk_index?: number | null;
     }
 }

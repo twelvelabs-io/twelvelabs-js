@@ -6,7 +6,7 @@
  * The type of content for the embeddings.
  *
  * **Values**:
- * - `multi_input`: Text and up to 10 media sources, combined into a single embedding. To reference a specific media source from your text, use a placeholder in the following format: `<@name>`, where `name` matches the `name` field of a media source. Marengo 3.5 accepts images, video, and audio as media sources. Marengo 3.0 accepts images.
+ * - `multi_input`: Text and up to 10 media sources, combined into a single embedding. To reference a specific media source from your text, use a placeholder in the following format: `<@name>`, where `name` matches the `name` field of a media source. Marengo 3.5 accepts images, video, audio, and documents as media sources. Marengo 3.0 accepts images.
  * - `audio`: An audio file. Requires Marengo 3.0.
  * - `video`: A video file. Requires Marengo 3.0.
  * - `image`: An image file. Requires Marengo 3.0.

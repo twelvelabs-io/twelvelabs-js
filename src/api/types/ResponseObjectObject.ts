@@ -3,15 +3,11 @@
  */
 
 /**
- * The object type, always `response`. Carries the same value as `type`, which
- * predates it and which the Open Responses specification does not name.
+ * The object type, always `response`. It has the same value as the `type`
+ * field.
  *
- * Both fields are permanent; neither will be removed. Read whichever your client
- * already uses.
- *
- * This is the only object with an `object` field. Output items, annotations and
- * stream events are keyed on `type` alone, so do not expect `object` one level
- * down.
+ * Only the response itself has an `object` field. Output items, annotations,
+ * and stream events are identified by `type` alone and have no `object` field.
  */
 export type ResponseObjectObject = "response";
 export const ResponseObjectObject = {

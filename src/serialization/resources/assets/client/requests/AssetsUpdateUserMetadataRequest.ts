@@ -6,6 +6,7 @@ import * as serializers from "../../../../index";
 import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { UserMetadata } from "../../../../types/UserMetadata";
+import { UserMetadataValue } from "../../../../types/UserMetadataValue";
 
 export const AssetsUpdateUserMetadataRequest: core.serialization.Schema<
     serializers.AssetsUpdateUserMetadataRequest.Raw,

@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { MediaSource } from "./MediaSource";
+import { DocumentSegmentation } from "./DocumentSegmentation";
 import { AsyncDocumentInputRequestEmbeddingOptionItem } from "./AsyncDocumentInputRequestEmbeddingOptionItem";
 import { AsyncDocumentInputRequestEmbeddingTypeItem } from "./AsyncDocumentInputRequestEmbeddingTypeItem";
 import { AsyncDocumentInputRequestEmbeddingScopeItem } from "./AsyncDocumentInputRequestEmbeddingScopeItem";
@@ -15,6 +16,7 @@ export const AsyncDocumentInputRequest: core.serialization.ObjectSchema<
     TwelvelabsApi.AsyncDocumentInputRequest
 > = core.serialization.object({
     mediaSource: core.serialization.property("media_source", MediaSource),
+    segmentation: DocumentSegmentation.optional(),
     embeddingOption: core.serialization.property(
         "embedding_option",
         core.serialization.list(AsyncDocumentInputRequestEmbeddingOptionItem).optional(),
@@ -32,6 +34,7 @@ export const AsyncDocumentInputRequest: core.serialization.ObjectSchema<
 export declare namespace AsyncDocumentInputRequest {
     export interface Raw {
         media_source: MediaSource.Raw;
+        segmentation?: DocumentSegmentation.Raw | null;
         embedding_option?: AsyncDocumentInputRequestEmbeddingOptionItem.Raw[] | null;
         embedding_type?: AsyncDocumentInputRequestEmbeddingTypeItem.Raw[] | null;
         embedding_scope?: AsyncDocumentInputRequestEmbeddingScopeItem.Raw[] | null;

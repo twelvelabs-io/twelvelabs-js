@@ -10,5 +10,10 @@ import * as TwelvelabsApi from "../index";
 export interface ResponseStreamOutputItemAddedEvent extends TwelvelabsApi.ResponseStreamEventBase {
     /** The index of the output item. */
     outputIndex?: number;
+    /**
+     * The output item when it starts. For a message, the `phase` field is
+     * already set, so you can identify intermediate output or the answer
+     * before any of its text streams in.
+     */
     item?: TwelvelabsApi.ResponseOutputItem;
 }

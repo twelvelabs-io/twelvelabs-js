@@ -6,6 +6,6 @@
  * Base fields shared by all streaming events.
  */
 export interface ResponseStreamEventBase {
-    /** A monotonically increasing sequence number for ordering events. */
+    /** The event's position in the stream's single monotonic sequence, used to order events. */
     sequenceNumber: number;
 }

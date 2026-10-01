@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { IngestionConfig } from "./IngestionConfig";
+import { KnowledgeStoreMetadataValue } from "./KnowledgeStoreMetadataValue";
 
 export const KnowledgeStore: core.serialization.ObjectSchema<
     serializers.KnowledgeStore.Raw,
@@ -18,7 +19,7 @@ export const KnowledgeStore: core.serialization.ObjectSchema<
     itemCount: core.serialization.property("item_count", core.serialization.number().optional()),
     createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
     updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
-    metadata: core.serialization.record(core.serialization.string(), core.serialization.string()).optional(),
+    metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace KnowledgeStore {
@@ -30,6 +31,6 @@ export declare namespace KnowledgeStore {
         item_count?: number | null;
         created_at?: string | null;
         updated_at?: string | null;
-        metadata?: Record<string, string> | null;
+        metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

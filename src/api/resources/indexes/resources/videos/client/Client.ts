@@ -155,8 +155,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.4",
-                        "User-Agent": "twelvelabs-js/1.3.4",
+                        "X-Fern-SDK-Version": "1.3.5",
+                        "User-Agent": "twelvelabs-js/1.3.5",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -292,8 +292,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -390,8 +390,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -457,7 +457,8 @@ export class Videos {
      *             "category": "recentlyAdded",
      *             "batchNumber": 5,
      *             "rating": 9.3,
-     *             "needsReview": true
+     *             "needsReview": true,
+     *             "hashtags": ["summer", "vlog"]
      *         }
      *     })
      */
@@ -487,8 +488,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

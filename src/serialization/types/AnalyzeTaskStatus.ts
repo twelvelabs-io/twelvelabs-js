@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const AnalyzeTaskStatus: core.serialization.Schema<
     serializers.AnalyzeTaskStatus.Raw,
     TwelvelabsApi.AnalyzeTaskStatus
-> = core.serialization.enum_(["queued", "pending", "processing", "ready", "failed"]);
+> = core.serialization.enum_(["queued", "pending", "processing", "ready", "failed", "canceled"]);
 
 export declare namespace AnalyzeTaskStatus {
-    export type Raw = "queued" | "pending" | "processing" | "ready" | "failed";
+    export type Raw = "queued" | "pending" | "processing" | "ready" | "failed" | "canceled";
 }

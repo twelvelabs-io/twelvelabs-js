@@ -6,7 +6,7 @@
  * Failure details for a single batch item.
  */
 export interface BatchItemError {
-    /** A machine-readable error code identifying the failure category. Omitted until the per-item error catalog is wired through; until then, only `message` is guaranteed. */
+    /** A machine-readable error code identifying the failure category. */
     code?: string;
     /** A human-readable explanation of the failure. */
     message: string;

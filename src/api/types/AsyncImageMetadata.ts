@@ -16,4 +16,5 @@ export interface AsyncImageMetadata {
     embeddingOptions?: string[];
     /** The `embedding_scope` values used to generate the embedding. Always `["asset"]`. */
     embeddingScopes?: TwelvelabsApi.AsyncImageMetadataEmbeddingScopesItem[];
+    embeddingDimension?: TwelvelabsApi.EmbeddingDimension;
 }
