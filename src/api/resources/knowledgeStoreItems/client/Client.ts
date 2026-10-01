@@ -100,8 +100,8 @@ export class KnowledgeStoreItems {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.4",
-                        "User-Agent": "twelvelabs-js/1.3.4",
+                        "X-Fern-SDK-Version": "1.3.5",
+                        "User-Agent": "twelvelabs-js/1.3.5",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -176,7 +176,9 @@ export class KnowledgeStoreItems {
      * The operation is asynchronous. The item is created immediately with the `queued`
      * status and processed in the background.
      *
-     * The asset must not exceed 5 GB.
+     * **Asset size limits**:
+     * - **Video**: Up to 10 GB
+     * - **Images**: Up to 32 MB
      *
      * @param {string} knowledgeStoreId - The unique identifier of the knowledge store.
      * @param {TwelvelabsApi.KnowledgeStoreItemsCreateRequest} request
@@ -213,8 +215,8 @@ export class KnowledgeStoreItems {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -309,8 +311,8 @@ export class KnowledgeStoreItems {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -402,8 +404,8 @@ export class KnowledgeStoreItems {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -22,6 +22,7 @@ export const CreateEmbeddingsRequest: core.serialization.Schema<
     modelName: core.serialization.property("model_name", CreateEmbeddingsRequestModelName),
     autoTruncate: core.serialization.property("auto_truncate", core.serialization.boolean().optional()),
     embeddingUncertainty: core.serialization.property("embedding_uncertainty", core.serialization.boolean().optional()),
+    embeddingDimension: core.serialization.property("embedding_dimension", core.serialization.number().optional()),
     text: TextInputRequest.optional(),
     image: ImageInputRequest.optional(),
     textImage: core.serialization.property("text_image", TextImageInputRequest.optional()),
@@ -36,6 +37,7 @@ export declare namespace CreateEmbeddingsRequest {
         model_name: CreateEmbeddingsRequestModelName.Raw;
         auto_truncate?: boolean | null;
         embedding_uncertainty?: boolean | null;
+        embedding_dimension?: number | null;
         text?: TextInputRequest.Raw | null;
         image?: ImageInputRequest.Raw | null;
         text_image?: TextImageInputRequest.Raw | null;

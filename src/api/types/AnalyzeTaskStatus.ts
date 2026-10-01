@@ -3,13 +3,14 @@
  */
 
 /**
- * The current status of the analysis task.
+ * The current status of the analysis task. The `ready`, `failed`, and `canceled` statuses are final.
  */
-export type AnalyzeTaskStatus = "queued" | "pending" | "processing" | "ready" | "failed";
+export type AnalyzeTaskStatus = "queued" | "pending" | "processing" | "ready" | "failed" | "canceled";
 export const AnalyzeTaskStatus = {
     Queued: "queued",
     Pending: "pending",
     Processing: "processing",
     Ready: "ready",
     Failed: "failed",
+    Canceled: "canceled",
 } as const;

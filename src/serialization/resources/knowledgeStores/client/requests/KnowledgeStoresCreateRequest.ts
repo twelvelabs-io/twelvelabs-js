@@ -6,6 +6,7 @@ import * as serializers from "../../../../index";
 import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { IngestionConfig } from "../../../../types/IngestionConfig";
+import { KnowledgeStoreMetadataValue } from "../../../../types/KnowledgeStoreMetadataValue";
 
 export const KnowledgeStoresCreateRequest: core.serialization.Schema<
     serializers.KnowledgeStoresCreateRequest.Raw,
@@ -14,7 +15,7 @@ export const KnowledgeStoresCreateRequest: core.serialization.Schema<
     name: core.serialization.string(),
     ingestionConfig: core.serialization.property("ingestion_config", IngestionConfig.optional()),
     description: core.serialization.string().optional(),
-    metadata: core.serialization.record(core.serialization.string(), core.serialization.string()).optional(),
+    metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace KnowledgeStoresCreateRequest {
@@ -22,6 +23,6 @@ export declare namespace KnowledgeStoresCreateRequest {
         name: string;
         ingestion_config?: IngestionConfig.Raw | null;
         description?: string | null;
-        metadata?: Record<string, string> | null;
+        metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../../../../../../../api/index";
 import * as core from "../../../../../../../../core";
 import { TasksCreateResponseStatus } from "./TasksCreateResponseStatus";
 import { EmbeddingData } from "../../../../../../../types/EmbeddingData";
+import { TasksCreateResponseMetadata } from "./TasksCreateResponseMetadata";
 
 export const TasksCreateResponse: core.serialization.ObjectSchema<
     serializers.embed.v2.TasksCreateResponse.Raw,
@@ -15,6 +16,7 @@ export const TasksCreateResponse: core.serialization.ObjectSchema<
     id: core.serialization.property("_id", core.serialization.string()),
     status: TasksCreateResponseStatus,
     data: core.serialization.list(EmbeddingData).optional(),
+    metadata: TasksCreateResponseMetadata.optional(),
 });
 
 export declare namespace TasksCreateResponse {
@@ -22,5 +24,6 @@ export declare namespace TasksCreateResponse {
         _id: string;
         status: TasksCreateResponseStatus.Raw;
         data?: EmbeddingData.Raw[] | null;
+        metadata?: TasksCreateResponseMetadata.Raw | null;
     }
 }

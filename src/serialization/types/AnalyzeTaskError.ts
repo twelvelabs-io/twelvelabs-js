@@ -10,11 +10,13 @@ export const AnalyzeTaskError: core.serialization.ObjectSchema<
     serializers.AnalyzeTaskError.Raw,
     TwelvelabsApi.AnalyzeTaskError
 > = core.serialization.object({
+    code: core.serialization.string().optional(),
     message: core.serialization.string(),
 });
 
 export declare namespace AnalyzeTaskError {
     export interface Raw {
+        code?: string | null;
         message: string;
     }
 }

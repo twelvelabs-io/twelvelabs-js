@@ -6,6 +6,7 @@ import * as serializers from "../../../../index";
 import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { KnowledgeStoreItemAssetType } from "../../../../types/KnowledgeStoreItemAssetType";
+import { KnowledgeStoreMetadataValue } from "../../../../types/KnowledgeStoreMetadataValue";
 
 export const KnowledgeStoreItemsCreateRequest: core.serialization.Schema<
     serializers.KnowledgeStoreItemsCreateRequest.Raw,
@@ -13,13 +14,13 @@ export const KnowledgeStoreItemsCreateRequest: core.serialization.Schema<
 > = core.serialization.object({
     assetType: core.serialization.property("asset_type", KnowledgeStoreItemAssetType.optional()),
     assetId: core.serialization.property("asset_id", core.serialization.string()),
-    metadata: core.serialization.record(core.serialization.string(), core.serialization.string()).optional(),
+    metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace KnowledgeStoreItemsCreateRequest {
     export interface Raw {
         asset_type?: KnowledgeStoreItemAssetType.Raw | null;
         asset_id: string;
-        metadata?: Record<string, string> | null;
+        metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

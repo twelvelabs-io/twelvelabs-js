@@ -11,7 +11,8 @@ import * as TwelvelabsApi from "../../../../index";
  *             "category": "recentlyAdded",
  *             "batchNumber": 5,
  *             "rating": 9.3,
- *             "needsReview": true
+ *             "needsReview": true,
+ *             "hashtags": ["summer", "vlog"]
  *         }
  *     }
  */

@@ -6,6 +6,8 @@ import * as TwelvelabsApi from "../index";
 
 /**
  * This field is required if the `input_type` parameter is `audio`.
+ *
+ * Base64-encoded audio can be up to 36 MB decoded. For a larger file, provide a URL or an asset identifier.
  */
 export interface AsyncAudioInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;
@@ -33,7 +35,7 @@ export interface AsyncAudioInputRequest {
      * - **With Marengo 3.5**: Place your settings in the `temporal` object. Both strategies are available: `dynamic` divides the audio into variable-length segments that follow scene changes, and `fixed` divides it into equal-length segments. Default: `temporal.dynamic`, `min_duration_sec: 2`.
      * - **With Marengo 3.0**: Provide the settings directly in this object. Only `fixed` segmentation is available. Default: `fixed`, `duration_sec: 6`.
      *
-     * Using a structure that does not match your model version returns a `400` error.
+     * If you use a structure that does not match your model version, the platform returns a `400` error.
      */
     segmentation?: TwelvelabsApi.AsyncAudioInputRequestSegmentation;
     /**

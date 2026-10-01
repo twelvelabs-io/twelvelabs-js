@@ -5,6 +5,7 @@
 import * as serializers from "../../../../index";
 import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
+import { KnowledgeStoreMetadataValue } from "../../../../types/KnowledgeStoreMetadataValue";
 
 export const KnowledgeStoresUpdateRequest: core.serialization.Schema<
     serializers.KnowledgeStoresUpdateRequest.Raw,
@@ -12,13 +13,13 @@ export const KnowledgeStoresUpdateRequest: core.serialization.Schema<
 > = core.serialization.object({
     name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
-    metadata: core.serialization.record(core.serialization.string(), core.serialization.string()).optional(),
+    metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace KnowledgeStoresUpdateRequest {
     export interface Raw {
         name?: string | null;
         description?: string | null;
-        metadata?: Record<string, string> | null;
+        metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

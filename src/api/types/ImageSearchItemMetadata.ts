@@ -11,5 +11,5 @@ export interface ImageSearchItemMetadata {
     /** System-generated media metadata for the source image. */
     system?: TwelvelabsApi.ImageSearchSystemMetadata;
     /** Caller-supplied key-value pairs attached to the item. */
-    user?: TwelvelabsApi.UserMetadata;
+    user?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
 }

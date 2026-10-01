@@ -102,8 +102,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.4",
-                        "User-Agent": "twelvelabs-js/1.3.4",
+                        "X-Fern-SDK-Version": "1.3.5",
+                        "User-Agent": "twelvelabs-js/1.3.5",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -177,7 +177,7 @@ export class Assets {
      * The platform processes uploads asynchronously. This method returns immediately with the asset in the `processing` status, which then transitions to the `ready` status on success or to the `failed` status when the file is invalid, corrupt, or unreadable. Poll the [Retrieve an asset](/v1.3/api-reference/upload-content/direct-uploads/retrieve) endpoint until the status of the asset is `ready` before you use it. This applies to every upload, including small files.
      *
      * **Supported content**:
-     * - Video, audio, and image files.
+     * - Video, audio, and images.
      * - PDF, text, and Markdown files.
      *
      * Filename extension matching is case-insensitive; for example, `notes.MD` and `notes.md` are treated the same. The platform rejects unsupported formats. For documents, it also rejects files whose extensions don't match the detected content.
@@ -267,8 +267,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -358,8 +358,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -466,8 +466,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -576,8 +576,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -639,7 +639,7 @@ export class Assets {
     /**
      * This method replaces the entire user-defined metadata of the specified asset. Unlike the [`PATCH`](/v1.3/api-reference/upload-content/direct-uploads/update-user-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
      * - A key with a value creates or replaces that key.
-     * - A key set to an empty string (`""`) or `null` is ignored.
+     * - A key set to an empty string (`""`), an empty array (`[]`), or `null` is ignored.
      * - A key you omit from the request body is removed.
      *
      * To clear all metadata, send an empty object (`{}`) in the `user_metadata` field. This produces the same result as the [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-user-metadata) method.
@@ -657,7 +657,8 @@ export class Assets {
      *             "category": "recentlyAdded",
      *             "batchNumber": 5,
      *             "rating": 9.3,
-     *             "needsReview": true
+     *             "needsReview": true,
+     *             "hashtags": ["summer", "vlog"]
      *         }
      *     })
      */
@@ -685,8 +686,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -772,8 +773,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -827,7 +828,7 @@ export class Assets {
      * This method updates the user-defined metadata of the specified asset. The platform merges your changes with the existing metadata:
      * - A key with a value creates or replaces that key.
      * - A key set to `null` deletes that key.
-     * - A key set to an empty string (`""`) is ignored.
+     * - A key set to an empty string (`""`) or an empty array (`[]`) is ignored.
      * - A key you omit from the request keeps its current value.
      *
      * To replace all metadata in a single call, use the [`PUT`](/v1.3/api-reference/upload-content/direct-uploads/replace-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint instead.
@@ -845,7 +846,8 @@ export class Assets {
      *             "category": "recentlyAdded",
      *             "batchNumber": 5,
      *             "rating": 9.3,
-     *             "needsReview": true
+     *             "needsReview": true,
+     *             "hashtags": ["summer", "vlog"]
      *         }
      *     })
      */
@@ -873,8 +875,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

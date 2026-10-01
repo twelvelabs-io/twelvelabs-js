@@ -20,8 +20,13 @@ import * as TwelvelabsApi from "../index";
  * - `response.output_item.done` — An output item is finalized.
  * - `response.completed` — The response is complete.
  * - `response.failed` — The response has failed.
+ * - `keepalive` — Heartbeat sent periodically while no other events are being emitted (for example, during a long tool call). It contains no response data and can be ignored.
  *
  * The stream ends with a `data: [DONE]` message.
+ *
+ * Events are identified by `type` alone and have no `object` field, unlike the
+ * response object. Consumers must ignore frames whose `type` doesn't match one
+ * of the values above, to stay forward-compatible with new event types.
  */
 export type ResponseStreamEvent =
     | TwelvelabsApi.ResponseStreamEvent.ResponseCreated
@@ -34,7 +39,8 @@ export type ResponseStreamEvent =
     | TwelvelabsApi.ResponseStreamEvent.ResponseOutputTextDone
     | TwelvelabsApi.ResponseStreamEvent.ResponseContentPartDone
     | TwelvelabsApi.ResponseStreamEvent.ResponseOutputItemDone
-    | TwelvelabsApi.ResponseStreamEvent.ResponseFunctionCallArgumentsDone;
+    | TwelvelabsApi.ResponseStreamEvent.ResponseFunctionCallArgumentsDone
+    | TwelvelabsApi.ResponseStreamEvent.Keepalive;
 
 export namespace ResponseStreamEvent {
     export interface ResponseCreated extends TwelvelabsApi.ResponseStreamResponseEvent {
@@ -79,5 +85,9 @@ export namespace ResponseStreamEvent {
 
     export interface ResponseFunctionCallArgumentsDone extends TwelvelabsApi.ResponseStreamFuncCallArgsDoneEvent {
         type: "response.function_call_arguments.done";
+    }
+
+    export interface Keepalive extends TwelvelabsApi.ResponseStreamKeepAliveEvent {
+        type: "keepalive";
     }
 }

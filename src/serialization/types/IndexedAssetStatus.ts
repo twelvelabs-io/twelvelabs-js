@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const IndexedAssetStatus: core.serialization.Schema<
     serializers.IndexedAssetStatus.Raw,
     TwelvelabsApi.IndexedAssetStatus
-> = core.serialization.enum_(["ready", "pending", "queued", "indexing", "failed"]);
+> = core.serialization.enum_(["ready", "pending", "queued", "indexing", "validating", "failed"]);
 
 export declare namespace IndexedAssetStatus {
-    export type Raw = "ready" | "pending" | "queued" | "indexing" | "failed";
+    export type Raw = "ready" | "pending" | "queued" | "indexing" | "validating" | "failed";
 }

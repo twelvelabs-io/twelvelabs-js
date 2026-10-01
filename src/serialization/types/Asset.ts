@@ -9,6 +9,7 @@ import { AssetMethod } from "./AssetMethod";
 import { AssetStatus } from "./AssetStatus";
 import { UserMetadata } from "./UserMetadata";
 import { AssetSource } from "./AssetSource";
+import { UserMetadataValue } from "./UserMetadataValue";
 
 export const Asset: core.serialization.ObjectSchema<serializers.Asset.Raw, TwelvelabsApi.Asset> =
     core.serialization.object({

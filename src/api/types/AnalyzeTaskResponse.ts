@@ -12,24 +12,27 @@ export interface AnalyzeTaskResponse {
     taskId: string;
     /** The identifier you provided in the `custom_id` field when you created the task, or `null` if you did not set one. This key is always present in the response. */
     customId?: string;
-    /** The video source you provided. */
+    /** The unique identifier of the batch that the task was created in. The platform returns this field only for tasks created as part of a batch. */
+    batchId?: string;
+    /** The public video source associated with the task. When the video was uploaded using the [`POST`](/v1.3/api-reference/index-content/create) method of the `/tasks` endpoint, the source type is `video_id`. Otherwise, the source type is `url`, `base64_string`, or `asset_id`. */
     videoSource?: TwelvelabsApi.AnalyzeTaskResponseVideoSource;
     /** The request parameters for this task. */
     requestParams?: TwelvelabsApi.AnalyzeTaskResponseRequestParams;
     status: TwelvelabsApi.AnalyzeTaskStatus;
     /** A string representing the date and time, in RFC 3339 format (“YYYY-MM-DDTHH:mm:ssZ”), when the analysis task was created. */
     createdAt: Date;
-    /** A string representing the date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the analysis task was completed or failed. The platform returns this field only if `status` is `ready` or `failed`. */
+    /** A string representing the date and time, in RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"), when the analysis task completed, failed, or was canceled. The platform returns this field only if `status` is `ready`, `failed`, or `canceled`. */
     completedAt?: Date;
-    /** An object that contains the generated text and additional information. The platform returns this object only when `status` is `ready`. */
+    /** An object that contains the generated text and additional information. The platform returns this object only when `status` is `ready`. When the task fails or is canceled, the response contains no `result` object, so `generation_id` and `usage` are absent. */
     result?: TwelvelabsApi.AnalyzeTaskResult;
     /**
-     * A message attached to the task response. The platform sets this field in two cases:
+     * A message attached to the task response. The platform sets this field in the following cases:
      *
-     * - **Task failure**: `status` is `failed`. The `message` field describes the failure reason.
-     * - **Truncation warning**: `status` is `ready` and `result.finish_reason` is `length`. The `message` field describes the truncation cause (either the maximum response length was reached or the context window was reached). The partial output is in `result.data`.
+     * - **Task failure**: `status` is `failed`. The `message` field describes the failure reason. With video segmentation, a task can fail because the analysis reached the maximum response length or the context window before it could complete. The response contains no `result` object.
+     * - **Task cancellation**: `status` is `canceled` and a cancellation reason is available. A task newly canceled through the task cancellation endpoint has `code` set to `user_canceled`; canceling the task again does not change the reason.
+     * - **Truncation warning** (general analysis): `status` is `ready` and `result.finish_reason` is `length`. The `message` field describes the truncation cause (either the maximum response length was reached or the context window was reached). The partial output is in `result.data`.
      *
-     * Not set when `status` is `ready` and `result.finish_reason` is `stop`. Set when `result.finish_reason` is `length`.
+     * Not set when `status` is `ready` and `result.finish_reason` is `stop`. A canceled task can omit this field when no cancellation reason is available.
      */
     error?: TwelvelabsApi.AnalyzeTaskError;
     /** The delivery status of each webhook endpoint. The platform omits this field when no webhooks are configured. You can register webhooks through the Playground. See the [Webhooks](/v1.3/docs/advanced/webhooks) page for details. */

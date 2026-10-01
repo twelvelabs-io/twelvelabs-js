@@ -54,7 +54,7 @@ export class Embed {
      *
      * Ensure your media files meet the following requirements:
      * - [Audio files](/v1.3/docs/concepts/models/marengo/marengo-3-0#audio-file-requirements).
-     * - [Image files](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements).
+     * - [Images](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements).
      *
      * Parameters for embeddings:
      * - **Common parameters**:
@@ -136,8 +136,8 @@ export class Embed {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

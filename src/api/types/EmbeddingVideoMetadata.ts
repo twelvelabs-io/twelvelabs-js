@@ -24,4 +24,5 @@ export interface EmbeddingVideoMetadata {
     startOffsetSec?: number;
     /** The end offset in seconds. */
     endOffsetSec?: number;
+    embeddingDimension?: TwelvelabsApi.EmbeddingDimension;
 }

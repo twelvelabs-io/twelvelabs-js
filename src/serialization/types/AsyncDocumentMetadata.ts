@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AsyncDocumentMetadataEmbeddingScopesItem } from "./AsyncDocumentMetadataEmbeddingScopesItem";
+import { EmbeddingDimension } from "./EmbeddingDimension";
 
 export const AsyncDocumentMetadata: core.serialization.ObjectSchema<
     serializers.AsyncDocumentMetadata.Raw,
@@ -21,6 +22,7 @@ export const AsyncDocumentMetadata: core.serialization.ObjectSchema<
         "embedding_scopes",
         core.serialization.list(AsyncDocumentMetadataEmbeddingScopesItem).optional(),
     ),
+    embeddingDimension: core.serialization.property("embedding_dimension", EmbeddingDimension.optional()),
 });
 
 export declare namespace AsyncDocumentMetadata {
@@ -29,5 +31,6 @@ export declare namespace AsyncDocumentMetadata {
         input_filename?: string | null;
         embedding_options?: string[] | null;
         embedding_scopes?: AsyncDocumentMetadataEmbeddingScopesItem.Raw[] | null;
+        embedding_dimension?: EmbeddingDimension.Raw | null;
     }
 }

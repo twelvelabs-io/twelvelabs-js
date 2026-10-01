@@ -18,6 +18,7 @@ export const AnalyzeTaskResponse: core.serialization.ObjectSchema<
 > = core.serialization.object({
     taskId: core.serialization.property("task_id", core.serialization.string()),
     customId: core.serialization.property("custom_id", core.serialization.string().optional()),
+    batchId: core.serialization.property("batch_id", core.serialization.string().optional()),
     videoSource: core.serialization.property("video_source", AnalyzeTaskResponseVideoSource.optional()),
     requestParams: core.serialization.property("request_params", AnalyzeTaskResponseRequestParams.optional()),
     status: AnalyzeTaskStatus,
@@ -32,6 +33,7 @@ export declare namespace AnalyzeTaskResponse {
     export interface Raw {
         task_id: string;
         custom_id?: string | null;
+        batch_id?: string | null;
         video_source?: AnalyzeTaskResponseVideoSource.Raw | null;
         request_params?: AnalyzeTaskResponseRequestParams.Raw | null;
         status: AnalyzeTaskStatus.Raw;

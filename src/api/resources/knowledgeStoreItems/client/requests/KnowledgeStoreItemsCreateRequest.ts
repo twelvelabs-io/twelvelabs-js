@@ -15,6 +15,6 @@ export interface KnowledgeStoreItemsCreateRequest {
     assetType?: TwelvelabsApi.KnowledgeStoreItemAssetType;
     /** The unique identifier of the asset to add to the knowledge store. */
     assetId: string;
-    /** Custom metadata for the item. Both keys and values must be strings. */
-    metadata?: Record<string, string>;
+    /** Custom metadata for the item, as user-defined key-value pairs. Up to 50 pairs, keys up to 128 characters, string values up to 8192 characters. Keys are strings; values can be a string, a number, a boolean, or an array of strings. A nested object, an array containing anything other than strings, and a null value are rejected. An integer must fit in 53 bits (-9007199254740991 to 9007199254740991). Send a wider integer, or an identifier that must be preserved verbatim, as a string. */
+    metadata?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
 }

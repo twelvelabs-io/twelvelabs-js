@@ -22,6 +22,6 @@ export interface KnowledgeStore {
     createdAt?: Date;
     /** The date and time when the knowledge store was last updated, in the RFC 3339 format. */
     updatedAt?: Date;
-    /** Custom metadata for the knowledge store. */
-    metadata?: Record<string, string>;
+    /** Custom metadata for the knowledge store. Keys are strings; each value is a string, a number, a boolean, or an array of strings. */
+    metadata?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
 }

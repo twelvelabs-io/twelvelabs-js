@@ -6,19 +6,19 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { VideoSearchSystemMetadata } from "./VideoSearchSystemMetadata";
-import { UserMetadata } from "./UserMetadata";
+import { KnowledgeStoreMetadataValue } from "./KnowledgeStoreMetadataValue";
 
 export const VideoSearchItemMetadata: core.serialization.ObjectSchema<
     serializers.VideoSearchItemMetadata.Raw,
     TwelvelabsApi.VideoSearchItemMetadata
 > = core.serialization.object({
     system: VideoSearchSystemMetadata.optional(),
-    user: UserMetadata.optional(),
+    user: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace VideoSearchItemMetadata {
     export interface Raw {
         system?: VideoSearchSystemMetadata.Raw | null;
-        user?: UserMetadata.Raw | null;
+        user?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

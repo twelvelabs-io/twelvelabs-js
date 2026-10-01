@@ -53,6 +53,7 @@ export interface IndexedAssetsListRequest {
      * - `pending`: The indexed asset is pending.
      * - `queued`: The indexed asset is queued.
      * - `indexing`: The indexed asset is being indexed.
+     * - `validating`: The indexed asset is being validated.
      * - `failed`: The indexed asset indexing task failed.
      *
      * To filter by multiple statuses, specify the `status` parameter for each value:

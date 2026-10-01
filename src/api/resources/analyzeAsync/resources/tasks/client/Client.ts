@@ -103,8 +103,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -163,8 +163,7 @@ export class Tasks {
      * This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions.
      *
      * <Accordion title="Input requirements">
-     * - Minimum duration: 4 seconds
-     * - Maximum duration: 2 hours
+     * - The video can be up to 2 hours long, or up to 4 hours when you analyze only a portion of it. You can analyze between 1 second and 2 hours of the video. HLS and base64 videos are limited to 2 hours.
      * - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
      * - Resolution: 360x360 to 5184x2160 pixels
      * - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
@@ -173,7 +172,7 @@ export class Tasks {
      * **When to use this method**:
      * - Generate custom text from your video using a prompt (general analysis)
      * - Extract timestamped metadata with custom segment definitions from your video
-     * - Analyze videos longer than 1 hour
+     * - Analyze videos longer than 1 hour, or a portion of a video up to 4 hours long
      * - Process videos asynchronously without blocking your application
      *
      * **Do not use this method for**:
@@ -182,8 +181,8 @@ export class Tasks {
      * Analyzing videos asynchronously requires three steps:
      *
      * 1. Create an analysis task using this method. The platform returns a task identifier.
-     * 2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`.
-     * 3. Retrieve the results from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
+     * 2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`, `failed`, or `canceled`.
+     * 3. When the status is `ready`, retrieve the results using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
      *
      * On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
      *
@@ -387,8 +386,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -455,9 +454,10 @@ export class Tasks {
      * - `pending`: The task is queued and waiting to start.
      * - `processing`: The platform is analyzing the video.
      * - `ready`: Processing is complete. Results are available in the response.
-     * - `failed`: The task failed. No results were generated.
+     * - `failed`: The task failed. No result is available. The `error` field describes the failure.
+     * - `canceled`: The task was canceled. No result is available. The `error` field describes the cancellation reason, if available.
      *
-     * Poll this method until `status` is `ready` or `failed`. When `status` is `ready`, use the results from the response.
+     * Poll this method until `status` is `ready`, `failed`, or `canceled`. When `status` is `ready`, use the results from the response.
      *
      * @param {string} taskId - The unique identifier of the analysis task.
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
@@ -489,8 +489,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -574,8 +574,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.4",
-                "User-Agent": "twelvelabs-js/1.3.4",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -616,6 +616,125 @@ export class Tasks {
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
                     "Timeout exceeded when calling DELETE /analyze/tasks/{task_id}.",
+                );
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * Use this method to cancel an asynchronous analysis task in your account. To cancel a task created as part of a batch, use the [`POST`](/v1.3/api-reference/analyze-videos/batch-analysis/cancel-batch) method of the `/analyze/batches/{batch_id}/cancel` endpoint.
+     *
+     * You can cancel a task with the `queued`, `pending`, or `processing` status. This action cannot be undone.
+     *
+     * Processing that has already started can continue briefly after cancellation.
+     *
+     * When you cancel a task, the platform can send an `analyze.task.canceled` webhook. Delivery is best-effort: a `200` response is not a delivery guarantee. When you receive the event, retrieve the task for its current state.
+     *
+     * @param {string} taskId - The unique identifier of the analysis task you want to cancel.
+     * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.ForbiddenError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.ConflictError}
+     * @throws {@link TwelvelabsApi.InternalServerError}
+     *
+     * @example
+     *     await client.analyzeAsync.tasks.cancel("64f8d2c7e4a1b37f8a9c5d12")
+     */
+    public cancel(
+        taskId: string,
+        requestOptions?: Tasks.RequestOptions,
+    ): core.HttpResponsePromise<TwelvelabsApi.CancelAnalyzeTaskResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__cancel(taskId, requestOptions));
+    }
+
+    private async __cancel(
+        taskId: string,
+        requestOptions?: Tasks.RequestOptions,
+    ): Promise<core.WithRawResponse<TwelvelabsApi.CancelAnalyzeTaskResponse>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `analyze/tasks/${encodeURIComponent(taskId)}/cancel`,
+            ),
+            method: "POST",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.3.5",
+                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.CancelAnalyzeTaskResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new TwelvelabsApi.UnauthorizedError(
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new TwelvelabsApi.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling POST /analyze/tasks/{task_id}/cancel.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({

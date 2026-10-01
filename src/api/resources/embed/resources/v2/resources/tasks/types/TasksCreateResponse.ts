@@ -11,4 +11,6 @@ export interface TasksCreateResponse {
     status: TwelvelabsApi.embed.v2.TasksCreateResponseStatus;
     /** An array of embedding results when `status` is `ready`, or `null` when `status` is `processing` or `failed`. */
     data?: TwelvelabsApi.EmbeddingData[];
+    /** Metadata about the task you created. The platform sets the length of your embeddings when it creates the task, and the `embedding_dimension` field contains that length. Only Marengo 3.5 returns it. */
+    metadata?: TwelvelabsApi.embed.v2.TasksCreateResponseMetadata;
 }

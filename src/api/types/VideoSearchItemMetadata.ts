@@ -11,5 +11,5 @@ export interface VideoSearchItemMetadata {
     /** System-generated media metadata for the source video. */
     system?: TwelvelabsApi.VideoSearchSystemMetadata;
     /** Caller-supplied key-value pairs attached to the item. */
-    user?: TwelvelabsApi.UserMetadata;
+    user?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
 }

@@ -5,7 +5,7 @@
 /**
  * The reason the generation stopped.
  * - `stop`: The generation reached the end of the output text.
- * - `length`: The response reached the maximum response length or the context window. For JSON responses, this may return truncated JSON that fails to parse.
+ * - `length`: The generation reached the maximum response length or the context window. With a JSON response format, the output may be truncated and fail to parse.
  */
 export type FinishReason = "stop" | "length";
 export const FinishReason = {

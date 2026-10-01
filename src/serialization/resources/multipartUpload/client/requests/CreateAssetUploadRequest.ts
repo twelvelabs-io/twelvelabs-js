@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { CreateAssetUploadRequestType } from "../../types/CreateAssetUploadRequestType";
 import { UserMetadata } from "../../../../types/UserMetadata";
+import { UserMetadataValue } from "../../../../types/UserMetadataValue";
 
 export const CreateAssetUploadRequest: core.serialization.Schema<
     serializers.CreateAssetUploadRequest.Raw,

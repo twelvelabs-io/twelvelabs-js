@@ -16,4 +16,5 @@ export interface AsyncDocumentMetadata {
     embeddingOptions?: string[];
     /** The `embedding_scope` values used to generate the embedding. */
     embeddingScopes?: TwelvelabsApi.AsyncDocumentMetadataEmbeddingScopesItem[];
+    embeddingDimension?: TwelvelabsApi.EmbeddingDimension;
 }

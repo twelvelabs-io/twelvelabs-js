@@ -187,7 +187,7 @@ export interface CreateAsyncAnalyzeRequest {
      * The platform stores this value unchanged and returns it in the following responses:
      * - The [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint
      * - The [`GET`](/v1.3/api-reference/analyze-videos/list-async-analysis-tasks) method of the `/analyze/tasks` endpoint
-     * - The `analyze.task.ready` and `analyze.task.failed` webhook payloads
+     * - The `analyze.task.ready`, `analyze.task.failed`, and `analyze.task.canceled` webhook payloads
      *
      * **Format**: 1–64 characters. Alphanumeric, hyphens (`-`), and underscores (`_`) only. An empty string is rejected with a `400 Bad Request`.
      *
@@ -228,6 +228,8 @@ export interface CreateAsyncAnalyzeRequest {
      * |------|-----|-----|---------|
      * | `general` | 512 | 98,304 | 4,096 |
      * | `time_based_metadata` | 2,048 | 98,304 | 32,768 |
+     *
+     * With video segmentation, if the response needs more tokens than `max_tokens` allows, the task fails and no partial output is returned.
      */
     maxTokens?: number;
     responseFormat?: TwelvelabsApi.AsyncResponseFormat;
@@ -249,7 +251,8 @@ export interface CreateAsyncAnalyzeRequest {
      * <Note title="Notes">
      * - If omitted, defaults to the internal start time of the video.
      * - Most videos start at 0, but some (for example, from cameras or broadcast recordings) may have a non-zero start time. To find the value, run `ffprobe -v error -show_entries format=start_time,duration -of default=noprint_wrappers=1 your_video.mp4`.
-     * - Must be less than `end_time` and less than the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
+     * - Must be less than `end_time` and the video duration.
+     * - The window (`end_time - start_time`) must be at least 1 second and at most 2 hours. The video may be up to 4 hours as long as the window stays within that limit.
      * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
      * - Together with `end_time`, this parameter determines the billable video duration. If you omit both, billing uses the full video duration. For details, see the [Frequently asked questions](/v1.3/docs/resources/frequently-asked-questions#how-is-video-segmentation-priced) page.
      * </Note>
@@ -261,7 +264,8 @@ export interface CreateAsyncAnalyzeRequest {
      * <Note title="Notes">
      * - If omitted, defaults to the internal start time of the video plus its duration.
      * - Most videos start at 0, but some (for example, from cameras or broadcast recordings) may have a non-zero start time. To find the value, run `ffprobe -v error -show_entries format=start_time,duration -of default=noprint_wrappers=1 your_video.mp4`.
-     * - Must be greater than `start_time` and less than or equal to the video duration. The clip (`end_time - start_time`) must be at least `4` seconds.
+     * - Must be greater than `start_time` and less than or equal to the video duration.
+     * - The window (`end_time - start_time`) must be at least 1 second and at most 2 hours. The video may be up to 4 hours as long as the window stays within that limit.
      * - Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
      * - Together with `start_time`, this parameter determines the billable video duration. If you omit both, billing uses the full video duration. For details, see the [Frequently asked questions](/v1.3/docs/resources/frequently-asked-questions#how-is-video-segmentation-priced) page.
      * </Note>

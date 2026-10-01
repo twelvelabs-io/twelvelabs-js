@@ -10,6 +10,7 @@ import { UserMetadata } from "../../../../../types/UserMetadata";
 import { HlsObject } from "../../../../../types/HlsObject";
 import { VideosRetrieveResponseEmbedding } from "./VideosRetrieveResponseEmbedding";
 import { TranscriptionData } from "../../../../../types/TranscriptionData";
+import { UserMetadataValue } from "../../../../../types/UserMetadataValue";
 import { TranscriptionDataItem } from "../../../../../types/TranscriptionDataItem";
 
 export const VideosRetrieveResponse: core.serialization.ObjectSchema<
