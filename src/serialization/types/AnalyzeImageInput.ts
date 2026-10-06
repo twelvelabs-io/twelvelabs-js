@@ -6,21 +6,21 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
-export const AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem: core.serialization.ObjectSchema<
-    serializers.AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem.Raw,
-    TwelvelabsApi.AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem
+export const AnalyzeImageInput: core.serialization.ObjectSchema<
+    serializers.AnalyzeImageInput.Raw,
+    TwelvelabsApi.AnalyzeImageInput
 > = core.serialization.object({
     name: core.serialization.string(),
-    mediaType: core.serialization.property("media_type", core.serialization.string()),
     url: core.serialization.string().optional(),
     assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
+    base64String: core.serialization.property("base64_string", core.serialization.string().optional()),
 });
 
-export declare namespace AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem {
+export declare namespace AnalyzeImageInput {
     export interface Raw {
         name: string;
-        media_type: string;
         url?: string | null;
         asset_id?: string | null;
+        base64_string?: string | null;
     }
 }

@@ -12,19 +12,27 @@
 <dl>
 <dd>
 
-This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
+This method analyzes a video or one or more images and returns the results directly in the response. Each request must contain a video or one or more images, but not both. You can use general analysis (prompt-based text generation) with either media type.
 
 <Accordion title="Input requirements">
+**Videos**
 - Minimum duration: 1 second
 - Maximum duration: 1 hour
 - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
 - Resolution: 360x360 to 5184x2160 pixels
 - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
+
+**Images**
+
+- You can provide one to twenty images per request.
+- Formats: JPEG, PNG, WebP, GIF, and BMP.
+- Maximum size: 20 MB per image.
+- Maximum pixel count: 16,777,216 pixels per image (width × height).
 </Accordion>
 
 **When to use this method**:
 
-- Analyze videos up to 1 hour
+- Analyze videos up to 1 hour, or analyze images
 - Retrieve immediate results without polling for task completion
 - Stream text fragments in real time for immediate processing and feedback
 
@@ -218,7 +226,7 @@ Upload options:
 Your videos must meet requirements based on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements).
-- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#video-file-requirements).
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#video-file-requirements).
 - If you want to both search and analyze your videos, the most restrictive requirements apply.
 - This method allows you to upload files up to 2 GB in size. To upload larger files, use the [Multipart Upload API](/v1.3/api-reference/upload-content/multipart-uploads)
 
@@ -899,7 +907,7 @@ Asset creation does not enforce a maximum duration for video and audio files. Ea
 **Additional requirements** depend on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements)
-- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#input-requirements)
 - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements)
 - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements)
 
@@ -1511,7 +1519,7 @@ This method creates a multipart upload session for a local file.
 **Additional requirements** depend on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements)
-- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#input-requirements)
 - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements)
 - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements)
 
@@ -4979,27 +4987,40 @@ await client.analyzeAsync.tasks.list({
 <dl>
 <dd>
 
-This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions.
+This method analyzes a video or one or more images asynchronously. Each request must contain a video or one or more images, but not both.
+
+The method supports two analysis modes:
+
+- **General analysis**: Prompt-based text generation with a video or one or more images.
+- **Video segmentation**: Timestamped metadata with custom segment definitions.
 
 <Accordion title="Input requirements">
+**Videos**
 - The video can be up to 2 hours long, or up to 4 hours when you analyze only a portion of it. You can analyze between 1 second and 2 hours of the video. HLS and base64 videos are limited to 2 hours.
 - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
 - Resolution: 360x360 to 5184x2160 pixels
 - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
+
+**Images**
+
+- You can provide one to twenty images per request.
+- Formats: JPEG, PNG, WebP, GIF, and BMP.
+- Maximum size: 20 MB per image.
+- Maximum pixel count: 16,777,216 pixels per image (width × height).
 </Accordion>
 
 **When to use this method**:
 
-- Generate custom text from your video using a prompt (general analysis)
+- Generate custom text from your video or one or more images using a prompt (general analysis)
 - Extract timestamped metadata with custom segment definitions from your video
 - Analyze videos longer than 1 hour, or a portion of a video up to 4 hours long
-- Process videos asynchronously without blocking your application
+- Process videos or images asynchronously without blocking your application
 
 **Do not use this method for**:
 
-- Videos for which you need immediate results or real-time streaming. Use the [`POST`](/v1.3/api-reference/analyze-videos/sync-analysis) method of the `/analyze` endpoint instead.
+- Videos or images for which you need immediate results or real-time streaming. Use the [`POST`](/v1.3/api-reference/analyze-videos/sync-analysis) method of the `/analyze` endpoint instead.
 
-Analyzing videos asynchronously requires three steps:
+Analyzing content asynchronously requires three steps:
 
 1. Create an analysis task using this method. The platform returns a task identifier.
 2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`, `failed`, or `canceled`.
@@ -7247,7 +7268,7 @@ You can no longer add videos to an index that has only Pegasus 1.2 enabled. When
 Your asset must meet the requirements based on your workflow:
 
 - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements)
-- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements).
+- **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#input-requirements).
 
 If you want to both search and analyze your videos, the most restrictive requirements apply.
 

@@ -7,8 +7,8 @@ import * as TwelvelabsApi from "../index";
 export interface AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem {
     id: string;
     description: string;
-    fields?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem[];
-    mediaSources?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem[];
+    fields?: TwelvelabsApi.AnalyzeTaskSegmentField[];
+    mediaSources?: TwelvelabsApi.AnalyzeTaskMediaSource[];
     /** The time ranges for this segment definition. Present only when the task was created with `time_ranges`. */
     timeRanges?: TwelvelabsApi.AnalyzeTimeRange[];
 }

@@ -5,7 +5,7 @@
 /**
  * A prompt that guides the model on the desired format or content.
  *
- * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
+ * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window).
  *
  * **Examples**:
  *

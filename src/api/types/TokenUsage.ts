@@ -8,6 +8,6 @@
 export interface TokenUsage {
     /** The number of tokens in the generated text. */
     outputTokens: number;
-    /** The number of tokens the input consumed. Together with `output_tokens`, this value must fit within the [context window](/v1.3/docs/concepts/models/pegasus#context-window). */
+    /** The number of tokens the input consumed. Together with `output_tokens`, this value must fit within the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window). */
     inputTokens?: number;
 }
