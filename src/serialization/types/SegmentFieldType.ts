@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const SegmentFieldType: core.serialization.Schema<
     serializers.SegmentFieldType.Raw,
     TwelvelabsApi.SegmentFieldType
-> = core.serialization.enum_(["string", "boolean", "number", "integer", "array", "timestamp"]);
+> = core.serialization.enum_(["string", "boolean", "number", "integer", "array", "timestamp", "time_array"]);
 
 export declare namespace SegmentFieldType {
-    export type Raw = "string" | "boolean" | "number" | "integer" | "array" | "timestamp";
+    export type Raw = "string" | "boolean" | "number" | "integer" | "array" | "timestamp" | "time_array";
 }

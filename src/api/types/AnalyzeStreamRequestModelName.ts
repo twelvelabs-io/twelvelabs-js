@@ -4,11 +4,13 @@
 
 /**
  * The video understanding model to use for analysis.
- * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, and video segmentation (async only). See the [Pegasus](/v1.3/docs/concepts/models/pegasus#context-window) page for token limits.
+ * - `pegasus1.6`: For details about this version, see the [Pegasus 1.6](/v1.3/docs/concepts/models/pegasus/pegasus-1-6) page.
+ * - `pegasus1.5`: For details about this version, see the [Pegasus 1.5](/v1.3/docs/concepts/models/pegasus/pegasus-1-5) page.
  *
  * **Default:** `pegasus1.5`
  */
-export type AnalyzeStreamRequestModelName = "pegasus1.5";
+export type AnalyzeStreamRequestModelName = "pegasus1.6" | "pegasus1.5";
 export const AnalyzeStreamRequestModelName = {
+    Pegasus16: "pegasus1.6",
     Pegasus15: "pegasus1.5",
 } as const;

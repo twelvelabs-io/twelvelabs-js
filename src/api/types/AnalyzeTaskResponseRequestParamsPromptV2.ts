@@ -14,5 +14,5 @@ export interface AnalyzeTaskResponseRequestParamsPromptV2 {
     /** The prompt text. May contain `<@name>` placeholders that reference entries in `media_sources`. */
     inputText?: string;
     /** Reference images linked to `<@name>` placeholders in the prompt. */
-    mediaSources?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem[];
+    mediaSources?: TwelvelabsApi.AnalyzeTaskMediaSource[];
 }

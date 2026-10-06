@@ -11,7 +11,7 @@
  * | `hh:mm:ss` | JSON string (Example: `"00:00:13"`) — rounded to the nearest second |
  * | `hh:mm:ss.fff` | JSON string (Example: `"00:00:12.500"`) — millisecond precision |
  *
- * This parameter applies only to the automatic segment boundaries (`start_time` and `end_time`). Custom `timestamp` fields always use their own format, regardless of the value of this field.
+ * This parameter applies only to the automatic segment boundaries (`start_time` and `end_time`). For a `time_array` field, it also formats the `start_time` and `end_time` of each event inside the segment. Custom `timestamp` fields always use their own format, regardless of the value of this field.
  */
 export type AsyncResponseFormatSegmentTimeFormat = "seconds" | "hh:mm:ss" | "hh:mm:ss.fff";
 export const AsyncResponseFormatSegmentTimeFormat = {

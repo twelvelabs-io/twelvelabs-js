@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AnalyzeTaskResponseRequestParamsResponseFormatType } from "./AnalyzeTaskResponseRequestParamsResponseFormatType";
+import { AnalyzeTaskResponseRequestParamsResponseFormatSegmentTimeFormat } from "./AnalyzeTaskResponseRequestParamsResponseFormatSegmentTimeFormat";
 import { AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem } from "./AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem";
 
 export const AnalyzeTaskResponseRequestParamsResponseFormat: core.serialization.ObjectSchema<
@@ -17,6 +18,10 @@ export const AnalyzeTaskResponseRequestParamsResponseFormat: core.serialization.
         "json_schema",
         core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     ),
+    segmentTimeFormat: core.serialization.property(
+        "segment_time_format",
+        AnalyzeTaskResponseRequestParamsResponseFormatSegmentTimeFormat.optional(),
+    ),
     segmentDefinitions: core.serialization.property(
         "segment_definitions",
         core.serialization.list(AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem).optional(),
@@ -27,6 +32,7 @@ export declare namespace AnalyzeTaskResponseRequestParamsResponseFormat {
     export interface Raw {
         type?: AnalyzeTaskResponseRequestParamsResponseFormatType.Raw | null;
         json_schema?: Record<string, unknown> | null;
+        segment_time_format?: AnalyzeTaskResponseRequestParamsResponseFormatSegmentTimeFormat.Raw | null;
         segment_definitions?: AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem.Raw[] | null;
     }
 }

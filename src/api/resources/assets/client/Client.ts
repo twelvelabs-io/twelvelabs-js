@@ -102,8 +102,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.5",
-                        "User-Agent": "twelvelabs-js/1.3.5",
+                        "X-Fern-SDK-Version": "1.3.6",
+                        "User-Agent": "twelvelabs-js/1.3.6",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -197,7 +197,7 @@ export class Assets {
      *
      * **Additional requirements** depend on your workflow:
      * - **Search**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#video-file-requirements)
-     * - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus#input-requirements)
+     * - **Video analysis**: [Pegasus requirements](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#input-requirements)
      * - **Entity search**: [Marengo image requirements](/v1.3/docs/concepts/models/marengo/marengo-3-0#image-file-requirements)
      * - **Create embeddings**: [Marengo requirements](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements)
      *
@@ -267,8 +267,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -358,8 +358,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -466,8 +466,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -576,8 +576,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -686,8 +686,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -773,8 +773,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -875,8 +875,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.5",
-                "User-Agent": "twelvelabs-js/1.3.5",
+                "X-Fern-SDK-Version": "1.3.6",
+                "User-Agent": "twelvelabs-js/1.3.6",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

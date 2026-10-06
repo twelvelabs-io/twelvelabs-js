@@ -6,8 +6,10 @@
  * The data type of the field.
  *
  * When set to `timestamp`, the `format` property is required and controls the format of the returned value.
+ *
+ * When set to the `time_array` value, the field extracts a list of events inside each segment. Requires the `items.type` field to be `object` and a non-empty `items.fields` list. Requires Pegasus 1.6. Any other model rejects `time_array` as an invalid type and lists only the types it accepts. The `/analyze/batches` endpoint does not accept Pegasus 1.6, so it does not accept `time_array` either.
  */
-export type SegmentFieldType = "string" | "boolean" | "number" | "integer" | "array" | "timestamp";
+export type SegmentFieldType = "string" | "boolean" | "number" | "integer" | "array" | "timestamp" | "time_array";
 export const SegmentFieldType = {
     String: "string",
     Boolean: "boolean",
@@ -15,4 +17,5 @@ export const SegmentFieldType = {
     Integer: "integer",
     Array: "array",
     Timestamp: "timestamp",
+    TimeArray: "time_array",
 } as const;

@@ -3,7 +3,7 @@
  */
 
 /**
- * The analysis approach for this task.
+ * The analysis mode for this task.
  * - `general`: Analyze the video and generate a response based on your prompt. Supports both free-form text and structured output via `response_format`.
  * - `time_based_metadata`: Segment the video into time-based intervals and extract custom metadata for each segment. Requires `response_format.type` set to `segment_definitions`.
  *

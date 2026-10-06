@@ -16,6 +16,6 @@ export interface SmeMediaSource {
     url?: string;
     /** The unique identifier of an uploaded asset. */
     assetId?: string;
-    /** Base64-encoded image data. The maximum size is 30MB. */
+    /** Base64-encoded image data. The maximum decoded size is 32 MB. */
     base64String?: string;
 }

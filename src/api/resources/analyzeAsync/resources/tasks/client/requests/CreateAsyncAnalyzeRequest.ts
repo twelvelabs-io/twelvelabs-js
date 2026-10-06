@@ -116,6 +116,76 @@ import * as TwelvelabsApi from "../../../../../../index";
  *
  * @example
  *     {
+ *         modelName: "pegasus1.6",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         analysisMode: "time_based_metadata",
+ *         maxTokens: 32768,
+ *         responseFormat: {
+ *             type: "segment_definitions",
+ *             segmentDefinitions: [{
+ *                     id: "scenes",
+ *                     description: "A distinct scene or setting change in the video",
+ *                     fields: [{
+ *                             name: "label",
+ *                             type: "string",
+ *                             description: "A short label for this scene."
+ *                         }, {
+ *                             name: "dialogue",
+ *                             type: "time_array",
+ *                             description: "Each spoken line in this scene.",
+ *                             items: {
+ *                                 type: "object",
+ *                                 fields: [{
+ *                                         name: "speaker",
+ *                                         type: "string",
+ *                                         description: "The name of the person speaking."
+ *                                     }, {
+ *                                         name: "line",
+ *                                         type: "string",
+ *                                         description: "What the speaker says."
+ *                                     }, {
+ *                                         name: "topics",
+ *                                         type: "array",
+ *                                         description: "The topics mentioned in this line.",
+ *                                         items: {
+ *                                             type: "string"
+ *                                         }
+ *                                     }]
+ *                             }
+ *                         }]
+ *                 }],
+ *             segmentTimeFormat: "hh:mm:ss"
+ *         }
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.6",
+ *         video: {
+ *             type: "url",
+ *             url: "https://example.com/video.mp4"
+ *         },
+ *         analysisMode: "time_based_metadata",
+ *         maxTokens: "unlimited",
+ *         responseFormat: {
+ *             type: "segment_definitions",
+ *             segmentDefinitions: [{
+ *                     id: "scenes",
+ *                     description: "A distinct scene or setting change in the video",
+ *                     fields: [{
+ *                             name: "label",
+ *                             type: "string",
+ *                             description: "A short label for this scene."
+ *                         }]
+ *                 }]
+ *         }
+ *     }
+ *
+ * @example
+ *     {
  *         modelName: "pegasus1.5",
  *         video: {
  *             type: "url",
@@ -130,6 +200,85 @@ import * as TwelvelabsApi from "../../../../../../index";
  *                 }]
  *         },
  *         maxTokens: 4096
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.6",
+ *         image: [{
+ *                 name: "product_shot",
+ *                 url: "https://example.com/product.jpg"
+ *             }],
+ *         prompt: "Describe the product in <@product_shot> and list every visible feature.",
+ *         maxTokens: 1024
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.6",
+ *         image: [{
+ *                 name: "product_shot",
+ *                 assetId: "698ae3f3f4a786d35a6303e1"
+ *             }],
+ *         prompt: "Describe the product in <@product_shot> and list every visible feature.",
+ *         maxTokens: 1024
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.6",
+ *         image: [{
+ *                 name: "product_shot",
+ *                 base64String: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=="
+ *             }],
+ *         prompt: "Describe the product in <@product_shot> and list every visible feature.",
+ *         maxTokens: 1024
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.6",
+ *         image: [{
+ *                 name: "before",
+ *                 url: "https://example.com/before.jpg"
+ *             }, {
+ *                 name: "after",
+ *                 url: "https://example.com/after.jpg"
+ *             }],
+ *         prompt: "Compare <@before> with <@after> and describe what changed.",
+ *         maxTokens: 1024
+ *     }
+ *
+ * @example
+ *     {
+ *         modelName: "pegasus1.6",
+ *         image: [{
+ *                 name: "product_shot",
+ *                 url: "https://example.com/product.jpg"
+ *             }],
+ *         prompt: "Extract the product name and the visible colors from <@product_shot>.",
+ *         maxTokens: 1024,
+ *         responseFormat: {
+ *             type: "json_schema",
+ *             jsonSchema: {
+ *                 "type": "object",
+ *                 "properties": {
+ *                     "product_name": {
+ *                         "type": "string"
+ *                     },
+ *                     "colors": {
+ *                         "type": "array",
+ *                         "items": {
+ *                             "type": "string"
+ *                         }
+ *                     }
+ *                 },
+ *                 "required": [
+ *                     "product_name",
+ *                     "colors"
+ *                 ]
+ *             }
+ *         }
  *     }
  *
  * @example
@@ -176,7 +325,8 @@ import * as TwelvelabsApi from "../../../../../../index";
 export interface CreateAsyncAnalyzeRequest {
     /**
      * The video understanding model to use for analysis.
-     * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, and video segmentation. See the [Pegasus](/v1.3/docs/concepts/models/pegasus#context-window) page for token limits.
+     * - `pegasus1.6`: For details about this version, see the [Pegasus 1.6](/v1.3/docs/concepts/models/pegasus/pegasus-1-6) page.
+     * - `pegasus1.5`: For details about this version, see the [Pegasus 1.5](/v1.3/docs/concepts/models/pegasus/pegasus-1-5) page.
      *
      * **Default:** `pegasus1.5`
      */
@@ -194,11 +344,17 @@ export interface CreateAsyncAnalyzeRequest {
      * This field does not enforce uniqueness. You can submit multiple tasks with the same `custom_id`. To prevent duplicate task creation, use an `Idempotency-Key` header instead.
      */
     customId?: string;
-    video: TwelvelabsApi.VideoContext;
+    video?: TwelvelabsApi.VideoContext;
     /**
-     * Natural-language instructions for analyzing the video. Required for general analysis (prompt-based text generation). Not supported when `analysis_mode` is `time_based_metadata`. To include reference images in your prompt, use the `prompt_v2` parameter instead. Mutually exclusive with the `prompt_v2` parameter.
+     * A list of up to twenty objects containing the images to analyze. For each image, include exactly one source. Requires Pegasus 1.6. Using any other model returns a `parameter_invalid` error.
      *
-     * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
+     * Mutually exclusive with the `video` and `prompt_v2` parameters. The `prompt` parameter is required when you provide images.
+     */
+    image?: TwelvelabsApi.AnalyzeImageInput[];
+    /**
+     * Natural-language instructions for analyzing the video or one or more images. Required for general analysis (prompt-based text generation). Not supported when `analysis_mode` is `time_based_metadata`. To include reference images in your prompt, use the `prompt_v2` parameter instead. Mutually exclusive with the `prompt_v2` parameter.
+     *
+     * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window).
      *
      * **Examples**:
      *
@@ -207,13 +363,13 @@ export interface CreateAsyncAnalyzeRequest {
      */
     prompt?: string;
     /**
-     * A structured prompt with `<@name>` placeholders for referencing images. Mutually exclusive with the `prompt` parameter.
+     * A structured prompt that uses `<@name>` placeholders to reference images. Mutually exclusive with the `prompt` and `image` parameters.
      *
-     * The prompt text and reference images count toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
+     * The prompt text and reference images count toward the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window).
      */
     promptV2?: TwelvelabsApi.AnalyzePromptV2;
     /**
-     * The analysis approach for this task.
+     * The analysis mode for this task.
      * - `general`: Analyze the video and generate a response based on your prompt. Supports both free-form text and structured output via `response_format`.
      * - `time_based_metadata`: Segment the video into time-based intervals and extract custom metadata for each segment. Requires `response_format.type` set to `segment_definitions`.
      *
@@ -222,16 +378,21 @@ export interface CreateAsyncAnalyzeRequest {
     analysisMode?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestAnalysisMode;
     temperature?: TwelvelabsApi.AnalyzeTemperature;
     /**
-     * The maximum response length, in tokens. The allowed range depends on the analysis mode:
+     * The maximum response length, in tokens. Provide an integer or the `unlimited` value.
+     *
+     * The allowed integer range and default depend on the analysis mode:
      *
      * | Mode | Min | Max | Default |
      * |------|-----|-----|---------|
      * | `general` | 512 | 98,304 | 4,096 |
      * | `time_based_metadata` | 2,048 | 98,304 | 32,768 |
      *
-     * With video segmentation, if the response needs more tokens than `max_tokens` allows, the task fails and no partial output is returned.
+     * - **Integer**: With video segmentation, the task fails if the output exceeds the limit. No partial output is returned.
+     * - **Unlimited**: Removes the token limit from video segmentation. It requires `analysis_mode` set to `time_based_metadata` and `model_name` set to `pegasus1.6`. Mutually exclusive with `response_format.segment_definitions[].time_ranges`.
+     *
+     *   The platform extracts as many segments as it can. If it stops before extracting every segment, the task still completes with the `status` field set to `ready`. The `error` field contains the warning that the results may be incomplete.
      */
-    maxTokens?: number;
+    maxTokens?: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequestMaxTokens;
     responseFormat?: TwelvelabsApi.AsyncResponseFormat;
     /**
      * Minimum duration for each extracted segment, in seconds. Set this value to enforce a minimum segment length. Requires `analysis_mode` set to `time_based_metadata`. Mutually exclusive with `response_format.segment_definitions[].time_ranges`.

@@ -6,9 +6,9 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
-export const AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem: core.serialization.ObjectSchema<
-    serializers.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem.Raw,
-    TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem
+export const AnalyzeTaskMediaSource: core.serialization.ObjectSchema<
+    serializers.AnalyzeTaskMediaSource.Raw,
+    TwelvelabsApi.AnalyzeTaskMediaSource
 > = core.serialization.object({
     name: core.serialization.string(),
     mediaType: core.serialization.property("media_type", core.serialization.string()),
@@ -16,7 +16,7 @@ export const AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsIte
     assetId: core.serialization.property("asset_id", core.serialization.string().optional()),
 });
 
-export declare namespace AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem {
+export declare namespace AnalyzeTaskMediaSource {
     export interface Raw {
         name: string;
         media_type: string;

@@ -16,6 +16,8 @@ export interface AnalyzeTaskResponseRequestParamsResponseFormat {
      * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results): Returns the full schema.
      */
     jsonSchema?: Record<string, unknown>;
+    /** The `segment_time_format` value you set. Omitted when you did not set it. Automatic boundaries are then returned as JSON numbers in seconds. */
+    segmentTimeFormat?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormatSegmentTimeFormat;
     /**
      * The segment definitions for this task. Present only when `type` is `segment_definitions`.
      *
