@@ -100,8 +100,8 @@ export class KnowledgeStoreItems {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -215,8 +215,8 @@ export class KnowledgeStoreItems {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -311,8 +311,8 @@ export class KnowledgeStoreItems {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -404,8 +404,8 @@ export class KnowledgeStoreItems {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -444,6 +444,237 @@ export class KnowledgeStoreItems {
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
                     "Timeout exceeded when calling DELETE /knowledge-stores/{knowledge_store_id}/items/{item_id}.",
+                );
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This method replaces the entire `item_metadata` of the specified knowledge store item and returns the item. Unlike the [`PATCH`](/v1.3/api-reference/knowledge-store-items/update-item-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
+     * - A key with a value creates or replaces that key.
+     * - A key you omit, or set to an empty string (`""`), an empty array (`[]`), or `null`, is removed.
+     *
+     * To clear all item metadata, send an empty object (`{}`) in the `item_metadata` field. The `metadata` field of the item does not change.
+     *
+     * @param {string} knowledgeStoreId - The unique identifier of the knowledge store.
+     * @param {string} itemId - The unique identifier of the knowledge store item.
+     * @param {TwelvelabsApi.ReplaceKnowledgeStoreItemMetadataRequest} request
+     * @param {KnowledgeStoreItems.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     *
+     * @example
+     *     await client.knowledgeStoreItems.replaceKnowledgeStoreItemMetadata("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", "ksi_069e9870-3c4d-7abc-9012-3456789abcde", {
+     *         itemMetadata: {
+     *             "creator_handle": "@jane.doe",
+     *             "view_count": 48210
+     *         }
+     *     })
+     */
+    public replaceKnowledgeStoreItemMetadata(
+        knowledgeStoreId: string,
+        itemId: string,
+        request: TwelvelabsApi.ReplaceKnowledgeStoreItemMetadataRequest,
+        requestOptions?: KnowledgeStoreItems.RequestOptions,
+    ): core.HttpResponsePromise<TwelvelabsApi.KnowledgeStoreItem> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__replaceKnowledgeStoreItemMetadata(knowledgeStoreId, itemId, request, requestOptions),
+        );
+    }
+
+    private async __replaceKnowledgeStoreItemMetadata(
+        knowledgeStoreId: string,
+        itemId: string,
+        request: TwelvelabsApi.ReplaceKnowledgeStoreItemMetadataRequest,
+        requestOptions?: KnowledgeStoreItems.RequestOptions,
+    ): Promise<core.WithRawResponse<TwelvelabsApi.KnowledgeStoreItem>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `knowledge-stores/${encodeURIComponent(knowledgeStoreId)}/items/${encodeURIComponent(itemId)}/item-metadata`,
+            ),
+            method: "PUT",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: serializers.ReplaceKnowledgeStoreItemMetadataRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+            }),
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.KnowledgeStoreItem.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling PUT /knowledge-stores/{knowledge_store_id}/items/{item_id}/item-metadata.",
+                );
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This method updates the `item_metadata` of the specified knowledge store item and returns the item. The platform merges your changes with the existing metadata:
+     * - A key with a value creates or replaces that key.
+     * - A key set to `null` deletes that key.
+     * - A key set to an empty string (`""`) or an empty array (`[]`) is ignored.
+     * - A key you omit from the request keeps its current value.
+     *
+     * The `metadata` field of the item does not change. If the merged result contains more than 50 pairs, the request fails.
+     *
+     * To replace all item metadata in a single call, use the [`PUT`](/v1.3/api-reference/knowledge-store-items/replace-item-metadata) method of the `/knowledge-stores/{knowledge_store_id}/items/{item_id}/item-metadata` endpoint instead.
+     *
+     * @param {string} knowledgeStoreId - The unique identifier of the knowledge store.
+     * @param {string} itemId - The unique identifier of the knowledge store item.
+     * @param {TwelvelabsApi.UpdateKnowledgeStoreItemMetadataRequest} request
+     * @param {KnowledgeStoreItems.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     *
+     * @example
+     *     await client.knowledgeStoreItems.updateKnowledgeStoreItemMetadata("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", "ksi_069e9870-3c4d-7abc-9012-3456789abcde", {
+     *         itemMetadata: {
+     *             "creator_handle": "@jane.doe",
+     *             "view_count": 48210,
+     *             "verified": undefined
+     *         }
+     *     })
+     */
+    public updateKnowledgeStoreItemMetadata(
+        knowledgeStoreId: string,
+        itemId: string,
+        request: TwelvelabsApi.UpdateKnowledgeStoreItemMetadataRequest,
+        requestOptions?: KnowledgeStoreItems.RequestOptions,
+    ): core.HttpResponsePromise<TwelvelabsApi.KnowledgeStoreItem> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__updateKnowledgeStoreItemMetadata(knowledgeStoreId, itemId, request, requestOptions),
+        );
+    }
+
+    private async __updateKnowledgeStoreItemMetadata(
+        knowledgeStoreId: string,
+        itemId: string,
+        request: TwelvelabsApi.UpdateKnowledgeStoreItemMetadataRequest,
+        requestOptions?: KnowledgeStoreItems.RequestOptions,
+    ): Promise<core.WithRawResponse<TwelvelabsApi.KnowledgeStoreItem>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `knowledge-stores/${encodeURIComponent(knowledgeStoreId)}/items/${encodeURIComponent(itemId)}/item-metadata`,
+            ),
+            method: "PATCH",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: serializers.UpdateKnowledgeStoreItemMetadataRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+            }),
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.KnowledgeStoreItem.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling PATCH /knowledge-stores/{knowledge_store_id}/items/{item_id}/item-metadata.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({

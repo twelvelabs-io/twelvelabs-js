@@ -6,19 +6,16 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { SegmentFieldItemsType } from "./SegmentFieldItemsType";
-import { TimeArrayItemField } from "./TimeArrayItemField";
 
 export const SegmentFieldItems: core.serialization.ObjectSchema<
     serializers.SegmentFieldItems.Raw,
     TwelvelabsApi.SegmentFieldItems
 > = core.serialization.object({
     type: SegmentFieldItemsType,
-    fields: core.serialization.list(TimeArrayItemField).optional(),
 });
 
 export declare namespace SegmentFieldItems {
     export interface Raw {
         type: SegmentFieldItemsType.Raw;
-        fields?: TimeArrayItemField.Raw[] | null;
     }
 }

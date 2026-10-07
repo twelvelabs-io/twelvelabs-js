@@ -5,8 +5,8 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { AnalyzeTaskSegmentField } from "./AnalyzeTaskSegmentField";
-import { AnalyzeTaskMediaSource } from "./AnalyzeTaskMediaSource";
+import { AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem } from "./AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem";
+import { AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem } from "./AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem";
 import { AnalyzeTimeRange } from "./AnalyzeTimeRange";
 
 export const AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItem: core.serialization.ObjectSchema<
@@ -15,10 +15,14 @@ export const AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsIte
 > = core.serialization.object({
     id: core.serialization.string(),
     description: core.serialization.string(),
-    fields: core.serialization.list(AnalyzeTaskSegmentField).optional(),
+    fields: core.serialization
+        .list(AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem)
+        .optional(),
     mediaSources: core.serialization.property(
         "media_sources",
-        core.serialization.list(AnalyzeTaskMediaSource).optional(),
+        core.serialization
+            .list(AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem)
+            .optional(),
     ),
     timeRanges: core.serialization.property("time_ranges", core.serialization.list(AnalyzeTimeRange).optional()),
 });
@@ -27,8 +31,9 @@ export declare namespace AnalyzeTaskResponseRequestParamsResponseFormatSegmentDe
     export interface Raw {
         id: string;
         description: string;
-        fields?: AnalyzeTaskSegmentField.Raw[] | null;
-        media_sources?: AnalyzeTaskMediaSource.Raw[] | null;
+        fields?: AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemFieldsItem.Raw[] | null;
+        media_sources?:
+            AnalyzeTaskResponseRequestParamsResponseFormatSegmentDefinitionsItemMediaSourcesItem.Raw[] | null;
         time_ranges?: AnalyzeTimeRange.Raw[] | null;
     }
 }

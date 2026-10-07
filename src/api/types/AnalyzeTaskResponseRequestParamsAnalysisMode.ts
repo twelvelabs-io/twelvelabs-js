@@ -3,7 +3,7 @@
  */
 
 /**
- * The analysis mode for this task. For a task created with the `image` parameter, the value is `general`.
+ * The analysis approach for this task.
  */
 export type AnalyzeTaskResponseRequestParamsAnalysisMode = "general" | "time_based_metadata";
 export const AnalyzeTaskResponseRequestParamsAnalysisMode = {

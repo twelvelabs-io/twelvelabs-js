@@ -11,6 +11,6 @@ export interface StreamEndResponse {
     finishReason?: TwelvelabsApi.FinishReason;
     /** An object containing metadata about the stream. */
     metadata?: TwelvelabsApi.StreamEndResponseMetadata;
-    /** A warning. Present when `finish_reason` is `length`, which means the response reached the maximum response length or the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window). The partial output is delivered through the preceding `text_generation` events. */
+    /** A warning. Present when `finish_reason` is `length`, which means the response reached the maximum response length or the [context window](/v1.3/docs/concepts/models/pegasus#context-window). The partial output is delivered through the preceding `text_generation` events. */
     error?: TwelvelabsApi.AnalyzeTaskError;
 }

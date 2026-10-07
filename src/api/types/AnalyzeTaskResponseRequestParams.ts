@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * The request parameters for this task.
  */
 export interface AnalyzeTaskResponseRequestParams {
-    /** The analysis mode for this task. For a task created with the `image` parameter, the value is `general`. */
+    /** The analysis approach for this task. */
     analysisMode?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsAnalysisMode;
     /**
      * The natural-language prompt for this task. Present only when `analysis_mode` is `general` and the task was created with `prompt` (not `prompt_v2`).
@@ -24,14 +24,12 @@ export interface AnalyzeTaskResponseRequestParams {
      * - [Retrieve](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results): Returns the full text.
      */
     promptV2?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsPromptV2;
-    /** The image input you provided. Present only when the task was created with the `image` parameter. When present, the response omits `video_source` instead of returning it as `null`. */
-    image?: TwelvelabsApi.AnalyzeTaskMediaSource[];
     /** The response format for this task. Present only when the request included a response format. */
     responseFormat?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsResponseFormat;
     /** The temperature value for this analysis. */
     temperature?: number;
-    /** The maximum response length you set. The value is an integer in tokens or the string `unlimited`. */
-    maxTokens?: TwelvelabsApi.AnalyzeTaskResponseRequestParamsMaxTokens;
+    /** The maximum response length you set, in tokens. */
+    maxTokens?: number;
     /** The minimum segment duration you set, in seconds. Present when `analysis_mode` is `time_based_metadata`. */
     minSegmentDuration?: number;
     /** The maximum segment duration you set, in seconds. Present when `analysis_mode` is `time_based_metadata`. */

@@ -119,25 +119,18 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This method analyzes a video or one or more images and returns the results directly in the response. Each request must contain a video or one or more images, but not both. You can use general analysis (prompt-based text generation) with either media type.
+     * This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
      *
      * <Accordion title="Input requirements">
-     * **Videos**
      * - Minimum duration: 1 second
      * - Maximum duration: 1 hour
      * - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
      * - Resolution: 360x360 to 5184x2160 pixels
      * - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
-     *
-     * **Images**
-     * - You can provide one to twenty images per request.
-     * - Formats: JPEG, PNG, WebP, GIF, and BMP.
-     * - Maximum size: 20 MB per image.
-     * - Maximum pixel count: 16,777,216 pixels per image (width × height).
      * </Accordion>
      *
      * **When to use this method**:
-     * - Analyze videos up to 1 hour, or analyze images
+     * - Analyze videos up to 1 hour
      * - Retrieve immediate results without polling for task completion
      * - Stream text fragments in real time for immediate processing and feedback
      *
@@ -173,8 +166,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -248,25 +241,18 @@ export class TwelvelabsApiClient {
     }
 
     /**
-     * This method analyzes a video or one or more images and returns the results directly in the response. Each request must contain a video or one or more images, but not both. You can use general analysis (prompt-based text generation) with either media type.
+     * This method analyzes your videos and returns the results directly in the response. It supports general analysis (prompt-based text generation).
      *
      * <Accordion title="Input requirements">
-     * **Videos**
      * - Minimum duration: 1 second
      * - Maximum duration: 1 hour
      * - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
      * - Resolution: 360x360 to 5184x2160 pixels
      * - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
-     *
-     * **Images**
-     * - You can provide one to twenty images per request.
-     * - Formats: JPEG, PNG, WebP, GIF, and BMP.
-     * - Maximum size: 20 MB per image.
-     * - Maximum pixel count: 16,777,216 pixels per image (width × height).
      * </Accordion>
      *
      * **When to use this method**:
-     * - Analyze videos up to 1 hour, or analyze images
+     * - Analyze videos up to 1 hour
      * - Retrieve immediate results without polling for task completion
      * - Stream text fragments in real time for immediate processing and feedback
      *
@@ -312,8 +298,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -103,8 +103,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -160,37 +160,25 @@ export class Tasks {
     }
 
     /**
-     * This method analyzes a video or one or more images asynchronously. Each request must contain a video or one or more images, but not both.
-     *
-     * The method supports two analysis modes:
-     *
-     * - **General analysis**: Prompt-based text generation with a video or one or more images.
-     * - **Video segmentation**: Timestamped metadata with custom segment definitions.
+     * This method asynchronously analyzes your videos. It supports two analysis modes: general analysis (prompt-based text generation) and video segmentation with custom segment definitions.
      *
      * <Accordion title="Input requirements">
-     * **Videos**
      * - The video can be up to 2 hours long, or up to 4 hours when you analyze only a portion of it. You can analyze between 1 second and 2 hours of the video. HLS and base64 videos are limited to 2 hours.
      * - Formats: [FFmpeg supported formats](https://ffmpeg.org/ffmpeg-formats.html)
      * - Resolution: 360x360 to 5184x2160 pixels
      * - Aspect ratio: Between 1:1 and 1:2.4, or between 2.4:1 and 1:1.
-     *
-     * **Images**
-     * - You can provide one to twenty images per request.
-     * - Formats: JPEG, PNG, WebP, GIF, and BMP.
-     * - Maximum size: 20 MB per image.
-     * - Maximum pixel count: 16,777,216 pixels per image (width × height).
      * </Accordion>
      *
      * **When to use this method**:
-     * - Generate custom text from your video or one or more images using a prompt (general analysis)
+     * - Generate custom text from your video using a prompt (general analysis)
      * - Extract timestamped metadata with custom segment definitions from your video
      * - Analyze videos longer than 1 hour, or a portion of a video up to 4 hours long
-     * - Process videos or images asynchronously without blocking your application
+     * - Process videos asynchronously without blocking your application
      *
      * **Do not use this method for**:
-     * - Videos or images for which you need immediate results or real-time streaming. Use the [`POST`](/v1.3/api-reference/analyze-videos/sync-analysis) method of the `/analyze` endpoint instead.
+     * - Videos for which you need immediate results or real-time streaming. Use the [`POST`](/v1.3/api-reference/analyze-videos/sync-analysis) method of the `/analyze` endpoint instead.
      *
-     * Analyzing content asynchronously requires three steps:
+     * Analyzing videos asynchronously requires three steps:
      *
      * 1. Create an analysis task using this method. The platform returns a task identifier.
      * 2. Poll the status of the task using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. Wait until the status is `ready`, `failed`, or `canceled`.
@@ -319,76 +307,6 @@ export class Tasks {
      *
      * @example
      *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         video: {
-     *             type: "url",
-     *             url: "https://example.com/video.mp4"
-     *         },
-     *         analysisMode: "time_based_metadata",
-     *         maxTokens: 32768,
-     *         responseFormat: {
-     *             type: "segment_definitions",
-     *             segmentDefinitions: [{
-     *                     id: "scenes",
-     *                     description: "A distinct scene or setting change in the video",
-     *                     fields: [{
-     *                             name: "label",
-     *                             type: "string",
-     *                             description: "A short label for this scene."
-     *                         }, {
-     *                             name: "dialogue",
-     *                             type: "time_array",
-     *                             description: "Each spoken line in this scene.",
-     *                             items: {
-     *                                 type: "object",
-     *                                 fields: [{
-     *                                         name: "speaker",
-     *                                         type: "string",
-     *                                         description: "The name of the person speaking."
-     *                                     }, {
-     *                                         name: "line",
-     *                                         type: "string",
-     *                                         description: "What the speaker says."
-     *                                     }, {
-     *                                         name: "topics",
-     *                                         type: "array",
-     *                                         description: "The topics mentioned in this line.",
-     *                                         items: {
-     *                                             type: "string"
-     *                                         }
-     *                                     }]
-     *                             }
-     *                         }]
-     *                 }],
-     *             segmentTimeFormat: "hh:mm:ss"
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         video: {
-     *             type: "url",
-     *             url: "https://example.com/video.mp4"
-     *         },
-     *         analysisMode: "time_based_metadata",
-     *         maxTokens: "unlimited",
-     *         responseFormat: {
-     *             type: "segment_definitions",
-     *             segmentDefinitions: [{
-     *                     id: "scenes",
-     *                     description: "A distinct scene or setting change in the video",
-     *                     fields: [{
-     *                             name: "label",
-     *                             type: "string",
-     *                             description: "A short label for this scene."
-     *                         }]
-     *                 }]
-     *         }
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
      *         modelName: "pegasus1.5",
      *         video: {
      *             type: "url",
@@ -403,85 +321,6 @@ export class Tasks {
      *                 }]
      *         },
      *         maxTokens: 4096
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         image: [{
-     *                 name: "product_shot",
-     *                 url: "https://example.com/product.jpg"
-     *             }],
-     *         prompt: "Describe the product in <@product_shot> and list every visible feature.",
-     *         maxTokens: 1024
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         image: [{
-     *                 name: "product_shot",
-     *                 assetId: "698ae3f3f4a786d35a6303e1"
-     *             }],
-     *         prompt: "Describe the product in <@product_shot> and list every visible feature.",
-     *         maxTokens: 1024
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         image: [{
-     *                 name: "product_shot",
-     *                 base64String: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg=="
-     *             }],
-     *         prompt: "Describe the product in <@product_shot> and list every visible feature.",
-     *         maxTokens: 1024
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         image: [{
-     *                 name: "before",
-     *                 url: "https://example.com/before.jpg"
-     *             }, {
-     *                 name: "after",
-     *                 url: "https://example.com/after.jpg"
-     *             }],
-     *         prompt: "Compare <@before> with <@after> and describe what changed.",
-     *         maxTokens: 1024
-     *     })
-     *
-     * @example
-     *     await client.analyzeAsync.tasks.create({
-     *         modelName: "pegasus1.6",
-     *         image: [{
-     *                 name: "product_shot",
-     *                 url: "https://example.com/product.jpg"
-     *             }],
-     *         prompt: "Extract the product name and the visible colors from <@product_shot>.",
-     *         maxTokens: 1024,
-     *         responseFormat: {
-     *             type: "json_schema",
-     *             jsonSchema: {
-     *                 "type": "object",
-     *                 "properties": {
-     *                     "product_name": {
-     *                         "type": "string"
-     *                     },
-     *                     "colors": {
-     *                         "type": "array",
-     *                         "items": {
-     *                             "type": "string"
-     *                         }
-     *                     }
-     *                 },
-     *                 "required": [
-     *                     "product_name",
-     *                     "colors"
-     *                 ]
-     *             }
-     *         }
      *     })
      *
      * @example
@@ -526,14 +365,14 @@ export class Tasks {
      *     })
      */
     public create(
-        request: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest = {},
+        request: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest,
         requestOptions?: Tasks.RequestOptions,
     ): core.HttpResponsePromise<TwelvelabsApi.CreateAnalyzeTaskResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest = {},
+        request: TwelvelabsApi.analyzeAsync.CreateAsyncAnalyzeRequest,
         requestOptions?: Tasks.RequestOptions,
     ): Promise<core.WithRawResponse<TwelvelabsApi.CreateAnalyzeTaskResponse>> {
         const _response = await core.fetcher({
@@ -547,8 +386,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -650,8 +489,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -735,8 +574,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -830,8 +669,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

@@ -9,8 +9,8 @@ import * as core from "../../core";
 export const SegmentFieldItemsType: core.serialization.Schema<
     serializers.SegmentFieldItemsType.Raw,
     TwelvelabsApi.SegmentFieldItemsType
-> = core.serialization.enum_(["string", "number", "boolean", "integer", "object"]);
+> = core.serialization.enum_(["string", "number", "boolean", "integer"]);
 
 export declare namespace SegmentFieldItemsType {
-    export type Raw = "string" | "number" | "boolean" | "integer" | "object";
+    export type Raw = "string" | "number" | "boolean" | "integer";
 }

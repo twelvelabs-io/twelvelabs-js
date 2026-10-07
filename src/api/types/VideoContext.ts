@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * An object specifying the source of the video content. Include exactly one source. Mutually exclusive with the `image` parameter.
+ * An object specifying the source of the video content. Include exactly one source.
  */
 export type VideoContext =
     TwelvelabsApi.VideoContext.Url | TwelvelabsApi.VideoContext.AssetId | TwelvelabsApi.VideoContext.Base64String;

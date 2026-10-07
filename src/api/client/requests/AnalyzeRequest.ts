@@ -11,29 +11,22 @@ import * as TwelvelabsApi from "../../index";
 export interface AnalyzeRequest {
     /**
      * The video understanding model to use for analysis.
-     * - `pegasus1.6`: For details about this version, see the [Pegasus 1.6](/v1.3/docs/concepts/models/pegasus/pegasus-1-6) page.
-     * - `pegasus1.5`: For details about this version, see the [Pegasus 1.5](/v1.3/docs/concepts/models/pegasus/pegasus-1-5) page.
+     * - `pegasus1.5`: General analysis (prompt-based text generation) with video clipping, structured prompts with reference images, and video segmentation (async only). See the [Pegasus](/v1.3/docs/concepts/models/pegasus#context-window) page for token limits.
      *
      * **Default:** `pegasus1.5`
      */
     modelName?: TwelvelabsApi.AnalyzeRequestModelName;
     video?: TwelvelabsApi.VideoContext;
     /**
-     * A list of up to twenty objects containing the images to analyze. For each image, include exactly one source. Requires Pegasus 1.6. Using any other model returns a `parameter_invalid` error.
-     *
-     * Mutually exclusive with the `video` and `prompt_v2` parameters. The `prompt` parameter is required when you provide images.
-     */
-    image?: TwelvelabsApi.AnalyzeImageInput[];
-    /**
      * A text prompt that guides the model on the desired format or content. To include reference images in your prompt, use the `prompt_v2` parameter instead. Mutually exclusive with the `prompt_v2` parameter.
      *
-     * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window).
+     * Your prompts can be instructive or descriptive, or you can phrase them as questions. This text counts toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
      */
     prompt?: TwelvelabsApi.AnalyzeTextPrompt;
     /**
-     * A structured prompt that uses `<@name>` placeholders to reference images. Mutually exclusive with the `prompt` and `image` parameters.
+     * A structured prompt with `<@name>` placeholders for referencing images. Mutually exclusive with the `prompt` parameter.
      *
-     * The prompt text and reference images count toward the [context window](/v1.3/docs/concepts/models/pegasus/pegasus-1-6#context-window).
+     * The prompt text and reference images count toward the [context window](/v1.3/docs/concepts/models/pegasus#context-window).
      */
     promptV2?: TwelvelabsApi.AnalyzePromptV2;
     temperature?: TwelvelabsApi.AnalyzeTemperature;

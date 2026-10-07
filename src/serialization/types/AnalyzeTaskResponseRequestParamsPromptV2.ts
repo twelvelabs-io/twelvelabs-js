@@ -5,7 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { AnalyzeTaskMediaSource } from "./AnalyzeTaskMediaSource";
+import { AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem } from "./AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem";
 
 export const AnalyzeTaskResponseRequestParamsPromptV2: core.serialization.ObjectSchema<
     serializers.AnalyzeTaskResponseRequestParamsPromptV2.Raw,
@@ -14,13 +14,13 @@ export const AnalyzeTaskResponseRequestParamsPromptV2: core.serialization.Object
     inputText: core.serialization.property("input_text", core.serialization.string().optional()),
     mediaSources: core.serialization.property(
         "media_sources",
-        core.serialization.list(AnalyzeTaskMediaSource).optional(),
+        core.serialization.list(AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem).optional(),
     ),
 });
 
 export declare namespace AnalyzeTaskResponseRequestParamsPromptV2 {
     export interface Raw {
         input_text?: string | null;
-        media_sources?: AnalyzeTaskMediaSource.Raw[] | null;
+        media_sources?: AnalyzeTaskResponseRequestParamsPromptV2MediaSourcesItem.Raw[] | null;
     }
 }

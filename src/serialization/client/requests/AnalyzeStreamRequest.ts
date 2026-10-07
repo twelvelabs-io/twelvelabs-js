@@ -7,7 +7,6 @@ import * as TwelvelabsApi from "../../../api/index";
 import * as core from "../../../core";
 import { AnalyzeStreamRequestModelName } from "../../types/AnalyzeStreamRequestModelName";
 import { VideoContext } from "../../types/VideoContext";
-import { AnalyzeImageInput } from "../../types/AnalyzeImageInput";
 import { AnalyzeTextPrompt } from "../../types/AnalyzeTextPrompt";
 import { AnalyzePromptV2 } from "../../types/AnalyzePromptV2";
 import { AnalyzeTemperature } from "../../types/AnalyzeTemperature";
@@ -19,7 +18,6 @@ export const AnalyzeStreamRequest: core.serialization.Schema<
 > = core.serialization.object({
     modelName: core.serialization.property("model_name", AnalyzeStreamRequestModelName.optional()),
     video: VideoContext.optional(),
-    image: core.serialization.list(AnalyzeImageInput).optional(),
     prompt: AnalyzeTextPrompt.optional(),
     promptV2: core.serialization.property("prompt_v2", AnalyzePromptV2.optional()),
     temperature: AnalyzeTemperature.optional(),
@@ -33,7 +31,6 @@ export declare namespace AnalyzeStreamRequest {
     export interface Raw {
         model_name?: AnalyzeStreamRequestModelName.Raw | null;
         video?: VideoContext.Raw | null;
-        image?: AnalyzeImageInput.Raw[] | null;
         prompt?: AnalyzeTextPrompt.Raw | null;
         prompt_v2?: AnalyzePromptV2.Raw | null;
         temperature?: AnalyzeTemperature.Raw | null;

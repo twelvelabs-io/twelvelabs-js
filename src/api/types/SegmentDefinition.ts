@@ -12,7 +12,7 @@ export interface SegmentDefinition {
     id: string;
     /** Describe what this type of segment looks like in the video. The model uses this text to identify matching segments. */
     description: string;
-    /** Custom fields to extract for each segment instance. Set the `type` field of an item to the `time_array` value to extract a list of events inside each segment. */
+    /** Custom fields to extract for each segment instance. */
     fields?: TwelvelabsApi.SegmentField[];
     /** Reference images that help the model identify segments. Maximum 4 sources. */
     mediaSources?: TwelvelabsApi.SmeMediaSource[];
