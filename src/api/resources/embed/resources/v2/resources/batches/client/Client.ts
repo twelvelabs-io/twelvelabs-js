@@ -234,14 +234,6 @@ export class Batches {
      *                         url: "https://example.com/report.pdf"
      *                     }
      *                 }
-     *             }, {
-     *                 customId: "report_002",
-     *                 document: {
-     *                     mediaSource: {
-     *                         url: "https://example.com/notes.txt"
-     *                     },
-     *                     embeddingOption: ["text"]
-     *                 }
      *             }]
      *     })
      *
@@ -252,16 +244,7 @@ export class Batches {
      *         inputType: "video",
      *         defaults: {
      *             video: {
-     *                 segmentation: {
-     *                     temporal: {
-     *                         strategy: "dynamic",
-     *                         dynamic: {
-     *                             minDurationSec: 4
-     *                         }
-     *                     }
-     *                 },
-     *                 embeddingOption: ["visual", "audio"],
-     *                 embeddingScope: ["clip", "asset"]
+     *                 embeddingOption: ["visual", "audio"]
      *             }
      *         },
      *         requests: [{
@@ -269,78 +252,6 @@ export class Batches {
      *                 video: {
      *                     mediaSource: {
      *                         url: "https://example.com/clip.mp4"
-     *                     }
-     *                 }
-     *             }, {
-     *                 customId: "clip_002",
-     *                 video: {
-     *                     mediaSource: {
-     *                         url: "https://example.com/interview.mp4"
-     *                     },
-     *                     startSec: 0,
-     *                     endSec: 600
-     *                 }
-     *             }]
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.batches.create({
-     *         modelName: "marengo3.5",
-     *         serviceTier: "flex",
-     *         inputType: "audio",
-     *         defaults: {
-     *             audio: {
-     *                 segmentation: {
-     *                     temporal: {
-     *                         strategy: "fixed",
-     *                         fixed: {
-     *                             durationSec: 6
-     *                         }
-     *                     }
-     *                 },
-     *                 embeddingOption: ["audio"],
-     *                 embeddingScope: ["clip", "asset"]
-     *             }
-     *         },
-     *         requests: [{
-     *                 customId: "track_001",
-     *                 audio: {
-     *                     mediaSource: {
-     *                         url: "https://example.com/track.wav"
-     *                     }
-     *                 }
-     *             }, {
-     *                 customId: "track_002",
-     *                 audio: {
-     *                     mediaSource: {
-     *                         url: "https://example.com/podcast.wav"
-     *                     },
-     *                     startSec: 60,
-     *                     endSec: 1800
-     *                 }
-     *             }]
-     *     })
-     *
-     * @example
-     *     await client.embed.v2.batches.create({
-     *         modelName: "marengo3.5",
-     *         serviceTier: "flex",
-     *         inputType: "image",
-     *         defaults: {
-     *             embeddingUncertainty: true
-     *         },
-     *         requests: [{
-     *                 customId: "photo_001",
-     *                 image: {
-     *                     mediaSource: {
-     *                         assetId: "68f4ddaf8aaa60d33df0e803"
-     *                     }
-     *                 }
-     *             }, {
-     *                 customId: "photo_002",
-     *                 image: {
-     *                     mediaSource: {
-     *                         url: "https://example.com/photo.jpg"
      *                     }
      *                 }
      *             }]
@@ -576,12 +487,13 @@ export class Batches {
     }
 
     /**
-     * This method removes a batch with a final status and all its tasks and results from API access. This does not reverse
-     * billing for items that completed successfully. A batch with the `pending`,
-     * `processing`, or `canceling` status cannot be deleted until it has a final
-     * status: `canceled`, `completed`, or `expired`. To end it sooner, cancel it and
-     * wait for the final status. Batches and their results are otherwise available
-     * through the API for 30 days after creation.
+     * Use this method to delete a batch. After you delete a batch, you can no longer retrieve the batch, its tasks, or its results. You can only delete batches with the `completed`, `canceled`, or `expired` status.
+     *
+     * Deleting a batch does not affect billing. You are billed for every item that completed successfully, regardless of whether you delete the batch afterward.
+     *
+     * To stop a batch with the `pending` or `processing` status, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/batches/cancel-batch) method of the `/embed-v2/batches/{batch_id}/cancel` endpoint, and wait for the batch to reach a final status.
+     *
+     * Batches and their results are available through the API for 30 days after creation.
      *
      * @param {string} batchId - The unique identifier of the batch.
      * @param {Batches.RequestOptions} requestOptions - Request-specific configuration.
@@ -803,17 +715,17 @@ export class Batches {
     }
 
     /**
-     * This method requests cancellation of a batch that has the `pending` or `processing` status.
+     * Use this method to request cancellation of a batch that has the `pending` or `processing` status.
      *
-     * When you call this method, the platform does the following:
-     * - Cancels the items that are `queued`.
-     * - Does not stop the items that are `processing`. Each reaches its own final result.
+     * When you invoke this method, the platform performs the following steps:
+     * - Cancels the items in the `queued` status.
+     * - Finishes processing the items in the `processing` status. Each reaches its own final result.
      *
-     * The batch has the `canceling` status until those items finish, then the `canceled` status. If a running item is still unfinished at the 24-hour deadline, the platform cancels it with the `deadline_exceeded` reason, and the batch has the `expired` status. Wait for the `canceled` or `expired` status.
+     * The batch has the `canceling` status until those items finish, then the `canceled` status. If a running item does not finish before the time in the `expires_at` field of the batch, the platform cancels it with the `deadline_exceeded` reason, and the batch has the `expired` status.
      *
      * **Billing and results**:
      * - An item that is processing when you cancel can still become `ready`. You are billed for it, and its result is available with the results that were ready before the cancellation.
-     * - An item that finishes after the 24-hour deadline stays canceled and is not billed.
+     * - An item that finishes after the time in the `expires_at` field of the batch stays canceled and is not billed.
      *
      * @param {string} batchId - The unique identifier of the batch.
      * @param {Batches.RequestOptions} requestOptions - Request-specific configuration.

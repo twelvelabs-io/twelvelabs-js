@@ -7044,7 +7044,7 @@ The status in the `202` response depends on the creation path. A Marengo 3.5 tas
 
 Because the status in the creation response varies, handle all five statuses when you poll: `queued`, `processing`, `ready`, `failed`, and `canceled`.
 
-With Marengo 3.5, set the `service_tier` field to one of these values: `standard`, `priority`, or `flex`. When the platform starts queued tasks, Priority tasks are preferred over Standard tasks, and Flex tasks use otherwise unused capacity. Tiers are best effort. They do not guarantee a start time or a completion time, and they do not preempt running tasks. They do not bypass the rate limits or the account capacity for unfinished Flex tasks. The `flex` tier has a 24-hour processing window that starts when the platform accepts the task. The platform returns the `expires_at` field in creation, retrieval, and list responses. An incomplete Flex task becomes `canceled` when that window expires. Availability depends on your plan. Marengo 3.0 does not accept an explicit value for the `service_tier` field.
+With Marengo 3.5, set the `service_tier` field to one of these values: `standard`, `priority`, or `flex`. When the platform processes queued tasks, Priority tasks are preferred over Standard tasks, and Flex tasks use otherwise unused capacity. Tiers are best effort. They do not guarantee a start time, a completion time, or the order in which tasks start or finish, and they do not preempt running tasks. They do not bypass the rate limits or the account capacity for unfinished Flex tasks. The `flex` tier has a 24-hour processing window that starts when the platform accepts the task. The platform returns the `expires_at` field in creation, retrieval, and list responses. An incomplete Flex task becomes `canceled` when that window expires. Availability depends on your plan. Marengo 3.0 does not accept an explicit value for the `service_tier` field.
 
 The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and documents: PDF, plain text, and Markdown files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
 
@@ -7135,6 +7135,8 @@ Invoke this method repeatedly until the `status` field is `ready`, `failed`, or 
 
 <Note title="Note">
 Embeddings of a task that is not part of a batch are available through the API for seven days. A task created as part of a batch, and its results, are available for up to 30 days from batch creation. Deleting a batch with a final status ends API access to its tasks and results earlier. A task created as part of a batch returns the `batch_id` field and a `custom_id` field that is unique only within the batch.
+
+A task that is not part of a batch can report the `ready` status and later report the `failed` status with the `RESULT_EXPIRED` code, even though the retention period has not ended. This applies to some tasks that have no `service_tier` field, and the later response can contain only the `message` field. After the retention period, retrieval returns `404`. To generate the embeddings again, submit the original input in a new request. Retrieving the same result again does not regenerate it.
 </Note>
 </dd>
 </dl>
@@ -7404,15 +7406,6 @@ await client.embed.v2.batches.create({
                 },
             },
         },
-        {
-            customId: "report_002",
-            document: {
-                mediaSource: {
-                    url: "https://example.com/notes.txt",
-                },
-                embeddingOption: ["text"],
-            },
-        },
     ],
 });
 ```
@@ -7529,12 +7522,13 @@ await client.embed.v2.batches.retrieve("68d3ae81c4a8d3697e15b2ef");
 <dl>
 <dd>
 
-This method removes a batch with a final status and all its tasks and results from API access. This does not reverse
-billing for items that completed successfully. A batch with the `pending`,
-`processing`, or `canceling` status cannot be deleted until it has a final
-status: `canceled`, `completed`, or `expired`. To end it sooner, cancel it and
-wait for the final status. Batches and their results are otherwise available
-through the API for 30 days after creation.
+Use this method to delete a batch. After you delete a batch, you can no longer retrieve the batch, its tasks, or its results. You can only delete batches with the `completed`, `canceled`, or `expired` status.
+
+Deleting a batch does not affect billing. You are billed for every item that completed successfully, regardless of whether you delete the batch afterward.
+
+To stop a batch with the `pending` or `processing` status, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/batches/cancel-batch) method of the `/embed-v2/batches/{batch_id}/cancel` endpoint, and wait for the batch to reach a final status.
+
+Batches and their results are available through the API for 30 days after creation.
 </dd>
 </dl>
 </dd>
@@ -7672,19 +7666,19 @@ for await (const item of response) {
 <dl>
 <dd>
 
-This method requests cancellation of a batch that has the `pending` or `processing` status.
+Use this method to request cancellation of a batch that has the `pending` or `processing` status.
 
-When you call this method, the platform does the following:
+When you invoke this method, the platform performs the following steps:
 
-- Cancels the items that are `queued`.
-- Does not stop the items that are `processing`. Each reaches its own final result.
+- Cancels the items in the `queued` status.
+- Finishes processing the items in the `processing` status. Each reaches its own final result.
 
-The batch has the `canceling` status until those items finish, then the `canceled` status. If a running item is still unfinished at the 24-hour deadline, the platform cancels it with the `deadline_exceeded` reason, and the batch has the `expired` status. Wait for the `canceled` or `expired` status.
+The batch has the `canceling` status until those items finish, then the `canceled` status. If a running item does not finish before the time in the `expires_at` field of the batch, the platform cancels it with the `deadline_exceeded` reason, and the batch has the `expired` status.
 
 **Billing and results**:
 
 - An item that is processing when you cancel can still become `ready`. You are billed for it, and its result is available with the results that were ready before the cancellation.
-- An item that finishes after the 24-hour deadline stays canceled and is not billed.
+- An item that finishes after the time in the `expires_at` field of the batch stays canceled and is not billed.
 
 </dd>
 </dl>

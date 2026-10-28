@@ -25,14 +25,6 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *                         url: "https://example.com/report.pdf"
  *                     }
  *                 }
- *             }, {
- *                 customId: "report_002",
- *                 document: {
- *                     mediaSource: {
- *                         url: "https://example.com/notes.txt"
- *                     },
- *                     embeddingOption: ["text"]
- *                 }
  *             }]
  *     }
  *
@@ -43,16 +35,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *         inputType: "video",
  *         defaults: {
  *             video: {
- *                 segmentation: {
- *                     temporal: {
- *                         strategy: "dynamic",
- *                         dynamic: {
- *                             minDurationSec: 4
- *                         }
- *                     }
- *                 },
- *                 embeddingOption: ["visual", "audio"],
- *                 embeddingScope: ["clip", "asset"]
+ *                 embeddingOption: ["visual", "audio"]
  *             }
  *         },
  *         requests: [{
@@ -60,78 +43,6 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *                 video: {
  *                     mediaSource: {
  *                         url: "https://example.com/clip.mp4"
- *                     }
- *                 }
- *             }, {
- *                 customId: "clip_002",
- *                 video: {
- *                     mediaSource: {
- *                         url: "https://example.com/interview.mp4"
- *                     },
- *                     startSec: 0,
- *                     endSec: 600
- *                 }
- *             }]
- *     }
- *
- * @example
- *     {
- *         modelName: "marengo3.5",
- *         serviceTier: "flex",
- *         inputType: "audio",
- *         defaults: {
- *             audio: {
- *                 segmentation: {
- *                     temporal: {
- *                         strategy: "fixed",
- *                         fixed: {
- *                             durationSec: 6
- *                         }
- *                     }
- *                 },
- *                 embeddingOption: ["audio"],
- *                 embeddingScope: ["clip", "asset"]
- *             }
- *         },
- *         requests: [{
- *                 customId: "track_001",
- *                 audio: {
- *                     mediaSource: {
- *                         url: "https://example.com/track.wav"
- *                     }
- *                 }
- *             }, {
- *                 customId: "track_002",
- *                 audio: {
- *                     mediaSource: {
- *                         url: "https://example.com/podcast.wav"
- *                     },
- *                     startSec: 60,
- *                     endSec: 1800
- *                 }
- *             }]
- *     }
- *
- * @example
- *     {
- *         modelName: "marengo3.5",
- *         serviceTier: "flex",
- *         inputType: "image",
- *         defaults: {
- *             embeddingUncertainty: true
- *         },
- *         requests: [{
- *                 customId: "photo_001",
- *                 image: {
- *                     mediaSource: {
- *                         assetId: "68f4ddaf8aaa60d33df0e803"
- *                     }
- *                 }
- *             }, {
- *                 customId: "photo_002",
- *                 image: {
- *                     mediaSource: {
- *                         url: "https://example.com/photo.jpg"
  *                     }
  *                 }
  *             }]
