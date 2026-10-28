@@ -5,6 +5,6 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * The status of an item in the batch. This field is different from the batch status.
+ * The status of an item in the batch. This field is different from the batch status. For the meaning of each value, see the [Item statuses](/v1.3/api-reference/create-embeddings-v2/batches/the-batch-object#item-statuses) section on the **The batch object** page.
  */
 export type EmbeddingBatchItemStatus = TwelvelabsApi.EmbeddingBatchItemStatusZero | string;

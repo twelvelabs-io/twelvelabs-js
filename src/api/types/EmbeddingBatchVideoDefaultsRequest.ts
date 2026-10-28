@@ -4,17 +4,28 @@
 
 import * as TwelvelabsApi from "../index";
 
+/**
+ * Default values applied to every item when the batch has the `video` input type.
+ */
 export interface EmbeddingBatchVideoDefaultsRequest {
-    /** The start time in seconds for processing the video file of every item. */
+    /**
+     * Start of the processing window, in seconds, applied to every item. Use with the `end_sec` field to process only a portion of each video file.
+     *
+     * **Default**: 0 (start from the beginning).
+     */
     startSec?: number;
-    /** The end time in seconds for processing the video file of every item. */
+    /**
+     * End of the processing window, in seconds, applied to every item. Use with the `start_sec` field to process only a portion of each video file. The end time must be greater than the start time.
+     *
+     * **Default**: End of the video file.
+     */
     endSec?: number;
-    /** Specifies how the platform divides the video into segments for every item. */
+    /** Specifies how the platform divides the video into segments for every item. For the structure and defaults, see the [`segmentation`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.segmentation) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     segmentation?: TwelvelabsApi.AsyncTemporalSegmentation;
-    /** The types of embeddings to generate for every item. */
+    /** The types of embeddings to generate for every item. For the values and defaults, see the [`embedding_option`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.embedding_option) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingOption?: TwelvelabsApi.EmbeddingBatchVideoDefaultsRequestEmbeddingOptionItem[];
-    /** The scope for which to generate embeddings for every item. */
+    /** The scope for which to generate embeddings for every item. For the values and defaults, see the [`embedding_scope`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.embedding_scope) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingScope?: TwelvelabsApi.EmbeddingBatchVideoDefaultsRequestEmbeddingScopeItem[];
-    /** Specifies how to structure the embeddings. A fused video embedding requires both the `visual` and `audio` values in the `embedding_option` field, or a single option together with the `time_based_metadata` field on the item. */
+    /** Specifies how to structure the embeddings for every item. A fused video embedding requires both the `visual` and `audio` values in the `embedding_option` field, or a single option together with the `time_based_metadata` field on the item. For the values and defaults, see the [`embedding_type`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.embedding_type) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingType?: TwelvelabsApi.EmbeddingBatchVideoDefaultsRequestEmbeddingTypeItem[];
 }

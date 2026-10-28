@@ -4,13 +4,16 @@
 
 import * as TwelvelabsApi from "../index";
 
+/**
+ * Default values applied to every item when the batch has the `document` input type.
+ */
 export interface EmbeddingBatchDocumentDefaultsRequest {
-    /** Specifies how the platform divides the document into segments for every item. */
+    /** Specifies how the platform divides the document into segments for every item. For the structure and defaults, see the [`segmentation`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.document.segmentation) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     segmentation?: TwelvelabsApi.DocumentSegmentation;
-    /** The types of embeddings to generate for every item. */
+    /** The types of embeddings to generate for every item. For the values and defaults, see the [`embedding_option`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.document.embedding_option) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingOption?: TwelvelabsApi.EmbeddingBatchDocumentDefaultsRequestEmbeddingOptionItem[];
-    /** The scope for which to generate embeddings for every item. */
+    /** The scope for which to generate embeddings for every item. For the values and defaults, see the [`embedding_scope`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.document.embedding_scope) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingScope?: TwelvelabsApi.EmbeddingBatchDocumentDefaultsRequestEmbeddingScopeItem[];
-    /** Specifies how to structure the embeddings for every item. */
+    /** Specifies how to structure the embeddings for every item. For the values and defaults, see the [`embedding_type`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.document.embedding_type) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingType?: TwelvelabsApi.EmbeddingBatchDocumentDefaultsRequestEmbeddingTypeItem[];
 }

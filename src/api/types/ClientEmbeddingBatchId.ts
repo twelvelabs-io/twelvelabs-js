@@ -3,8 +3,10 @@
  */
 
 /**
- * Your identifier for a batch. It is unique within your account until the batch is deleted or its 30-day retention period ends. After that, you can reuse it.
+ * Your identifier for the batch. Use it to find the batch after a timeout or a `500` or `503` error on creation. Before retrying creation, list batches with the `client_batch_id` query parameter. A `409` means the identifier is already in use. The response does not return the existing batch, and it does not show whether that batch failed.
  *
- * Use it to find a batch after a timeout or a `500` or `503` error on creation. Before retrying creation, list batches with the `client_batch_id` query parameter. A `409` means the identifier is already in use. The response does not return the existing batch, and it does not show whether that batch failed.
+ * The identifier is unique among your batches until the batch is deleted or its 30-day retention period ends. After that, you can reuse it.
+ *
+ * **Format**: 1–64 characters. Alphanumeric, hyphens (`-`), and underscores (`_`) only.
  */
 export type ClientEmbeddingBatchId = string;

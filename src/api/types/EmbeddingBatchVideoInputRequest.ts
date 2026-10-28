@@ -8,6 +8,10 @@ import * as TwelvelabsApi from "../index";
  * Identifies the video file to embed. The Base64 size limit is the same as for a task that is not part of a batch. See the [`video`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video) field of the `POST` method of the `/embed-v2/tasks` endpoint.
  */
 export interface EmbeddingBatchVideoInputRequest {
+    /** Override the `defaults.video.start_sec` value for this item. */
+    startSec?: number;
+    /** Override the `defaults.video.end_sec` value for this item. The end time must be greater than the start time. */
+    endSec?: number;
     /** Override the `defaults.video.segmentation` value for this item. The platform replaces the entire default object. */
     segmentation?: TwelvelabsApi.AsyncTemporalSegmentation;
     /** Override the `defaults.video.embedding_option` value for this item. */
@@ -17,22 +21,6 @@ export interface EmbeddingBatchVideoInputRequest {
     /** Override the `defaults.video.embedding_type` value for this item. */
     embeddingType?: TwelvelabsApi.EmbeddingBatchVideoInputRequestEmbeddingTypeItem[];
     mediaSource: TwelvelabsApi.MediaSource;
-    /**
-     * The start time in seconds for processing the video file.
-     *
-     * Use this parameter to process a portion of the video file starting from a specific time.
-     *
-     * **Default**: 0 (start from the beginning)
-     */
-    startSec?: number;
-    /**
-     * The end time in seconds for processing the video file.
-     *
-     * Use this parameter to process a portion of the video file ending at a specific time. The end time must be greater than the start time.
-     *
-     * **Default**: End of the video file
-     */
-    endSec?: number;
     /** Your own time-aligned text, such as a stats feed or scene descriptions, which you can generate by [segmenting a video with Pegasus](/v1.3/docs/guides/segment-videos). The platform folds each entry into the fused embedding of the segments it overlaps in time, and it affects only that embedding. Requires the `fused_embedding` value in the `embedding_type` field. This field requires the Marengo 3.5 native input format. */
     timeBasedMetadata?: TwelvelabsApi.TimeBasedMetadataEntry[];
 }

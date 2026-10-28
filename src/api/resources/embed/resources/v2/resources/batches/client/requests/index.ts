@@ -1,2 +1,2 @@
-export { type ListEmbeddingBatchesRequest } from "./ListEmbeddingBatchesRequest";
+export { type BatchesListRequest } from "./BatchesListRequest";
 export { type CreateEmbeddingBatchRequest } from "./CreateEmbeddingBatchRequest";

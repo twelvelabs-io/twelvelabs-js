@@ -8,15 +8,18 @@ import * as TwelvelabsApi from "../index";
  * The batch status and item counts.
  */
 export interface EmbeddingBatchSummary {
-    /** The unique identifier of the batch. */
+    /** The unique identifier of the batch. Use this value to retrieve the batch status or results. */
     batchId: string;
     /** The identifier you set when you created the batch. Present only if you set one. */
     clientBatchId?: TwelvelabsApi.ClientEmbeddingBatchId;
+    /** The model used for every item in this batch. */
     modelName: TwelvelabsApi.EmbeddingBatchSummaryModelName;
+    /** The service tier applied to every item in this batch. */
     serviceTier: TwelvelabsApi.EmbeddingBatchSummaryServiceTier;
+    /** The input type of every item in this batch. */
     inputType: TwelvelabsApi.EmbeddingBatchSummaryInputType;
     status: TwelvelabsApi.EmbeddingBatchStatus;
-    /** The number of submitted items, equal to the sum of the five status counts. */
+    /** The number of items submitted in the batch. The value equals the sum of the five status counts. */
     totalItems: number;
     /** The number of items in the `queued` status. */
     queuedItems: number;
@@ -26,18 +29,18 @@ export interface EmbeddingBatchSummary {
     readyItems: number;
     /** The number of items that failed. */
     failedItems: number;
-    /** The number of canceled items, including items with an expired processing window. */
+    /** The number of items that were canceled, either because the batch was canceled before the item started, or because the batch expired before the item finished processing. */
     canceledItems: number;
-    /** The date and time, in RFC 3339 format, when the platform accepted the batch. */
+    /** The date and time, in the RFC 3339 format, when the batch was created. */
     createdAt: Date;
-    /** The date and time, in RFC 3339 format, when the 24-hour processing window for the batch ends. */
+    /** The date and time, in the RFC 3339 format, when the 24-hour processing window for the batch ends. Unfinished items at expiration do not complete. Items that finished before then remain retrievable for 30 days after creation. */
     expiresAt: Date;
-    /** The date and time, in RFC 3339 format, when the batch reached the `completed` status. Present only for a batch with that status. */
+    /** The date and time, in the RFC 3339 format, when the batch status became `completed`. Present only when the status is `completed`. */
     completedAt?: Date;
-    /** The date and time, in RFC 3339 format, when the batch reached the `canceled` status. Present only for a batch with that status. */
+    /** The date and time, in the RFC 3339 format, when the batch status became `canceled`. Present only when the status is `canceled`. */
     canceledAt?: Date;
-    /** The date and time, in RFC 3339 format, when the batch reached the `expired` status. Present only for a batch with that status. */
+    /** The date and time, in the RFC 3339 format, when the batch status became `expired`. Present only when the status is `expired`. */
     expiredAt?: Date;
-    /** The delivery status of each webhook endpoint for the batch notification. Present only after the platform sends the notification. To register webhooks, see the [Register a webhook](/v1.3/docs/advanced/webhooks/manage#register-a-webhook) section. */
+    /** The delivery status of each webhook endpoint for the batch notification. The notification is sent when the batch reaches the `completed`, `canceled`, or `expired` status. Present only after the platform sends the notification. To register webhooks, see the [Register a webhook](/v1.3/docs/advanced/webhooks/manage#register-a-webhook) section. */
     webhooks?: TwelvelabsApi.WebhookDeliveryInfo[];
 }

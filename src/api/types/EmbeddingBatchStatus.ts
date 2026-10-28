@@ -5,14 +5,6 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * The status of a batch. The platform sets the status from the item statuses, cancellation, and the processing window.
- *
- * **Values**:
- * - `pending`: No item has the `processing` or `ready` status, unfinished items remain, and no cancellation is in progress. If the items have only the `failed` and `queued` statuses, the batch has the `pending` status.
- * - `processing`: At least one item has the `processing` or `ready` status, and unfinished items remain. If the items have the `ready` and `queued` statuses and none has the `processing` status, the batch has the `processing` status.
- * - `canceling`: The platform is waiting for running items to finish after a cancellation request.
- * - `canceled`: The final status after an explicit cancellation, when every item finishes or is canceled and no item expires.
- * - `completed`: The final status when all items finish, including failed items.
- * - `expired`: The final status when an unfinished item reaches the 24-hour deadline. A `canceling` batch can expire if a running item reaches that deadline.
+ * The status of a batch. For the meaning of each value, see the [Batch statuses](/v1.3/api-reference/create-embeddings-v2/batches/the-batch-object#batch-statuses) section on the **The batch object** page.
  */
 export type EmbeddingBatchStatus = TwelvelabsApi.EmbeddingBatchStatusZero | string;

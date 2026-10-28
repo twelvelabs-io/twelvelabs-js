@@ -476,3 +476,6 @@ export * from "./ResponseStreamContentPartDoneEvent";
 export * from "./ResponseStreamOutputItemDoneEvent";
 export * from "./ResponseStreamFuncCallArgsDoneEvent";
 export * from "./EmbeddingTaskResponseError";
+export * from "./ResponseOutputItemType";
+export * from "./ResponseOutputItemRole";
+export * from "./ResponseAnnotationType";

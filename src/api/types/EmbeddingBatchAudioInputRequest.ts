@@ -8,6 +8,10 @@ import * as TwelvelabsApi from "../index";
  * Identifies the audio file to embed. The Base64 size limit is the same as for a task that is not part of a batch. See the [`audio`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.audio) field of the `POST` method of the `/embed-v2/tasks` endpoint.
  */
 export interface EmbeddingBatchAudioInputRequest {
+    /** Override the `defaults.audio.start_sec` value for this item. */
+    startSec?: number;
+    /** Override the `defaults.audio.end_sec` value for this item. The end time must be greater than the start time. */
+    endSec?: number;
     /** Override the `defaults.audio.segmentation` value for this item. The platform replaces the entire default object. */
     segmentation?: TwelvelabsApi.AsyncTemporalSegmentation;
     /** Override the `defaults.audio.embedding_option` value for this item. */
@@ -17,22 +21,6 @@ export interface EmbeddingBatchAudioInputRequest {
     /** Override the `defaults.audio.embedding_type` value for this item. */
     embeddingType?: TwelvelabsApi.EmbeddingBatchAudioInputRequestEmbeddingTypeItem[];
     mediaSource: TwelvelabsApi.MediaSource;
-    /**
-     * The start time in seconds for processing the audio file.
-     *
-     * Use this parameter to process a portion of the audio file starting from a specific time.
-     *
-     * **Default**: 0 (start from the beginning).
-     */
-    startSec?: number;
-    /**
-     * The end time in seconds for processing the audio file.
-     *
-     * Use this parameter to process a portion of the audio file ending at a specific time. The end time must be greater than the start time.
-     *
-     * **Default**: End of the audio file
-     */
-    endSec?: number;
     /** Your own time-aligned text, such as a stats feed or scene descriptions. The platform folds each entry into the fused embedding of the segments it overlaps in time, and it affects only that embedding. Requires the `fused_embedding` value in the `embedding_type` field. This field requires the Marengo 3.5 native input format. */
     timeBasedMetadata?: TwelvelabsApi.TimeBasedMetadataEntry[];
 }

@@ -4594,546 +4594,6 @@ await client.search.retrieve("1234567890", {
 </dl>
 </details>
 
-## Create embeddings
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">listEmbeddingBatches</a>({ ...params }) -> TwelvelabsApi.ListEmbeddingBatchesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method returns a list of the batches in your account, including aggregate status and item
-counts. Use the `client_batch_id` query parameter to find a batch after a timeout or a `500` or `503` error on creation. The response sorts batches by creation date, with the newest batch first. Filters
-combine using AND and are applied before pagination. An exact
-`client_batch_id` value with no match returns `200` with an empty `data` array
-and a `page_info.total_results` value of `0`. To get the status and the `task_id` of each item, use the `GET` method of the
-`/embed-v2/batches/{batch_id}` endpoint. To get the embeddings, use the `GET`
-method of the `/embed-v2/batches/{batch_id}/results` endpoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.createEmbeddings.listEmbeddingBatches({
-    clientBatchId: "reports_2026_10",
-    status: "pending",
-    page: 1,
-    pageLimit: 1,
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `TwelvelabsApi.ListEmbeddingBatchesRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">createEmbeddingBatch</a>({ ...params }) -> TwelvelabsApi.EmbeddingBatchResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this method to create multiple embeddings in a single call. Each item creates an embedding task. Requires Marengo 3.5.
-
-**When to use this method**:
-
-- Embed multiple items with the same settings. All items in a batch have the same input type: `audio`, `video`, `document`, or `image`. To embed more than one input type, create one batch for each type.
-- Track one batch instead of multiple tasks.
-
-**Do not use this method for**:
-
-- Results you need by a set time. Batch items use the Flex service tier. The platform starts them with capacity that other tasks do not use, and it does not guarantee a start time or a completion time. Create a separate task for each item with the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead. To use a tier other than Flex, set the `service_tier` field to the `standard` or `priority` value.
-- One item. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
-- Results in the same request. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint for synchronous embedding instead.
-
-**Validation**:
-
-- An invalid request returns `400` and creates no batch or task.
-- A source failure found while the platform accepts the batch fails that item's task. The rest of the batch continues.
-- After the platform accepts the batch, it checks the file at each video or audio URL, the duration of the media, and the number of pages in each PDF. If an item fails one of these checks, its task has the `failed` status.
-
-**Retention**:
-
-- The processing window is 24 hours from creation. If it ends while items are unfinished, the batch has the `expired` status, and the platform cancels those items.
-- Batches, tasks, and results are available through the API for up to 30 days after creation. Deleting a batch with a final status ends access to its tasks and results earlier.
-- Only ready items are billed.
-
-**Limits**:
-
-- A batch contains 1 to 1,000 items.
-- For the formats, resolutions, file sizes, and duration limits of each item, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements).
-- The configured request body limit covers the entire JSON body, including base64 media. It is separate from the size limit of each media file. If the API rejects a body with `413`, its error message reports the configured limit in bytes. Use a URL or supported `asset_id` for media that does not fit.
-- A limit applies to the number of Flex tasks that are `queued` or `processing` at the same time, including the tasks of a batch. A request that exceeds the limit returns `429`.
-- When a request-count limit applies, each request to create a batch counts once, regardless of the number of items it contains. The limit is shared with requests that create a task that is not part of a batch. A request that fails before the platform accepts the batch does not count.
-- Input-token limits count the usage of completed work, and the platform does not reserve the tokens of a batch when you create it. Items already accepted can finish and take usage above a limit, and a later create request can then return `429`.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.createEmbeddings.createEmbeddingBatch({
-    clientBatchId: "reports_2026_10",
-    modelName: "marengo3.5",
-    serviceTier: "flex",
-    inputType: "document",
-    defaults: {
-        embeddingDimension: 256,
-        document: {
-            embeddingOption: ["visual", "text"],
-            embeddingScope: ["asset"],
-        },
-    },
-    requests: [
-        {
-            customId: "report_001",
-            document: {
-                mediaSource: {
-                    url: "https://example.com/report.pdf",
-                },
-            },
-        },
-    ],
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `TwelvelabsApi.CreateEmbeddingBatchRequest`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">retrieveEmbeddingBatch</a>(batchId) -> TwelvelabsApi.EmbeddingBatchResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method retrieves the status of a batch, the item counts, and the mapping from the `custom_id` field of each item to its `task_id` field. Poll this method until the batch reaches the `completed`, `canceled`, or `expired` status.
-A batch can contain ready, failed, and canceled items at the same
-time. `completed` means all items reached a final status, not that all
-succeeded. The batch and its tasks can be read for 30 days after batch creation,
-regardless of their statuses. At the end of that period, batch, results,
-and task reads return `404`. Deletion ends access earlier.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.createEmbeddings.retrieveEmbeddingBatch("68d3ae81c4a8d3697e15b2ef");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**batchId:** `string` — The unique identifier of the batch.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">deleteEmbeddingBatch</a>(batchId) -> void</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method removes a batch with a final status and all its tasks and results from API access. This does not reverse
-billing for items that completed successfully. A batch with the `pending`,
-`processing`, or `canceling` status cannot be deleted until it has a final
-status: `canceled`, `completed`, or `expired`. To end it sooner, cancel it and
-wait for the final status. Batches and their results are otherwise available
-through the API for 30 days after creation.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.createEmbeddings.deleteEmbeddingBatch("68d3ae81c4a8d3697e15b2ef");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**batchId:** `string` — The unique identifier of the batch.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">retrieveEmbeddingBatchResults</a>(batchId) -> core.Stream&lt;TwelvelabsApi.EmbeddingBatchResultItem&gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method streams one JSON Lines entry for each item in a batch. Each line contains the
-`custom_id` and `task_id` fields and the current item status. Ready lines contain
-the `data` field with the embeddings and the `usage` field; failed lines contain the `error` field; canceled lines
-contain no `error` field and can contain a `cancellation_reason` field. Results can be
-read while the batch is still processing and for 30 days after creation.
-Result lines are not guaranteed to appear in submission order. A complete stream
-contains exactly one line for each current batch item. Once the batch has a final status, each line has a final item status: `ready`, `failed`, or `canceled`. The task identifier, custom identifier, status, and result or error of each line match the corresponding task read. Reads made during processing are separate snapshots and can show different statuses as processing progresses.
-
-A `200` status alone does not confirm a complete stream. To verify it, count the distinct `custom_id` values in the lines. Compare the count with the `total_items` field of the batch. If the connection ends early, retry the retrieval and verify the item count again.
-
-If an error occurs after streaming starts, the response is truncated, and the platform does not add a failed-item line. The `X-Stream-Error` trailer then contains this JSON: `{"code":"stream_error","message":"Incomplete embedding result stream. Retry and verify the expected item count."}`. Retry the retrieval and verify the item count.
-
-Before streaming starts, failures use the documented HTTP error responses. Whether the trailer reaches you depends on the HTTP client and any intermediary. A missing trailer does not replace the item-count check.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-const response = await client.createEmbeddings.retrieveEmbeddingBatchResults("68d3ae81c4a8d3697e15b2ef");
-for await (const item of response) {
-    console.log(item);
-}
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**batchId:** `string` — The unique identifier of the batch.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">cancelEmbeddingBatch</a>(batchId) -> TwelvelabsApi.EmbeddingBatchResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method requests cancellation of a batch that has the `pending` or `processing` status.
-
-When you call this method, the platform does the following:
-
-- Cancels the items that are `queued`.
-- Does not stop the items that are `processing`. Each reaches its own final result.
-
-The batch has the `canceling` status until those items finish, then the `canceled` status. If a running item is still unfinished at the 24-hour deadline, the platform cancels it with the `deadline_exceeded` reason, and the batch has the `expired` status. Wait for the `canceled` or `expired` status.
-
-**Billing and results**:
-
-- An item that is processing when you cancel can still become `ready`. You are billed for it, and its result is available with the results that were ready before the cancellation.
-- An item that finishes after the 24-hour deadline stays canceled and is not billed.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.createEmbeddings.cancelEmbeddingBatch("68d3ae81c4a8d3697e15b2ef");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**batchId:** `string` — The unique identifier of the batch.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.createEmbeddings.<a href="/src/api/resources/createEmbeddings/client/Client.ts">cancelAsyncEmbeddingTask</a>(taskId) -> TwelvelabsApi.CancelEmbeddingTaskResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This method cancels a task that is not part of a batch in your account while the task is `queued` or `processing`. The task then reports `canceled` with `cancellation_reason: user_requested` and has no embeddings. If you cancel a task that is already canceled, the platform returns `200` with the original cancellation reason. The platform returns `409` if the task is `ready` or `failed`, was created as part of a batch, or has no `service_tier` field. For a batch, use the `POST` method of the `/embed-v2/batches/{batch_id}/cancel` endpoint. If the platform returns `task_cancel_not_supported`, continue to poll the task. Work that is already running can continue after cancellation, but the platform does not return or bill its late result.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.createEmbeddings.cancelAsyncEmbeddingTask("64f8d2c7e4a1b37f8a9c5d12");
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**taskId:** `string` — The unique identifier of the embedding task.
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `CreateEmbeddings.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## Responses
 
 <details><summary><code>client.responses.<a href="/src/api/resources/responses/client/Client.ts">createStream</a>({ ...params }) -> core.Stream&lt;TwelvelabsApi.ResponseStreamEvent&gt;</code></summary>
@@ -7715,6 +7175,558 @@ await client.embed.v2.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12");
 <dd>
 
 **requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.embed.v2.tasks.<a href="/src/api/resources/embed/resources/v2/resources/tasks/client/Client.ts">cancel</a>(taskId) -> TwelvelabsApi.CancelEmbeddingTaskResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method cancels a task that is not part of a batch in your account while the task is `queued` or `processing`. The task then reports `canceled` with `cancellation_reason: user_requested` and has no embeddings. If you cancel a task that is already canceled, the platform returns `200` with the original cancellation reason. The platform returns `409` if the task is `ready` or `failed`, was created as part of a batch, or has no `service_tier` field. For a batch, use the `POST` method of the `/embed-v2/batches/{batch_id}/cancel` endpoint. If the platform returns `task_cancel_not_supported`, continue to poll the task. Work that is already running can continue after cancellation, but the platform does not return or bill its late result.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.embed.v2.tasks.cancel("64f8d2c7e4a1b37f8a9c5d12");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**taskId:** `string` — The unique identifier of the embedding task.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Tasks.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Embed V2 Batches
+
+<details><summary><code>client.embed.v2.batches.<a href="/src/api/resources/embed/resources/v2/resources/batches/client/Client.ts">list</a>({ ...params }) -> TwelvelabsApi.ListEmbeddingBatchesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to list your batches. The response sorts batches by creation date, with the newest batch first. Each batch includes its status and item counts.
+
+**Notes**:
+
+- Filters combine using AND.
+- To retrieve the status and the task identifier of each item in a batch, use the [`GET`](/v1.3/api-reference/create-embeddings-v2/batches/retrieve-batch-status) method of the `/embed-v2/batches/{batch_id}` endpoint.
+- To retrieve the embeddings of a batch, use the [`GET`](/v1.3/api-reference/create-embeddings-v2/batches/retrieve-batch-results) method of the `/embed-v2/batches/{batch_id}/results` endpoint.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.embed.v2.batches.list({
+    clientBatchId: "reports_2026_10",
+    status: "pending",
+    page: 1,
+    pageLimit: 1,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.embed.v2.BatchesListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.embed.v2.batches.<a href="/src/api/resources/embed/resources/v2/resources/batches/client/Client.ts">create</a>({ ...params }) -> TwelvelabsApi.EmbeddingBatchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to create multiple embeddings in a single call. Each item creates an embedding task. Requires Marengo 3.5.
+
+**When to use this method**:
+
+- Embed multiple items with the same settings. All items in a batch have the same input type: `audio`, `video`, `document`, or `image`. To embed more than one input type, create one batch for each type.
+- Track one batch instead of multiple tasks.
+
+**Do not use this method for**:
+
+- Results you need by a set time. Batch items use the Flex service tier. The platform starts them with capacity that other tasks do not use, and it does not guarantee a start time or a completion time. Create a separate task for each item with the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead. To use a tier other than Flex, set the `service_tier` field to the `standard` or `priority` value.
+- One item. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
+- Results in the same request. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint for synchronous embedding instead.
+
+**Validation**:
+
+- An invalid request returns `400` and creates no batch or task.
+- A source failure found while the platform accepts the batch fails that item's task. The rest of the batch continues.
+- After the platform accepts the batch, it checks the file at each video or audio URL, the duration of the media, and the number of pages in each PDF. If an item fails one of these checks, its task has the `failed` status.
+
+**Retention**:
+
+- The processing window is 24 hours from creation. If it ends while items are unfinished, the batch has the `expired` status, and the platform cancels those items.
+- Batches, tasks, and results are available through the API for up to 30 days after creation. Deleting a batch with a final status ends access to its tasks and results earlier.
+- Only ready items are billed.
+
+**Limits**:
+
+- A batch contains 1 to 1,000 items.
+- For the formats, resolutions, file sizes, and duration limits of each item, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements).
+- The configured request body limit covers the entire JSON body, including base64 media. It is separate from the size limit of each media file. If the API rejects a body with `413`, its error message reports the configured limit in bytes. Use a URL or supported `asset_id` for media that does not fit.
+- A limit applies to the number of Flex tasks that are `queued` or `processing` at the same time, including the tasks of a batch. A request that exceeds the limit returns `429`.
+- When a request-count limit applies, each request to create a batch counts once, regardless of the number of items it contains. The limit is shared with requests that create a task that is not part of a batch. A request that fails before the platform accepts the batch does not count.
+- Input-token limits count the usage of completed work, and the platform does not reserve the tokens of a batch when you create it. Items already accepted can finish and take usage above a limit, and a later create request can then return `429`.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.embed.v2.batches.create({
+    clientBatchId: "reports_2026_10",
+    modelName: "marengo3.5",
+    serviceTier: "flex",
+    inputType: "document",
+    defaults: {
+        embeddingDimension: 256,
+        document: {
+            embeddingOption: ["visual", "text"],
+            embeddingScope: ["asset"],
+        },
+    },
+    requests: [
+        {
+            customId: "report_001",
+            document: {
+                mediaSource: {
+                    url: "https://example.com/report.pdf",
+                },
+            },
+        },
+        {
+            customId: "report_002",
+            document: {
+                mediaSource: {
+                    url: "https://example.com/notes.txt",
+                },
+                embeddingOption: ["text"],
+            },
+        },
+    ],
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.embed.v2.CreateEmbeddingBatchRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.embed.v2.batches.<a href="/src/api/resources/embed/resources/v2/resources/batches/client/Client.ts">retrieve</a>(batchId) -> TwelvelabsApi.EmbeddingBatchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to monitor a batch. The response includes the batch status, the item counts, and one entry for each item with its `custom_id` value and task identifier.
+
+Poll this method until the batch reaches the `completed`, `canceled`, or `expired` status. To retrieve the embeddings, use the [`GET`](/v1.3/api-reference/create-embeddings-v2/batches/retrieve-batch-results) method of the `/embed-v2/batches/{batch_id}/results` endpoint.
+
+Do not treat the `completed` status as a success signal. It means that every item reached a final status, not that every embedding succeeded. To see how many items succeeded, failed, or were canceled, check the `ready_items`, `failed_items`, and `canceled_items` fields.
+
+The platform keeps a batch and its tasks readable for 30 days after batch creation, regardless of their statuses. After that period, reads of the batch, its results, and its tasks return `404`. Deletion ends access earlier.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.embed.v2.batches.retrieve("68d3ae81c4a8d3697e15b2ef");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.embed.v2.batches.<a href="/src/api/resources/embed/resources/v2/resources/batches/client/Client.ts">delete</a>(batchId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method removes a batch with a final status and all its tasks and results from API access. This does not reverse
+billing for items that completed successfully. A batch with the `pending`,
+`processing`, or `canceling` status cannot be deleted until it has a final
+status: `canceled`, `completed`, or `expired`. To end it sooner, cancel it and
+wait for the final status. Batches and their results are otherwise available
+through the API for 30 days after creation.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.embed.v2.batches.delete("68d3ae81c4a8d3697e15b2ef");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.embed.v2.batches.<a href="/src/api/resources/embed/resources/v2/resources/batches/client/Client.ts">results</a>(batchId) -> core.Stream&lt;TwelvelabsApi.EmbeddingBatchResultItem&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this method to retrieve the results for each item in a batch. You can call it while the batch has the `pending` or `processing` status.
+
+The response is a JSON Lines stream. Each line is a result entry, and there is one result entry for each item. Each result entry has a status. For details on each status, see the [Item statuses](/v1.3/api-reference/create-embeddings-v2/batches/the-batch-object#item-statuses) section on the **The batch object** page.
+
+Each result entry includes a task identifier in the `task_id` field. Use this value with the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint if you need more details about the item, such as the `metadata` object for the media input and the `created_at` and `updated_at` timestamps.
+
+You can retrieve results for 30 days after batch creation.
+
+**Notes**:
+
+- Result entries are not guaranteed to appear in submission order.
+- A `200` status does not confirm a complete stream. To verify it, count the distinct `custom_id` values and compare the count with the `total_items` field of the batch. If the connection ends early, retry and verify the count again.
+- If an error occurs after the stream starts, the response ends early and the platform sends the `X-Stream-Error` trailer. A trailer is an HTTP header that the platform sends after the response body. The trailer contains the `stream_error` code. Many HTTP clients do not show trailers, so always compare the number of result entries with the `total_items` field.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.embed.v2.batches.results("68d3ae81c4a8d3697e15b2ef");
+for await (const item of response) {
+    console.log(item);
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.embed.v2.batches.<a href="/src/api/resources/embed/resources/v2/resources/batches/client/Client.ts">cancel</a>(batchId) -> TwelvelabsApi.EmbeddingBatchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method requests cancellation of a batch that has the `pending` or `processing` status.
+
+When you call this method, the platform does the following:
+
+- Cancels the items that are `queued`.
+- Does not stop the items that are `processing`. Each reaches its own final result.
+
+The batch has the `canceling` status until those items finish, then the `canceled` status. If a running item is still unfinished at the 24-hour deadline, the platform cancels it with the `deadline_exceeded` reason, and the batch has the `expired` status. Wait for the `canceled` or `expired` status.
+
+**Billing and results**:
+
+- An item that is processing when you cancel can still become `ready`. You are billed for it, and its result is available with the results that were ready before the cancellation.
+- An item that finishes after the 24-hour deadline stays canceled and is not billed.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.embed.v2.batches.cancel("68d3ae81c4a8d3697e15b2ef");
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**batchId:** `string` — The unique identifier of the batch.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Batches.RequestOptions`
 
 </dd>
 </dl>

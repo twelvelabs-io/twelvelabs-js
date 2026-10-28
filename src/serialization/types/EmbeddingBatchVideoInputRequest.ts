@@ -16,6 +16,8 @@ export const EmbeddingBatchVideoInputRequest: core.serialization.ObjectSchema<
     serializers.EmbeddingBatchVideoInputRequest.Raw,
     TwelvelabsApi.EmbeddingBatchVideoInputRequest
 > = core.serialization.object({
+    startSec: core.serialization.property("start_sec", core.serialization.number().optional()),
+    endSec: core.serialization.property("end_sec", core.serialization.number().optional()),
     segmentation: AsyncTemporalSegmentation.optional(),
     embeddingOption: core.serialization.property(
         "embedding_option",
@@ -30,8 +32,6 @@ export const EmbeddingBatchVideoInputRequest: core.serialization.ObjectSchema<
         core.serialization.list(EmbeddingBatchVideoInputRequestEmbeddingTypeItem).optional(),
     ),
     mediaSource: core.serialization.property("media_source", MediaSource),
-    startSec: core.serialization.property("start_sec", core.serialization.number().optional()),
-    endSec: core.serialization.property("end_sec", core.serialization.number().optional()),
     timeBasedMetadata: core.serialization.property(
         "time_based_metadata",
         core.serialization.list(TimeBasedMetadataEntry).optional(),
@@ -40,13 +40,13 @@ export const EmbeddingBatchVideoInputRequest: core.serialization.ObjectSchema<
 
 export declare namespace EmbeddingBatchVideoInputRequest {
     export interface Raw {
+        start_sec?: number | null;
+        end_sec?: number | null;
         segmentation?: AsyncTemporalSegmentation.Raw | null;
         embedding_option?: EmbeddingBatchVideoInputRequestEmbeddingOptionItem.Raw[] | null;
         embedding_scope?: EmbeddingBatchVideoInputRequestEmbeddingScopeItem.Raw[] | null;
         embedding_type?: EmbeddingBatchVideoInputRequestEmbeddingTypeItem.Raw[] | null;
         media_source: MediaSource.Raw;
-        start_sec?: number | null;
-        end_sec?: number | null;
         time_based_metadata?: TimeBasedMetadataEntry.Raw[] | null;
     }
 }

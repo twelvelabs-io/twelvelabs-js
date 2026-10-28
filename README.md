@@ -370,10 +370,10 @@ This example embeds a video. The method also accepts `"audio"`, `"image"`, and `
 
 **Create a batch**
 
-For Marengo 3.5, use `client.createEmbeddings` to create and manage batches. Each request can include fractional `startSec` and `endSec` offsets:
+For Marengo 3.5, use `client.embed.v2.batches` to create and manage batches. Each request can include fractional `startSec` and `endSec` offsets:
 
 ```js
-const batch = await client.createEmbeddings.createEmbeddingBatch({
+const batch = await client.embed.v2.batches.create({
   modelName: "marengo3.5",
   serviceTier: "flex",
   inputType: "video",
@@ -391,7 +391,7 @@ const batch = await client.createEmbeddings.createEmbeddingBatch({
 console.log(`Created batch: ${batch.batchId}`);
 ```
 
-Use the generated batch resource to retrieve status, list batches, retrieve JSONL results, or cancel a batch. For batch limits and lifecycle details, see the [Embed v2 batch guide](https://docs.twelvelabs.io/v1.3/docs/api/embed-v2/batches).
+Use `client.embed.v2.batches.retrieve`, `.list`, `.results`, `.cancel`, and `.delete` to manage batch status and JSONL results. Cancel an individual task with `client.embed.v2.tasks.cancel(taskId)`. For batch limits and lifecycle details, see the [Embed v2 batch API reference](https://docs.twelvelabs.io/v1.3/api-reference/create-embeddings-v2/batches).
 
 Embed v2 task and batch responses include `queued` and `canceled` statuses. The SDK preserves unknown response status strings for forward compatibility while keeping request filters limited to documented values; existing task status constants remain available. Batch results are streamed as JSON Lines, with an `error` object on failed result items. The task error model is now `EmbeddingTaskError`; `EmbeddingTaskResponseError` remains as a deprecated type alias for existing imports.
 

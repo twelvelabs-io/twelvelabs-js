@@ -9,6 +9,7 @@ import * as serializers from "../../../../../../serialization/index";
 import urlJoin from "url-join";
 import * as errors from "../../../../../../errors/index";
 import { Tasks } from "../resources/tasks/client/Client";
+import { Batches } from "../resources/batches/client/Client";
 
 export declare namespace V2 {
     export interface Options {
@@ -32,11 +33,16 @@ export declare namespace V2 {
 
 export class V2 {
     protected _tasks: Tasks | undefined;
+    protected _batches: Batches | undefined;
 
     constructor(protected readonly _options: V2.Options) {}
 
     public get tasks(): Tasks {
         return (this._tasks ??= new Tasks(this._options));
+    }
+
+    public get batches(): Batches {
+        return (this._batches ??= new Batches(this._options));
     }
 
     /**

@@ -18,8 +18,6 @@ export * as knowledgeStoreItemCollections from "./knowledgeStoreItemCollections"
 export * from "./knowledgeStoreItemCollections/types";
 export * as search from "./search";
 export * from "./search/types";
-export * as createEmbeddings from "./createEmbeddings";
-export * from "./createEmbeddings/types";
 export * as responses from "./responses";
 export * from "./responses/types";
 export * as dataConnectors from "./dataConnectors";
@@ -39,7 +37,6 @@ export * from "./knowledgeStoreItemTags/client/requests";
 export * from "./knowledgeStoreItemCollections/client/requests";
 export * from "./embed/client/requests";
 export * from "./search/client/requests";
-export * from "./createEmbeddings/client/requests";
 export * from "./responses/client/requests";
 export * from "./dataConnectors/client/requests";
 export * from "./imports/client/requests";

@@ -5,6 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 export interface ListEmbeddingBatchesResponse {
+    /** An array of batch objects. Each object includes item counts for each item status. */
     data: TwelvelabsApi.EmbeddingBatchSummary[];
     pageInfo: TwelvelabsApi.PageInfo;
 }

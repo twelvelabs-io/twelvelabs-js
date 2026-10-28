@@ -20,7 +20,6 @@ import { KnowledgeStoreItemTags } from "./api/resources/knowledgeStoreItemTags/c
 import { KnowledgeStoreItemCollections } from "./api/resources/knowledgeStoreItemCollections/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
-import { CreateEmbeddings } from "./api/resources/createEmbeddings/client/Client";
 import { Responses } from "./api/resources/responses/client/Client";
 import { DataConnectors } from "./api/resources/dataConnectors/client/Client";
 import { Imports } from "./api/resources/imports/client/Client";
@@ -58,7 +57,6 @@ export class TwelvelabsApiClient {
     protected _knowledgeStoreItemCollections: KnowledgeStoreItemCollections | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
-    protected _createEmbeddings: CreateEmbeddings | undefined;
     protected _responses: Responses | undefined;
     protected _dataConnectors: DataConnectors | undefined;
     protected _imports: Imports | undefined;
@@ -108,10 +106,6 @@ export class TwelvelabsApiClient {
 
     public get search(): Search {
         return (this._search ??= new Search(this._options));
-    }
-
-    public get createEmbeddings(): CreateEmbeddings {
-        return (this._createEmbeddings ??= new CreateEmbeddings(this._options));
     }
 
     public get responses(): Responses {

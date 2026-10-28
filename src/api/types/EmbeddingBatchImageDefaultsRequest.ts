@@ -4,11 +4,14 @@
 
 import * as TwelvelabsApi from "../index";
 
+/**
+ * Default values applied to every item when the batch has the `image` input type.
+ */
 export interface EmbeddingBatchImageDefaultsRequest {
-    /** The types of embeddings to generate for every item. */
+    /** The types of embeddings to generate for every item. For the values and defaults, see the [`embedding_option`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.image.embedding_option) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingOption?: TwelvelabsApi.EmbeddingBatchImageDefaultsRequestEmbeddingOptionItem[];
-    /** The scope for which to generate embeddings for every item. */
+    /** The scope for which to generate embeddings for every item. For the values and defaults, see the [`embedding_scope`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.image.embedding_scope) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingScope?: TwelvelabsApi.EmbeddingBatchImageDefaultsRequestEmbeddingScopeItem[];
-    /** Specifies how to structure the embeddings for every item. */
+    /** Specifies how to structure the embeddings for every item. For the values and defaults, see the [`embedding_type`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.image.embedding_type) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingType?: TwelvelabsApi.EmbeddingBatchImageDefaultsRequestEmbeddingTypeItem[];
 }
