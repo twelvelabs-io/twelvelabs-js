@@ -385,6 +385,12 @@ const batch = await client.embed.v2.batches.create({
         startSec: 2.5,
         endSec: 7.5
       }
+    },
+    {
+      customId: "clip_002",
+      video: {
+        mediaSource: { url: "<YOUR_SECOND_VIDEO_URL>" }
+      }
     }
   ]
 });
