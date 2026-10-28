@@ -9,7 +9,7 @@ export interface TasksCreateResponse {
     id: string;
     /** The identifier you set when you created the task. Present only if you set one. */
     clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
-    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and older tasks. */
+    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and for tasks created before service tiers were introduced. */
     serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
     /** The date and time, in RFC 3339 format, when the 24-hour processing window for a Marengo 3.5 Flex task ends. Omitted for other tiers and Marengo 3.0. */
     expiresAt?: Date;

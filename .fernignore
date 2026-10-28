@@ -5,9 +5,11 @@ legacy
 
 src/wrapper
 src/index.ts
+src/core/streaming-fetcher/Stream.ts
 tsconfig.json
 
 tests/custom.test.ts
+tests/streaming.test.ts
 
 README.md
 .github

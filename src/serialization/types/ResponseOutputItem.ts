@@ -5,44 +5,42 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { ResponseStandardOutputItem } from "./ResponseStandardOutputItem";
-import { ResponseWebSearchOutputItem } from "./ResponseWebSearchOutputItem";
+import { ResponseOutputItemRole } from "./ResponseOutputItemRole";
+import { ResponseOutputContentPart } from "./ResponseOutputContentPart";
+import { WebSearchAction } from "./WebSearchAction";
 
-export const ResponseOutputItem: core.serialization.Schema<
+export const ResponseOutputItem: core.serialization.ObjectSchema<
     serializers.ResponseOutputItem.Raw,
     TwelvelabsApi.ResponseOutputItem
 > = core.serialization
-    .union("type", {
-        message: ResponseStandardOutputItem,
-        function_call: ResponseStandardOutputItem,
-        function_call_output: ResponseStandardOutputItem,
-        "jockey:web_search": ResponseWebSearchOutputItem,
+    .object({
+        type: core.serialization.string(),
+        id: core.serialization.string(),
+        status: core.serialization.string().optional(),
+        role: ResponseOutputItemRole.optional(),
+        phase: core.serialization.string().optional(),
+        content: core.serialization.list(ResponseOutputContentPart).optional(),
+        name: core.serialization.string().optional(),
+        callId: core.serialization.property("call_id", core.serialization.string().optional()),
+        arguments: core.serialization.string().optional(),
+        output: core.serialization.string().optional(),
+        action: WebSearchAction.optional(),
     })
-    .transform<TwelvelabsApi.ResponseOutputItem>({
-        transform: (value) => value,
-        untransform: (value) => value,
-    });
+    .passthrough();
 
 export declare namespace ResponseOutputItem {
-    export type Raw =
-        | ResponseOutputItem.Message
-        | ResponseOutputItem.FunctionCall
-        | ResponseOutputItem.FunctionCallOutput
-        | ResponseOutputItem.JockeyWebSearch;
-
-    export interface Message extends ResponseStandardOutputItem.Raw {
-        type: "message";
-    }
-
-    export interface FunctionCall extends ResponseStandardOutputItem.Raw {
-        type: "function_call";
-    }
-
-    export interface FunctionCallOutput extends ResponseStandardOutputItem.Raw {
-        type: "function_call_output";
-    }
-
-    export interface JockeyWebSearch extends ResponseWebSearchOutputItem.Raw {
-        type: "jockey:web_search";
+    export interface Raw {
+        type: string;
+        id: string;
+        status?: string | null;
+        role?: ResponseOutputItemRole.Raw | null;
+        phase?: string | null;
+        content?: ResponseOutputContentPart.Raw[] | null;
+        name?: string | null;
+        call_id?: string | null;
+        arguments?: string | null;
+        output?: string | null;
+        action?: WebSearchAction.Raw | null;
+        [key: string]: any;
     }
 }

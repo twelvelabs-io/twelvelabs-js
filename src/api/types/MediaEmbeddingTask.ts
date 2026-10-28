@@ -16,7 +16,7 @@ export interface MediaEmbeddingTask {
     batchId?: string;
     /** The identifier of the item within its batch. Omitted for a task that is not part of a batch. */
     customId?: TwelvelabsApi.EmbeddingBatchCustomId;
-    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and older tasks. */
+    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and for tasks created before service tiers were introduced. */
     serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
     /** The end of the 24-hour processing window for a Marengo 3.5 Flex task. Omitted for other tiers and Marengo 3.0. */
     expiresAt?: Date;

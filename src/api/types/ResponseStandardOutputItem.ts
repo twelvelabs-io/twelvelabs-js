@@ -8,6 +8,8 @@ import * as TwelvelabsApi from "../index";
  * A message, function call, or function result in the response output.
  */
 export interface ResponseStandardOutputItem {
+    /** The type of output item. */
+    type: TwelvelabsApi.ResponseStandardOutputItemType;
     /**
      * An identifier for this item within the response. Examples include
      * `msg_0` for a message, `fc_1` for a function call, and `fco_2` for a function result.

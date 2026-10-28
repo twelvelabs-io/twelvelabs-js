@@ -5,6 +5,6 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * A failed batch item always has a machine-readable error code.
+ * Failure details for an item in the `failed` status.
  */
 export interface EmbeddingBatchTaskError extends TwelvelabsApi.EmbeddingTaskError {}

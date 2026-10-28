@@ -3,7 +3,7 @@
  */
 
 /**
- * The reason a task has the `canceled` status. Present only for canceled tasks. Older canceled tasks can omit it.
+ * The reason a task has the `canceled` status. Present only for canceled tasks. Tasks canceled before this field was introduced do not return it.
  *
  * **Values**:
  * - `user_requested`: A task that is not part of a batch was explicitly canceled.
