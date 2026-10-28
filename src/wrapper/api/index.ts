@@ -10,9 +10,6 @@ import * as GeneratedApi from "../../api";
 export * from "../../api";
 export * as embed from "./embed";
 
-/** @deprecated Use EmbeddingTaskError. */
-export type EmbeddingTaskResponseError = GeneratedApi.EmbeddingTaskError;
-
 export type EmbeddingTaskResponseStatus = GeneratedApi.EmbeddingTaskResponseStatus;
 export const EmbeddingTaskResponseStatus = GeneratedApi.EmbeddingTaskResponseStatusZero;
 export type EmbeddingBatchStatus = GeneratedApi.EmbeddingBatchStatus;

@@ -475,3 +475,4 @@ export * from "./ResponseStreamOutputTextDoneEvent";
 export * from "./ResponseStreamContentPartDoneEvent";
 export * from "./ResponseStreamOutputItemDoneEvent";
 export * from "./ResponseStreamFuncCallArgsDoneEvent";
+export * from "./EmbeddingTaskResponseError";
