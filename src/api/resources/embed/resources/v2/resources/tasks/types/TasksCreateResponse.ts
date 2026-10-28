@@ -9,11 +9,11 @@ export interface TasksCreateResponse {
     id: string;
     /** The identifier you set when you created the task. Present only if you set one. */
     clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
-    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and for tasks created before service tiers were introduced. */
+    /** The tier applied to this Marengo 3.5 task, including default Standard when the platform applies it. A task without an applied tier omits this field. */
     serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
     /** The date and time, in RFC 3339 format, when the 24-hour processing window for a Marengo 3.5 Flex task ends. Omitted for other tiers and Marengo 3.0. */
     expiresAt?: Date;
-    /** The status in the creation response. A Marengo 3.5 task admitted under a service tier returns `queued`, including a default Standard task that omits both tier and client identifier, or `failed` if source validation fails during admission. Marengo 3.0 tasks and Marengo 3.5 tasks created on the legacy path return `processing`. Retrieve the task for its current status. */
+    /** The status in the creation response. A task with a `service_tier` field returns `queued`, or `failed` if a source check fails while the platform accepts the task. A task without that field returns `processing`. Retrieve the task for its current status. */
     status: TwelvelabsApi.embed.v2.TasksCreateResponseStatus;
     error?: TwelvelabsApi.EmbeddingTaskError;
     /** The date and time, in RFC 3339 format, when the platform accepted the task. The creation response for a task without a `service_tier` field can omit it. */

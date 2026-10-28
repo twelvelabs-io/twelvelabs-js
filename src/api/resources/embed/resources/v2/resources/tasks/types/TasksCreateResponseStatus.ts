@@ -5,6 +5,6 @@
 import * as TwelvelabsApi from "../../../../../../../index";
 
 /**
- * The status in the creation response. A Marengo 3.5 task admitted under a service tier returns `queued`, including a default Standard task that omits both tier and client identifier, or `failed` if source validation fails during admission. Marengo 3.0 tasks and Marengo 3.5 tasks created on the legacy path return `processing`. Retrieve the task for its current status.
+ * The status in the creation response. A task with a `service_tier` field returns `queued`, or `failed` if a source check fails while the platform accepts the task. A task without that field returns `processing`. Retrieve the task for its current status.
  */
 export type TasksCreateResponseStatus = TwelvelabsApi.embed.v2.TasksCreateResponseStatusZero | string;

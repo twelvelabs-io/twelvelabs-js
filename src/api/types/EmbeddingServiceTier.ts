@@ -3,7 +3,7 @@
  */
 
 /**
- * The [service tier](/v1.3/docs/advanced/service-tiers) of the task. It sets how the platform schedules and bills the task. Requires Marengo 3.5. If you omit this field, the task uses the Standard tier.
+ * The [service tier](/v1.3/docs/advanced/service-tiers) of the task. It sets how the platform schedules and bills the task. Requires Marengo 3.5. Set this field to require the selected tier. If you set only `client_task_id`, the task uses Standard. If you omit both fields, the platform can apply Standard or create a task without an applied tier. Check the creation response for the `service_tier` field.
  *
  * **Values**:
  * - `standard`: The platform processes queued tasks in the order of creation, oldest first.
