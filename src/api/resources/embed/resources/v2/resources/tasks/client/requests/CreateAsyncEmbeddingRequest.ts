@@ -305,7 +305,7 @@ export interface CreateAsyncEmbeddingRequest {
      */
     modelName: TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequestModelName;
     /**
-     * Set this parameter to `true` to include a per-dimension uncertainty vector in the [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.data.embedding-uncertainty) field of the result. The vector has the same length as the `embedding` array. A higher value indicates lower confidence in that dimension. This requires the Marengo 3.5 native input format. With `model_name: marengo3.0`, setting this parameter to `true` returns `400` (`parameter_invalid`). Marengo 3.5 requests using the compatible format do not return uncertainty vectors.
+     * Set this parameter to `true` to include a per-dimension uncertainty vector in the [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.data.embedding-uncertainty) field of the result. The vector has the same length as the `embedding` array. A higher value indicates lower confidence in that dimension. Requires Marengo 3.5.
      *
      * **Requirements**:
      * - For audio or video input, set the `embedding_scope` field to exclude `asset`. For example, set the `video.embedding_scope` field to `["clip"]`. The field defaults to `["clip", "asset"]`, so the platform returns a `400` error if you keep the default. This requirement does not apply to image input.
@@ -319,9 +319,9 @@ export interface CreateAsyncEmbeddingRequest {
      * Marengo 3.5 produces Matryoshka embeddings: a shorter embedding consists of the first values of the full-length embedding. A 256-dimension embedding, for example, is the first 256 values of a 512-dimension embedding of the same content. Shorter embeddings reduce index size and speed up similarity search; longer embeddings produce higher retrieval quality.
      *
      * **Requirements**:
-     * - This field requires the Marengo 3.5 native input format. An explicit value returns `400` (`parameter_invalid`) with Marengo 3.0 or Marengo 3.5 requests using the compatible input format. Those paths omit dimension metadata when this field is omitted.
+     * - Requires Marengo 3.5. Setting this parameter with `model_name: marengo3.0` returns a `400` error.
      * - Applies to the entire task: you cannot set it for a single input type or embedding.
-     * - For audio or video input, fused embeddings with the `asset` scope require `512`. This applies whenever the `embedding_type` field includes the `fused_embedding` value and the `embedding_scope` field includes the `asset` value, even if the task also requests separate embeddings or the `clip` or `local` scope. A task requesting this combination at `128` or `256` fails with the `UNSUPPORTED_COMBINATION` error code; it does not return only the supported outputs.
+     * - For audio or video input, a fused embedding with the `asset` scope requires `512`. If the `embedding_type` field includes `fused_embedding` and the `embedding_scope` field includes `asset`, a task with `128` or `256` fails with the `UNSUPPORTED_COMBINATION` error code. The platform does not return the supported outputs alone.
      * - Set it once, when you create the task. To use a different value, create a new task.
      * - Use the same value across an index.
      *

@@ -7,7 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingBatchCustomId } from "./EmbeddingBatchCustomId";
 import { EmbeddingBatchItemStatus } from "./EmbeddingBatchItemStatus";
-import { EmbeddingTaskCancellationReason } from "./EmbeddingTaskCancellationReason";
+import { EmbeddingBatchItemCancellationReason } from "./EmbeddingBatchItemCancellationReason";
 
 export const EmbeddingBatchItem: core.serialization.ObjectSchema<
     serializers.EmbeddingBatchItem.Raw,
@@ -16,7 +16,10 @@ export const EmbeddingBatchItem: core.serialization.ObjectSchema<
     taskId: core.serialization.property("task_id", core.serialization.string()),
     customId: core.serialization.property("custom_id", EmbeddingBatchCustomId),
     status: EmbeddingBatchItemStatus,
-    cancellationReason: core.serialization.property("cancellation_reason", EmbeddingTaskCancellationReason.optional()),
+    cancellationReason: core.serialization.property(
+        "cancellation_reason",
+        EmbeddingBatchItemCancellationReason.optional(),
+    ),
 });
 
 export declare namespace EmbeddingBatchItem {
@@ -24,6 +27,6 @@ export declare namespace EmbeddingBatchItem {
         task_id: string;
         custom_id: EmbeddingBatchCustomId.Raw;
         status: EmbeddingBatchItemStatus.Raw;
-        cancellation_reason?: EmbeddingTaskCancellationReason.Raw | null;
+        cancellation_reason?: EmbeddingBatchItemCancellationReason.Raw | null;
     }
 }

@@ -37,7 +37,7 @@ export interface EmbeddingTaskResponse {
     /** An array of embedding results, or `null` otherwise. */
     data?: TwelvelabsApi.EmbeddingData[];
     /** Token counts for the request. Only Marengo 3.5 returns this field. */
-    usage?: TwelvelabsApi.EmbeddingUsage;
+    usage?: TwelvelabsApi.EmbeddingTaskUsage;
     metadata?: TwelvelabsApi.EmbeddingTaskMediaMetadata;
     error?: TwelvelabsApi.EmbeddingTaskError;
     cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;

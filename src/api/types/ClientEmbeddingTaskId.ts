@@ -3,8 +3,10 @@
  */
 
 /**
- * Your identifier for a Marengo 3.5 async embedding task. When service tiers are available, a request that omits the `service_tier` field uses the Standard tier, whether or not you set this field. A request that sets only this field returns `403` (`api_not_allowed`) when service tiers are not available. An explicit `null`, an empty or invalid identifier, and use with Marengo 3.0 return `400` (`parameter_invalid`).
+ * Your identifier for the task. Requires Marengo 3.5. Use it to find the task after a timeout or a `500` or `503` error on creation. Before retrying creation, list tasks with the `client_task_id` query parameter. A `409` means the identifier is already in use. The response does not return the existing task, and it does not show whether that task failed. A `null` value returns `400` (`parameter_invalid`).
  *
- * The identifier is unique within your account during the seven-day task retention period. Use it to find a task after a timeout or a `500` or `503` error on creation. Before retrying creation, list tasks with the `client_task_id` query parameter. A `409` means the identifier is already in use. The response does not return the existing task, and it does not show whether that task failed. After retention ends, the identifier can be reused.
+ * The identifier is unique among your tasks until its seven-day retention period ends. After that, you can reuse it.
+ *
+ * **Format**: 1–64 characters. Alphanumeric, hyphens (`-`), and underscores (`_`) only.
  */
 export type ClientEmbeddingTaskId = string;

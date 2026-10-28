@@ -7,12 +7,12 @@ import * as TwelvelabsApi from "../index";
 /**
  * Specifies how the platform divides the audio into segments.
  *
- * The accepted structure depends on the input format applied to the request:
+ * The structure of this object depends on the model version:
  *
- * - **Marengo 3.5 native format**: Place your settings in the `temporal` object. Both strategies are available: `dynamic` divides the audio into variable-length segments that follow scene changes, and `fixed` divides it into equal-length segments. Default: `temporal.dynamic`, `min_duration_sec: 2`.
- * - **Marengo 3.0-compatible format, including some Marengo 3.5 requests**: Provide the settings directly in this object. Only `fixed` segmentation is available. Default: `fixed`, `duration_sec: 6`.
+ * - **With Marengo 3.5**: Place your settings in the `temporal` object. Both strategies are available: `dynamic` divides the audio into variable-length segments that follow scene changes, and `fixed` divides it into equal-length segments. Default: `temporal.dynamic`, `min_duration_sec: 2`.
+ * - **With Marengo 3.0**: Provide the settings directly in this object. Only `fixed` segmentation is available. Default: `fixed`, `duration_sec: 6`.
  *
- * A structure that does not match the applied input format returns a `400` error. The API does not report which format applies. To send a request that works with either format, omit this field.
+ * If you use a structure that does not match your model version, the platform returns a `400` error.
  */
 export type AsyncAudioInputRequestSegmentation =
     TwelvelabsApi.AudioSegmentation | TwelvelabsApi.AsyncTemporalSegmentation;

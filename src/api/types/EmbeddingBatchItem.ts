@@ -13,5 +13,5 @@ export interface EmbeddingBatchItem {
     customId: TwelvelabsApi.EmbeddingBatchCustomId;
     status: TwelvelabsApi.EmbeddingBatchItemStatus;
     /** The reason the item has the `canceled` status. Present only for a canceled item. For the meaning of each value, see the [Item statuses](/v1.3/api-reference/create-embeddings-v2/batches/the-batch-object#item-statuses) section on the **The batch object** page. */
-    cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;
+    cancellationReason?: TwelvelabsApi.EmbeddingBatchItemCancellationReason;
 }

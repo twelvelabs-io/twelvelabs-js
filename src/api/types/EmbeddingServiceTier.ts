@@ -3,14 +3,14 @@
  */
 
 /**
- * The [service tier](/v1.3/docs/advanced/service-tiers) of a Marengo 3.5 asynchronous embedding task. It sets how the platform schedules and bills the task. When the platform admits a request under a service tier, omitting this field selects Standard. Legacy task processing omits the applied tier, including for Marengo 3.5 requests that use the Marengo 3.0-compatible input format. Service tiers do not apply to the synchronous [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint, to Marengo 3.0, or to batch analysis.
+ * The [service tier](/v1.3/docs/advanced/service-tiers) of the task. It sets how the platform schedules and bills the task. Requires Marengo 3.5. If you omit this field, the task uses the Standard tier.
  *
  * **Values**:
  * - `standard`: The platform processes queued tasks in the order of creation, oldest first.
  * - `priority`: Preferred over Standard tasks when the platform processes queued tasks.
  * - `flex`: Uses capacity that other tasks do not use. Processing ends 24 hours after the platform accepts the task. The platform cancels a task that is not complete by then.
  *
- * An explicit `null`, an empty string, an unknown value, or any value with Marengo 3.0 returns `400` (`parameter_invalid`). A request for a tier that your plan does not include returns `403` (`api_not_allowed`).
+ * A `null` value returns `400` (`parameter_invalid`). A request for a tier that your plan does not include returns `403` (`api_not_allowed`).
  */
 export type EmbeddingServiceTier = "standard" | "priority" | "flex";
 export const EmbeddingServiceTier = {

@@ -196,29 +196,17 @@ export class Tasks {
      *
      * Use this method to embed content at scale, such as long files or the media files you want to make searchable. For a query, or for results you need in the same request, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint instead.
      *
-     * Set the `client_task_id` field to find the task if the request times out or returns a `500` or `503` error. Without it, a retry can create a second task. Reusing an identifier while the original task exists returns `409` and does not create another task. When you supply it, the platform returns the identifier unchanged in the creation response and in later task reads and lists.
-     *
-     * When the platform admits a Marengo 3.5 request under a service tier, omitting the `service_tier` field selects Standard. This applies whether or not you set the `client_task_id` field. Those creation, retrieval, and list responses return the applied tier.
-     *
-     * The status in the `202` response depends on the creation path. A Marengo 3.5 task admitted under a service tier returns `queued`, including a default Standard task that omits both `service_tier` and `client_task_id`, or `failed` if source validation fails during admission. A Marengo 3.0 task, or a Marengo 3.5 task created on the legacy path, returns `processing`. The same request can return `queued` in place of `processing` when default Standard admission becomes available. A `queued` task has no final status yet. Poll until the status is `ready`, `failed`, or `canceled`.
-     *
-     * Because the status in the creation response varies, handle all five statuses when you poll: `queued`, `processing`, `ready`, `failed`, and `canceled`.
-     *
-     * With Marengo 3.5, set the `service_tier` field to one of these values: `standard`, `priority`, or `flex`. When the platform processes queued tasks, Priority tasks are preferred over Standard tasks, and Flex tasks use otherwise unused capacity. Tiers are best effort. They do not guarantee a start time, a completion time, or the order in which tasks start or finish, and they do not preempt running tasks. They do not bypass the rate limits or the account capacity for unfinished Flex tasks. The `flex` tier has a 24-hour processing window that starts when the platform accepts the task. The platform returns the `expires_at` field in creation, retrieval, and list responses. An incomplete Flex task becomes `canceled` when that window expires. Availability depends on your plan. Marengo 3.0 does not accept an explicit value for the `service_tier` field.
-     *
      * The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and documents: PDF, plain text, and Markdown files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
      *
      * Creating embeddings asynchronously requires three steps:
      *
      * 1. Create a task using this method. The platform returns a task identifier.
      * 2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Stop when the status is `ready`, `failed`, or `canceled`.
-     * 3. When the status is `ready`, read the embeddings from that response.
+     * 3. When the status is `ready`, read the embeddings from that response. When the status is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
      *
      * <Note title="Notes">
-     * - For audio or video URL tasks admitted under a service tier, creation checks for an absolute HTTP(S) URL with a hostname and no embedded credentials. An invalid URL returns `400` without creating a task. The platform then downloads the file through public-address and redirect checks and validates the media after acceptance. A task can fail with `SOURCE_INVALID`, `SOURCE_UNAVAILABLE`, or `PAYLOAD_TOO_LARGE` when these checks fail.
-     * - Creation does not validate the full content of a source. For a task admitted under a service tier, the platform checks audio and video URL content and duration after it accepts the task, so the task can fail later. The legacy path checks audio and video media before it accepts a task and can reject the request with `400`. This distinction also applies when a Marengo 3.5 request omits both `service_tier` and `client_task_id`: default Standard admission uses the first path when available, while legacy creation uses the second. When you retrieve an accepted task, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
      * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/plans-and-billing/rate-limits/new-billing#input-token-limits-for-embedding).
-     * - Embeddings of a task that is not part of a batch are available through the API for seven days. Tasks created as part of a batch, and their results, are available for up to 30 days from batch creation. Deleting a batch with a final status ends API access to its tasks and results earlier.
+     * - Embeddings are stored for seven days.
      * </Note>
      *
      * @param {TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequest} request
@@ -728,7 +716,6 @@ export class Tasks {
      * @throws {@link TwelvelabsApi.ForbiddenError}
      * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.ConflictError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
      * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
@@ -802,8 +789,6 @@ export class Tasks {
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
                     throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 case 503:

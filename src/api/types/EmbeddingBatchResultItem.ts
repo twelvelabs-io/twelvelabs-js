@@ -15,7 +15,7 @@ export interface EmbeddingBatchResultItem {
     /** The embeddings for an item in the `ready` status. */
     data?: TwelvelabsApi.EmbeddingData[];
     /** Token counts for an item in the `ready` status. */
-    usage?: TwelvelabsApi.EmbeddingUsage;
+    usage?: TwelvelabsApi.EmbeddingTaskUsage;
     error?: TwelvelabsApi.EmbeddingBatchTaskError;
-    cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;
+    cancellationReason?: TwelvelabsApi.EmbeddingBatchItemCancellationReason;
 }

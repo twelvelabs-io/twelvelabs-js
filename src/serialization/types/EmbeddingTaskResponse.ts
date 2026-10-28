@@ -12,7 +12,7 @@ import { EmbeddingTaskResponseStatus } from "./EmbeddingTaskResponseStatus";
 import { CreatedAt } from "./CreatedAt";
 import { UpdatedAt } from "./UpdatedAt";
 import { EmbeddingData } from "./EmbeddingData";
-import { EmbeddingUsage } from "./EmbeddingUsage";
+import { EmbeddingTaskUsage } from "./EmbeddingTaskUsage";
 import { EmbeddingTaskMediaMetadata } from "./EmbeddingTaskMediaMetadata";
 import { EmbeddingTaskError } from "./EmbeddingTaskError";
 import { EmbeddingTaskCancellationReason } from "./EmbeddingTaskCancellationReason";
@@ -31,7 +31,7 @@ export const EmbeddingTaskResponse: core.serialization.ObjectSchema<
     createdAt: core.serialization.property("created_at", CreatedAt.optional()),
     updatedAt: core.serialization.property("updated_at", UpdatedAt.optional()),
     data: core.serialization.list(EmbeddingData).optional(),
-    usage: EmbeddingUsage.optional(),
+    usage: EmbeddingTaskUsage.optional(),
     metadata: EmbeddingTaskMediaMetadata.optional(),
     error: EmbeddingTaskError.optional(),
     cancellationReason: core.serialization.property("cancellation_reason", EmbeddingTaskCancellationReason.optional()),
@@ -49,7 +49,7 @@ export declare namespace EmbeddingTaskResponse {
         created_at?: CreatedAt.Raw | null;
         updated_at?: UpdatedAt.Raw | null;
         data?: EmbeddingData.Raw[] | null;
-        usage?: EmbeddingUsage.Raw | null;
+        usage?: EmbeddingTaskUsage.Raw | null;
         metadata?: EmbeddingTaskMediaMetadata.Raw | null;
         error?: EmbeddingTaskError.Raw | null;
         cancellation_reason?: EmbeddingTaskCancellationReason.Raw | null;

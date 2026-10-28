@@ -10,5 +10,5 @@ export interface CancelEmbeddingTaskResponse {
     /** The identifier you set when you created the task. Present only if you set one. */
     clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
     status: TwelvelabsApi.CancelEmbeddingTaskResponseStatus;
-    cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;
+    cancellationReason?: TwelvelabsApi.EmbeddingStandaloneTaskCancellationReason;
 }

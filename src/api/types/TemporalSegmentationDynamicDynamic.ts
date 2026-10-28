@@ -3,7 +3,7 @@
  */
 
 /**
- * Configuration for dynamic segmentation. If this object or `min_duration_sec` is omitted, the minimum duration defaults to 2 seconds.
+ * Configuration for dynamic segmentation. If you omit this object or the `min_duration_sec` field, the minimum duration defaults to 2 seconds.
  */
 export interface TemporalSegmentationDynamicDynamic {
     /**

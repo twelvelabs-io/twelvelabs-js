@@ -7,7 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { ClientEmbeddingTaskId } from "./ClientEmbeddingTaskId";
 import { CancelEmbeddingTaskResponseStatus } from "./CancelEmbeddingTaskResponseStatus";
-import { EmbeddingTaskCancellationReason } from "./EmbeddingTaskCancellationReason";
+import { EmbeddingStandaloneTaskCancellationReason } from "./EmbeddingStandaloneTaskCancellationReason";
 
 export const CancelEmbeddingTaskResponse: core.serialization.ObjectSchema<
     serializers.CancelEmbeddingTaskResponse.Raw,
@@ -16,7 +16,10 @@ export const CancelEmbeddingTaskResponse: core.serialization.ObjectSchema<
     id: core.serialization.property("_id", core.serialization.string()),
     clientTaskId: core.serialization.property("client_task_id", ClientEmbeddingTaskId.optional()),
     status: CancelEmbeddingTaskResponseStatus,
-    cancellationReason: core.serialization.property("cancellation_reason", EmbeddingTaskCancellationReason.optional()),
+    cancellationReason: core.serialization.property(
+        "cancellation_reason",
+        EmbeddingStandaloneTaskCancellationReason.optional(),
+    ),
 });
 
 export declare namespace CancelEmbeddingTaskResponse {
@@ -24,6 +27,6 @@ export declare namespace CancelEmbeddingTaskResponse {
         _id: string;
         client_task_id?: ClientEmbeddingTaskId.Raw | null;
         status: CancelEmbeddingTaskResponseStatus.Raw;
-        cancellation_reason?: EmbeddingTaskCancellationReason.Raw | null;
+        cancellation_reason?: EmbeddingStandaloneTaskCancellationReason.Raw | null;
     }
 }

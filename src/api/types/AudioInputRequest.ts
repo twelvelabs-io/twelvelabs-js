@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * This field is required if the `input_type` parameter is `audio`. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5. The decoded file can be up to 36 MB.
+ * This field is required if the `input_type` parameter is `audio`. Requires Marengo 3.0. The decoded file can be up to 36 MB.
  */
 export interface AudioInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;

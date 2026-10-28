@@ -23,6 +23,4 @@ export interface EmbeddingUsage {
      * - `model_context_window`: The input exceeded the context window of the model.
      */
     truncationReason?: TwelvelabsApi.EmbeddingUsageTruncationReason;
-    /** The service tier applied for billing. Only Marengo 3.5 returns this field. Tasks created before service tiers were introduced do not return it. */
-    serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
 }

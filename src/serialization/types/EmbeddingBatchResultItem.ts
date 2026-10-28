@@ -8,9 +8,9 @@ import * as core from "../../core";
 import { EmbeddingBatchCustomId } from "./EmbeddingBatchCustomId";
 import { EmbeddingBatchItemStatus } from "./EmbeddingBatchItemStatus";
 import { EmbeddingData } from "./EmbeddingData";
-import { EmbeddingUsage } from "./EmbeddingUsage";
+import { EmbeddingTaskUsage } from "./EmbeddingTaskUsage";
 import { EmbeddingBatchTaskError } from "./EmbeddingBatchTaskError";
-import { EmbeddingTaskCancellationReason } from "./EmbeddingTaskCancellationReason";
+import { EmbeddingBatchItemCancellationReason } from "./EmbeddingBatchItemCancellationReason";
 
 export const EmbeddingBatchResultItem: core.serialization.ObjectSchema<
     serializers.EmbeddingBatchResultItem.Raw,
@@ -20,9 +20,12 @@ export const EmbeddingBatchResultItem: core.serialization.ObjectSchema<
     customId: core.serialization.property("custom_id", EmbeddingBatchCustomId),
     status: EmbeddingBatchItemStatus,
     data: core.serialization.list(EmbeddingData).optional(),
-    usage: EmbeddingUsage.optional(),
+    usage: EmbeddingTaskUsage.optional(),
     error: EmbeddingBatchTaskError.optional(),
-    cancellationReason: core.serialization.property("cancellation_reason", EmbeddingTaskCancellationReason.optional()),
+    cancellationReason: core.serialization.property(
+        "cancellation_reason",
+        EmbeddingBatchItemCancellationReason.optional(),
+    ),
 });
 
 export declare namespace EmbeddingBatchResultItem {
@@ -31,8 +34,8 @@ export declare namespace EmbeddingBatchResultItem {
         custom_id: EmbeddingBatchCustomId.Raw;
         status: EmbeddingBatchItemStatus.Raw;
         data?: EmbeddingData.Raw[] | null;
-        usage?: EmbeddingUsage.Raw | null;
+        usage?: EmbeddingTaskUsage.Raw | null;
         error?: EmbeddingBatchTaskError.Raw | null;
-        cancellation_reason?: EmbeddingTaskCancellationReason.Raw | null;
+        cancellation_reason?: EmbeddingBatchItemCancellationReason.Raw | null;
     }
 }

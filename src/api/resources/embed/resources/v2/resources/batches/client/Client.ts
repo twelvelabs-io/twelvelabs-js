@@ -46,7 +46,6 @@ export class Batches {
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.UnauthorizedError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
      * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
@@ -140,8 +139,6 @@ export class Batches {
                         }),
                         _response.rawResponse,
                     );
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 case 503:
@@ -198,7 +195,7 @@ export class Batches {
      * - A batch contains 1 to 1,000 items.
      * - For the formats, resolutions, file sizes, and duration limits of each item, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements).
      * - The configured request body limit covers the entire JSON body, including base64 media. It is separate from the size limit of each media file. If the API rejects a body with `413`, its error message reports the configured limit in bytes. Use a URL or supported `asset_id` for media that does not fit.
-     * - A limit applies to the number of Flex tasks that are `queued` or `processing` at the same time, including the tasks of a batch. A request that exceeds the limit returns `429`.
+     * - A shared limit applies to unfinished Flex tasks in your account, including tasks that are not part of a batch. A canceled task can count until the platform records its final status. A request that exceeds this limit returns `429`.
      * - When a request-count limit applies, each request to create a batch counts once, regardless of the number of items it contains. The limit is shared with requests that create a task that is not part of a batch. A request that fails before the platform accepts the batch does not count.
      * - Input-token limits count the usage of completed work, and the platform does not reserve the tokens of a batch when you create it. Items already accepted can finish and take usage above a limit, and a later create request can then return `429`.
      *
@@ -382,7 +379,6 @@ export class Batches {
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.UnauthorizedError}
      * @throws {@link TwelvelabsApi.NotFoundError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
      * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
@@ -452,8 +448,6 @@ export class Batches {
                     );
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 case 503:
@@ -680,8 +674,6 @@ export class Batches {
                     );
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 case 503:
@@ -734,7 +726,6 @@ export class Batches {
      * @throws {@link TwelvelabsApi.UnauthorizedError}
      * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.ConflictError}
-     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
      * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
@@ -806,8 +797,6 @@ export class Batches {
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
                     throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
-                case 429:
-                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 case 503:
