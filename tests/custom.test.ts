@@ -28,6 +28,43 @@ const makeEmbedStatus = (
     ...overrides,
 });
 
+describe("TwelveLabs Embed v2 task legacy forbidden errors", () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it.each([
+        ["retrieve", "GET", "/embed-v2/tasks/task_legacy_403"],
+        ["cancel", "POST", "/embed-v2/tasks/task_legacy_403/cancel"],
+    ] as const)("preserves ForbiddenError for task %s", async (operation, method, path) => {
+        const body = { code: "read_not_allowed", message: "Task is outside the account." };
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(JSON.stringify(body), {
+                status: 403,
+                headers: { "Content-Type": "application/json" },
+            }),
+        );
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        let caught: unknown;
+
+        try {
+            const response =
+                operation === "retrieve"
+                    ? client.embed.v2.tasks.retrieve("task_legacy_403")
+                    : client.embed.v2.tasks.cancel("task_legacy_403");
+            await response;
+        } catch (error) {
+            caught = error;
+        }
+
+        expect(caught).toBeInstanceOf(TwelvelabsApi.ForbiddenError);
+        expect(caught).toMatchObject({ statusCode: 403, body });
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(String(fetchSpy.mock.calls[0][0])).toContain(path);
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe(method);
+    });
+});
+
 describe("TwelveLabs public Embed v2 batch resource", () => {
     afterEach(() => {
         jest.restoreAllMocks();
