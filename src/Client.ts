@@ -16,9 +16,11 @@ import { MultipartUpload } from "./api/resources/multipartUpload/client/Client";
 import { EntityCollections } from "./api/resources/entityCollections/client/Client";
 import { KnowledgeStores } from "./api/resources/knowledgeStores/client/Client";
 import { KnowledgeStoreItems } from "./api/resources/knowledgeStoreItems/client/Client";
+import { KnowledgeStoreItemTags } from "./api/resources/knowledgeStoreItemTags/client/Client";
 import { KnowledgeStoreItemCollections } from "./api/resources/knowledgeStoreItemCollections/client/Client";
 import { Embed } from "./api/resources/embed/client/Client";
 import { Search } from "./api/resources/search/client/Client";
+import { CreateEmbeddings } from "./api/resources/createEmbeddings/client/Client";
 import { Responses } from "./api/resources/responses/client/Client";
 import { DataConnectors } from "./api/resources/dataConnectors/client/Client";
 import { Imports } from "./api/resources/imports/client/Client";
@@ -52,9 +54,11 @@ export class TwelvelabsApiClient {
     protected _entityCollections: EntityCollections | undefined;
     protected _knowledgeStores: KnowledgeStores | undefined;
     protected _knowledgeStoreItems: KnowledgeStoreItems | undefined;
+    protected _knowledgeStoreItemTags: KnowledgeStoreItemTags | undefined;
     protected _knowledgeStoreItemCollections: KnowledgeStoreItemCollections | undefined;
     protected _embed: Embed | undefined;
     protected _search: Search | undefined;
+    protected _createEmbeddings: CreateEmbeddings | undefined;
     protected _responses: Responses | undefined;
     protected _dataConnectors: DataConnectors | undefined;
     protected _imports: Imports | undefined;
@@ -90,6 +94,10 @@ export class TwelvelabsApiClient {
         return (this._knowledgeStoreItems ??= new KnowledgeStoreItems(this._options));
     }
 
+    public get knowledgeStoreItemTags(): KnowledgeStoreItemTags {
+        return (this._knowledgeStoreItemTags ??= new KnowledgeStoreItemTags(this._options));
+    }
+
     public get knowledgeStoreItemCollections(): KnowledgeStoreItemCollections {
         return (this._knowledgeStoreItemCollections ??= new KnowledgeStoreItemCollections(this._options));
     }
@@ -100,6 +108,10 @@ export class TwelvelabsApiClient {
 
     public get search(): Search {
         return (this._search ??= new Search(this._options));
+    }
+
+    public get createEmbeddings(): CreateEmbeddings {
+        return (this._createEmbeddings ??= new CreateEmbeddings(this._options));
     }
 
     public get responses(): Responses {
@@ -173,8 +185,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -219,6 +231,8 @@ export class TwelvelabsApiClient {
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:
@@ -285,6 +299,7 @@ export class TwelvelabsApiClient {
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      *
      * @example
@@ -312,8 +327,8 @@ export class TwelvelabsApiClient {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -347,6 +362,8 @@ export class TwelvelabsApiClient {
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

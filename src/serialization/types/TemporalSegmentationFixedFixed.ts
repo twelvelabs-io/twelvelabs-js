@@ -10,11 +10,11 @@ export const TemporalSegmentationFixedFixed: core.serialization.ObjectSchema<
     serializers.TemporalSegmentationFixedFixed.Raw,
     TwelvelabsApi.TemporalSegmentationFixedFixed
 > = core.serialization.object({
-    durationSec: core.serialization.property("duration_sec", core.serialization.number()),
+    durationSec: core.serialization.property("duration_sec", core.serialization.number().optional()),
 });
 
 export declare namespace TemporalSegmentationFixedFixed {
     export interface Raw {
-        duration_sec: number;
+        duration_sec?: number | null;
     }
 }

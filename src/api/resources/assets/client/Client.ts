@@ -102,8 +102,8 @@ export class Assets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -209,6 +209,7 @@ export class Assets {
      * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      *
      * @example
      *     await client.assets.create({
@@ -267,8 +268,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -298,6 +299,8 @@ export class Assets {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -358,8 +361,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -418,17 +421,20 @@ export class Assets {
     /**
      * This method deletes the specified asset. This action cannot be undone.
      *
-     * By default, the platform checks whether any indexed assets reference the asset. If references exist, the platform rejects the request with a `409 Conflict` error. To skip this check and delete the asset anyway, set the `force` query parameter to `true`. The platform unlinks any entity associations.
+     * The delete fails with a `409 Conflict` error if other resources depend on the asset.
      *
-     * Before deleting, you can inspect existing references:
-     * - [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) `/assets/{asset_id}/indexed-assets` returns a list of the indexed assets that will block deletion unless the `force` query parameter is set to `true`.
-     * - [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) `/assets/{asset_id}/entities` returns a list of the entities whose associations the platform will unlink.
+     * - **If knowledge store items use the asset**, in any status: the error code is `asset_has_knowledge_store_items`. The request fails even when you set the `force` query parameter to `true`. First delete the items with the [`DELETE`](/v1.3/api-reference/knowledge-store-items/delete) method of the `/knowledge-stores/{knowledge_store_id}/items/{item_id}` endpoint. Then delete the asset.
+     * - **If indexed assets reference the asset**: the error code is `asset_has_linked_resources`. To delete the asset and these indexed assets together, set the `force` query parameter to `true`. To list the indexed assets first, use the [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) method of the `/assets/{asset_id}/indexed-assets` endpoint.
+     * - **If both apply**: the error code is `asset_has_knowledge_store_items`.
+     *
+     * **If entities use the asset**, a successful delete removes the asset from the `asset_ids` array of each entity. To list these entities, use the [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) method of the `/assets/{asset_id}/entities` endpoint.
      *
      * @param {string} assetId - The unique identifier of the asset to delete.
      * @param {TwelvelabsApi.AssetsDeleteRequest} request
      * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.ConflictError}
      *
      * @example
@@ -466,8 +472,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -488,6 +494,8 @@ export class Assets {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
                     throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
                 default:
@@ -576,8 +584,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -639,8 +647,7 @@ export class Assets {
     /**
      * This method replaces the entire user-defined metadata of the specified asset. Unlike the [`PATCH`](/v1.3/api-reference/upload-content/direct-uploads/update-user-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
      * - A key with a value creates or replaces that key.
-     * - A key set to an empty string (`""`), an empty array (`[]`), or `null` is ignored.
-     * - A key you omit from the request body is removed.
+     * - A key you omit, or set to an empty string (`""`), an empty array (`[]`), or `null`, is removed.
      *
      * To clear all metadata, send an empty object (`{}`) in the `user_metadata` field. This produces the same result as the [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-user-metadata) method.
      *
@@ -686,8 +693,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -773,8 +780,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -875,8 +882,8 @@ export class Assets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -918,6 +925,126 @@ export class Assets {
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
                     "Timeout exceeded when calling PATCH /assets/{asset_id}/user-metadata.",
+                );
+            case "unknown":
+                throw new errors.TwelvelabsApiError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * This method enables storage accounting for the specified asset. Storage accounting makes an asset count toward your Managed Intelligence allowance.
+     *
+     * **When to use this method**: Call it once for each asset that you uploaded before your plan moved to the new billing (a pre-migration asset). Enable storage accounting before you do either of the following:
+     * - Add the asset to a knowledge store.
+     * - Index the asset in an index for which Marengo is enabled.
+     *
+     * An asset that you upload after your plan moves already counts toward your Managed Intelligence allowance. You do not need to call this method for it.
+     *
+     * **Before you call this method**: The asset must have the `ready` status and a recorded size. To check, use the [`GET`](/v1.3/api-reference/manage-assets/retrieve) method of the `/assets/{asset_id}` endpoint and read the `status` and `size` fields.
+     *
+     * **After you call this method**:
+     * - The asset counts toward your Managed Intelligence allowance from the moment of the call.
+     * - Enabling storage accounting is permanent. You cannot turn it off.
+     * - If storage accounting is already on, the method returns the same response and changes nothing.
+     *
+     * @param {string} assetId - The unique identifier of the asset for which to enable storage accounting.
+     * @param {TwelvelabsApi.AssetsEnableStorageAccountingRequest} request
+     * @param {Assets.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.ConflictError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.assets.enableStorageAccounting("6298d673f1090f1100476d4c", {
+     *         enabled: true
+     *     })
+     */
+    public enableStorageAccounting(
+        assetId: string,
+        request: TwelvelabsApi.AssetsEnableStorageAccountingRequest,
+        requestOptions?: Assets.RequestOptions,
+    ): core.HttpResponsePromise<TwelvelabsApi.AssetStorageAccounting> {
+        return core.HttpResponsePromise.fromPromise(this.__enableStorageAccounting(assetId, request, requestOptions));
+    }
+
+    private async __enableStorageAccounting(
+        assetId: string,
+        request: TwelvelabsApi.AssetsEnableStorageAccountingRequest,
+        requestOptions?: Assets.RequestOptions,
+    ): Promise<core.WithRawResponse<TwelvelabsApi.AssetStorageAccounting>> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.TwelvelabsApiEnvironment.Default,
+                `assets/${encodeURIComponent(assetId)}/storage-accounting`,
+            ),
+            method: "PUT",
+            headers: {
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "twelvelabs-js",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+                ...(await this._getCustomAuthorizationHeaders()),
+                ...requestOptions?.headers,
+            },
+            contentType: "application/json",
+            requestType: "json",
+            body: serializers.AssetsEnableStorageAccountingRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+            }),
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
+            maxRetries: requestOptions?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.AssetStorageAccounting.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.TwelvelabsApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.TwelvelabsApiError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.TwelvelabsApiTimeoutError(
+                    "Timeout exceeded when calling PUT /assets/{asset_id}/storage-accounting.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({

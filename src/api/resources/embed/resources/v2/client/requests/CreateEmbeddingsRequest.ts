@@ -43,7 +43,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         multiInput: {
  *             mediaSources: [{
  *                     mediaType: "image",
- *                     assetId: "1234567890"
+ *                     assetId: "68f4ddaf8aaa60d33df0e803"
  *                 }]
  *         }
  *     }
@@ -145,7 +145,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         modelName: "marengo3.0",
  *         image: {
  *             mediaSource: {
- *                 assetId: "1234567890"
+ *                 assetId: "68f4ddaf8aaa60d33df0e803"
  *             }
  *         }
  *     }
@@ -209,7 +209,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *             segmentation: {
  *                 strategy: "dynamic",
  *                 dynamic: {
- *                     minDurationSec: 1
+ *                     minDurationSec: 1.1
  *                 }
  *             },
  *             embeddingOption: ["visual", "audio", "transcription"],
@@ -301,12 +301,12 @@ export interface CreateEmbeddingsRequest {
      * The type of content for the embeddings.
      *
      * **Values**:
-     * - `multi_input`: Text and up to 10 media sources, combined into a single embedding. To reference a specific media source from your text, use a placeholder in the following format: `<@name>`, where `name` matches the `name` field of a media source. Marengo 3.5 accepts images, video, audio, and documents as media sources. Marengo 3.0 accepts images.
-     * - `audio`: An audio file. Requires Marengo 3.0.
-     * - `video`: A video file. Requires Marengo 3.0.
-     * - `image`: An image file. Requires Marengo 3.0.
-     * - `text`: Text input. Requires Marengo 3.0.
-     * - `text_image`: Text and an image. Requires Marengo 3.0.
+     * - `multi_input`: Text and up to 10 media sources, combined into a single embedding. To reference a specific media source from your text, use a placeholder in the following format: `<@name>`, where `name` matches the `name` field of a media source. The Marengo 3.5 native input format accepts images, video, audio, and documents as media sources. Marengo 3.0 and the Marengo 3.0-compatible format for Marengo 3.5 accept images.
+     * - `audio`: An audio file. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5.
+     * - `video`: A video file. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5.
+     * - `image`: An image file. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5.
+     * - `text`: Text input. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5.
+     * - `text_image`: Text and an image. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5.
      */
     inputType: TwelvelabsApi.embed.CreateEmbeddingsRequestInputType;
     /**
@@ -326,10 +326,10 @@ export interface CreateEmbeddingsRequest {
      */
     autoTruncate?: boolean;
     /**
-     * Set this parameter to `true` to include a per-dimension uncertainty vector in the [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#response.body.data.embedding-uncertainty) field of the response. The vector has the same length as the `embedding` array. A higher value indicates lower confidence in that dimension. Requires Marengo 3.5.
+     * Set this parameter to `true` to include a per-dimension uncertainty vector in the [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#response.body.data.embedding-uncertainty) field of the response. The vector has the same length as the `embedding` array. A higher value indicates lower confidence in that dimension. This requires the Marengo 3.5 native input format. With `model_name: marengo3.0`, setting this parameter to `true` returns `400` (`parameter_invalid`). Marengo 3.5 requests using the compatible format do not return uncertainty vectors.
      *
      * **Requirements**:
-     * - Set this parameter to `true` only for a text-only or media-only request. If you combine text with media sources, the platform returns a `400` error.
+     * - Set this parameter to `true` only for a text-only request or a single image. Combining text with media, supplying multiple media sources, or supplying audio/video returns a `400` error.
      * - The platform returns a `400` error if your request includes a document, whether PDF, plain text, or Markdown.
      */
     embeddingUncertainty?: boolean;
@@ -339,7 +339,7 @@ export interface CreateEmbeddingsRequest {
      * Marengo 3.5 produces Matryoshka embeddings: a shorter embedding consists of the first values of the full-length embedding. A 256-dimension embedding, for example, is the first 256 values of a 512-dimension embedding of the same content. Shorter embeddings reduce index size and speed up similarity search; longer embeddings produce higher retrieval quality.
      *
      * **Requirements**:
-     * - Requires Marengo 3.5. Setting this parameter with `model_name: marengo3.0` returns a `400` error.
+     * - This field requires the Marengo 3.5 native input format. An explicit value returns `400` (`parameter_invalid`) with Marengo 3.0 or Marengo 3.5 requests using the compatible input format. Those paths omit dimension metadata when this field is omitted.
      * - Applies to the entire request: you cannot set it for a single input type or embedding.
      * - Use the same value across an index.
      *

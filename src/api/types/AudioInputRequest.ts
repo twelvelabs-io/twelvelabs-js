@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * This field is required if the `input_type` parameter is `audio`. Requires Marengo 3.0. The decoded file can be up to 36 MB.
+ * This field is required if the `input_type` parameter is `audio`. Supported with Marengo 3.0 and the Marengo 3.0-compatible input format for Marengo 3.5. The decoded file can be up to 36 MB.
  */
 export interface AudioInputRequest {
     mediaSource: TwelvelabsApi.MediaSource;
@@ -51,11 +51,11 @@ export interface AudioInputRequest {
      */
     embeddingScope?: TwelvelabsApi.AudioInputRequestEmbeddingScopeItem[];
     /**
-     * Specifies how to structure the embedding. Include this parameter only when the `embedding_option` parameter contains at least two values.
+     * Specifies how to structure the embeddings. `separate_embedding` accepts one or more embedding options and returns them separately; it does not require multiple options.
      *
      * **Values**:
      * - `separate_embedding`: Returns separate embeddings for each modality specified in the `embedding_option` parameter.
-     * - `fused_embedding`: Returns a single combined embedding that integrates all modalities into one vector.
+     * - `fused_embedding`: Returns a single combined embedding that integrates audio and transcription. Include both the `audio` and `transcription` values in the `embedding_option` field.
      *
      * Specify both values to receive separate and fused embeddings in the same response.
      *

@@ -10,23 +10,35 @@ import * as TwelvelabsApi from "../index";
 export interface EmbeddingTaskResponse {
     /** The unique identifier of the embedding task. */
     id: string;
+    /** The identifier you set when you created the task. Present only if you set one. */
+    clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
+    /** The unique identifier of the batch that the task was created in. The platform returns this field only for tasks created as part of a batch. */
+    batchId?: string;
+    /** The identifier of the item within its batch. Omitted for a task that is not part of a batch. */
+    customId?: TwelvelabsApi.EmbeddingBatchCustomId;
+    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and older tasks. */
+    serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
+    /** The end of the 24-hour processing window for a Marengo 3.5 Flex task. Omitted for other tiers and Marengo 3.0. */
+    expiresAt?: Date;
     /**
      * The current status of the task.
      *
      *
      * **Values**:
+     * - `queued`: A Marengo 3.5 task that is not part of a batch, or a task created as part of a batch, is waiting to start
      * - `processing`: The platform is creating the embeddings
      * - `ready`: Processing is complete. Embeddings are available in the `data` field
      * - `failed`: The task failed. The `data` field is `null`, and the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason
+     * - `canceled`: The task was canceled, including a Flex task that did not complete within its processing window. The `data` field is `null` and `error` is omitted
      */
     status: TwelvelabsApi.EmbeddingTaskResponseStatus;
     createdAt?: TwelvelabsApi.CreatedAt;
     updatedAt?: TwelvelabsApi.UpdatedAt;
-    /** An object containing the embedding results, or `null` otherwise. */
+    /** An array of embedding results, or `null` otherwise. */
     data?: TwelvelabsApi.EmbeddingData[];
     /** Token counts for the request. Only Marengo 3.5 returns this field. */
     usage?: TwelvelabsApi.EmbeddingUsage;
     metadata?: TwelvelabsApi.EmbeddingTaskMediaMetadata;
-    /** An object describing why the embedding task failed. Present only when `status` is `failed`. Omitted otherwise. */
-    error?: TwelvelabsApi.EmbeddingTaskResponseError;
+    error?: TwelvelabsApi.EmbeddingTaskError;
+    cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;
 }

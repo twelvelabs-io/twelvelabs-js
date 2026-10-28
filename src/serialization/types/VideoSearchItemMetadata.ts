@@ -14,11 +14,13 @@ export const VideoSearchItemMetadata: core.serialization.ObjectSchema<
 > = core.serialization.object({
     system: VideoSearchSystemMetadata.optional(),
     user: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
+    item: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace VideoSearchItemMetadata {
     export interface Raw {
         system?: VideoSearchSystemMetadata.Raw | null;
         user?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
+        item?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

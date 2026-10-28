@@ -8,6 +8,6 @@ import * as TwelvelabsApi from "../index";
  * Divides the file into equal-length segments. Use this for consistent timing.
  */
 export interface TemporalSegmentationFixed {
-    /** Configuration for fixed segmentation. This object is required when `strategy` is `fixed`. */
-    fixed: TwelvelabsApi.TemporalSegmentationFixedFixed;
+    /** Configuration for fixed segmentation. If this object or `duration_sec` is omitted, the duration defaults to 6 seconds. */
+    fixed?: TwelvelabsApi.TemporalSegmentationFixedFixed;
 }

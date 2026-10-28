@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { ResponseInputItem } from "./ResponseInputItem";
 import { ResponseCreateRequestIncludeItem } from "./ResponseCreateRequestIncludeItem";
+import { ResponseToolInput } from "./ResponseToolInput";
 import { ResponseSelection } from "./ResponseSelection";
 import { TextParam } from "./TextParam";
 
@@ -20,6 +21,7 @@ export const ResponseCreateRequest: core.serialization.ObjectSchema<
     instructions: core.serialization.string().optional(),
     include: core.serialization.list(ResponseCreateRequestIncludeItem).optional(),
     stream: core.serialization.boolean().optional(),
+    tools: core.serialization.list(ResponseToolInput).optional(),
     selections: core.serialization.list(ResponseSelection).optional(),
     text: TextParam.optional(),
 });
@@ -32,6 +34,7 @@ export declare namespace ResponseCreateRequest {
         instructions?: string | null;
         include?: ResponseCreateRequestIncludeItem.Raw[] | null;
         stream?: boolean | null;
+        tools?: ResponseToolInput.Raw[] | null;
         selections?: ResponseSelection.Raw[] | null;
         text?: TextParam.Raw | null;
     }

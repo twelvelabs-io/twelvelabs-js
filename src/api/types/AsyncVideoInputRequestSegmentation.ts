@@ -7,12 +7,12 @@ import * as TwelvelabsApi from "../index";
 /**
  * Specifies how the platform divides the video into segments.
  *
- * The structure of this object depends on the model version:
+ * The accepted structure depends on the input format applied to the request:
  *
- * - **With Marengo 3.5**: Place your settings in the `temporal` object. Both strategies are available: `dynamic` divides the video into variable-length segments that follow scene changes, and `fixed` divides it into equal-length segments. Default: `temporal.dynamic`, `min_duration_sec: 2`.
- * - **With Marengo 3.0**: Provide the settings directly in this object. Default: `dynamic`, `min_duration_sec: 4`.
+ * - **Marengo 3.5 native format**: Place your settings in the `temporal` object. Both strategies are available: `dynamic` divides the video into variable-length segments that follow scene changes, and `fixed` divides it into equal-length segments. Default: `temporal.dynamic`, `min_duration_sec: 2`.
+ * - **Marengo 3.0-compatible format, including some Marengo 3.5 requests**: Provide the settings directly in this object. Default: `dynamic`, `min_duration_sec: 4`.
  *
- * If you use a structure that does not match your model version, the platform returns a `400` error.
+ * A structure that does not match the applied input format returns a `400` error. The API does not report which format applies. To send a request that works with either format, omit this field.
  */
 export type AsyncVideoInputRequestSegmentation =
     TwelvelabsApi.VideoSegmentation | TwelvelabsApi.AsyncTemporalSegmentation;

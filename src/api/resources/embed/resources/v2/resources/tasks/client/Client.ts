@@ -5,8 +5,8 @@
 import * as environments from "../../../../../../../../environments";
 import * as core from "../../../../../../../../core";
 import * as TwelvelabsApi from "../../../../../../../index";
-import urlJoin from "url-join";
 import * as serializers from "../../../../../../../../serialization/index";
+import urlJoin from "url-join";
 import * as errors from "../../../../../../../../errors/index";
 
 export declare namespace Tasks {
@@ -33,25 +33,30 @@ export class Tasks {
     constructor(protected readonly _options: Tasks.Options) {}
 
     /**
-     * This method returns a list of the async embedding tasks in your account. The platform returns your async embedding tasks sorted by creation date, with the newest at the top of the list.
+     * This method returns a list of the async embedding tasks in your account, including tasks created as part of a batch. The platform returns tasks sorted by creation date, with the newest at the top of the list. The `custom_id` field of a task created as part of a batch is unique only within one batch, identified by the `batch_id` field.
      *
      * <Note title="Notes">
-     * - Embeddings are stored for seven days.
-     * - When you invoke this method without specifying the `started_at` and `ended_at` parameters, the platform returns all the async embedding tasks created within the last seven days.
+     * - Embeddings of a task that is not part of a batch are available through the API for seven days. Tasks created as part of a batch, and their results, are available for up to 30 days from batch creation. Deleting a batch with a final status ends API access to its tasks and results earlier.
+     * - Without the `started_at` or `ended_at` query parameters, this method lists tasks created in the last seven days. Supplying the `batch_id` query parameter removes that default seven-day time window so all retained tasks created as part of that batch can be listed. Explicit time filters still apply. There is no filter that limits the list to tasks that are not part of a batch; without the `batch_id` query parameter, the list can include tasks created as part of a batch.
      * </Note>
      *
      * @param {TwelvelabsApi.embed.v2.TasksListRequest} request
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.InternalServerError}
+     * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
      * @example
      *     await client.embed.v2.tasks.list({
      *         startedAt: "2024-03-01T00:00:00Z",
      *         endedAt: "2024-03-01T00:00:00Z",
-     *         status: "processing",
+     *         status: "queued",
+     *         clientTaskId: "video_001",
+     *         batchId: "68d3ae81c4a8d3697e15b2ef",
      *         page: 1,
-     *         pageLimit: 10
+     *         pageLimit: 1
      *     })
      */
     public async list(
@@ -62,7 +67,7 @@ export class Tasks {
             async (
                 request: TwelvelabsApi.embed.v2.TasksListRequest,
             ): Promise<core.WithRawResponse<TwelvelabsApi.embed.v2.TasksListResponse>> => {
-                const { startedAt, endedAt, status, page, pageLimit } = request;
+                const { startedAt, endedAt, status, clientTaskId, batchId, page, pageLimit } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (startedAt != null) {
                     _queryParams["started_at"] = startedAt;
@@ -71,7 +76,15 @@ export class Tasks {
                     _queryParams["ended_at"] = endedAt;
                 }
                 if (status != null) {
-                    _queryParams["status"] = status;
+                    _queryParams["status"] = serializers.embed.v2.TasksListRequestStatus.jsonOrThrow(status, {
+                        unrecognizedObjectKeys: "strip",
+                    });
+                }
+                if (clientTaskId != null) {
+                    _queryParams["client_task_id"] = clientTaskId;
+                }
+                if (batchId != null) {
+                    _queryParams["batch_id"] = batchId;
                 }
                 if (page != null) {
                     _queryParams["page"] = page.toString();
@@ -90,8 +103,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -120,6 +133,23 @@ export class Tasks {
                     switch (_response.error.statusCode) {
                         case 400:
                             throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 401:
+                            throw new TwelvelabsApi.UnauthorizedError(
+                                serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                                    unrecognizedObjectKeys: "passthrough",
+                                    allowUnrecognizedUnionMembers: true,
+                                    allowUnrecognizedEnumValues: true,
+                                    breadcrumbsPrefix: ["response"],
+                                }),
+                                _response.rawResponse,
+                            );
+                        case 500:
+                            throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
+                        case 503:
+                            throw new TwelvelabsApi.ServiceUnavailableError(
+                                _response.error.body,
+                                _response.rawResponse,
+                            );
                         default:
                             throw new errors.TwelvelabsApiError({
                                 statusCode: _response.error.statusCode,
@@ -166,26 +196,44 @@ export class Tasks {
      *
      * Use this method to embed content at scale, such as long files or the media files you want to make searchable. For a query, or for results you need in the same request, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint instead.
      *
+     * Set the `client_task_id` field to find the task if the request times out or returns a `500` or `503` error. Without it, a retry can create a second task. Reusing an identifier while the original task exists returns `409` and does not create another task. When you supply it, the platform returns the identifier unchanged in the creation response and in later task reads and lists.
+     *
+     * When the platform admits a Marengo 3.5 request under a service tier, omitting the `service_tier` field selects Standard. This applies whether or not you set the `client_task_id` field. Those creation, retrieval, and list responses return the applied tier.
+     *
+     * The status in the `202` response depends on the creation path. A Marengo 3.5 task admitted under a service tier returns `queued`, including a default Standard task that omits both `service_tier` and `client_task_id`, or `failed` if source validation fails during admission. A Marengo 3.0 task, or a Marengo 3.5 task created on the legacy path, returns `processing`. The same request can return `queued` in place of `processing` when default Standard admission becomes available. A `queued` task has no final status yet. Poll until the status is `ready`, `failed`, or `canceled`.
+     *
+     * Because the status in the creation response varies, handle all five statuses when you poll: `queued`, `processing`, `ready`, `failed`, and `canceled`.
+     *
+     * With Marengo 3.5, set the `service_tier` field to one of these values: `standard`, `priority`, or `flex`. When the platform starts queued tasks, Priority tasks are preferred over Standard tasks, and Flex tasks use otherwise unused capacity. Tiers are best effort. They do not guarantee a start time or a completion time, and they do not preempt running tasks. They do not bypass the rate limits or the account capacity for unfinished Flex tasks. The `flex` tier has a 24-hour processing window that starts when the platform accepts the task. The platform returns the `expires_at` field in creation, retrieval, and list responses. An incomplete Flex task becomes `canceled` when that window expires. Availability depends on your plan. Marengo 3.0 does not accept an explicit value for the `service_tier` field.
+     *
      * The content this method accepts depends on the model. Both models embed audio and video. Marengo 3.5 also embeds images and documents: PDF, plain text, and Markdown files. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
      *
      * Creating embeddings asynchronously requires three steps:
      *
      * 1. Create a task using this method. The platform returns a task identifier.
-     * 2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Wait until the status is `ready`.
-     * 3. Retrieve the embeddings from the response when the status is `ready` using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint.
+     * 2. Poll for the status of the task using the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint. Stop when the status is `ready`, `failed`, or `canceled`.
+     * 3. When the status is `ready`, read the embeddings from that response.
      *
      * <Note title="Notes">
-     * - Creating a task validates only basic metadata and, for audio and video sources, playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
-     * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
-     * - Embeddings are stored for seven days.
+     * - For audio or video URL tasks admitted under a service tier, creation checks for an absolute HTTP(S) URL with a hostname and no embedded credentials. An invalid URL returns `400` without creating a task. The platform then downloads the file through public-address and redirect checks and validates the media after acceptance. A task can fail with `SOURCE_INVALID`, `SOURCE_UNAVAILABLE`, or `PAYLOAD_TOO_LARGE` when these checks fail.
+     * - Creation does not validate the full content of a source. For a task admitted under a service tier, the platform checks audio and video URL content and duration after it accepts the task, so the task can fail later. The legacy path checks audio and video media before it accepts a task and can reject the request with `400`. This distinction also applies when a Marengo 3.5 request omits both `service_tier` and `client_task_id`: default Standard admission uses the first path when available, while legacy creation uses the second. When you retrieve an accepted task, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
+     * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/plans-and-billing/rate-limits/new-billing#input-token-limits-for-embedding).
+     * - Embeddings of a task that is not part of a batch are available through the API for seven days. Tasks created as part of a batch, and their results, are available for up to 30 days from batch creation. Deleting a batch with a final status ends API access to its tasks and results earlier.
      * </Note>
      *
      * @param {TwelvelabsApi.embed.v2.CreateAsyncEmbeddingRequest} request
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.ForbiddenError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.ConflictError}
+     * @throws {@link TwelvelabsApi.ContentTooLargeError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
+     * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
      * @example
      *     await client.embed.v2.tasks.create({
@@ -194,16 +242,40 @@ export class Tasks {
      *         audio: {
      *             mediaSource: {
      *                 url: "https://user-bucket.com/audio/long-audio.wav"
+     *             }
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "audio",
+     *         modelName: "marengo3.5",
+     *         clientTaskId: "audio_001",
+     *         audio: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/audio/long-audio.wav"
      *             },
      *             startSec: 0,
      *             endSec: 3600,
      *             segmentation: {
      *                 temporal: {
-     *                     strategy: "fixed",
-     *                     fixed: {
-     *                         durationSec: 1
-     *                     }
+     *                     strategy: "fixed"
      *                 }
+     *             },
+     *             embeddingOption: ["audio"],
+     *             embeddingScope: ["clip", "asset"]
+     *         }
+     *     })
+     *
+     * @example
+     *     await client.embed.v2.tasks.create({
+     *         inputType: "audio",
+     *         modelName: "marengo3.5",
+     *         serviceTier: "flex",
+     *         clientTaskId: "flex_audio_001",
+     *         audio: {
+     *             mediaSource: {
+     *                 url: "https://user-bucket.com/audio/long-audio.wav"
      *             },
      *             embeddingOption: ["audio"],
      *             embeddingScope: ["clip", "asset"]
@@ -222,10 +294,7 @@ export class Tasks {
      *             endSec: 7200,
      *             segmentation: {
      *                 temporal: {
-     *                     strategy: "dynamic",
-     *                     dynamic: {
-     *                         minDurationSec: 1
-     *                     }
+     *                     strategy: "dynamic"
      *                 }
      *             },
      *             embeddingOption: ["visual", "audio"],
@@ -254,7 +323,7 @@ export class Tasks {
      *         embeddingUncertainty: true,
      *         video: {
      *             mediaSource: {
-     *                 assetId: "vid_nba_lakers_celtics_2026_03_14"
+     *                 assetId: "68f4ddaf8aaa60d33df0e801"
      *             },
      *             embeddingOption: ["visual", "audio"],
      *             embeddingScope: ["clip"],
@@ -271,10 +340,9 @@ export class Tasks {
      *     await client.embed.v2.tasks.create({
      *         inputType: "document",
      *         modelName: "marengo3.5",
-     *         embeddingUncertainty: true,
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             embeddingOption: ["visual"],
      *             embeddingType: ["separate_embedding"],
@@ -289,7 +357,7 @@ export class Tasks {
      *         embeddingDimension: 256,
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             segmentation: {
      *                 spatial: {
@@ -307,7 +375,7 @@ export class Tasks {
      *         modelName: "marengo3.5",
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             embeddingOption: ["visual"],
      *             embeddingScope: ["asset"]
@@ -320,7 +388,7 @@ export class Tasks {
      *         modelName: "marengo3.5",
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             embeddingOption: ["visual", "text"],
      *             embeddingScope: ["asset"]
@@ -367,7 +435,7 @@ export class Tasks {
      *         embeddingUncertainty: true,
      *         image: {
      *             mediaSource: {
-     *                 assetId: "img_brand_logo_primary"
+     *                 assetId: "68f4ddaf8aaa60d33df0e803"
      *             }
      *         }
      *     })
@@ -406,7 +474,7 @@ export class Tasks {
      *             segmentation: {
      *                 strategy: "dynamic",
      *                 dynamic: {
-     *                     minDurationSec: 1
+     *                     minDurationSec: 1.1
      *                 }
      *             },
      *             embeddingOption: ["visual", "audio", "transcription"],
@@ -436,8 +504,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -468,10 +536,40 @@ export class Tasks {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new TwelvelabsApi.UnauthorizedError(
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new TwelvelabsApi.ForbiddenError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
+                case 413:
+                    throw new TwelvelabsApi.ContentTooLargeError(
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
+                case 503:
+                    throw new TwelvelabsApi.ServiceUnavailableError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -501,16 +599,21 @@ export class Tasks {
     /**
      * This method retrieves the status and the results of an async embedding task.
      *
-     * Invoke this method repeatedly until the `status` field is `ready` or `failed`. When the status is `ready`, use the embeddings from the response. When the status is `failed`, the `error.message` field contains the reason.
+     * Invoke this method repeatedly until the `status` field is `ready`, `failed`, or `canceled`. When the status is `ready`, use the embeddings from the response. When the status is `failed`, the `error.message` field contains the reason. A canceled task has the `data` field set to `null` and no `error` field. For Marengo 3.5 Flex tasks, the `expires_at` field marks the end of the 24-hour processing window; a task still incomplete then becomes `canceled` with the `deadline_exceeded` value in the `cancellation_reason` field. Work already running can continue, but a late result does not replace the final status or produce successful-task billing.
      *
      * <Note title="Note">
-     * Embeddings are stored for seven days.
+     * Embeddings of a task that is not part of a batch are available through the API for seven days. A task created as part of a batch, and its results, are available for up to 30 days from batch creation. Deleting a batch with a final status ends API access to its tasks and results earlier. A task created as part of a batch returns the `batch_id` field and a `custom_id` field that is unique only within the batch.
      * </Note>
      *
      * @param {string} taskId - The unique identifier of the embedding task.
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.ForbiddenError}
      * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.InternalServerError}
+     * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      *
      * @example
      *     await client.embed.v2.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12")
@@ -537,8 +640,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -564,8 +667,26 @@ export class Tasks {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new TwelvelabsApi.UnauthorizedError(
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new TwelvelabsApi.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
+                case 503:
+                    throw new TwelvelabsApi.ServiceUnavailableError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,

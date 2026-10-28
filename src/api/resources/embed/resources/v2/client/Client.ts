@@ -44,16 +44,17 @@ export class V2 {
      *
      * Use this method to embed a query for retrieving matching content. With Marengo 3.5, audio and video can be up to 30 seconds. With Marengo 3.0, they can be up to 10 minutes. For longer content, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
      *
-     * The content this method accepts depends on the model. With Marengo 3.5, this method accepts only the `multi_input` input type; provide text, images, audio, video, or documents as media sources. With Marengo 3.0, use the individual input types. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
+     * With the Marengo 3.5 native input format, this method accepts only `multi_input`; provide text, images, audio, video, or documents as media sources. It does not accept the individual `audio` or `video` fields or a `transcription` embedding option. Marengo 3.0 and Marengo 3.5 requests using the Marengo 3.0-compatible input format accept the individual input types, including their transcription options and defaults. The API does not report which input format applies to a Marengo 3.5 request. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
      *
      * <Note title="Note">
-     * This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A request can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
+     * This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A request can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/plans-and-billing/rate-limits/new-billing#input-token-limits-for-embedding).
      * </Note>
      *
      * @param {TwelvelabsApi.embed.CreateEmbeddingsRequest} request
      * @param {V2.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.ContentTooLargeError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
@@ -96,7 +97,7 @@ export class V2 {
      *         multiInput: {
      *             mediaSources: [{
      *                     mediaType: "image",
-     *                     assetId: "1234567890"
+     *                     assetId: "68f4ddaf8aaa60d33df0e803"
      *                 }]
      *         }
      *     })
@@ -198,7 +199,7 @@ export class V2 {
      *         modelName: "marengo3.0",
      *         image: {
      *             mediaSource: {
-     *                 assetId: "1234567890"
+     *                 assetId: "68f4ddaf8aaa60d33df0e803"
      *             }
      *         }
      *     })
@@ -262,7 +263,7 @@ export class V2 {
      *             segmentation: {
      *                 strategy: "dynamic",
      *                 dynamic: {
-     *                     minDurationSec: 1
+     *                     minDurationSec: 1.1
      *                 }
      *             },
      *             embeddingOption: ["visual", "audio", "transcription"],
@@ -317,8 +318,8 @@ export class V2 {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -347,9 +348,11 @@ export class V2 {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 413:
                     throw new TwelvelabsApi.ContentTooLargeError(
-                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
                             unrecognizedObjectKeys: "passthrough",
                             allowUnrecognizedUnionMembers: true,
                             allowUnrecognizedEnumValues: true,

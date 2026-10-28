@@ -40,10 +40,18 @@ export interface ResponseObject {
     incompleteDetails?: TwelvelabsApi.ResponseIncompleteDetails;
     /**
      * The response output items. By default, only the final message is included.
-     * Set `include` to `["intermediate_outputs"]` in the request to receive function call items.
+     * Set `include` to `["intermediate_outputs"]` to also receive intermediate
+     * messages, function calls and results, and `jockey:web_search` items.
      */
     output?: TwelvelabsApi.ResponseOutputItem[];
-    usage?: TwelvelabsApi.ResponseUsage;
+    /**
+     * The billing information for this response. Only a finished response carries this object:
+     * the last event of a stream (`response.completed` or `response.failed`) and the
+     * non-streamed response. Earlier stream events do not carry it. This amount is
+     * informational: it is the list price, before your plan and any discount on your account.
+     * Your invoice is the authoritative record of charges.
+     */
+    billing?: TwelvelabsApi.ResponseBilling;
     /** The timestamp when the response was created. */
     createdAt?: Date;
 }

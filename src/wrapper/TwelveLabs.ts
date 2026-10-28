@@ -21,6 +21,7 @@ export class TwelveLabs {
     public readonly knowledgeStores: TwelvelabsApiClient["knowledgeStores"];
     public readonly knowledgeStoreItems: TwelvelabsApiClient["knowledgeStoreItems"];
     public readonly knowledgeStoreItemCollections: TwelvelabsApiClient["knowledgeStoreItemCollections"];
+    public readonly createEmbeddings: TwelvelabsApiClient["createEmbeddings"];
     public readonly responses: TwelvelabsApiClient["responses"];
     public readonly multipartUpload: MultipartUploadWrapper;
     public readonly analyze: TwelvelabsApiClient["analyze"];
@@ -44,7 +45,7 @@ export class TwelveLabs {
         this.analyze = this.client.analyze.bind(this.client);
         this.analyzeStream = this.client.analyzeStream.bind(this.client);
         this.analyzeAsync = this.client.analyzeAsync;
-        
+
         this.assets = this.client.assets;
         this.entityCollections = this.client.entityCollections;
         this.dataConnectors = this.client.dataConnectors;
@@ -56,6 +57,7 @@ export class TwelveLabs {
         this.knowledgeStores = this.client.knowledgeStores;
         this.knowledgeStoreItems = this.client.knowledgeStoreItems;
         this.knowledgeStoreItemCollections = this.client.knowledgeStoreItemCollections;
+        this.createEmbeddings = this.client.createEmbeddings;
         this.responses = this.client.responses;
 
         // Use custom wrappers instead of default clients

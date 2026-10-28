@@ -6,6 +6,7 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { EmbeddingUsageTruncationReason } from "./EmbeddingUsageTruncationReason";
+import { EmbeddingServiceTier } from "./EmbeddingServiceTier";
 
 export const EmbeddingUsage: core.serialization.ObjectSchema<
     serializers.EmbeddingUsage.Raw,
@@ -17,6 +18,7 @@ export const EmbeddingUsage: core.serialization.ObjectSchema<
     ),
     truncated: core.serialization.boolean(),
     truncationReason: core.serialization.property("truncation_reason", EmbeddingUsageTruncationReason.optional()),
+    serviceTier: core.serialization.property("service_tier", EmbeddingServiceTier.optional()),
 });
 
 export declare namespace EmbeddingUsage {
@@ -24,5 +26,6 @@ export declare namespace EmbeddingUsage {
         input_tokens: Record<string, number>;
         truncated: boolean;
         truncation_reason?: EmbeddingUsageTruncationReason.Raw | null;
+        service_tier?: EmbeddingServiceTier.Raw | null;
     }
 }

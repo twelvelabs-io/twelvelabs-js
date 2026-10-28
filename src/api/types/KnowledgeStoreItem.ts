@@ -21,12 +21,16 @@ export interface KnowledgeStoreItem {
      */
     status?: TwelvelabsApi.KnowledgeStoreItemStatus;
     /**
-     * System-generated media metadata for the source asset. Its `asset_type` field
+     * System-generated metadata for the source asset. Its `asset_type` field
      * always matches the item's top-level `asset_type` field.
      */
     systemMetadata?: TwelvelabsApi.KnowledgeStoreItemSystemMetadata;
-    /** Custom metadata for the item. Keys are strings; each value is a string, a number, a boolean, or an array of strings. */
+    /** The custom metadata of the source asset. Keys are strings; each value is a string, a number, a boolean, or an array of strings. The platform updates it when the user-defined metadata of the asset changes. To change it, use the [`PATCH`](/v1.3/api-reference/upload-content/direct-uploads/update-user-metadata) method of the `/assets/{asset_id}/user-metadata` endpoint. To set custom metadata for the knowledge store item only, use `item_metadata`. */
     metadata?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
+    /** The custom metadata of the knowledge store item. Keys are strings; each value is a string, a number, a boolean, or an array of strings. It is separate from the custom metadata of the source asset. A change to the custom metadata of the source asset does not change this field. The same key can have different values in the `metadata` field and in the `item_metadata` field. You set it when you create the item or change it with the [`PATCH`](/v1.3/api-reference/knowledge-store-items/update-item-metadata) or [`PUT`](/v1.3/api-reference/knowledge-store-items/replace-item-metadata) method of the `/knowledge-stores/{knowledge_store_id}/items/{item_id}/item-metadata` endpoint. This field is absent when no item metadata has been set. */
+    itemMetadata?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
+    /** Metadata that the platform extracts from the whole item, as defined by the enrichment configuration of the knowledge store. It contains the properties that have the `granularity` keyword set to `video` for a video, or to `image` for an image. Properties that have the `granularity` keyword set to `shot` do not appear in this field. Keys are the property names; each value matches its property definition. A property with no value is omitted. The field is present only when the item is `ready` and contains at least one value. */
+    enrichedMetadata?: Record<string, unknown>;
     /** The date and time when the item was created, in the RFC 3339 format. */
     createdAt?: Date;
     /** The date and time when the item was last updated, in the RFC 3339 format. */

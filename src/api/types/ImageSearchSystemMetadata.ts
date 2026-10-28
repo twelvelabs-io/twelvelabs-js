@@ -3,7 +3,7 @@
  */
 
 /**
- * System-generated media metadata for an image item in search results.
+ * System-generated metadata for an image item in search results.
  */
 export interface ImageSearchSystemMetadata {
     /** The width of the image in pixels. */

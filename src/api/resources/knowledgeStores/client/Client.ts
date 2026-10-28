@@ -83,8 +83,8 @@ export class KnowledgeStores {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -163,6 +163,7 @@ export class KnowledgeStores {
      * @param {KnowledgeStores.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      *
      * @example
      *     await client.knowledgeStores.create({
@@ -191,8 +192,8 @@ export class KnowledgeStores {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -221,6 +222,8 @@ export class KnowledgeStores {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -280,8 +283,8 @@ export class KnowledgeStores {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -370,8 +373,8 @@ export class KnowledgeStores {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -427,6 +430,7 @@ export class KnowledgeStores {
      * @param {KnowledgeStores.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      *
      * @example
      *     await client.knowledgeStores.update("ks_069e9869-1ea3-7481-8000-dae72bf6be6e")
@@ -455,8 +459,8 @@ export class KnowledgeStores {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -485,6 +489,8 @@ export class KnowledgeStores {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -516,7 +522,7 @@ export class KnowledgeStores {
     /**
      * This method searches a knowledge store using natural language and returns matching video clips and images ranked by relevance.
      *
-     * Provide your natural-language query in the `query.text` field. Use the `filter` parameter to choose which items to search: by type of item (the `asset_type` field) or by specific items (the `item_id` field). Use the optional `search_options` parameter to control how videos are matched (by visual content, audio, or both). If you omit it, videos are matched on their visual content. Images are always matched on their visual content.
+     * Use the `query.text` field to specify your natural-language query. Use the `filter` parameter to choose which items to search. Use the `search_options` parameter to choose how the platform matches videos.
      *
      * By default, each result is an individual match: a video clip or an image. Set the `group_by` parameter to `item` to group clips under their parent item.
      *
@@ -531,6 +537,7 @@ export class KnowledgeStores {
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.GoneError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      *
      * @example
@@ -571,6 +578,64 @@ export class KnowledgeStores {
      *         query: {
      *             text: "A person cooking pasta"
      *         },
+     *         filter: {
+     *             location: {
+     *                 latitude: 37.5665,
+     *                 longitude: 126.978,
+     *                 radiusMeters: 5000
+     *             }
+     *         },
+     *         groupBy: "none",
+     *         pageSize: 10
+     *     })
+     *
+     * @example
+     *     await client.knowledgeStores.search("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+     *         query: {
+     *             text: "A person cooking pasta"
+     *         },
+     *         groupBy: "none",
+     *         pageSize: 10
+     *     })
+     *
+     * @example
+     *     await client.knowledgeStores.search("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+     *         query: {
+     *             text: "A person cooking pasta"
+     *         },
+     *         filter: {
+     *             userMetadata: {
+     *                 "category": {
+     *                     eq: "tutorial"
+     *                 }
+     *             },
+     *             enrichment: {
+     *                 "detected_topic": {
+     *                     eq: "cooking"
+     *                 }
+     *             },
+     *             createdAt: {
+     *                 gte: "2026-09-01T00:00:00Z"
+     *             }
+     *         },
+     *         groupBy: "none",
+     *         pageSize: 10
+     *     })
+     *
+     * @example
+     *     await client.knowledgeStores.search("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
+     *         query: {
+     *             text: "A player celebrating"
+     *         },
+     *         filter: {
+     *             tags: {
+     *                 metadata: {
+     *                     "event": {
+     *                         eq: "goal"
+     *                     }
+     *                 }
+     *             }
+     *         },
      *         groupBy: "none",
      *         pageSize: 10
      *     })
@@ -599,8 +664,8 @@ export class KnowledgeStores {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -641,6 +706,8 @@ export class KnowledgeStores {
                         }),
                         _response.rawResponse,
                     );
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

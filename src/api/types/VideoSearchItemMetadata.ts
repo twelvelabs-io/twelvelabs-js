@@ -8,8 +8,10 @@ import * as TwelvelabsApi from "../index";
  * Metadata attached to a video knowledge store item in search results.
  */
 export interface VideoSearchItemMetadata {
-    /** System-generated media metadata for the source video. */
+    /** System-generated metadata for the source video. */
     system?: TwelvelabsApi.VideoSearchSystemMetadata;
-    /** Caller-supplied key-value pairs attached to the item. */
+    /** The custom metadata of the source asset. The `metadata` field of the knowledge store item contains the same metadata. */
     user?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
+    /** The custom metadata of the knowledge store item. It is separate from the custom metadata of the source asset. A change to the custom metadata of the source asset does not change this field. The same key can have different values in the `user` field and in the `item` field. The `item_metadata` field of the knowledge store item contains the same metadata. This field is absent when no item metadata has been set. */
+    item?: Record<string, TwelvelabsApi.KnowledgeStoreMetadataValue>;
 }

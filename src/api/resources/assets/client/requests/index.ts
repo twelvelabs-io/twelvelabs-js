@@ -4,3 +4,4 @@ export { type AssetsDeleteRequest } from "./AssetsDeleteRequest";
 export { type AssetsRetrieveTranscriptionRequest } from "./AssetsRetrieveTranscriptionRequest";
 export { type AssetsReplaceUserMetadataRequest } from "./AssetsReplaceUserMetadataRequest";
 export { type AssetsUpdateUserMetadataRequest } from "./AssetsUpdateUserMetadataRequest";
+export { type AssetsEnableStorageAccountingRequest } from "./AssetsEnableStorageAccountingRequest";

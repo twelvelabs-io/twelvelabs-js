@@ -3,14 +3,15 @@
  */
 
 /**
- * Configuration for fixed segmentation. This object is required when `strategy` is `fixed`.
+ * Configuration for fixed segmentation. If this object or `duration_sec` is omitted, the duration defaults to 6 seconds.
  */
 export interface TemporalSegmentationFixedFixed {
     /**
      * The duration in seconds for each segment. The platform divides the file into segments of this exact length. The final segment may be shorter if the duration is not evenly divisible.
      *
+     * **Default**: `6`.
      * **Min**: `2`.
      * **Max**: `10`.
      */
-    durationSec: number;
+    durationSec?: number;
 }

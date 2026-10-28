@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Token counts for the request. Only Marengo 3.5 returns this object.
+ * Token counts for the request. Only Marengo 3.5 returns this field.
  */
 export interface EmbeddingUsage {
     /**
@@ -23,4 +23,6 @@ export interface EmbeddingUsage {
      * - `model_context_window`: The input exceeded the context window of the model.
      */
     truncationReason?: TwelvelabsApi.EmbeddingUsageTruncationReason;
+    /** The tier applied for billing a successful Marengo 3.5 async task. Omitted from synchronous embedding responses and older async tasks. */
+    serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
 }

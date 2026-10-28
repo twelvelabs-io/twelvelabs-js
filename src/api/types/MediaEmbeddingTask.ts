@@ -10,9 +10,20 @@ import * as TwelvelabsApi from "../index";
 export interface MediaEmbeddingTask {
     /** The unique identifier of the embedding task. */
     id?: string;
+    /** The identifier you set when you created the task. Present only if you set one. */
+    clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
+    /** The unique identifier of the batch that the task was created in. The platform returns this field only for tasks created as part of a batch. */
+    batchId?: string;
+    /** The identifier of the item within its batch. Omitted for a task that is not part of a batch. */
+    customId?: TwelvelabsApi.EmbeddingBatchCustomId;
+    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and older tasks. */
+    serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
+    /** The end of the 24-hour processing window for a Marengo 3.5 Flex task. Omitted for other tiers and Marengo 3.0. */
+    expiresAt?: Date;
+    cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;
     /** The name of the video understanding model the platform used to create the embedding. */
     modelName?: string;
-    /** A string indicating the status of the embedding task. It can take one of the following values: `processing`, `ready` or `failed`. */
+    /** The status of the embedding task. It can take one of the following values: `queued`, `processing`, `ready`, `failed`, or `canceled`. A `queued` task is waiting to start. This applies to a Marengo 3.5 task that is not part of a batch and to a task created as part of a batch. `canceled` includes Flex tasks that expire before completion; their `cancellation_reason` field is `deadline_exceeded` when available. */
     status?: string;
     createdAt?: TwelvelabsApi.CreatedAt;
     updatedAt?: TwelvelabsApi.UpdatedAt;
