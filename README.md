@@ -374,6 +374,7 @@ For Marengo 3.5, use `client.embed.v2.batches` to create and manage batches. Eac
 
 ```js
 const batch = await client.embed.v2.batches.create({
+  clientBatchId: "report_2026_10",
   modelName: "marengo3.5",
   serviceTier: "flex",
   inputType: "video",
@@ -396,6 +397,14 @@ const batch = await client.embed.v2.batches.create({
 });
 console.log(`Created batch: ${batch.batchId}`);
 ```
+
+Batch creation defaults to no automatic retries because a timeout or `500`/`503` response can leave acceptance uncertain. After one of these responses, look up a batch with its `clientBatchId` before deciding whether to submit again:
+
+```js
+const existing = await client.embed.v2.batches.list({ clientBatchId: "report_2026_10" });
+```
+
+To opt in to retries for a create request, pass `maxRetries` in its request options. Batch reads keep their default retry behavior of up to two retries.
 
 Use `client.embed.v2.batches.retrieve`, `.list`, `.results`, `.cancel`, and `.delete` to manage batch status and JSONL results. Cancel an individual task with `client.embed.v2.tasks.cancel(taskId)`. For batch limits and lifecycle details, see the [Embed v2 batch API reference](https://docs.twelvelabs.io/v1.3/api-reference/create-embeddings-v2/batches).
 

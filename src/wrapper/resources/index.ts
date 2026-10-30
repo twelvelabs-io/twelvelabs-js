@@ -2,6 +2,8 @@ export * from "./SearchWrapper";
 export * from "./TasksWrapper";
 export * from "./EmbedWrapper";
 export * from "./EmbedTasksWrapper";
+export * from "./EmbedV2BatchesWrapper";
+export * from "./EmbedV2Wrapper";
 export * from "./IndexesWrapper";
 export * from "./IndexesVideosWrapper";
 export * from "./MultipartUploadWrapper";
