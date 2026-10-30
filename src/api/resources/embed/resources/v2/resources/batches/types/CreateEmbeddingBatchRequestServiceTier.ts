@@ -3,12 +3,7 @@
  */
 
 /**
- * The [service tier](/v1.3/docs/advanced/service-tiers) for every item in this batch.
- *
- * **Values**:
- * - `flex`: Uses capacity that other tasks do not use. Processing ends 24 hours after the platform accepts the task. The platform cancels a task that is not complete by then.
- *
- * Use the `standard` and `priority` values only for a task that is not part of a batch.
+ * The [service tier](/v1.3/docs/advanced/service-tiers) for every item in this batch. The only valid value is `flex`, which uses capacity that other tasks do not use. Processing ends 24 hours after the batch is created. The platform cancels items that are not complete by then. Any other value returns `400`.
  */
 export type CreateEmbeddingBatchRequestServiceTier = "flex";
 export const CreateEmbeddingBatchRequestServiceTier = {

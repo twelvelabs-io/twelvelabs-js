@@ -3,14 +3,13 @@
  */
 
 /**
- * The identifier you set for this item when you create the batch. Use it to map batch results back to records in your system, for example, to correlate each result with the source file in your database.
+ * The identifier you set for this item. Use it to map results back to records in your system. The value is unique within a batch. Two items with the same value return `400`.
  *
- * The platform stores this value unchanged. It appears in:
- * - **Batch responses**: the `items` array in the Create a batch response, and each line returned by the [`GET`](/v1.3/api-reference/create-embeddings-v2/batches/retrieve-batch-results) method of the `/embed-v2/batches/{batch_id}/results` endpoint.
- * - **Task responses**: each item creates an embedding task. The `custom_id` field appears in the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) method of the `/embed-v2/tasks/{task_id}` endpoint and the [`GET`](/v1.3/api-reference/create-embeddings-v2/list-async-embedding-tasks) method of the `/embed-v2/tasks` endpoint. Tasks created as part of a batch do not produce per-task webhook events.
+ * The platform stores the value unchanged. It appears in:
+ * - The `items` array of the Create a batch response.
+ * - Each line returned by the [`GET`](/v1.3/api-reference/create-embeddings-v2/batches/retrieve-batch-results) method of the `/embed-v2/batches/{batch_id}/results` endpoint.
+ * - The task of each item, in the [`GET`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings) and [`GET`](/v1.3/api-reference/create-embeddings-v2/list-async-embedding-tasks) methods of the `/embed-v2/tasks/{task_id}` and `/embed-v2/tasks` endpoints.
  *
  * **Format**: 1–64 characters. Alphanumeric, hyphens (`-`), and underscores (`_`) only.
- *
- * The value must be unique within a batch. Two items with the same value in the `custom_id` field return a `400`. Unlike the `client_task_id` field, the value is not unique across your tasks.
  */
 export type EmbeddingBatchItemCustomId = string;

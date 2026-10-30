@@ -3,7 +3,7 @@
  */
 
 /**
- * The input type for every item in this batch.
+ * The input type for every item in this batch. To embed more than one input type, create one batch for each type.
  */
 export type CreateEmbeddingBatchRequestInputType = "audio" | "video" | "document" | "image";
 export const CreateEmbeddingBatchRequestInputType = {

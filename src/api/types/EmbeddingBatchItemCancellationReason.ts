@@ -6,8 +6,8 @@
  * The reason an item has the `canceled` status. Present only for canceled items.
  *
  * **Values**:
- * - `deadline_exceeded`: A Flex task did not finish within its 24-hour processing window.
- * - `parent_batch_canceled`: The task was created as part of a batch, and the batch was canceled before the task started.
+ * - `deadline_exceeded`: The item did not finish within the 24-hour processing window of the batch.
+ * - `parent_batch_canceled`: The batch was canceled before the item started.
  */
 export type EmbeddingBatchItemCancellationReason = "deadline_exceeded" | "parent_batch_canceled";
 export const EmbeddingBatchItemCancellationReason = {

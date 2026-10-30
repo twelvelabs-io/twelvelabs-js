@@ -16,14 +16,14 @@ export interface MediaEmbeddingTask {
     batchId?: string;
     /** The identifier of the item within its batch. Omitted for a task that is not part of a batch. */
     customId?: TwelvelabsApi.EmbeddingBatchCustomId;
-    /** The tier applied to this Marengo 3.5 task. Omitted for Marengo 3.0 and for tasks created before service tiers were introduced. */
+    /** The service tier applied to the task. Only Marengo 3.5 returns this field. */
     serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
-    /** The end of the 24-hour processing window for a Marengo 3.5 Flex task. Omitted for other tiers and Marengo 3.0. */
+    /** The date and time, in RFC 3339 format, when the 24-hour processing window for the task ends. Only a Flex task returns this field. */
     expiresAt?: Date;
     cancellationReason?: TwelvelabsApi.EmbeddingTaskCancellationReason;
     /** The name of the video understanding model the platform used to create the embedding. */
     modelName?: string;
-    /** The status of the embedding task. It can take one of the following values: `queued`, `processing`, `ready`, `failed`, or `canceled`. A `queued` task is waiting to start. This applies to a Marengo 3.5 task that is not part of a batch and to a task created as part of a batch. `canceled` includes Flex tasks that expire before completion; their `cancellation_reason` field is `deadline_exceeded` when available. */
+    /** The status of the embedding task. It can take one of the following values: `queued`, `processing`, `ready`, `failed`, or `canceled`. A `queued` task is waiting to start. This applies to a Marengo 3.5 task that is not part of a batch and to a task created as part of a batch. For a canceled task, the `cancellation_reason` field gives the reason. */
     status?: string;
     createdAt?: TwelvelabsApi.CreatedAt;
     updatedAt?: TwelvelabsApi.UpdatedAt;

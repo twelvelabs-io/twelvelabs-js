@@ -52,18 +52,11 @@ export interface CreateEmbeddingBatchRequest {
     clientBatchId?: TwelvelabsApi.ClientEmbeddingBatchId;
     /** The embedding model to use for every item in this batch. */
     modelName: TwelvelabsApi.embed.v2.CreateEmbeddingBatchRequestModelName;
-    /**
-     * The [service tier](/v1.3/docs/advanced/service-tiers) for every item in this batch.
-     *
-     * **Values**:
-     * - `flex`: Uses capacity that other tasks do not use. Processing ends 24 hours after the platform accepts the task. The platform cancels a task that is not complete by then.
-     *
-     * Use the `standard` and `priority` values only for a task that is not part of a batch.
-     */
+    /** The [service tier](/v1.3/docs/advanced/service-tiers) for every item in this batch. The only valid value is `flex`, which uses capacity that other tasks do not use. Processing ends 24 hours after the batch is created. The platform cancels items that are not complete by then. Any other value returns `400`. */
     serviceTier: TwelvelabsApi.embed.v2.CreateEmbeddingBatchRequestServiceTier;
-    /** The input type for every item in this batch. */
+    /** The input type for every item in this batch. To embed more than one input type, create one batch for each type. */
     inputType: TwelvelabsApi.embed.v2.CreateEmbeddingBatchRequestInputType;
     defaults?: TwelvelabsApi.EmbeddingBatchDefaultsRequest;
-    /** The embedding requests in the batch. Provide 1 to 1,000 requests. In each request, set only the field that matches the `input_type` field: `audio`, `video`, `document`, or `image`. */
+    /** The embedding requests in the batch. Provide 1 to 1,000 requests. */
     requests: TwelvelabsApi.EmbeddingBatchItemRequest[];
 }

@@ -3,7 +3,7 @@
  */
 
 /**
- * Your identifier for the batch. Use it to find the batch after a timeout or a `500` or `503` error on creation. Before retrying creation, list batches with the `client_batch_id` query parameter. A `409` means the identifier is already in use. The response does not return the existing batch, and it does not show whether that batch failed.
+ * Your identifier for the batch. Use it to find the batch after a timeout, a dropped connection, or a `500` or `503` error on creation. Before you retry creation, list batches with the `client_batch_id` query parameter. A `409` means the identifier is already in use.
  *
  * The identifier is unique among your batches until the batch is deleted or its 30-day retention period ends. After that, you can reuse it.
  *

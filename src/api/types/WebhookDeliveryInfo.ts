@@ -6,7 +6,7 @@
  * The delivery status of a webhook endpoint.
  */
 export interface WebhookDeliveryInfo {
-    /** The URL of the webhook endpoint that received the delivery. */
+    /** The URL of the webhook endpoint. */
     url: string;
     /** Indicates whether the platform successfully delivered the webhook. */
     delivered: boolean;

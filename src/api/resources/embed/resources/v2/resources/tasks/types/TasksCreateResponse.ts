@@ -9,16 +9,16 @@ export interface TasksCreateResponse {
     id: string;
     /** The identifier you set when you created the task. Present only if you set one. */
     clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
-    /** The tier applied to this Marengo 3.5 task. Defaults to `standard` when the request omits `service_tier`. Marengo 3.0 responses omit this field. */
+    /** The service tier applied to the task. Only Marengo 3.5 returns this field. */
     serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
-    /** The date and time, in RFC 3339 format, when the 24-hour processing window for a Marengo 3.5 Flex task ends. Omitted for other tiers and Marengo 3.0. */
+    /** The date and time, in RFC 3339 format, when the 24-hour processing window for the task ends. Only a Flex task returns this field. */
     expiresAt?: Date;
     /** The status in the creation response. Marengo 3.5 tasks return `queued`, or `failed` if a source check fails while the platform accepts the task. Marengo 3.0 tasks return `processing`. Retrieve the task for its current status. */
     status: TwelvelabsApi.embed.v2.TasksCreateResponseStatus;
     error?: TwelvelabsApi.EmbeddingTaskError;
     /** The date and time, in RFC 3339 format, when the platform accepted the task. The creation response for a task without a `service_tier` field can omit it. */
     createdAt?: Date;
-    /** The date and time, in RFC 3339 format, when the platform last updated the task. In the creation response, this equals the `created_at` field. Retrieve the task for its current update time. The creation response for a task without a `service_tier` field can omit both timestamps. */
+    /** The date and time, in RFC 3339 format, when the platform last updated the task. In the creation response, this equals the `created_at` field. The creation response for a task without a `service_tier` field can omit it. */
     updatedAt?: Date;
     /** The embedding results. The creation response returns `null`; retrieve the task for the embeddings when its status is `ready`. */
     data?: unknown;

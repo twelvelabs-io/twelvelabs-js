@@ -3,6 +3,6 @@
  */
 
 /**
- * The identifier you set for this item when you created the batch. The value is unique within the batch.
+ * The identifier you set for this item when you created the batch.
  */
 export type EmbeddingBatchCustomId = string;

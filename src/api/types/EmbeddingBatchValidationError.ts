@@ -6,14 +6,14 @@
  * The first validation error in a batch request.
  */
 export interface EmbeddingBatchValidationError {
-    /** A machine-readable request error code. An example is `parameter_invalid`. */
+    /** A machine-readable code that identifies the error. An example is `parameter_invalid`. For details, see the [Error codes](/v1.3/api-reference/error-codes) page. */
     code: string;
     /** A human-readable explanation of the first invalid field or item. */
     message: string;
     /** The path to the invalid request field, when it can be identified. */
     field?: string;
-    /** The zero-based index of the first invalid item. */
+    /** The zero-based position, in the `requests` array, of the first invalid item. Present only when the error is in an item. */
     itemIndex?: number;
-    /** The string identifier supplied for the first invalid item, even when it fails the identifier format check. For malformed JSON or a non-string identifier, the platform cannot always return it. */
+    /** The `custom_id` value of the first invalid item, as you sent it. The response includes it even if the format is invalid. The response can omit this field for malformed JSON or for a value that is not a string. */
     customId?: string;
 }

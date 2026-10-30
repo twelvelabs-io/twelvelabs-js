@@ -3,7 +3,7 @@
  */
 
 /**
- * The service tier applied to every item in this batch.
+ * The [service tier](/v1.3/docs/advanced/service-tiers) applied to every item in this batch.
  */
 export type EmbeddingBatchSummaryServiceTier = "flex";
 export const EmbeddingBatchSummaryServiceTier = {

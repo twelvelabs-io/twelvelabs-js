@@ -30,11 +30,11 @@ export interface TasksListRequest {
      */
     status?: TwelvelabsApi.embed.v2.TasksListRequestStatus;
     /**
-     * Filter tasks that are not part of a batch by the identifier you set when you created the task. The match is exact, and the identifier is unique within your account. A missing task returns an empty `data` array. This filter combines with other list filters using AND and is applied before pagination. The `page_info` counts describe the filtered result set.
+     * Filter tasks that are not part of a batch by the identifier you set when you created the task. The match is exact, and the identifier is unique among your tasks. A missing task returns an empty `data` array. This filter combines with other list filters using AND and is applied before pagination. The `page_info` counts describe the filtered result set.
      */
     clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
     /**
-     * Filter tasks by the batch they were created in. This filter is applied before pagination and combines with other filters using AND. Without the `started_at` or `ended_at` query parameters, it lists all retained tasks created as part of the batch instead of applying the default seven-day list window. Tasks created as part of the batch are available for up to 30 days from batch creation. Deleting a batch with a final status ends API access to its tasks and results earlier.
+     * Filter tasks by the batch they were created in. This filter is applied before pagination and combines with other filters using AND. Without the `started_at` or `ended_at` query parameters, it lists all retained tasks created as part of the batch instead of applying the default seven-day list window. Tasks created as part of the batch are available for up to 30 days from batch creation. After you delete a batch, you can no longer retrieve its tasks or results.
      */
     batchId?: string;
     /**

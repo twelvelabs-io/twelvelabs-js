@@ -20,9 +20,9 @@ export interface EmbeddingBatchVideoDefaultsRequest {
      * **Default**: End of the video file.
      */
     endSec?: number;
-    /** Specifies how the platform divides the video into segments for every item. For the structure and defaults, see the [`segmentation`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.segmentation) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
+    /** Specifies how the platform divides the video into segments for every item. Place the settings in the `temporal` object. For the strategies and defaults, see the [`segmentation`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.segmentation) field of the `POST` method of the `/embed-v2/tasks` endpoint. The structure for Marengo 3.0 on that page does not apply to a batch. */
     segmentation?: TwelvelabsApi.AsyncTemporalSegmentation;
-    /** The types of embeddings to generate for every item. For the values and defaults, see the [`embedding_option`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.embedding_option) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
+    /** The types of embeddings to generate for every item. A batch accepts only the `visual` and `audio` values. For their meaning and the default, see the [`embedding_option`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.embedding_option) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingOption?: TwelvelabsApi.EmbeddingBatchVideoDefaultsRequestEmbeddingOptionItem[];
     /** The scope for which to generate embeddings for every item. For the values and defaults, see the [`embedding_scope`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task#request.body.video.embedding_scope) field of the `POST` method of the `/embed-v2/tasks` endpoint. */
     embeddingScope?: TwelvelabsApi.EmbeddingBatchVideoDefaultsRequestEmbeddingScopeItem[];

@@ -170,34 +170,34 @@ export class Batches {
     }
 
     /**
-     * Use this method to create multiple embeddings in a single call. Each item creates an embedding task. Requires Marengo 3.5.
+     * Use this method to submit many embedding requests in a single call. Each request creates an embedding task. The response contains one batch identifier and one task identifier per request. Use the batch identifier to check progress and retrieve results. Requires Marengo 3.5 and the Plus, Pro, or Enterprise plan.
      *
      * **When to use this method**:
-     * - Embed multiple items with the same settings. All items in a batch have the same input type: `audio`, `video`, `document`, or `image`. To embed more than one input type, create one batch for each type.
-     * - Track one batch instead of multiple tasks.
+     * - Embed many items with the same settings.
+     * - Track one batch instead of many tasks.
      *
      * **Do not use this method for**:
-     * - Results you need by a set time. Batch items use the Flex service tier. The platform starts them with capacity that other tasks do not use, and it does not guarantee a start time or a completion time. Create a separate task for each item with the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead. To use a tier other than Flex, set the `service_tier` field to the `standard` or `priority` value.
+     * - Results you need in the same request. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint for synchronous embedding instead.
      * - One item. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint instead.
-     * - Results in the same request. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-embeddings) method of the `/embed-v2` endpoint for synchronous embedding instead.
+     * - Results you need by a set time. Batch items use the Flex service tier, which does not guarantee a start time or a completion time. Use the [`POST`](/v1.3/api-reference/create-embeddings-v2/create-async-embedding-task) method of the `/embed-v2/tasks` endpoint with the `standard` or `priority` service tier instead.
      *
-     * **Validation**:
-     * - An invalid request returns `400` and creates no batch or task.
-     * - A source failure found while the platform accepts the batch fails that item's task. The rest of the batch continues.
-     * - After the platform accepts the batch, it checks the file at each video or audio URL, the duration of the media, and the number of pages in each PDF. If an item fails one of these checks, its task has the `failed` status.
+     * **Item failures**:
+     * - An item that fails a check has the `failed` status. The other items continue.
+     * - The `201` response shows the failures that the platform finds when it accepts the batch. It checks the file at each video or audio URL, the duration of the media, and the number of pages in each PDF later. To see these failures, use the [`GET`](/v1.3/api-reference/create-embeddings-v2/batches/retrieve-batch-status) method of the `/embed-v2/batches/{batch_id}` endpoint.
      *
-     * **Retention**:
+     * **Retention, retry, and billing**:
      * - The processing window is 24 hours from creation. If it ends while items are unfinished, the batch has the `expired` status, and the platform cancels those items.
-     * - Batches, tasks, and results are available through the API for up to 30 days after creation. Deleting a batch with a final status ends access to its tasks and results earlier.
-     * - Only ready items are billed.
+     * - To process canceled items, submit them in a new batch.
+     * - You can retrieve the batch, its tasks, and its results for 30 days after creation.
+     * - Only `ready` items are billed.
      *
      * **Limits**:
-     * - A batch contains 1 to 1,000 items.
-     * - For the formats, resolutions, file sizes, and duration limits of each item, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements).
-     * - The configured request body limit covers the entire JSON body, including base64 media. It is separate from the size limit of each media file. If the API rejects a body with `413`, its error message reports the configured limit in bytes. Use a URL or supported `asset_id` for media that does not fit.
-     * - A shared limit applies to unfinished Flex tasks in your account, including tasks that are not part of a batch. A canceled task can count until the platform records its final status. A request that exceeds this limit returns `429`.
-     * - When a request-count limit applies, each request to create a batch counts once, regardless of the number of items it contains. The limit is shared with requests that create a task that is not part of a batch. A request that fails before the platform accepts the batch does not count.
-     * - Input-token limits count the usage of completed work, and the platform does not reserve the tokens of a batch when you create it. Items already accepted can finish and take usage above a limit, and a later create request can then return `429`.
+     * - Up to 1,000 requests per batch.
+     * - The [input requirements of Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) apply to each item.
+     * - The request body has a size limit that includes Base64 media. The `message` field of the `413` response includes the limit in bytes. For larger media, use a URL or an asset identifier.
+     * - Unfinished Flex tasks have a shared limit. Each item in a batch counts as one task, as does each task outside a batch. A request that exceeds the limit returns `429`.
+     * - A request to create a batch counts as one request toward a request-count limit, regardless of the number of items. The limit is shared with requests that create a task outside a batch.
+     * - Input-token limits count completed work. The platform does not reserve tokens when you create a batch, so accepted items can finish above a limit. A later create request can then return `429`.
      *
      * @param {TwelvelabsApi.embed.v2.CreateEmbeddingBatchRequest} request
      * @param {Batches.RequestOptions} requestOptions - Request-specific configuration.
@@ -487,7 +487,7 @@ export class Batches {
      *
      * To stop a batch with the `pending` or `processing` status, use the [`POST`](/v1.3/api-reference/create-embeddings-v2/batches/cancel-batch) method of the `/embed-v2/batches/{batch_id}/cancel` endpoint, and wait for the batch to reach a final status.
      *
-     * Batches and their results are available through the API for 30 days after creation.
+     * Batches and their results are available for 30 days after creation.
      *
      * @param {string} batchId - The unique identifier of the batch.
      * @param {Batches.RequestOptions} requestOptions - Request-specific configuration.

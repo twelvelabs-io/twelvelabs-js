@@ -6,8 +6,8 @@
  * The [service tier](/v1.3/docs/advanced/service-tiers) of the task. It sets how the platform schedules and bills the task. Requires Marengo 3.5. If you omit this field, the task uses Standard. If service-tier processing is unavailable, creation returns `403` (`api_not_allowed`) and no task is created.
  *
  * **Values**:
- * - `standard`: The platform processes queued tasks in the order of creation, oldest first.
- * - `priority`: Preferred over Standard tasks when the platform processes queued tasks.
+ * - `standard`: Uses the default scheduling priority.
+ * - `priority`: Uses a higher scheduling priority than Standard. Scheduling priority does not guarantee the order in which tasks start or finish.
  * - `flex`: Uses capacity that other tasks do not use. Processing ends 24 hours after the platform accepts the task. The platform cancels a task that is not complete by then.
  *
  * A `null` value returns `400` (`parameter_invalid`). A request for a tier that your plan does not include returns `403` (`api_not_allowed`).

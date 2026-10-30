@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * One Marengo 3.5 embedding request.
+ * A single embedding request inside a batch. Set the `custom_id` field and the field that matches the `input_type` field of the batch. The fields inside that object override the matching fields in the `defaults` object.
  */
 export type EmbeddingBatchItemRequest =
     | TwelvelabsApi.EmbeddingBatchAudioItemRequest

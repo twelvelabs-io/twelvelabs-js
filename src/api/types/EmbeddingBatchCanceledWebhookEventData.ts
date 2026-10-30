@@ -11,7 +11,7 @@ export interface EmbeddingBatchCanceledWebhookEventData {
     batchId: string;
     /** The identifier you set when you created the batch. Present only if you set one. */
     clientBatchId?: TwelvelabsApi.ClientEmbeddingBatchId;
-    /** The date and time, in RFC 3339 format, when the platform accepted the batch. */
+    /** The date and time, in RFC 3339 format, when the batch was created. */
     createdAt: Date;
     /** The date and time, in RFC 3339 format, when the 24-hour processing window for the batch ends. */
     expiresAt: Date;

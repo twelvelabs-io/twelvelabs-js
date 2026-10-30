@@ -14,7 +14,7 @@ export interface EmbeddingBatchWebhookData {
     clientBatchId?: TwelvelabsApi.ClientEmbeddingBatchId;
     /** The final status of the batch. */
     status: TwelvelabsApi.EmbeddingBatchWebhookDataStatus;
-    /** The date and time, in RFC 3339 format, when the platform accepted the batch. */
+    /** The date and time, in RFC 3339 format, when the batch was created. */
     createdAt: Date;
     /** The date and time, in RFC 3339 format, when the 24-hour processing window for the batch ends. */
     expiresAt: Date;
