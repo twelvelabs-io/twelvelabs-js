@@ -11,7 +11,11 @@ import * as TwelvelabsApi from "../../../../index";
  *         pageLimit: 10,
  *         sortBy: "created_at",
  *         sortOption: "desc",
- *         status: ["queued"]
+ *         status: ["queued"],
+ *         metadata: "{\"hashtags\":[\"summer\",\"travel\"],\"verified\":true}",
+ *         enrichment: "{\"detected_topic\":\"cooking\"}",
+ *         createdAtGte: "2026-09-01T00:00:00Z",
+ *         createdAtLte: "2026-09-30T23:59:59Z"
  *     }
  */
 export interface KnowledgeStoreItemsListRequest {
@@ -57,4 +61,50 @@ export interface KnowledgeStoreItemsListRequest {
     status?:
         | TwelvelabsApi.KnowledgeStoreItemsListRequestStatusItem
         | TwelvelabsApi.KnowledgeStoreItemsListRequestStatusItem[];
+    /**
+     * Filter by custom metadata. Provide a JSON object that maps each key to a value or to a list of values. A list matches any of its values. An item must match all of the keys that you specify.
+     *
+     * A key matches the custom metadata of the source asset (the `metadata` field of the knowledge store item) and the custom metadata of the knowledge store item (the `item_metadata` field). An item matches a key when the value matches in either field.
+     *
+     * A value is a string, a number, or a boolean. The value must have the same type as the value that the item has for the key. For example, the number `2026` does not match the string `"2026"`. If the item has a list for the key, the item matches when the list contains the value.
+     *
+     * The object must have at least one key. A list must have at least one value. If the parameter is not a valid JSON object, or a value is not a string, a number, or a boolean, the platform returns a `422` error.
+     *
+     * URL-encode the object:
+     * ```
+     * metadata=%7B%22hashtags%22%3A%5B%22summer%22%2C%22travel%22%5D%2C%22verified%22%3Atrue%7D
+     * ```
+     */
+    metadata?: string;
+    /**
+     * Filter by enrichment values. The platform extracts these values as the enrichment configuration of the knowledge store defines (the `ingestion_config.enrichment_config` field).
+     *
+     * Provide a JSON object that maps each top-level property that the enrichment configuration defines to a value or to a list of values. Each value follows the rules for the `metadata` parameter. If you specify a key that the enrichment configuration does not define, the platform returns a `422` error.
+     *
+     * The `granularity` keyword of a property sets how often the platform extracts its value. The keyword also sets which items the key matches:
+     *
+     * - `video`: One value for each video. The key matches video items only.
+     * - `image`: One value for each image. The key matches image items only.
+     * - `shot`: One value for each shot of a video. A shot is a continuous part of a video between two scene changes. The key matches video items only. If you specify more than one `shot` key, one shot must have all of the values.
+     *
+     * An item must match all of the keys that you specify. An object with a `video` key and an `image` key matches no items, because an item is a video or an image.
+     *
+     * URL-encode the object:
+     * ```
+     * enrichment=%7B%22detected_topic%22%3A%22cooking%22%7D
+     * ```
+     */
+    enrichment?: string;
+    /**
+     * Return only items created at or after this time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ").
+     *
+     * The creation time is the time when you create the item with the [`POST`](/v1.3/api-reference/knowledge-store-items/create) method of the `/knowledge-stores/{knowledge_store_id}/items` endpoint. It is not the time when the item reaches the `ready` status. To list only items that are ready, also set the `status` parameter to `ready`.
+     */
+    createdAtGte?: Date;
+    /**
+     * Return only items created at or before this time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"). When you use both `created_at_gte` and `created_at_lte`, the `created_at_gte` time must be equal to or earlier than the `created_at_lte` time. Otherwise, the platform returns a `422` error.
+     *
+     * The creation time is the time when you create the item with the [`POST`](/v1.3/api-reference/knowledge-store-items/create) method of the `/knowledge-stores/{knowledge_store_id}/items` endpoint. It is not the time when the item reaches the `ready` status.
+     */
+    createdAtLte?: Date;
 }

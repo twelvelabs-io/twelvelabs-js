@@ -3,7 +3,7 @@
  */
 
 /**
- * The role of the message author. Present when `type` is `message`.
+ * The role of the response message author.
  */
 export type ResponseOutputItemRole = "assistant";
 export const ResponseOutputItemRole = {

@@ -7,10 +7,21 @@ import * as TwelvelabsApi from "../../../../../../../index";
 export interface TasksCreateResponse {
     /** The unique identifier of the embedding task */
     id: string;
-    /** The initial status of the embedding task. */
+    /** The identifier you set when you created the task. Present only if you set one. */
+    clientTaskId?: TwelvelabsApi.ClientEmbeddingTaskId;
+    /** The service tier applied to the task. Only Marengo 3.5 returns this field. */
+    serviceTier?: TwelvelabsApi.EmbeddingServiceTier;
+    /** The date and time, in RFC 3339 format, when the 24-hour processing window for the task ends. Only a Flex task returns this field. */
+    expiresAt?: Date;
+    /** The status in the creation response. Marengo 3.5 tasks return `queued`, or `failed` if a source check fails while the platform accepts the task. Marengo 3.0 tasks return `processing`. Retrieve the task for its current status. */
     status: TwelvelabsApi.embed.v2.TasksCreateResponseStatus;
-    /** An array of embedding results when `status` is `ready`, or `null` when `status` is `processing` or `failed`. */
-    data?: TwelvelabsApi.EmbeddingData[];
+    error?: TwelvelabsApi.EmbeddingTaskError;
+    /** The date and time, in RFC 3339 format, when the platform accepted the task. The creation response for a task without a `service_tier` field can omit it. */
+    createdAt?: Date;
+    /** The date and time, in RFC 3339 format, when the platform last updated the task. In the creation response, this equals the `created_at` field. The creation response for a task without a `service_tier` field can omit it. */
+    updatedAt?: Date;
+    /** The embedding results. The creation response returns `null`; retrieve the task for the embeddings when its status is `ready`. */
+    data?: unknown;
     /** Metadata about the task you created. The platform sets the length of your embeddings when it creates the task, and the `embedding_dimension` field contains that length. Only Marengo 3.5 returns it. */
     metadata?: TwelvelabsApi.embed.v2.TasksCreateResponseMetadata;
 }

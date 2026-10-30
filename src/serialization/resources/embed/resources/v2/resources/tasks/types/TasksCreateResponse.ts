@@ -5,8 +5,10 @@
 import * as serializers from "../../../../../../../index";
 import * as TwelvelabsApi from "../../../../../../../../api/index";
 import * as core from "../../../../../../../../core";
+import { ClientEmbeddingTaskId } from "../../../../../../../types/ClientEmbeddingTaskId";
+import { EmbeddingServiceTier } from "../../../../../../../types/EmbeddingServiceTier";
 import { TasksCreateResponseStatus } from "./TasksCreateResponseStatus";
-import { EmbeddingData } from "../../../../../../../types/EmbeddingData";
+import { EmbeddingTaskError } from "../../../../../../../types/EmbeddingTaskError";
 import { TasksCreateResponseMetadata } from "./TasksCreateResponseMetadata";
 
 export const TasksCreateResponse: core.serialization.ObjectSchema<
@@ -14,16 +16,28 @@ export const TasksCreateResponse: core.serialization.ObjectSchema<
     TwelvelabsApi.embed.v2.TasksCreateResponse
 > = core.serialization.object({
     id: core.serialization.property("_id", core.serialization.string()),
+    clientTaskId: core.serialization.property("client_task_id", ClientEmbeddingTaskId.optional()),
+    serviceTier: core.serialization.property("service_tier", EmbeddingServiceTier.optional()),
+    expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
     status: TasksCreateResponseStatus,
-    data: core.serialization.list(EmbeddingData).optional(),
+    error: EmbeddingTaskError.optional(),
+    createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
+    updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
+    data: core.serialization.unknown().optional(),
     metadata: TasksCreateResponseMetadata.optional(),
 });
 
 export declare namespace TasksCreateResponse {
     export interface Raw {
         _id: string;
+        client_task_id?: ClientEmbeddingTaskId.Raw | null;
+        service_tier?: EmbeddingServiceTier.Raw | null;
+        expires_at?: string | null;
         status: TasksCreateResponseStatus.Raw;
-        data?: EmbeddingData.Raw[] | null;
+        error?: EmbeddingTaskError.Raw | null;
+        created_at?: string | null;
+        updated_at?: string | null;
+        data?: unknown | null;
         metadata?: TasksCreateResponseMetadata.Raw | null;
     }
 }

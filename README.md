@@ -349,17 +349,66 @@ const task = await client.embed.v2.tasks.create({
 
 console.log("Waiting for the embedding task to be ready...");
 let embeddingTask = await client.embed.v2.tasks.retrieve(task.id);
-while (embeddingTask.status !== "ready" && embeddingTask.status !== "failed") {
+while (
+  embeddingTask.status !== "ready" &&
+  embeddingTask.status !== "failed" &&
+  embeddingTask.status !== "canceled"
+) {
   await new Promise((resolve) => setTimeout(resolve, 5000));
   embeddingTask = await client.embed.v2.tasks.retrieve(task.id);
 }
 if (embeddingTask.status === "failed") {
-  throw new Error(`Embedding task failed: id=${task.id}`);
+  throw new Error(`Embedding task failed: id=${task.id}, message=${embeddingTask.error?.message}`);
+}
+if (embeddingTask.status === "canceled") {
+  throw new Error(`Embedding task canceled: id=${task.id}, reason=${embeddingTask.cancellationReason}`);
 }
 console.log(`Embeddings: ${embeddingTask.data?.length}`);
 ```
 
 This example embeds a video. The method also accepts `"audio"`, `"image"`, and `"document"` for PDF files. For the request each type takes, and for segmentation and scope options, see the [Embed content at scale](https://docs.twelvelabs.io/docs/guides/create-embeddings/at-scale) guide.
+
+**Create a batch**
+
+For Marengo 3.5, use `client.embed.v2.batches` to create and manage batches. Each request can include fractional `startSec` and `endSec` offsets:
+
+```js
+const batch = await client.embed.v2.batches.create({
+  clientBatchId: "report_2026_10",
+  modelName: "marengo3.5",
+  serviceTier: "flex",
+  inputType: "video",
+  requests: [
+    {
+      customId: "clip_001",
+      video: {
+        mediaSource: { url: "<YOUR_VIDEO_URL>" },
+        startSec: 2.5,
+        endSec: 7.5
+      }
+    },
+    {
+      customId: "clip_002",
+      video: {
+        mediaSource: { url: "<YOUR_SECOND_VIDEO_URL>" }
+      }
+    }
+  ]
+});
+console.log(`Created batch: ${batch.batchId}`);
+```
+
+Batch creation defaults to no automatic retries because a timeout or `500`/`503` response can leave acceptance uncertain. After one of these responses, look up a batch with its `clientBatchId` before deciding whether to submit again:
+
+```js
+const existing = await client.embed.v2.batches.list({ clientBatchId: "report_2026_10" });
+```
+
+To opt in to retries for a create request, pass `maxRetries` in its request options. Batch reads keep their default retry behavior of up to two retries.
+
+Use `client.embed.v2.batches.retrieve`, `.list`, `.results`, `.cancel`, and `.delete` to manage batch status and JSONL results. Cancel an individual task with `client.embed.v2.tasks.cancel(taskId)`. For batch limits and lifecycle details, see the [Embed v2 batch API reference](https://docs.twelvelabs.io/v1.3/api-reference/create-embeddings-v2/batches).
+
+Embed v2 task and batch responses include `queued` and `canceled` statuses. The SDK preserves unknown response status strings for forward compatibility while keeping request filters limited to documented values; existing task status constants remain available. Batch results are streamed as JSON Lines, with an `error` object on failed result items. The task error model is now `EmbeddingTaskError`; `EmbeddingTaskResponseError` remains as a deprecated type alias for existing imports.
 
 ## Error Handling
 

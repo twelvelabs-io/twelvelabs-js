@@ -5,32 +5,34 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { ResponseOutputItemType } from "./ResponseOutputItemType";
-import { ResponseStatus } from "./ResponseStatus";
 import { ResponseOutputItemRole } from "./ResponseOutputItemRole";
 import { ResponseOutputContentPart } from "./ResponseOutputContentPart";
+import { WebSearchAction } from "./WebSearchAction";
 
 export const ResponseOutputItem: core.serialization.ObjectSchema<
     serializers.ResponseOutputItem.Raw,
     TwelvelabsApi.ResponseOutputItem
-> = core.serialization.object({
-    type: ResponseOutputItemType,
-    id: core.serialization.string(),
-    status: ResponseStatus,
-    role: ResponseOutputItemRole.optional(),
-    phase: core.serialization.string().optional(),
-    content: core.serialization.list(ResponseOutputContentPart).optional(),
-    name: core.serialization.string().optional(),
-    callId: core.serialization.property("call_id", core.serialization.string().optional()),
-    arguments: core.serialization.string().optional(),
-    output: core.serialization.string().optional(),
-});
+> = core.serialization
+    .object({
+        type: core.serialization.string(),
+        id: core.serialization.string(),
+        status: core.serialization.string().optional(),
+        role: ResponseOutputItemRole.optional(),
+        phase: core.serialization.string().optional(),
+        content: core.serialization.list(ResponseOutputContentPart).optional(),
+        name: core.serialization.string().optional(),
+        callId: core.serialization.property("call_id", core.serialization.string().optional()),
+        arguments: core.serialization.string().optional(),
+        output: core.serialization.string().optional(),
+        action: WebSearchAction.optional(),
+    })
+    .passthrough();
 
 export declare namespace ResponseOutputItem {
     export interface Raw {
-        type: ResponseOutputItemType.Raw;
+        type: string;
         id: string;
-        status: ResponseStatus.Raw;
+        status?: string | null;
         role?: ResponseOutputItemRole.Raw | null;
         phase?: string | null;
         content?: ResponseOutputContentPart.Raw[] | null;
@@ -38,5 +40,7 @@ export declare namespace ResponseOutputItem {
         call_id?: string | null;
         arguments?: string | null;
         output?: string | null;
+        action?: WebSearchAction.Raw | null;
+        [key: string]: any;
     }
 }

@@ -8,7 +8,8 @@
  */
 import { TasksWrapper } from "../src/wrapper/resources/TasksWrapper";
 import { EmbedTasksWrapper } from "../src/wrapper/resources/EmbedTasksWrapper";
-import * as TwelvelabsApi from "../src/api";
+import { Tasks as GeneratedEmbedTasks } from "../src/api/resources/embed/resources/tasks/client/Client";
+import { TwelveLabs, TwelvelabsApi, TwelvelabsApiClient } from "../src";
 
 const makeIndexingTask = (
     status: string,
@@ -26,6 +27,484 @@ const makeEmbedStatus = (
     id: "embed_task_123",
     status,
     ...overrides,
+});
+
+describe("TwelveLabs Embed v2 task legacy forbidden errors", () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it.each([
+        ["retrieve", "GET", "/embed-v2/tasks/task_legacy_403"],
+        ["cancel", "POST", "/embed-v2/tasks/task_legacy_403/cancel"],
+    ] as const)("preserves ForbiddenError for task %s", async (operation, method, path) => {
+        const body = { code: "read_not_allowed", message: "Task is outside the account." };
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(JSON.stringify(body), {
+                status: 403,
+                headers: { "Content-Type": "application/json" },
+            }),
+        );
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        let caught: unknown;
+
+        try {
+            const response =
+                operation === "retrieve"
+                    ? client.embed.v2.tasks.retrieve("task_legacy_403")
+                    : client.embed.v2.tasks.cancel("task_legacy_403");
+            await response;
+        } catch (error) {
+            caught = error;
+        }
+
+        expect(caught).toBeInstanceOf(TwelvelabsApi.ForbiddenError);
+        expect(caught).toMatchObject({ statusCode: 403, body });
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(String(fetchSpy.mock.calls[0][0])).toContain(path);
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe(method);
+    });
+});
+
+describe("TwelveLabs public Embed v2 batch resource", () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it("creates a Batch through the package entry point and preserves fractional offsets", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const request: Parameters<typeof client.embed.v2.batches.create>[0] = {
+            modelName: "marengo3.5",
+            serviceTier: "flex",
+            inputType: "video",
+            requests: [
+                {
+                    customId: "clip_001",
+                    video: {
+                        mediaSource: { url: "https://example.com/clip.mp4" },
+                        startSec: 2.5,
+                        endSec: 7.5,
+                    },
+                },
+            ],
+        };
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(
+                JSON.stringify({
+                    batch_id: "batch_001",
+                    model_name: "marengo3.5",
+                    service_tier: "flex",
+                    input_type: "video",
+                    status: "pending",
+                    total_items: 1,
+                    queued_items: 1,
+                    processing_items: 0,
+                    ready_items: 0,
+                    failed_items: 0,
+                    canceled_items: 0,
+                    created_at: "2026-10-28T00:00:00Z",
+                    expires_at: "2026-10-29T00:00:00Z",
+                    items: [{ task_id: "task_001", custom_id: "clip_001", status: "queued" }],
+                }),
+                { status: 201, headers: { "Content-Type": "application/json" } },
+            ),
+        );
+
+        const batch = await client.embed.v2.batches.create(request);
+
+        expect(batch.batchId).toBe("batch_001");
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy.mock.calls[0][0]).toContain("/embed-v2/batches");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("POST");
+        expect(JSON.parse(String(fetchSpy.mock.calls[0][1]?.body))).toMatchObject({
+            requests: [
+                {
+                    custom_id: "clip_001",
+                    video: { start_sec: 2.5, end_sec: 7.5 },
+                },
+            ],
+        });
+    });
+
+    it("does not automatically replay a batch create after a 503 by default", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(JSON.stringify({ code: "service_unavailable", message: "try again later" }), {
+                status: 503,
+                headers: { "Content-Type": "application/json" },
+            }),
+        );
+        const request: Parameters<typeof client.embed.v2.batches.create>[0] = {
+            modelName: "marengo3.5",
+            serviceTier: "flex",
+            inputType: "video",
+            requests: [{ customId: "clip_001", video: { mediaSource: { url: "https://example.com/clip.mp4" } } }],
+        };
+
+        await expect(client.embed.v2.batches.create(request)).rejects.toMatchObject({ statusCode: 503 });
+
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("POST");
+    });
+
+    it("allows callers to opt in to batch-create retries", async () => {
+        jest.useFakeTimers();
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValueOnce(
+                new Response(JSON.stringify({ code: "service_unavailable", message: "try again later" }), {
+                    status: 503,
+                    headers: { "Content-Type": "application/json" },
+                }),
+            )
+            .mockResolvedValueOnce(
+                new Response(JSON.stringify({ code: "service_unavailable", message: "try again later" }), {
+                    status: 503,
+                    headers: { "Content-Type": "application/json" },
+                }),
+            );
+        const request: Parameters<typeof client.embed.v2.batches.create>[0] = {
+            modelName: "marengo3.5",
+            serviceTier: "flex",
+            inputType: "video",
+            requests: [{ customId: "clip_001", video: { mediaSource: { url: "https://example.com/clip.mp4" } } }],
+        };
+
+        const createPromise = client.embed.v2.batches.create(request, { maxRetries: 1 });
+        const createRejected = expect(createPromise).rejects.toMatchObject({ statusCode: 503 });
+        await jest.runAllTimersAsync();
+        await createRejected;
+
+        expect(fetchSpy).toHaveBeenCalledTimes(2);
+        expect(fetchSpy.mock.calls[0][1]?.body).toBe(fetchSpy.mock.calls[1][1]?.body);
+    });
+
+    it("keeps the default retries for batch reads", async () => {
+        jest.useFakeTimers();
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValueOnce(
+                new Response(JSON.stringify({ code: "service_unavailable", message: "try again later" }), {
+                    status: 503,
+                    headers: { "Content-Type": "application/json" },
+                }),
+            )
+            .mockResolvedValueOnce(
+                new Response(JSON.stringify({ data: [], page_info: { page: 1, total_page: 1, total_results: 0 } }), {
+                    status: 200,
+                    headers: { "Content-Type": "application/json" },
+                }),
+            );
+
+        const listPromise = client.embed.v2.batches.list({});
+        await jest.runAllTimersAsync();
+        const result = await listPromise;
+
+        expect(result.data).toEqual([]);
+        expect(fetchSpy).toHaveBeenCalledTimes(2);
+        expect(fetchSpy.mock.calls.every((call) => call[1]?.method === "GET")).toBe(true);
+    });
+
+    it("preserves unknown batch and item statuses from the API", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(
+                JSON.stringify({
+                    batch_id: "batch_002",
+                    model_name: "marengo3.5",
+                    service_tier: "flex",
+                    input_type: "video",
+                    status: "future_batch_status",
+                    total_items: 1,
+                    queued_items: 1,
+                    processing_items: 0,
+                    ready_items: 0,
+                    failed_items: 0,
+                    canceled_items: 0,
+                    created_at: "2026-10-28T00:00:00Z",
+                    expires_at: "2026-10-29T00:00:00Z",
+                    items: [{ task_id: "task_002", custom_id: "clip_002", status: "future_item_status" }],
+                }),
+                { status: 200, headers: { "Content-Type": "application/json" } },
+            ),
+        );
+
+        const batch = await client.embed.v2.batches.retrieve("batch_002");
+
+        expect(batch.status).toBe("future_batch_status");
+        expect(batch.items?.[0]?.status).toBe("future_item_status");
+        expect(fetchSpy.mock.calls[0][0]).toContain("/embed-v2/batches/batch_002");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("GET");
+    });
+
+    it("keeps the list status request filter limited to documented values", async () => {
+        const futureResponseStatus: TwelvelabsApi.EmbeddingTaskResponseStatus = "future_task_status";
+        const futureBatchStatus: TwelvelabsApi.EmbeddingBatchStatus = "future_batch_status";
+        const legacyTaskError: TwelvelabsApi.EmbeddingTaskResponseError = { message: "failed" };
+        const taskError: TwelvelabsApi.EmbeddingTaskError = { code: "INTERNAL_SERVER_ERROR", message: "failed" };
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const request: NonNullable<Parameters<typeof client.embed.v2.batches.list>[0]> = {
+            // @ts-expect-error Request filters stay strict even when response statuses are forward compatible.
+            status: "future_batch_status",
+        };
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(JSON.stringify({ data: [], page_info: { page: 1, total_page: 1, total_results: 0 } }), {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }),
+        );
+        const validRequest: Parameters<typeof client.embed.v2.batches.list>[0] = {
+            clientBatchId: "batch_external_001",
+            page: 1,
+            pageLimit: 1,
+        };
+        await client.embed.v2.batches.list(validRequest);
+
+        expect(request.status).toBe("future_batch_status");
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy.mock.calls[0][0]).toContain("/embed-v2/batches");
+        expect(fetchSpy.mock.calls[0][0]).toContain("client_batch_id=batch_external_001");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("GET");
+        expect([futureResponseStatus, futureBatchStatus, legacyTaskError.message, taskError.code]).toEqual([
+            "future_task_status",
+            "future_batch_status",
+            "failed",
+            "INTERNAL_SERVER_ERROR",
+        ]);
+    });
+
+    it("keeps the existing public task status constants", () => {
+        expect(TwelvelabsApi.EmbeddingTaskResponseStatus.Processing).toBe("processing");
+        expect(TwelvelabsApi.EmbeddingTaskResponseStatus.Ready).toBe("ready");
+        expect(TwelvelabsApi.EmbeddingTaskResponseStatus.Failed).toBe("failed");
+        expect(TwelvelabsApi.EmbeddingTaskResponseStatus.Queued).toBe("queued");
+        expect(TwelvelabsApi.EmbeddingTaskResponseStatus.Canceled).toBe("canceled");
+        expect(TwelvelabsApi.embed.v2.TasksCreateResponseStatus.Queued).toBe("queued");
+        expect(TwelvelabsApi.embed.v2.TasksCreateResponseStatus.Processing).toBe("processing");
+        expect(TwelvelabsApi.embed.v2.tasks.TasksCreateResponseStatus.Processing).toBe("processing");
+        expect(TwelvelabsApi.EmbeddingBatchStatus.Pending).toBe("pending");
+        expect(TwelvelabsApi.EmbeddingBatchItemStatus.Queued).toBe("queued");
+    });
+
+    it("streams multiple JSONL results through the Embed v2 batch resource", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const lines = [
+            { task_id: "task_003", custom_id: "clip_003", status: "ready" },
+            { task_id: "task_004", custom_id: "clip_004", status: "future_item_status" },
+            {
+                task_id: "task_005",
+                custom_id: "clip_005",
+                status: "failed",
+                error: { code: "source_error", message: "The source could not be processed." },
+            },
+        ];
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(`${lines.map((line) => JSON.stringify(line)).join("\n")}\n`, {
+                status: 200,
+                headers: { "Content-Type": "application/x-ndjson" },
+            }),
+        );
+
+        const results = await client.embed.v2.batches.results("batch_003");
+        const items = [];
+        for await (const item of results) {
+            items.push(item);
+        }
+
+        expect(items).toHaveLength(3);
+        expect(items.map((item) => item.status)).toEqual(["ready", "future_item_status", "failed"]);
+        expect(items.map((item) => item.customId)).toEqual(["clip_003", "clip_004", "clip_005"]);
+        expect(items[2].error).toEqual({ code: "source_error", message: "The source could not be processed." });
+        expect(fetchSpy.mock.calls[0][0]).toContain("/embed-v2/batches/batch_003/results");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("GET");
+    });
+
+    it("forwards batch and task cancellation through their Embed v2 resources", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValueOnce(
+                new Response(
+                    JSON.stringify({
+                        batch_id: "batch_004",
+                        model_name: "marengo3.5",
+                        service_tier: "flex",
+                        input_type: "video",
+                        status: "canceling",
+                        total_items: 1,
+                        queued_items: 1,
+                        processing_items: 0,
+                        ready_items: 0,
+                        failed_items: 0,
+                        canceled_items: 0,
+                        created_at: "2026-10-28T00:00:00Z",
+                        expires_at: "2026-10-29T00:00:00Z",
+                        items: [{ task_id: "task_004", custom_id: "clip_004", status: "queued" }],
+                    }),
+                    { status: 200, headers: { "Content-Type": "application/json" } },
+                ),
+            )
+            .mockResolvedValueOnce(
+                new Response(
+                    JSON.stringify({ _id: "task_005", status: "canceled", cancellation_reason: "user_requested" }),
+                    { status: 200, headers: { "Content-Type": "application/json" } },
+                ),
+            );
+
+        const batch = await client.embed.v2.batches.cancel("batch_004");
+        const task = await client.embed.v2.tasks.cancel("task_005");
+
+        expect(batch.status).toBe("canceling");
+        expect(task.id).toBe("task_005");
+        expect(task.cancellationReason).toBe("user_requested");
+        expect(fetchSpy).toHaveBeenCalledTimes(2);
+        expect(fetchSpy.mock.calls[0][0]).toContain("/embed-v2/batches/batch_004/cancel");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("POST");
+        expect(fetchSpy.mock.calls[1][0]).toContain("/embed-v2/tasks/task_005/cancel");
+        expect(fetchSpy.mock.calls[1][1]?.method).toBe("POST");
+    });
+
+    it("deletes batches through the Embed v2 batch resource", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(new Response(null, { status: 204 }));
+
+        await client.embed.v2.batches.delete("batch_006");
+
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy.mock.calls[0][0]).toContain("/embed-v2/batches/batch_006");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("DELETE");
+    });
+
+    it("exposes knowledge store item tags through the public wrapper", async () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(JSON.stringify({ data: [], page_info: { page: 1, total_page: 1, total_results: 0 } }), {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }),
+        );
+
+        await client.knowledgeStoreItemTags.list("ks_001", "item_001");
+
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy.mock.calls[0][0]).toContain("/knowledge-stores/ks_001/items/item_001/tags");
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("GET");
+    });
+});
+
+describe("public low-level Embed v2 batch resource", () => {
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    const request: Parameters<TwelvelabsApiClient["embed"]["v2"]["batches"]["create"]>[0] = {
+        modelName: "marengo3.5",
+        serviceTier: "flex",
+        inputType: "video",
+        requests: [{ customId: "clip_001", video: { mediaSource: { url: "https://example.com/clip.mp4" } } }],
+    };
+
+    it("does not automatically replay batch creation and keeps legacy tasks generated", async () => {
+        const client = new TwelvelabsApiClient({ apiKey: "test-api-key" });
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(JSON.stringify({ code: "service_unavailable", message: "try again later" }), {
+                status: 503,
+                headers: { "Content-Type": "application/json" },
+            }),
+        );
+
+        await expect(client.embed.v2.batches.create(request)).rejects.toMatchObject({ statusCode: 503 });
+
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy.mock.calls[0][1]?.method).toBe("POST");
+        expect(client.embed.tasks).toBeInstanceOf(GeneratedEmbedTasks);
+        expect(client.embed.tasks).not.toBeInstanceOf(EmbedTasksWrapper);
+    });
+
+    it("preserves withRawResponse on the public low-level batch client", async () => {
+        const client = new TwelvelabsApiClient({ apiKey: "test-api-key" });
+        const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue(
+            new Response(
+                JSON.stringify({
+                    batch_id: "batch_raw_001",
+                    model_name: "marengo3.5",
+                    service_tier: "flex",
+                    input_type: "video",
+                    status: "pending",
+                    total_items: 1,
+                    queued_items: 1,
+                    processing_items: 0,
+                    ready_items: 0,
+                    failed_items: 0,
+                    canceled_items: 0,
+                    created_at: "2026-10-30T00:00:00Z",
+                    expires_at: "2026-10-31T00:00:00Z",
+                    items: [{ task_id: "task_raw_001", custom_id: "clip_001", status: "queued" }],
+                }),
+                { status: 201, headers: { "Content-Type": "application/json" } },
+            ),
+        );
+
+        const result = await client.embed.v2.batches.create(request).withRawResponse();
+
+        expect(result.data.batchId).toBe("batch_raw_001");
+        expect(result.rawResponse.status).toBe(201);
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe("TwelveLabs public resource forwarding", () => {
+    it("forwards every generated resource getter through the public client", () => {
+        const client = new TwelveLabs({ apiKey: "test-api-key" });
+        const publicResources = client as unknown as Record<string, unknown>;
+        const generatedResourceGetters = Object.entries(Object.getOwnPropertyDescriptors(TwelvelabsApiClient.prototype))
+            .filter(([, descriptor]) => typeof descriptor.get === "function")
+            .map(([name]) => name);
+        const missingResources = generatedResourceGetters.filter((name) => publicResources[name] === undefined);
+
+        expect(missingResources).toEqual([]);
+    });
+});
+
+describe("public Responses enum compatibility", () => {
+    it("keeps the package-root TwelvelabsApi runtime constants and type imports", () => {
+        const outputType: TwelvelabsApi.ResponseOutputItemType = TwelvelabsApi.ResponseOutputItemType.Message;
+        const outputRole: TwelvelabsApi.ResponseOutputItemRole = TwelvelabsApi.ResponseOutputItemRole.Assistant;
+        const annotationType: TwelvelabsApi.ResponseAnnotationType = TwelvelabsApi.ResponseAnnotationType.VideoCitation;
+        const expandedOutputItem: TwelvelabsApi.ResponseOutputItem = {
+            id: "ws_007",
+            type: "jockey:web_search",
+            status: "searching",
+        };
+        const expandedAnnotation: TwelvelabsApi.ResponseAnnotation = {
+            type: "url_citation",
+            startIndex: 0,
+            endIndex: 9,
+            title: "Example",
+            url: "https://example.com",
+        };
+        // @ts-expect-error The legacy exported output type remains the base-branch enum, not the expanded union.
+        const addedOutputType: TwelvelabsApi.ResponseOutputItemType = "jockey:web_search";
+        // @ts-expect-error URL citations were added later and are not in the legacy exported annotation type.
+        const addedAnnotationType: TwelvelabsApi.ResponseAnnotationType = "url_citation";
+
+        expect(TwelvelabsApi.ResponseOutputItemType).toEqual({
+            Message: "message",
+            FunctionCall: "function_call",
+            FunctionCallOutput: "function_call_output",
+        });
+        expect(TwelvelabsApi.ResponseOutputItemRole).toEqual({ Assistant: "assistant" });
+        expect(TwelvelabsApi.ResponseAnnotationType).toEqual({
+            VideoCitation: "video_citation",
+            ImageCitation: "image_citation",
+            CollectionCitation: "collection_citation",
+        });
+        expect([outputType, outputRole, annotationType]).toEqual(["message", "assistant", "video_citation"]);
+        expect([expandedOutputItem.type, expandedAnnotation.type]).toEqual(["jockey:web_search", "url_citation"]);
+        expect([addedOutputType, addedAnnotationType]).toEqual(["jockey:web_search", "url_citation"]);
+    });
 });
 
 describe("TasksWrapper.waitForDone", () => {

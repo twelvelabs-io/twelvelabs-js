@@ -3,11 +3,10 @@
  */
 
 import * as errors from "../../errors/index";
-import * as TwelvelabsApi from "../index";
 import * as core from "../../core";
 
 export class UnprocessableEntityError extends errors.TwelvelabsApiError {
-    constructor(body: TwelvelabsApi.UnprocessableEntityErrorBody, rawResponse?: core.RawResponse) {
+    constructor(body?: unknown, rawResponse?: core.RawResponse) {
         super({
             message: "UnprocessableEntityError",
             statusCode: 422,

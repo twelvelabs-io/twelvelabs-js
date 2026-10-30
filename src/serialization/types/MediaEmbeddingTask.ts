@@ -5,6 +5,10 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { ClientEmbeddingTaskId } from "./ClientEmbeddingTaskId";
+import { EmbeddingBatchCustomId } from "./EmbeddingBatchCustomId";
+import { EmbeddingServiceTier } from "./EmbeddingServiceTier";
+import { EmbeddingTaskCancellationReason } from "./EmbeddingTaskCancellationReason";
 import { CreatedAt } from "./CreatedAt";
 import { UpdatedAt } from "./UpdatedAt";
 import { MediaEmbeddingTaskVideoEmbedding } from "./MediaEmbeddingTaskVideoEmbedding";
@@ -17,6 +21,12 @@ export const MediaEmbeddingTask: core.serialization.ObjectSchema<
     TwelvelabsApi.MediaEmbeddingTask
 > = core.serialization.object({
     id: core.serialization.property("_id", core.serialization.string().optional()),
+    clientTaskId: core.serialization.property("client_task_id", ClientEmbeddingTaskId.optional()),
+    batchId: core.serialization.property("batch_id", core.serialization.string().optional()),
+    customId: core.serialization.property("custom_id", EmbeddingBatchCustomId.optional()),
+    serviceTier: core.serialization.property("service_tier", EmbeddingServiceTier.optional()),
+    expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
+    cancellationReason: core.serialization.property("cancellation_reason", EmbeddingTaskCancellationReason.optional()),
     modelName: core.serialization.property("model_name", core.serialization.string().optional()),
     status: core.serialization.string().optional(),
     createdAt: core.serialization.property("created_at", CreatedAt.optional()),
@@ -33,6 +43,12 @@ export const MediaEmbeddingTask: core.serialization.ObjectSchema<
 export declare namespace MediaEmbeddingTask {
     export interface Raw {
         _id?: string | null;
+        client_task_id?: ClientEmbeddingTaskId.Raw | null;
+        batch_id?: string | null;
+        custom_id?: EmbeddingBatchCustomId.Raw | null;
+        service_tier?: EmbeddingServiceTier.Raw | null;
+        expires_at?: string | null;
+        cancellation_reason?: EmbeddingTaskCancellationReason.Raw | null;
         model_name?: string | null;
         status?: string | null;
         created_at?: CreatedAt.Raw | null;

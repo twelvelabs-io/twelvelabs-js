@@ -3,11 +3,10 @@
  */
 
 import * as errors from "../../errors/index";
-import * as TwelvelabsApi from "../index";
 import * as core from "../../core";
 
 export class ServiceUnavailableError extends errors.TwelvelabsApiError {
-    constructor(body: TwelvelabsApi.ErrorResponse, rawResponse?: core.RawResponse) {
+    constructor(body?: unknown, rawResponse?: core.RawResponse) {
         super({
             message: "ServiceUnavailableError",
             statusCode: 503,

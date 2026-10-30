@@ -43,7 +43,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         multiInput: {
  *             mediaSources: [{
  *                     mediaType: "image",
- *                     assetId: "1234567890"
+ *                     assetId: "68f4ddaf8aaa60d33df0e803"
  *                 }]
  *         }
  *     }
@@ -145,7 +145,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *         modelName: "marengo3.0",
  *         image: {
  *             mediaSource: {
- *                 assetId: "1234567890"
+ *                 assetId: "68f4ddaf8aaa60d33df0e803"
  *             }
  *         }
  *     }
@@ -209,7 +209,7 @@ import * as TwelvelabsApi from "../../../../../../index";
  *             segmentation: {
  *                 strategy: "dynamic",
  *                 dynamic: {
- *                     minDurationSec: 1
+ *                     minDurationSec: 1.1
  *                 }
  *             },
  *             embeddingOption: ["visual", "audio", "transcription"],
@@ -329,7 +329,7 @@ export interface CreateEmbeddingsRequest {
      * Set this parameter to `true` to include a per-dimension uncertainty vector in the [`data[].embedding_uncertainty`](/v1.3/api-reference/create-embeddings-v2/create-embeddings#response.body.data.embedding-uncertainty) field of the response. The vector has the same length as the `embedding` array. A higher value indicates lower confidence in that dimension. Requires Marengo 3.5.
      *
      * **Requirements**:
-     * - Set this parameter to `true` only for a text-only or media-only request. If you combine text with media sources, the platform returns a `400` error.
+     * - Uncertainty vectors are supported for text-only input or a single image. For `multi_input`, provide `input_text` without `media_sources`, or one image source without `input_text`. Combining text with media, supplying multiple media sources, or using an audio/video source in `multi_input` returns a `400` error.
      * - The platform returns a `400` error if your request includes a document, whether PDF, plain text, or Markdown.
      */
     embeddingUncertainty?: boolean;

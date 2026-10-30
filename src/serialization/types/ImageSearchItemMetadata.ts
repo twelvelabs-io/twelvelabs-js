@@ -14,11 +14,13 @@ export const ImageSearchItemMetadata: core.serialization.ObjectSchema<
 > = core.serialization.object({
     system: ImageSearchSystemMetadata.optional(),
     user: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
+    item: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
 export declare namespace ImageSearchItemMetadata {
     export interface Raw {
         system?: ImageSearchSystemMetadata.Raw | null;
         user?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
+        item?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

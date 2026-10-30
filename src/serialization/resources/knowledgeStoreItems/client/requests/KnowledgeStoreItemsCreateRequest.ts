@@ -14,6 +14,10 @@ export const KnowledgeStoreItemsCreateRequest: core.serialization.Schema<
 > = core.serialization.object({
     assetType: core.serialization.property("asset_type", KnowledgeStoreItemAssetType.optional()),
     assetId: core.serialization.property("asset_id", core.serialization.string()),
+    itemMetadata: core.serialization.property(
+        "item_metadata",
+        core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
+    ),
     metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
 });
 
@@ -21,6 +25,7 @@ export declare namespace KnowledgeStoreItemsCreateRequest {
     export interface Raw {
         asset_type?: KnowledgeStoreItemAssetType.Raw | null;
         asset_id: string;
+        item_metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
         metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
     }
 }

@@ -44,6 +44,8 @@ export class Responses {
      *
      * **Streaming**: Set the `stream` parameter to `true` to receive the response as [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE). The reply streams in as a sequence of typed events and ends with a `data: [DONE]` message.
      *
+     * **Web sources**: Jockey can search public web sources while it generates a response. To allow this, include `{ "type": "jockey:web_search" }` in the `tools` array. The response can then cite these sources alongside content from the knowledge store, as `url_citation` annotations. Jockey decides whether to use an available tool, so enabling web search does not guarantee a search. To make a search more likely, explicitly tell Jockey what information to look up in `input` or `instructions`. A prompt that asks Jockey to search the web does not enable web search by itself. If you omit `tools` or pass `[]`, Jockey cannot search public web sources, even when the prompt requests it.
+     *
      * <Accordion title="Example response">
      * ```json
      * {
@@ -82,9 +84,9 @@ export class Responses {
      *       ]
      *     }
      *   ],
-     *   "usage": {
-     *     "input_tokens": 12625,
-     *     "output_tokens": 289
+     *   "billing": {
+     *     "amount": "0.008118",
+     *     "currency": "USD"
      *   },
      *   "created_at": "2026-07-11T03:13:57Z"
      * }
@@ -112,10 +114,10 @@ export class Responses {
      * data: {"type":"response.output_text.done","sequence_number":124,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1]."}
      *
      * event: response.content_part.done
-     * data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
+     * data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
      *
      * event: response.completed
-     * data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"usage":{"input_tokens":12625,"output_tokens":289},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
+     * data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"billing":{"amount":"0.020912","currency":"USD"},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
      *
      * data: [DONE]
      * ```
@@ -143,8 +145,8 @@ export class Responses {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -187,6 +189,8 @@ export class Responses {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -223,6 +227,8 @@ export class Responses {
      * **Selections**: By default, Jockey reasons over every item in the knowledge store. To narrow the scope, set the optional `selections` parameter to specific items or item collections, then reference each one with a `{{sel:N}}` token in the `content` field of an `input` item (`N` is the zero-based position in the `selections` array). The narrowing is applied at the prompt level; the knowledge store does not block access to other items.
      *
      * **Streaming**: Set the `stream` parameter to `true` to receive the response as [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE). The reply streams in as a sequence of typed events and ends with a `data: [DONE]` message.
+     *
+     * **Web sources**: Jockey can search public web sources while it generates a response. To allow this, include `{ "type": "jockey:web_search" }` in the `tools` array. The response can then cite these sources alongside content from the knowledge store, as `url_citation` annotations. Jockey decides whether to use an available tool, so enabling web search does not guarantee a search. To make a search more likely, explicitly tell Jockey what information to look up in `input` or `instructions`. A prompt that asks Jockey to search the web does not enable web search by itself. If you omit `tools` or pass `[]`, Jockey cannot search public web sources, even when the prompt requests it.
      *
      * <Accordion title="Example response">
      * ```json
@@ -262,9 +268,9 @@ export class Responses {
      *       ]
      *     }
      *   ],
-     *   "usage": {
-     *     "input_tokens": 12625,
-     *     "output_tokens": 289
+     *   "billing": {
+     *     "amount": "0.008118",
+     *     "currency": "USD"
      *   },
      *   "created_at": "2026-07-11T03:13:57Z"
      * }
@@ -292,10 +298,10 @@ export class Responses {
      * data: {"type":"response.output_text.done","sequence_number":124,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1]."}
      *
      * event: response.content_part.done
-     * data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
+     * data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
      *
      * event: response.completed
-     * data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"usage":{"input_tokens":12625,"output_tokens":289},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
+     * data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"billing":{"amount":"0.020912","currency":"USD"},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
      *
      * data: [DONE]
      * ```
@@ -305,6 +311,7 @@ export class Responses {
      * @param {Responses.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      *
      * @example
      *     await client.responses.create({
@@ -312,7 +319,11 @@ export class Responses {
      *         input: [{
      *                 type: "message",
      *                 role: "user",
-     *                 content: "Give me the highlight."
+     *                 content: "Summarize this collection and verify one claim using an official web source."
+     *             }],
+     *         include: ["intermediate_outputs"],
+     *         tools: [{
+     *                 type: "jockey:web_search"
      *             }]
      *     })
      */
@@ -338,8 +349,8 @@ export class Responses {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -371,6 +382,8 @@ export class Responses {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,

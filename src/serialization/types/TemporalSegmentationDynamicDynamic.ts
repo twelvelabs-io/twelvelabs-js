@@ -10,11 +10,11 @@ export const TemporalSegmentationDynamicDynamic: core.serialization.ObjectSchema
     serializers.TemporalSegmentationDynamicDynamic.Raw,
     TwelvelabsApi.TemporalSegmentationDynamicDynamic
 > = core.serialization.object({
-    minDurationSec: core.serialization.property("min_duration_sec", core.serialization.number()),
+    minDurationSec: core.serialization.property("min_duration_sec", core.serialization.number().optional()),
 });
 
 export declare namespace TemporalSegmentationDynamicDynamic {
     export interface Raw {
-        min_duration_sec: number;
+        min_duration_sec?: number | null;
     }
 }

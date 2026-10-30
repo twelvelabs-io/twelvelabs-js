@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Token counts for the request. Only Marengo 3.5 returns this object.
+ * Token counts for the request. Only Marengo 3.5 returns this field.
  */
 export interface EmbeddingUsage {
     /**

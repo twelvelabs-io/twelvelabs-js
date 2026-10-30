@@ -5,12 +5,13 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { EmbeddingTaskResponseStatusZero } from "./EmbeddingTaskResponseStatusZero";
 
 export const EmbeddingTaskResponseStatus: core.serialization.Schema<
     serializers.EmbeddingTaskResponseStatus.Raw,
     TwelvelabsApi.EmbeddingTaskResponseStatus
-> = core.serialization.enum_(["processing", "ready", "failed"]);
+> = core.serialization.undiscriminatedUnion([EmbeddingTaskResponseStatusZero, core.serialization.string()]);
 
 export declare namespace EmbeddingTaskResponseStatus {
-    export type Raw = "processing" | "ready" | "failed";
+    export type Raw = EmbeddingTaskResponseStatusZero.Raw | string;
 }

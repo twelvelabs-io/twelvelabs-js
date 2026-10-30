@@ -3,7 +3,7 @@
  */
 
 /**
- * The type of output item.
+ * The type of a standard response output item.
  */
 export type ResponseOutputItemType = "message" | "function_call" | "function_call_output";
 export const ResponseOutputItemType = {

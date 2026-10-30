@@ -7,6 +7,8 @@ import * as TwelvelabsApi from "../../../../../../../../../api/index";
 import * as core from "../../../../../../../../../core";
 import { CreateAsyncEmbeddingRequestInputType } from "../../types/CreateAsyncEmbeddingRequestInputType";
 import { CreateAsyncEmbeddingRequestModelName } from "../../types/CreateAsyncEmbeddingRequestModelName";
+import { EmbeddingServiceTier } from "../../../../../../../../types/EmbeddingServiceTier";
+import { ClientEmbeddingTaskId } from "../../../../../../../../types/ClientEmbeddingTaskId";
 import { AsyncAudioInputRequest } from "../../../../../../../../types/AsyncAudioInputRequest";
 import { AsyncVideoInputRequest } from "../../../../../../../../types/AsyncVideoInputRequest";
 import { AsyncDocumentInputRequest } from "../../../../../../../../types/AsyncDocumentInputRequest";
@@ -20,6 +22,8 @@ export const CreateAsyncEmbeddingRequest: core.serialization.Schema<
     modelName: core.serialization.property("model_name", CreateAsyncEmbeddingRequestModelName),
     embeddingUncertainty: core.serialization.property("embedding_uncertainty", core.serialization.boolean().optional()),
     embeddingDimension: core.serialization.property("embedding_dimension", core.serialization.number().optional()),
+    serviceTier: core.serialization.property("service_tier", EmbeddingServiceTier.optional()),
+    clientTaskId: core.serialization.property("client_task_id", ClientEmbeddingTaskId.optional()),
     audio: AsyncAudioInputRequest.optional(),
     video: AsyncVideoInputRequest.optional(),
     document: AsyncDocumentInputRequest.optional(),
@@ -32,6 +36,8 @@ export declare namespace CreateAsyncEmbeddingRequest {
         model_name: CreateAsyncEmbeddingRequestModelName.Raw;
         embedding_uncertainty?: boolean | null;
         embedding_dimension?: number | null;
+        service_tier?: EmbeddingServiceTier.Raw | null;
+        client_task_id?: ClientEmbeddingTaskId.Raw | null;
         audio?: AsyncAudioInputRequest.Raw | null;
         video?: AsyncVideoInputRequest.Raw | null;
         document?: AsyncDocumentInputRequest.Raw | null;

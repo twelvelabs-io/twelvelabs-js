@@ -8,7 +8,7 @@ import * as TwelvelabsApi from "../index";
  * An object containing metadata associated with the embedding.
  */
 export interface AudioEmbeddingMetadata extends TwelvelabsApi.BaseEmbeddingMetadata {
-    /** The type of the embedding. It can take one of the following values: ['audio'] or ['transcription']. */
+    /** The types of embeddings generated for the audio. The array can contain `audio`, `transcription`, or both. */
     audioEmbeddingOption?: string[];
     /** The scope you've specified in the request. */
     audioEmbeddingScope?: string[];

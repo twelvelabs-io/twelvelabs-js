@@ -20,6 +20,7 @@ export class TwelveLabs {
     public readonly imports: TwelvelabsApiClient["imports"];
     public readonly knowledgeStores: TwelvelabsApiClient["knowledgeStores"];
     public readonly knowledgeStoreItems: TwelvelabsApiClient["knowledgeStoreItems"];
+    public readonly knowledgeStoreItemTags: TwelvelabsApiClient["knowledgeStoreItemTags"];
     public readonly knowledgeStoreItemCollections: TwelvelabsApiClient["knowledgeStoreItemCollections"];
     public readonly responses: TwelvelabsApiClient["responses"];
     public readonly multipartUpload: MultipartUploadWrapper;
@@ -44,7 +45,7 @@ export class TwelveLabs {
         this.analyze = this.client.analyze.bind(this.client);
         this.analyzeStream = this.client.analyzeStream.bind(this.client);
         this.analyzeAsync = this.client.analyzeAsync;
-        
+
         this.assets = this.client.assets;
         this.entityCollections = this.client.entityCollections;
         this.dataConnectors = this.client.dataConnectors;
@@ -55,6 +56,7 @@ export class TwelveLabs {
         // `create` and `createStream`.
         this.knowledgeStores = this.client.knowledgeStores;
         this.knowledgeStoreItems = this.client.knowledgeStoreItems;
+        this.knowledgeStoreItemTags = this.client.knowledgeStoreItemTags;
         this.knowledgeStoreItemCollections = this.client.knowledgeStoreItemCollections;
         this.responses = this.client.responses;
 

@@ -5,37 +5,53 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { ClientEmbeddingTaskId } from "./ClientEmbeddingTaskId";
+import { EmbeddingBatchCustomId } from "./EmbeddingBatchCustomId";
+import { EmbeddingServiceTier } from "./EmbeddingServiceTier";
 import { EmbeddingTaskResponseStatus } from "./EmbeddingTaskResponseStatus";
 import { CreatedAt } from "./CreatedAt";
 import { UpdatedAt } from "./UpdatedAt";
 import { EmbeddingData } from "./EmbeddingData";
-import { EmbeddingUsage } from "./EmbeddingUsage";
+import { EmbeddingTaskUsage } from "./EmbeddingTaskUsage";
 import { EmbeddingTaskMediaMetadata } from "./EmbeddingTaskMediaMetadata";
-import { EmbeddingTaskResponseError } from "./EmbeddingTaskResponseError";
+import { EmbeddingTaskError } from "./EmbeddingTaskError";
+import { EmbeddingTaskCancellationReason } from "./EmbeddingTaskCancellationReason";
 
 export const EmbeddingTaskResponse: core.serialization.ObjectSchema<
     serializers.EmbeddingTaskResponse.Raw,
     TwelvelabsApi.EmbeddingTaskResponse
 > = core.serialization.object({
     id: core.serialization.property("_id", core.serialization.string()),
+    clientTaskId: core.serialization.property("client_task_id", ClientEmbeddingTaskId.optional()),
+    batchId: core.serialization.property("batch_id", core.serialization.string().optional()),
+    customId: core.serialization.property("custom_id", EmbeddingBatchCustomId.optional()),
+    serviceTier: core.serialization.property("service_tier", EmbeddingServiceTier.optional()),
+    expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
     status: EmbeddingTaskResponseStatus,
     createdAt: core.serialization.property("created_at", CreatedAt.optional()),
     updatedAt: core.serialization.property("updated_at", UpdatedAt.optional()),
     data: core.serialization.list(EmbeddingData).optional(),
-    usage: EmbeddingUsage.optional(),
+    usage: EmbeddingTaskUsage.optional(),
     metadata: EmbeddingTaskMediaMetadata.optional(),
-    error: EmbeddingTaskResponseError.optional(),
+    error: EmbeddingTaskError.optional(),
+    cancellationReason: core.serialization.property("cancellation_reason", EmbeddingTaskCancellationReason.optional()),
 });
 
 export declare namespace EmbeddingTaskResponse {
     export interface Raw {
         _id: string;
+        client_task_id?: ClientEmbeddingTaskId.Raw | null;
+        batch_id?: string | null;
+        custom_id?: EmbeddingBatchCustomId.Raw | null;
+        service_tier?: EmbeddingServiceTier.Raw | null;
+        expires_at?: string | null;
         status: EmbeddingTaskResponseStatus.Raw;
         created_at?: CreatedAt.Raw | null;
         updated_at?: UpdatedAt.Raw | null;
         data?: EmbeddingData.Raw[] | null;
-        usage?: EmbeddingUsage.Raw | null;
+        usage?: EmbeddingTaskUsage.Raw | null;
         metadata?: EmbeddingTaskMediaMetadata.Raw | null;
-        error?: EmbeddingTaskResponseError.Raw | null;
+        error?: EmbeddingTaskError.Raw | null;
+        cancellation_reason?: EmbeddingTaskCancellationReason.Raw | null;
     }
 }

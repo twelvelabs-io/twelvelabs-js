@@ -5,16 +5,13 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { EmbeddingTaskError } from "./EmbeddingTaskError";
 
 export const EmbeddingTaskResponseError: core.serialization.ObjectSchema<
     serializers.EmbeddingTaskResponseError.Raw,
     TwelvelabsApi.EmbeddingTaskResponseError
-> = core.serialization.object({
-    message: core.serialization.string(),
-});
+> = EmbeddingTaskError;
 
 export declare namespace EmbeddingTaskResponseError {
-    export interface Raw {
-        message: string;
-    }
+    export type Raw = EmbeddingTaskError.Raw;
 }

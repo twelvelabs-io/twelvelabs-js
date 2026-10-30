@@ -7,7 +7,7 @@ import * as TwelvelabsApi from "../index";
 import * as core from "../../core";
 
 export class ContentTooLargeError extends errors.TwelvelabsApiError {
-    constructor(body: TwelvelabsApi.ErrorResponse, rawResponse?: core.RawResponse) {
+    constructor(body: TwelvelabsApi.FlatErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "ContentTooLargeError",
             statusCode: 413,

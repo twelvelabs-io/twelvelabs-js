@@ -3,11 +3,7 @@
  */
 
 /**
- * What this citation refers to:
- *
- * - `video_citation`: a time range within a video item.
- * - `image_citation`: a whole image item.
- * - `collection_citation`: an item collection.
+ * The kind of a knowledge store citation.
  */
 export type ResponseAnnotationType = "video_citation" | "image_citation" | "collection_citation";
 export const ResponseAnnotationType = {

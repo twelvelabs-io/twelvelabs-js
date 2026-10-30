@@ -13,7 +13,7 @@ export interface BatchResultItem {
     /** The custom identifier you provided when you created the batch. If you did not provide one, this field is `null`. */
     customId?: string;
     status: TwelvelabsApi.BatchItemStatus;
-    /** Contains the analysis result for an item in the `ready` status. The analysis text is in this object's nested `data` field. The envelope uses the same schema as the `result` field in the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. */
+    /** Contains the analysis result for an item in the `ready` status. The analysis text is in the nested `data` field of this object. This object uses the same schema as the `result` field in the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint. */
     data?: TwelvelabsApi.AnalyzeTaskResult;
     error?: TwelvelabsApi.BatchItemError;
 }
