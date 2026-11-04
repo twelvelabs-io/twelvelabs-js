@@ -3,7 +3,7 @@
  */
 
 /**
- * System-generated media metadata for a video item in search results.
+ * System-generated metadata for a video item in search results.
  */
 export interface VideoSearchSystemMetadata {
     /** The duration of the video in seconds. */

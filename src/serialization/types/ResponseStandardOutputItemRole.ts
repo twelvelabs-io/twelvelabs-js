@@ -6,11 +6,11 @@ import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 
-export const ResponseOutputItemRole: core.serialization.Schema<
-    serializers.ResponseOutputItemRole.Raw,
-    TwelvelabsApi.ResponseOutputItemRole
+export const ResponseStandardOutputItemRole: core.serialization.Schema<
+    serializers.ResponseStandardOutputItemRole.Raw,
+    TwelvelabsApi.ResponseStandardOutputItemRole
 > = core.serialization.enum_(["assistant"]);
 
-export declare namespace ResponseOutputItemRole {
+export declare namespace ResponseStandardOutputItemRole {
     export type Raw = "assistant";
 }

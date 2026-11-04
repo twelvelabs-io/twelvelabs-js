@@ -7,6 +7,14 @@ import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
 import { AssetTypeFilter } from "./AssetTypeFilter";
 import { ItemIdFilter } from "./ItemIdFilter";
+import { ItemCollectionIdFilter } from "./ItemCollectionIdFilter";
+import { UserMetadataFilter } from "./UserMetadataFilter";
+import { EnrichmentFilter } from "./EnrichmentFilter";
+import { CreatedAtFilter } from "./CreatedAtFilter";
+import { GeoCircleFilter } from "./GeoCircleFilter";
+import { TagFilter } from "./TagFilter";
+import { UserMetadataValueFilter } from "./UserMetadataValueFilter";
+import { MetadataValueFilter } from "./MetadataValueFilter";
 
 export const SearchKnowledgeStoreFilter: core.serialization.ObjectSchema<
     serializers.SearchKnowledgeStoreFilter.Raw,
@@ -14,11 +22,23 @@ export const SearchKnowledgeStoreFilter: core.serialization.ObjectSchema<
 > = core.serialization.object({
     assetType: core.serialization.property("asset_type", AssetTypeFilter.optional()),
     itemId: core.serialization.property("item_id", ItemIdFilter.optional()),
+    itemCollectionId: core.serialization.property("item_collection_id", ItemCollectionIdFilter.optional()),
+    userMetadata: core.serialization.property("user_metadata", UserMetadataFilter.optional()),
+    enrichment: EnrichmentFilter.optional(),
+    createdAt: core.serialization.property("created_at", CreatedAtFilter.optional()),
+    location: GeoCircleFilter.optional(),
+    tags: TagFilter.optional(),
 });
 
 export declare namespace SearchKnowledgeStoreFilter {
     export interface Raw {
         asset_type?: AssetTypeFilter.Raw | null;
         item_id?: ItemIdFilter.Raw | null;
+        item_collection_id?: ItemCollectionIdFilter.Raw | null;
+        user_metadata?: UserMetadataFilter.Raw | null;
+        enrichment?: EnrichmentFilter.Raw | null;
+        created_at?: CreatedAtFilter.Raw | null;
+        location?: GeoCircleFilter.Raw | null;
+        tags?: TagFilter.Raw | null;
     }
 }

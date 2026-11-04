@@ -9,20 +9,20 @@
  *         endedAt: "2024-03-01T00:00:00Z",
  *         status: "processing",
  *         page: 1,
- *         pageLimit: 10
+ *         pageLimit: 1
  *     }
  */
 export interface TasksListRequest {
     /**
-     * Retrieve the embedding tasks that were created after the given date and time, expressed in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ").
+     * Retrieve the embedding tasks that were created at or after the given date and time, expressed in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ").
      */
     startedAt?: string;
     /**
-     * Retrieve the embedding tasks that were created before the given date and time, expressed in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ").
+     * Retrieve the embedding tasks that were created at or before the given date and time, expressed in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ").
      */
     endedAt?: string;
     /**
-     * Filter the embedding tasks by their current status.
+     * Filter async embedding tasks by their current status.
      *
      * **Values**: `processing`, `ready`, or `failed`.
      */
@@ -31,12 +31,14 @@ export interface TasksListRequest {
      * A number that identifies the page to retrieve.
      *
      * **Default**: `1`.
+     * **Min**: `1`.
      */
     page?: number;
     /**
      * The number of items to return on each page.
      *
      * **Default**: `10`.
+     * **Min**: `1`.
      * **Max**: `50`.
      */
     pageLimit?: number;

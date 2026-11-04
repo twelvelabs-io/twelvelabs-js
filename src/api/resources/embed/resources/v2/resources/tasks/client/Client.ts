@@ -33,17 +33,19 @@ export class Tasks {
     constructor(protected readonly _options: Tasks.Options) {}
 
     /**
-     * This method returns a list of the async embedding tasks in your account. The platform returns your async embedding tasks sorted by creation date, with the newest at the top of the list.
+     * This method returns a list of the async embedding tasks in your account. The platform returns tasks sorted by creation date, with the newest at the top of the list.
      *
      * <Note title="Notes">
      * - Embeddings are stored for seven days.
-     * - When you invoke this method without specifying the `started_at` and `ended_at` parameters, the platform returns all the async embedding tasks created within the last seven days.
+     * - Without the `started_at` or `ended_at` query parameters, this method lists tasks created in the last seven days.
      * </Note>
      *
      * @param {TwelvelabsApi.embed.v2.TasksListRequest} request
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.InternalServerError}
      *
      * @example
      *     await client.embed.v2.tasks.list({
@@ -51,7 +53,7 @@ export class Tasks {
      *         endedAt: "2024-03-01T00:00:00Z",
      *         status: "processing",
      *         page: 1,
-     *         pageLimit: 10
+     *         pageLimit: 1
      *     })
      */
     public async list(
@@ -90,8 +92,8 @@ export class Tasks {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -120,6 +122,18 @@ export class Tasks {
                     switch (_response.error.statusCode) {
                         case 400:
                             throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 401:
+                            throw new TwelvelabsApi.UnauthorizedError(
+                                serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                                    unrecognizedObjectKeys: "passthrough",
+                                    allowUnrecognizedUnionMembers: true,
+                                    allowUnrecognizedEnumValues: true,
+                                    breadcrumbsPrefix: ["response"],
+                                }),
+                                _response.rawResponse,
+                            );
+                        case 500:
+                            throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                         default:
                             throw new errors.TwelvelabsApiError({
                                 statusCode: _response.error.statusCode,
@@ -176,7 +190,7 @@ export class Tasks {
      *
      * <Note title="Notes">
      * - Creating a task validates only basic metadata and, for audio and video sources, playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
-     * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
+     * - This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/plans-and-billing/rate-limits/new-billing#input-token-limits-for-embedding).
      * - Embeddings are stored for seven days.
      * </Note>
      *
@@ -184,6 +198,9 @@ export class Tasks {
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
      *
@@ -199,10 +216,7 @@ export class Tasks {
      *             endSec: 3600,
      *             segmentation: {
      *                 temporal: {
-     *                     strategy: "fixed",
-     *                     fixed: {
-     *                         durationSec: 1
-     *                     }
+     *                     strategy: "fixed"
      *                 }
      *             },
      *             embeddingOption: ["audio"],
@@ -222,10 +236,7 @@ export class Tasks {
      *             endSec: 7200,
      *             segmentation: {
      *                 temporal: {
-     *                     strategy: "dynamic",
-     *                     dynamic: {
-     *                         minDurationSec: 1
-     *                     }
+     *                     strategy: "dynamic"
      *                 }
      *             },
      *             embeddingOption: ["visual", "audio"],
@@ -254,7 +265,7 @@ export class Tasks {
      *         embeddingUncertainty: true,
      *         video: {
      *             mediaSource: {
-     *                 assetId: "vid_nba_lakers_celtics_2026_03_14"
+     *                 assetId: "68f4ddaf8aaa60d33df0e801"
      *             },
      *             embeddingOption: ["visual", "audio"],
      *             embeddingScope: ["clip"],
@@ -271,10 +282,9 @@ export class Tasks {
      *     await client.embed.v2.tasks.create({
      *         inputType: "document",
      *         modelName: "marengo3.5",
-     *         embeddingUncertainty: true,
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             embeddingOption: ["visual"],
      *             embeddingType: ["separate_embedding"],
@@ -289,7 +299,7 @@ export class Tasks {
      *         embeddingDimension: 256,
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             segmentation: {
      *                 spatial: {
@@ -307,7 +317,7 @@ export class Tasks {
      *         modelName: "marengo3.5",
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             embeddingOption: ["visual"],
      *             embeddingScope: ["asset"]
@@ -320,7 +330,7 @@ export class Tasks {
      *         modelName: "marengo3.5",
      *         document: {
      *             mediaSource: {
-     *                 assetId: "doc_annual_report_2025"
+     *                 assetId: "68f4ddaf8aaa60d33df0e802"
      *             },
      *             embeddingOption: ["visual", "text"],
      *             embeddingScope: ["asset"]
@@ -367,7 +377,7 @@ export class Tasks {
      *         embeddingUncertainty: true,
      *         image: {
      *             mediaSource: {
-     *                 assetId: "img_brand_logo_primary"
+     *                 assetId: "68f4ddaf8aaa60d33df0e803"
      *             }
      *         }
      *     })
@@ -406,7 +416,7 @@ export class Tasks {
      *             segmentation: {
      *                 strategy: "dynamic",
      *                 dynamic: {
-     *                     minDurationSec: 1
+     *                     minDurationSec: 1.1
      *                 }
      *             },
      *             embeddingOption: ["visual", "audio", "transcription"],
@@ -436,8 +446,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -447,6 +457,7 @@ export class Tasks {
             requestType: "json",
             body: serializers.embed.v2.CreateAsyncEmbeddingRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -468,6 +479,20 @@ export class Tasks {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new TwelvelabsApi.UnauthorizedError(
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
@@ -510,7 +535,11 @@ export class Tasks {
      * @param {string} taskId - The unique identifier of the embedding task.
      * @param {Tasks.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnauthorizedError}
+     * @throws {@link TwelvelabsApi.ForbiddenError}
      * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.InternalServerError}
      *
      * @example
      *     await client.embed.v2.tasks.retrieve("64f8d2c7e4a1b37f8a9c5d12")
@@ -537,8 +566,8 @@ export class Tasks {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -564,8 +593,24 @@ export class Tasks {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new TwelvelabsApi.UnauthorizedError(
+                        serializers.FlatErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new TwelvelabsApi.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,

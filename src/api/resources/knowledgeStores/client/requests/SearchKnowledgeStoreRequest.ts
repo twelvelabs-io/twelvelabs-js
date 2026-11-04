@@ -43,6 +43,64 @@ import * as TwelvelabsApi from "../../../../index";
  *         query: {
  *             text: "A person cooking pasta"
  *         },
+ *         filter: {
+ *             location: {
+ *                 latitude: 37.5665,
+ *                 longitude: 126.978,
+ *                 radiusMeters: 5000
+ *             }
+ *         },
+ *         groupBy: "none",
+ *         pageSize: 10
+ *     }
+ *
+ * @example
+ *     {
+ *         query: {
+ *             text: "A person cooking pasta"
+ *         },
+ *         groupBy: "none",
+ *         pageSize: 10
+ *     }
+ *
+ * @example
+ *     {
+ *         query: {
+ *             text: "A person cooking pasta"
+ *         },
+ *         filter: {
+ *             userMetadata: {
+ *                 "category": {
+ *                     eq: "tutorial"
+ *                 }
+ *             },
+ *             enrichment: {
+ *                 "detected_topic": {
+ *                     eq: "cooking"
+ *                 }
+ *             },
+ *             createdAt: {
+ *                 gte: "2026-09-01T00:00:00Z"
+ *             }
+ *         },
+ *         groupBy: "none",
+ *         pageSize: 10
+ *     }
+ *
+ * @example
+ *     {
+ *         query: {
+ *             text: "A player celebrating"
+ *         },
+ *         filter: {
+ *             tags: {
+ *                 metadata: {
+ *                     "event": {
+ *                         eq: "goal"
+ *                     }
+ *                 }
+ *             }
+ *         },
  *         groupBy: "none",
  *         pageSize: 10
  *     }
@@ -100,6 +158,12 @@ export interface SearchKnowledgeStoreRequest {
      * If a token is malformed or unrecognized, the platform returns a `400` error. If a token has expired, the platform returns a `410` error (make a new search request to obtain a fresh page token).
      */
     pageToken?: string;
-    /** Set to `true` to include metadata in each result. Each result includes a `metadata` object with a `system` field (platform-derived file properties such as duration and resolution) and a `user` field (metadata you attached to the item). */
+    /**
+     * Set to `true` to include metadata in each result. Each result includes a `metadata` object with these fields:
+     *
+     * - `system`: System-generated metadata, such as duration and resolution.
+     * - `user`: The custom metadata of the source asset.
+     * - `item`: The custom metadata of the knowledge store item.
+     */
     includeMetadata?: boolean;
 }

@@ -22,7 +22,7 @@ export interface EmbeddingTaskResponse {
     status: TwelvelabsApi.EmbeddingTaskResponseStatus;
     createdAt?: TwelvelabsApi.CreatedAt;
     updatedAt?: TwelvelabsApi.UpdatedAt;
-    /** An object containing the embedding results, or `null` otherwise. */
+    /** An array of embedding results when `status` is `ready`, or `null` when `status` is `processing` or `failed`. */
     data?: TwelvelabsApi.EmbeddingData[];
     /** Token counts for the request. Only Marengo 3.5 returns this field. */
     usage?: TwelvelabsApi.EmbeddingUsage;

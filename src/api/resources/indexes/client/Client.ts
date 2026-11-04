@@ -124,8 +124,8 @@ export class Indexes {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -233,8 +233,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -242,7 +242,10 @@ export class Indexes {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.IndexesCreateRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: serializers.IndexesCreateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -322,8 +325,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -368,7 +371,7 @@ export class Indexes {
                     rawResponse: _response.rawResponse,
                 });
             case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling GET /indexes/{index-id}.");
+                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling GET /indexes/{index_id}.");
             case "unknown":
                 throw new errors.TwelvelabsApiError({
                     message: _response.error.errorMessage,
@@ -415,8 +418,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -424,7 +427,10 @@ export class Indexes {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.IndexesUpdateRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: serializers.IndexesUpdateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -454,7 +460,7 @@ export class Indexes {
                     rawResponse: _response.rawResponse,
                 });
             case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling PUT /indexes/{index-id}.");
+                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling PUT /indexes/{index_id}.");
             case "unknown":
                 throw new errors.TwelvelabsApiError({
                     message: _response.error.errorMessage,
@@ -493,8 +499,8 @@ export class Indexes {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -531,7 +537,7 @@ export class Indexes {
                     rawResponse: _response.rawResponse,
                 });
             case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling DELETE /indexes/{index-id}.");
+                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling DELETE /indexes/{index_id}.");
             case "unknown":
                 throw new errors.TwelvelabsApiError({
                     message: _response.error.errorMessage,

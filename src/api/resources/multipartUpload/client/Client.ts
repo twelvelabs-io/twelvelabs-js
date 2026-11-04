@@ -75,8 +75,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -201,8 +201,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -210,7 +210,10 @@ export class MultipartUpload {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.CreateAssetUploadRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: serializers.CreateAssetUploadRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -318,8 +321,8 @@ export class MultipartUpload {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -408,6 +411,7 @@ export class MultipartUpload {
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.ForbiddenError}
      * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.InternalServerError}
      *
      * @example
      *     await client.multipartUpload.reportChunkBatch("507f1f77bcf86cd799439011", {
@@ -443,8 +447,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -452,7 +456,10 @@ export class MultipartUpload {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.ReportChunkBatchRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: serializers.ReportChunkBatchRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -477,6 +484,8 @@ export class MultipartUpload {
                     throw new TwelvelabsApi.ForbiddenError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -554,8 +563,8 @@ export class MultipartUpload {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -565,6 +574,7 @@ export class MultipartUpload {
             requestType: "json",
             body: serializers.RequestAdditionalPresignedUrLsRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,

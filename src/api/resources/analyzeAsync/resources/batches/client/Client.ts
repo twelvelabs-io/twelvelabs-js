@@ -68,11 +68,15 @@ export class Batches {
                 if (status != null) {
                     if (Array.isArray(status)) {
                         _queryParams["status"] = status.map((item) =>
-                            serializers.BatchStatus.jsonOrThrow(item, { unrecognizedObjectKeys: "strip" }),
+                            serializers.BatchStatus.jsonOrThrow(item, {
+                                unrecognizedObjectKeys: "strip",
+                                omitUndefined: true,
+                            }),
                         );
                     } else {
                         _queryParams["status"] = serializers.BatchStatus.jsonOrThrow(status, {
                             unrecognizedObjectKeys: "strip",
+                            omitUndefined: true,
                         });
                     }
                 }
@@ -81,12 +85,14 @@ export class Batches {
                         _queryParams["analysis_mode"] = analysisMode.map((item) =>
                             serializers.analyzeAsync.BatchesListRequestAnalysisModeItem.jsonOrThrow(item, {
                                 unrecognizedObjectKeys: "strip",
+                                omitUndefined: true,
                             }),
                         );
                     } else {
                         _queryParams["analysis_mode"] =
                             serializers.analyzeAsync.BatchesListRequestAnalysisModeItem.jsonOrThrow(analysisMode, {
                                 unrecognizedObjectKeys: "strip",
+                                omitUndefined: true,
                             });
                     }
                 }
@@ -101,8 +107,8 @@ export class Batches {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -203,6 +209,7 @@ export class Batches {
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.NotFoundError}
      * @throws {@link TwelvelabsApi.ConflictError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.ServiceUnavailableError}
      * @throws {@link TwelvelabsApi.GatewayTimeoutError}
@@ -310,8 +317,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -321,6 +328,7 @@ export class Batches {
             requestType: "json",
             body: serializers.analyzeAsync.CreateAnalyzeBatchRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -346,6 +354,8 @@ export class Batches {
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                 case 409:
                     throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 503:
@@ -431,8 +441,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -525,8 +535,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -607,8 +617,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -715,8 +725,8 @@ export class Batches {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),

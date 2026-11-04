@@ -85,6 +85,7 @@ export class Search {
                 "query_media_type",
                 serializers.SearchCreateRequestQueryMediaType.jsonOrThrow(request.queryMediaType, {
                     unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
                 }),
             );
         }
@@ -107,6 +108,7 @@ export class Search {
                 "search_options",
                 serializers.SearchCreateRequestSearchOptionsItem.jsonOrThrow(_item, {
                     unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
                 }),
             );
         }
@@ -117,6 +119,7 @@ export class Search {
                     "transcription_options",
                     serializers.SearchCreateRequestTranscriptionOptionsItem.jsonOrThrow(_item, {
                         unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
                     }),
                 );
             }
@@ -127,6 +130,7 @@ export class Search {
                 "group_by",
                 serializers.SearchCreateRequestGroupBy.jsonOrThrow(request.groupBy, {
                     unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
                 }),
             );
         }
@@ -136,6 +140,7 @@ export class Search {
                 "operator",
                 serializers.SearchCreateRequestOperator.jsonOrThrow(request.operator, {
                     unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
                 }),
             );
         }
@@ -164,8 +169,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -271,8 +276,8 @@ export class Search {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -318,7 +323,7 @@ export class Search {
                     rawResponse: _response.rawResponse,
                 });
             case "timeout":
-                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling GET /search/{page-token}.");
+                throw new errors.TwelvelabsApiTimeoutError("Timeout exceeded when calling GET /search/{page_token}.");
             case "unknown":
                 throw new errors.TwelvelabsApiError({
                     message: _response.error.errorMessage,

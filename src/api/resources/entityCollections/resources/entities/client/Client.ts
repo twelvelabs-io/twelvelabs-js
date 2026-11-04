@@ -40,6 +40,7 @@ export class Entities {
      * @param {Entities.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
      *
      * @example
      *     await client.entityCollections.entities.listByAsset("6298d673f1090f1100476d4c", {
@@ -75,8 +76,8 @@ export class Entities {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -105,6 +106,8 @@ export class Entities {
                     switch (_response.error.statusCode) {
                         case 400:
                             throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 404:
+                            throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                         default:
                             throw new errors.TwelvelabsApiError({
                                 statusCode: _response.error.statusCode,
@@ -188,13 +191,13 @@ export class Entities {
                 if (status != null) {
                     _queryParams["status"] = serializers.entityCollections.EntitiesListRequestStatus.jsonOrThrow(
                         status,
-                        { unrecognizedObjectKeys: "strip" },
+                        { unrecognizedObjectKeys: "strip", omitUndefined: true },
                     );
                 }
                 if (sortBy != null) {
                     _queryParams["sort_by"] = serializers.entityCollections.EntitiesListRequestSortBy.jsonOrThrow(
                         sortBy,
-                        { unrecognizedObjectKeys: "strip" },
+                        { unrecognizedObjectKeys: "strip", omitUndefined: true },
                     );
                 }
                 if (sortOption != null) {
@@ -211,8 +214,8 @@ export class Entities {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -290,6 +293,8 @@ export class Entities {
      * @param {Entities.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      *
      * @example
      *     await client.entityCollections.entities.create("6298d673f1090f1100476d4c", {
@@ -321,8 +326,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -332,6 +337,7 @@ export class Entities {
             requestType: "json",
             body: serializers.entityCollections.EntitiesCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -353,6 +359,10 @@ export class Entities {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -389,6 +399,7 @@ export class Entities {
      * @param {Entities.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      *
      * @example
      *     await client.entityCollections.entities.createBulk("6298d673f1090f1100476d4c", {
@@ -422,8 +433,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -433,6 +444,7 @@ export class Entities {
             requestType: "json",
             body: serializers.entityCollections.EntitiesCreateBulkRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -454,6 +466,8 @@ export class Entities {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -518,8 +532,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -611,8 +625,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -701,8 +715,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -712,6 +726,7 @@ export class Entities {
             requestType: "json",
             body: serializers.entityCollections.EntitiesUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -772,6 +787,8 @@ export class Entities {
      * @param {Entities.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
      *
      * @example
      *     await client.entityCollections.entities.createAssets("6298d673f1090f1100476d4c", "6298d673f1090f1100476d4c", {
@@ -806,8 +823,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -817,6 +834,7 @@ export class Entities {
             requestType: "json",
             body: serializers.entityCollections.EntitiesCreateAssetsRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -838,6 +856,10 @@ export class Entities {
             switch (_response.error.statusCode) {
                 case 400:
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 default:
                     throw new errors.TwelvelabsApiError({
                         statusCode: _response.error.statusCode,
@@ -916,8 +938,8 @@ export class Entities {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -927,6 +949,7 @@ export class Entities {
             requestType: "json",
             body: serializers.entityCollections.EntitiesDeleteAssetsRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,

@@ -7,6 +7,7 @@ import * as TwelvelabsApi from "../../../../../api/index";
 import * as core from "../../../../../core";
 import { ResponseInputItem } from "../../../../types/ResponseInputItem";
 import { ResponsesCreateRequestIncludeItem } from "../../types/ResponsesCreateRequestIncludeItem";
+import { ResponseToolInput } from "../../../../types/ResponseToolInput";
 import { ResponseSelection } from "../../../../types/ResponseSelection";
 import { TextParam } from "../../../../types/TextParam";
 
@@ -19,6 +20,7 @@ export const ResponsesCreateRequest: core.serialization.Schema<
     sessionId: core.serialization.property("session_id", core.serialization.string().optional()),
     instructions: core.serialization.string().optional(),
     include: core.serialization.list(ResponsesCreateRequestIncludeItem).optional(),
+    tools: core.serialization.list(ResponseToolInput).optional(),
     selections: core.serialization.list(ResponseSelection).optional(),
     text: TextParam.optional(),
 });
@@ -30,6 +32,7 @@ export declare namespace ResponsesCreateRequest {
         session_id?: string | null;
         instructions?: string | null;
         include?: ResponsesCreateRequestIncludeItem.Raw[] | null;
+        tools?: ResponseToolInput.Raw[] | null;
         selections?: ResponseSelection.Raw[] | null;
         text?: TextParam.Raw | null;
     }

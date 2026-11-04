@@ -20,6 +20,14 @@ export const KnowledgeStoreItem: core.serialization.ObjectSchema<
     status: KnowledgeStoreItemStatus.optional(),
     systemMetadata: core.serialization.property("system_metadata", KnowledgeStoreItemSystemMetadata.optional()),
     metadata: core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
+    itemMetadata: core.serialization.property(
+        "item_metadata",
+        core.serialization.record(core.serialization.string(), KnowledgeStoreMetadataValue).optional(),
+    ),
+    enrichedMetadata: core.serialization.property(
+        "enriched_metadata",
+        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    ),
     createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
     updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
 });
@@ -32,6 +40,8 @@ export declare namespace KnowledgeStoreItem {
         status?: KnowledgeStoreItemStatus.Raw | null;
         system_metadata?: KnowledgeStoreItemSystemMetadata.Raw | null;
         metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
+        item_metadata?: Record<string, KnowledgeStoreMetadataValue.Raw> | null;
+        enriched_metadata?: Record<string, unknown> | null;
         created_at?: string | null;
         updated_at?: string | null;
     }

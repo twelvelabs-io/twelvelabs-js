@@ -10,11 +10,13 @@ export const ItemIdFilter: core.serialization.ObjectSchema<serializers.ItemIdFil
     core.serialization.object({
         eq: core.serialization.string().optional(),
         in: core.serialization.list(core.serialization.string()).optional(),
+        nin: core.serialization.list(core.serialization.string()).optional(),
     });
 
 export declare namespace ItemIdFilter {
     export interface Raw {
         eq?: string | null;
         in?: string[] | null;
+        nin?: string[] | null;
     }
 }

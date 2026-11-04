@@ -98,11 +98,11 @@ export interface IndexedAssetsListRequest {
      */
     createdAt?: string;
     /**
-     * This filter applies only to indexed assets updated using the [`PUT`](/v1.3/api-reference/videos/update) method of the `/indexes/{index-id}/indexed-assets/{indexed-asset-id}` endpoint. It filters indexed assets by the last update date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"). The platform returns the indexed assets that were last updated on the specified date at or after the given time.
+     * This filter applies only to indexed assets updated using the [`PATCH`](/v1.3/api-reference/index-content/update) method of the `/indexes/{index_id}/indexed-assets/{indexed_asset_id}` endpoint. It filters indexed assets by the last update date and time, in the RFC 3339 format ("YYYY-MM-DDTHH:mm:ssZ"). The platform returns the indexed assets that were last updated on the specified date at or after the given time.
      */
     updatedAt?: string;
     /**
-     * To enable filtering by custom fields, you must first add user-defined metadata to your video by calling the [`PUT`](/v1.3/api-reference/videos/update) method of the `/indexes/:index-id/indexed-assets/:indexed-asset-id` endpoint.
+     * To enable filtering by custom fields, you must first add user-defined metadata to your video by calling the [`PATCH`](/v1.3/api-reference/index-content/update) method of the `/indexes/{index_id}/indexed-assets/{indexed_asset_id}` endpoint.
      *
      * Examples:
      * - To filter on a string: `?category=recentlyAdded`

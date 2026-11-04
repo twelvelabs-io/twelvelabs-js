@@ -11,6 +11,8 @@ export interface VideoSegmentationDynamicDynamic {
      *
      * The platform divides the video into segments that are at least this long. Segments adapt to scene changes and content boundaries and may be longer than the minimum.
      *
+     * Marengo 3.0 ignores the fractional part of this value. For example, it treats `2.5` as `2`.
+     *
      * **Min**: `2`.
      * **Max**: `5`.
      *

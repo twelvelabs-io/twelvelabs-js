@@ -5,7 +5,7 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * System-generated media metadata for the source asset. Its `asset_type` field
+ * System-generated metadata for the source asset. Its `asset_type` field
  * always matches the item's top-level `asset_type` field.
  */
 export type KnowledgeStoreItemSystemMetadata =

@@ -5,43 +5,30 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * An item in the response output. Items are polymorphic and discriminated by the `type` field.
+ * An item in the response output. Use `type` to distinguish messages,
+ * function calls, function results, and hosted web-search calls.
+ * An item has the same `id` in streaming events and the final response.
  */
-export interface ResponseOutputItem {
-    /** The type of output item. */
-    type: TwelvelabsApi.ResponseOutputItemType;
-    /** A unique identifier for this item. */
-    id: string;
-    status: TwelvelabsApi.ResponseStatus;
-    /** The role of the message author. Present when `type` is `message`. */
-    role?: TwelvelabsApi.ResponseOutputItemRole;
-    /**
-     * Which part of the turn this message contains: intermediate output or the
-     * answer. Present when the `type` field is `message`.
-     *
-     * A turn can produce intermediate messages before the answer, such as a
-     * message that describes the steps Jockey is taking. The `commentary` value
-     * identifies an intermediate message, and the `final_answer` value
-     * identifies the answer.
-     *
-     * The output contains intermediate output only when the request sets the
-     * `include` parameter to `["intermediate_outputs"]`. By default, the output
-     * contains the answer only.
-     *
-     * Treat a message without the `phase` field as the final answer.
-     *
-     * Treat an unrecognized `phase` value as intermediate output, not as the
-     * answer.
-     */
-    phase?: string;
-    /** The content parts of the message. Present when `type` is `message`. */
-    content?: TwelvelabsApi.ResponseOutputContentPart[];
-    /** The name of the function. Present when `type` is `function_call`. */
-    name?: string;
-    /** The unique identifier for the function call. Present when `type` is `function_call`. */
-    callId?: string;
-    /** The JSON-encoded arguments for the function call. Present when `type` is `function_call`. */
-    arguments?: string;
-    /** The function call output. Present when `type` is `function_call_output`. */
-    output?: string;
+export type ResponseOutputItem =
+    | TwelvelabsApi.ResponseOutputItem.Message
+    | TwelvelabsApi.ResponseOutputItem.FunctionCall
+    | TwelvelabsApi.ResponseOutputItem.FunctionCallOutput
+    | TwelvelabsApi.ResponseOutputItem.JockeyWebSearch;
+
+export namespace ResponseOutputItem {
+    export interface Message extends TwelvelabsApi.ResponseStandardOutputItem {
+        type: "message";
+    }
+
+    export interface FunctionCall extends TwelvelabsApi.ResponseStandardOutputItem {
+        type: "function_call";
+    }
+
+    export interface FunctionCallOutput extends TwelvelabsApi.ResponseStandardOutputItem {
+        type: "function_call_output";
+    }
+
+    export interface JockeyWebSearch extends TwelvelabsApi.ResponseWebSearchOutputItem {
+        type: "jockey:web_search";
+    }
 }

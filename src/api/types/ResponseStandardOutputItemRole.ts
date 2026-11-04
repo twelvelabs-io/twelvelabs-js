@@ -5,7 +5,7 @@
 /**
  * The role of the message author. Present when `type` is `message`.
  */
-export type ResponseOutputItemRole = "assistant";
-export const ResponseOutputItemRole = {
+export type ResponseStandardOutputItemRole = "assistant";
+export const ResponseStandardOutputItemRole = {
     Assistant: "assistant",
 } as const;

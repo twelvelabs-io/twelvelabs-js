@@ -97,12 +97,13 @@ export class IndexedAssets {
                         _queryParams["status"] = status.map((item) =>
                             serializers.indexes.IndexedAssetsListRequestStatusItem.jsonOrThrow(item, {
                                 unrecognizedObjectKeys: "strip",
+                                omitUndefined: true,
                             }),
                         );
                     } else {
                         _queryParams["status"] = serializers.indexes.IndexedAssetsListRequestStatusItem.jsonOrThrow(
                             status,
-                            { unrecognizedObjectKeys: "strip" },
+                            { unrecognizedObjectKeys: "strip", omitUndefined: true },
                         );
                     }
                 }
@@ -114,6 +115,7 @@ export class IndexedAssets {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "duration"],
                     });
                 }
@@ -122,6 +124,7 @@ export class IndexedAssets {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "fps"],
                     });
                 }
@@ -130,6 +133,7 @@ export class IndexedAssets {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "width"],
                     });
                 }
@@ -138,6 +142,7 @@ export class IndexedAssets {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "height"],
                     });
                 }
@@ -146,6 +151,7 @@ export class IndexedAssets {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "size"],
                     });
                 }
@@ -169,8 +175,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -216,7 +222,7 @@ export class IndexedAssets {
                         });
                     case "timeout":
                         throw new errors.TwelvelabsApiTimeoutError(
-                            "Timeout exceeded when calling GET /indexes/{index-id}/indexed-assets.",
+                            "Timeout exceeded when calling GET /indexes/{index_id}/indexed-assets.",
                         );
                     case "unknown":
                         throw new errors.TwelvelabsApiError({
@@ -267,6 +273,9 @@ export class IndexedAssets {
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
      * @throws {@link TwelvelabsApi.NotFoundError}
+     * @throws {@link TwelvelabsApi.ConflictError}
+     * @throws {@link TwelvelabsApi.UnprocessableEntityError}
+     * @throws {@link TwelvelabsApi.TooManyRequestsError}
      * @throws {@link TwelvelabsApi.InternalServerError}
      *
      * @example
@@ -298,8 +307,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -309,6 +318,7 @@ export class IndexedAssets {
             requestType: "json",
             body: serializers.indexes.IndexedAssetsCreateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -332,6 +342,12 @@ export class IndexedAssets {
                     throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
                 case 404:
                     throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
+                case 409:
+                    throw new TwelvelabsApi.ConflictError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new TwelvelabsApi.UnprocessableEntityError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new TwelvelabsApi.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 case 500:
                     throw new TwelvelabsApi.InternalServerError(_response.error.body, _response.rawResponse);
                 default:
@@ -352,7 +368,7 @@ export class IndexedAssets {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling POST /indexes/{index-id}/indexed-assets.",
+                    "Timeout exceeded when calling POST /indexes/{index_id}/indexed-assets.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
@@ -419,12 +435,14 @@ export class IndexedAssets {
                 _queryParams["embedding_option"] = embeddingOption.map((item) =>
                     serializers.indexes.IndexedAssetsRetrieveRequestEmbeddingOptionItem.jsonOrThrow(item, {
                         unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
                     }),
                 );
             } else {
                 _queryParams["embedding_option"] =
                     serializers.indexes.IndexedAssetsRetrieveRequestEmbeddingOptionItem.jsonOrThrow(embeddingOption, {
                         unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
                     });
             }
         }
@@ -444,8 +462,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -494,7 +512,7 @@ export class IndexedAssets {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling GET /indexes/{index-id}/indexed-assets/{indexed-asset-id}.",
+                    "Timeout exceeded when calling GET /indexes/{index_id}/indexed-assets/{indexed_asset_id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
@@ -540,8 +558,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -579,7 +597,7 @@ export class IndexedAssets {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling DELETE /indexes/{index-id}/indexed-assets/{indexed-asset-id}.",
+                    "Timeout exceeded when calling DELETE /indexes/{index_id}/indexed-assets/{indexed_asset_id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
@@ -636,8 +654,8 @@ export class IndexedAssets {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -647,6 +665,7 @@ export class IndexedAssets {
             requestType: "json",
             body: serializers.indexes.IndexedAssetsUpdateRequest.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
             }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
@@ -678,7 +697,7 @@ export class IndexedAssets {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling PATCH /indexes/{index-id}/indexed-assets/{indexed-asset-id}.",
+                    "Timeout exceeded when calling PATCH /indexes/{index_id}/indexed-assets/{indexed_asset_id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
@@ -696,6 +715,7 @@ export class IndexedAssets {
      * @param {IndexedAssets.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link TwelvelabsApi.BadRequestError}
+     * @throws {@link TwelvelabsApi.NotFoundError}
      *
      * @example
      *     await client.indexes.indexedAssets.listByAsset("6298d673f1090f1100476d4c", {
@@ -731,8 +751,8 @@ export class IndexedAssets {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -761,6 +781,8 @@ export class IndexedAssets {
                     switch (_response.error.statusCode) {
                         case 400:
                             throw new TwelvelabsApi.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 404:
+                            throw new TwelvelabsApi.NotFoundError(_response.error.body, _response.rawResponse);
                         default:
                             throw new errors.TwelvelabsApiError({
                                 statusCode: _response.error.statusCode,
