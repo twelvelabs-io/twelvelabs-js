@@ -17,10 +17,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *             endSec: 3600,
  *             segmentation: {
  *                 temporal: {
- *                     strategy: "fixed",
- *                     fixed: {
- *                         durationSec: 1
- *                     }
+ *                     strategy: "fixed"
  *                 }
  *             },
  *             embeddingOption: ["audio"],
@@ -40,10 +37,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *             endSec: 7200,
  *             segmentation: {
  *                 temporal: {
- *                     strategy: "dynamic",
- *                     dynamic: {
- *                         minDurationSec: 1
- *                     }
+ *                     strategy: "dynamic"
  *                 }
  *             },
  *             embeddingOption: ["visual", "audio"],
@@ -72,7 +66,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *         embeddingUncertainty: true,
  *         video: {
  *             mediaSource: {
- *                 assetId: "vid_nba_lakers_celtics_2026_03_14"
+ *                 assetId: "68f4ddaf8aaa60d33df0e801"
  *             },
  *             embeddingOption: ["visual", "audio"],
  *             embeddingScope: ["clip"],
@@ -89,10 +83,9 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *     {
  *         inputType: "document",
  *         modelName: "marengo3.5",
- *         embeddingUncertainty: true,
  *         document: {
  *             mediaSource: {
- *                 assetId: "doc_annual_report_2025"
+ *                 assetId: "68f4ddaf8aaa60d33df0e802"
  *             },
  *             embeddingOption: ["visual"],
  *             embeddingType: ["separate_embedding"],
@@ -107,7 +100,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *         embeddingDimension: 256,
  *         document: {
  *             mediaSource: {
- *                 assetId: "doc_annual_report_2025"
+ *                 assetId: "68f4ddaf8aaa60d33df0e802"
  *             },
  *             segmentation: {
  *                 spatial: {
@@ -125,7 +118,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *         modelName: "marengo3.5",
  *         document: {
  *             mediaSource: {
- *                 assetId: "doc_annual_report_2025"
+ *                 assetId: "68f4ddaf8aaa60d33df0e802"
  *             },
  *             embeddingOption: ["visual"],
  *             embeddingScope: ["asset"]
@@ -138,7 +131,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *         modelName: "marengo3.5",
  *         document: {
  *             mediaSource: {
- *                 assetId: "doc_annual_report_2025"
+ *                 assetId: "68f4ddaf8aaa60d33df0e802"
  *             },
  *             embeddingOption: ["visual", "text"],
  *             embeddingScope: ["asset"]
@@ -185,7 +178,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *         embeddingUncertainty: true,
  *         image: {
  *             mediaSource: {
- *                 assetId: "img_brand_logo_primary"
+ *                 assetId: "68f4ddaf8aaa60d33df0e803"
  *             }
  *         }
  *     }
@@ -224,7 +217,7 @@ import * as TwelvelabsApi from "../../../../../../../../index";
  *             segmentation: {
  *                 strategy: "dynamic",
  *                 dynamic: {
- *                     minDurationSec: 1
+ *                     minDurationSec: 1.1
  *                 }
  *             },
  *             embeddingOption: ["visual", "audio", "transcription"],

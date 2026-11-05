@@ -5,13 +5,12 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
-import { ResponseAnnotationType } from "./ResponseAnnotationType";
 
 export const ResponseAnnotation: core.serialization.ObjectSchema<
     serializers.ResponseAnnotation.Raw,
     TwelvelabsApi.ResponseAnnotation
 > = core.serialization.object({
-    type: ResponseAnnotationType,
+    type: core.serialization.string(),
     startIndex: core.serialization.property("start_index", core.serialization.number()),
     endIndex: core.serialization.property("end_index", core.serialization.number()),
     itemId: core.serialization.property("item_id", core.serialization.string().optional()),
@@ -19,13 +18,14 @@ export const ResponseAnnotation: core.serialization.ObjectSchema<
     startSec: core.serialization.property("start_sec", core.serialization.number().optional()),
     endSec: core.serialization.property("end_sec", core.serialization.number().optional()),
     title: core.serialization.string().optional(),
+    url: core.serialization.string().optional(),
     thumbnailUrl: core.serialization.property("thumbnail_url", core.serialization.string().optional()),
     hlsUrl: core.serialization.property("hls_url", core.serialization.string().optional()),
 });
 
 export declare namespace ResponseAnnotation {
     export interface Raw {
-        type: ResponseAnnotationType.Raw;
+        type: string;
         start_index: number;
         end_index: number;
         item_id?: string | null;
@@ -33,6 +33,7 @@ export declare namespace ResponseAnnotation {
         start_sec?: number | null;
         end_sec?: number | null;
         title?: string | null;
+        url?: string | null;
         thumbnail_url?: string | null;
         hls_url?: string | null;
     }

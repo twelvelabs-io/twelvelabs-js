@@ -100,6 +100,7 @@ export class Videos {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "duration"],
                     });
                 }
@@ -108,6 +109,7 @@ export class Videos {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "fps"],
                     });
                 }
@@ -116,6 +118,7 @@ export class Videos {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "width"],
                     });
                 }
@@ -124,6 +127,7 @@ export class Videos {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "height"],
                     });
                 }
@@ -132,6 +136,7 @@ export class Videos {
                         unrecognizedObjectKeys: "passthrough",
                         allowUnrecognizedUnionMembers: true,
                         allowUnrecognizedEnumValues: true,
+                        omitUndefined: true,
                         breadcrumbsPrefix: ["request", "size"],
                     });
                 }
@@ -155,8 +160,8 @@ export class Videos {
                     headers: {
                         "X-Fern-Language": "JavaScript",
                         "X-Fern-SDK-Name": "twelvelabs-js",
-                        "X-Fern-SDK-Version": "1.3.6",
-                        "User-Agent": "twelvelabs-js/1.3.6",
+                        "X-Fern-SDK-Version": "1.3.7",
+                        "User-Agent": "twelvelabs-js/1.3.7",
                         "X-Fern-Runtime": core.RUNTIME.type,
                         "X-Fern-Runtime-Version": core.RUNTIME.version,
                         ...(await this._getCustomAuthorizationHeaders()),
@@ -202,7 +207,7 @@ export class Videos {
                         });
                     case "timeout":
                         throw new errors.TwelvelabsApiTimeoutError(
-                            "Timeout exceeded when calling GET /indexes/{index-id}/videos.",
+                            "Timeout exceeded when calling GET /indexes/{index_id}/videos.",
                         );
                     case "unknown":
                         throw new errors.TwelvelabsApiError({
@@ -267,12 +272,14 @@ export class Videos {
                 _queryParams["embedding_option"] = embeddingOption.map((item) =>
                     serializers.indexes.VideosRetrieveRequestEmbeddingOptionItem.jsonOrThrow(item, {
                         unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
                     }),
                 );
             } else {
                 _queryParams["embedding_option"] =
                     serializers.indexes.VideosRetrieveRequestEmbeddingOptionItem.jsonOrThrow(embeddingOption, {
                         unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
                     });
             }
         }
@@ -292,8 +299,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -342,7 +349,7 @@ export class Videos {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling GET /indexes/{index-id}/videos/{video-id}.",
+                    "Timeout exceeded when calling GET /indexes/{index_id}/videos/{video_id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
@@ -390,8 +397,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -429,7 +436,7 @@ export class Videos {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling DELETE /indexes/{index-id}/videos/{video-id}.",
+                    "Timeout exceeded when calling DELETE /indexes/{index_id}/videos/{video_id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({
@@ -488,8 +495,8 @@ export class Videos {
             headers: {
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "twelvelabs-js",
-                "X-Fern-SDK-Version": "1.3.6",
-                "User-Agent": "twelvelabs-js/1.3.6",
+                "X-Fern-SDK-Version": "1.3.7",
+                "User-Agent": "twelvelabs-js/1.3.7",
                 "X-Fern-Runtime": core.RUNTIME.type,
                 "X-Fern-Runtime-Version": core.RUNTIME.version,
                 ...(await this._getCustomAuthorizationHeaders()),
@@ -497,7 +504,10 @@ export class Videos {
             },
             contentType: "application/json",
             requestType: "json",
-            body: serializers.indexes.VideosUpdateRequest.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: serializers.indexes.VideosUpdateRequest.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 600000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -528,7 +538,7 @@ export class Videos {
                 });
             case "timeout":
                 throw new errors.TwelvelabsApiTimeoutError(
-                    "Timeout exceeded when calling PATCH /indexes/{index-id}/videos/{video-id}.",
+                    "Timeout exceeded when calling PATCH /indexes/{index_id}/videos/{video_id}.",
                 );
             case "unknown":
                 throw new errors.TwelvelabsApiError({

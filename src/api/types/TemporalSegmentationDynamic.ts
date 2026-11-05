@@ -8,6 +8,6 @@ import * as TwelvelabsApi from "../index";
  * Divides the file into variable-length segments that align with scene or content boundaries. Use this for content-aware segmentation.
  */
 export interface TemporalSegmentationDynamic {
-    /** Configuration for dynamic segmentation. This object is required when `strategy` is `dynamic`. */
-    dynamic: TwelvelabsApi.TemporalSegmentationDynamicDynamic;
+    /** Configuration for dynamic segmentation. If you omit this object or the `min_duration_sec` field, the minimum duration defaults to 2 seconds. */
+    dynamic?: TwelvelabsApi.TemporalSegmentationDynamicDynamic;
 }

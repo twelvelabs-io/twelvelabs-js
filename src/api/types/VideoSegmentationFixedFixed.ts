@@ -11,6 +11,8 @@ export interface VideoSegmentationFixedFixed {
      *
      * The platform divides the video into segments of this exact length. The final segment may be shorter if the video duration is not evenly divisible.
      *
+     * Marengo 3.0 ignores the fractional part of this value. For example, it treats `2.5` as `2`.
+     *
      * **Min**: `2`.
      * **Max**: `10`.
      *

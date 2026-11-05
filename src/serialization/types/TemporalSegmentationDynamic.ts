@@ -11,11 +11,11 @@ export const TemporalSegmentationDynamic: core.serialization.ObjectSchema<
     serializers.TemporalSegmentationDynamic.Raw,
     TwelvelabsApi.TemporalSegmentationDynamic
 > = core.serialization.object({
-    dynamic: TemporalSegmentationDynamicDynamic,
+    dynamic: TemporalSegmentationDynamicDynamic.optional(),
 });
 
 export declare namespace TemporalSegmentationDynamic {
     export interface Raw {
-        dynamic: TemporalSegmentationDynamicDynamic.Raw;
+        dynamic?: TemporalSegmentationDynamicDynamic.Raw | null;
     }
 }

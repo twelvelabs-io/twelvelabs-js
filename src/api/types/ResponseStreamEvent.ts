@@ -18,9 +18,18 @@ import * as TwelvelabsApi from "../index";
  * - `response.content_part.done` — A content part is finalized.
  * - `response.function_call_arguments.done` — Function call arguments are complete.
  * - `response.output_item.done` — An output item is finalized.
+ * - `jockey:web_search.in_progress` — A hosted search call is in progress.
+ * - `jockey:web_search.searching` — A hosted search call is searching.
+ * - `jockey:web_search.completed` — A hosted search call reports completion.
  * - `response.completed` — The response is complete.
  * - `response.failed` — The response has failed.
- * - `keepalive` — Heartbeat sent periodically while no other events are being emitted (for example, during a long tool call). It contains no response data and can be ignored.
+ *
+ * Hosted-search progress events are included only when the request sets
+ * `include: ["intermediate_outputs"]`. Match `item_id` to the corresponding
+ * `jockey:web_search` output item and read query text from that item's `action.queries`.
+ * Not every search emits every phase. Some searches emit only item events.
+ * Do not require a `searching` or `completed` progress event to process the response.
+ * You can ignore progress events and reconstruct the output from standard item events and the final response.
  *
  * The stream ends with a `data: [DONE]` message.
  *
@@ -40,7 +49,9 @@ export type ResponseStreamEvent =
     | TwelvelabsApi.ResponseStreamEvent.ResponseContentPartDone
     | TwelvelabsApi.ResponseStreamEvent.ResponseOutputItemDone
     | TwelvelabsApi.ResponseStreamEvent.ResponseFunctionCallArgumentsDone
-    | TwelvelabsApi.ResponseStreamEvent.Keepalive;
+    | TwelvelabsApi.ResponseStreamEvent.JockeyWebSearchInProgress
+    | TwelvelabsApi.ResponseStreamEvent.JockeyWebSearchSearching
+    | TwelvelabsApi.ResponseStreamEvent.JockeyWebSearchCompleted;
 
 export namespace ResponseStreamEvent {
     export interface ResponseCreated extends TwelvelabsApi.ResponseStreamResponseEvent {
@@ -87,7 +98,15 @@ export namespace ResponseStreamEvent {
         type: "response.function_call_arguments.done";
     }
 
-    export interface Keepalive extends TwelvelabsApi.ResponseStreamKeepAliveEvent {
-        type: "keepalive";
+    export interface JockeyWebSearchInProgress extends TwelvelabsApi.ResponseStreamWebSearchProgressEvent {
+        type: "jockey:web_search.in_progress";
+    }
+
+    export interface JockeyWebSearchSearching extends TwelvelabsApi.ResponseStreamWebSearchProgressEvent {
+        type: "jockey:web_search.searching";
+    }
+
+    export interface JockeyWebSearchCompleted extends TwelvelabsApi.ResponseStreamWebSearchProgressEvent {
+        type: "jockey:web_search.completed";
     }
 }

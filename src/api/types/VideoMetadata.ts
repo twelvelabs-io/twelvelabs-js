@@ -3,7 +3,7 @@
  */
 
 /**
- * System-generated media metadata for a video item.
+ * System-generated metadata for a video item.
  */
 export interface VideoMetadata {
     /** The original filename of the video. */

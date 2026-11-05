@@ -8,8 +8,8 @@ import * as TwelvelabsApi from "../index";
  * Narrows results by type of item. Provide exactly one operator: `eq` to match one type, or `in` to match any of the listed types.
  */
 export interface AssetTypeFilter {
-    /** Match items whose `asset_type` equals this value. */
+    /** Match items that have this value for `asset_type`. */
     eq?: TwelvelabsApi.KnowledgeStoreItemAssetType;
-    /** Match items whose `asset_type` is one of these values. */
+    /** Match items that have any of these values for `asset_type`. */
     in?: TwelvelabsApi.KnowledgeStoreItemAssetType[];
 }

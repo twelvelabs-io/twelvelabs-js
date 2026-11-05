@@ -10,7 +10,12 @@
  */
 export interface AssetsDeleteRequest {
     /**
-     * When set to `true`, the platform deletes the asset even if indexed assets reference it. When set to `false` or omitted, the request fails with `409 Conflict` if references exist.
+     * Use this parameter to choose how the delete handles indexed assets that reference the asset:
+     *
+     * - `true`: Deletes the asset and the indexed assets that reference it.
+     * - `false` or omitted: Fails with `409 Conflict` if indexed assets reference the asset.
+     *
+     * If knowledge store items use the asset, the request fails with `409 Conflict` for either value. Delete the items first.
      *
      * **Default**: `false`.
      */

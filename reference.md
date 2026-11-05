@@ -1041,13 +1041,13 @@ await client.assets.retrieve("6298d673f1090f1100476d4c");
 
 This method deletes the specified asset. This action cannot be undone.
 
-By default, the platform checks whether any indexed assets reference the asset. If references exist, the platform rejects the request with a `409 Conflict` error. To skip this check and delete the asset anyway, set the `force` query parameter to `true`. The platform unlinks any entity associations.
+The delete fails with a `409 Conflict` error if other resources depend on the asset.
 
-Before deleting, you can inspect existing references:
+- **If knowledge store items use the asset**, in any status: the error code is `asset_has_knowledge_store_items`. The request fails even when you set the `force` query parameter to `true`. First delete the items with the [`DELETE`](/v1.3/api-reference/knowledge-store-items/delete) method of the `/knowledge-stores/{knowledge_store_id}/items/{item_id}` endpoint. Then delete the asset.
+- **If indexed assets reference the asset**: the error code is `asset_has_linked_resources`. To delete the asset and these indexed assets together, set the `force` query parameter to `true`. To list the indexed assets first, use the [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) method of the `/assets/{asset_id}/indexed-assets` endpoint.
+- **If both apply**: the error code is `asset_has_knowledge_store_items`.
 
-- [`GET`](/v1.3/api-reference/index-content/list-indexed-assets-by-asset) `/assets/{asset_id}/indexed-assets` returns a list of the indexed assets that will block deletion unless the `force` query parameter is set to `true`.
-- [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) `/assets/{asset_id}/entities` returns a list of the entities whose associations the platform will unlink.
-
+**If entities use the asset**, a successful delete removes the asset from the `asset_ids` array of each entity. To list these entities, use the [`GET`](/v1.3/api-reference/entities/list-entities-by-asset) method of the `/assets/{asset_id}/entities` endpoint.
 </dd>
 </dl>
 </dd>
@@ -1198,8 +1198,7 @@ await client.assets.retrieveTranscription("6298d673f1090f1100476d4c", {
 This method replaces the entire user-defined metadata of the specified asset. Unlike the [`PATCH`](/v1.3/api-reference/upload-content/direct-uploads/update-user-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
 
 - A key with a value creates or replaces that key.
-- A key set to an empty string (`""`), an empty array (`[]`), or `null` is ignored.
-- A key you omit from the request body is removed.
+- A key you omit, or set to an empty string (`""`), an empty array (`[]`), or `null`, is removed.
 
 To clear all metadata, send an empty object (`{}`) in the `user_metadata` field. This produces the same result as the [`DELETE`](/v1.3/api-reference/upload-content/direct-uploads/delete-user-metadata) method.
 </dd>
@@ -1398,6 +1397,94 @@ await client.assets.updateUserMetadata("6298d673f1090f1100476d4c", {
 <dd>
 
 **request:** `TwelvelabsApi.AssetsUpdateUserMetadataRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `Assets.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.assets.<a href="/src/api/resources/assets/client/Client.ts">enableStorageAccounting</a>(assetId, { ...params }) -> TwelvelabsApi.AssetStorageAccounting</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method enables storage accounting for the specified asset. Storage accounting makes an asset count toward your Managed Intelligence allowance.
+
+**When to use this method**: Call it once for each asset that you uploaded before your plan moved to the new billing (a pre-migration asset). Enable storage accounting before you do either of the following:
+
+- Add the asset to a knowledge store.
+- Index the asset in an index for which Marengo is enabled.
+
+An asset that you upload after your plan moves already counts toward your Managed Intelligence allowance. You do not need to call this method for it.
+
+**Before you call this method**: The asset must have the `ready` status and a recorded size. To check, use the [`GET`](/v1.3/api-reference/manage-assets/retrieve) method of the `/assets/{asset_id}` endpoint and read the `status` and `size` fields.
+
+**After you call this method**:
+
+- The asset counts toward your Managed Intelligence allowance from the moment of the call.
+- Enabling storage accounting is permanent. You cannot turn it off.
+- If storage accounting is already on, the method returns the same response and changes nothing.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.assets.enableStorageAccounting("6298d673f1090f1100476d4c", {
+    enabled: true,
+});
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetId:** `string` — The unique identifier of the asset for which to enable storage accounting.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.AssetsEnableStorageAccountingRequest`
 
 </dd>
 </dl>
@@ -2532,7 +2619,7 @@ await client.knowledgeStores.update("ks_069e9869-1ea3-7481-8000-dae72bf6be6e");
 
 This method searches a knowledge store using natural language and returns matching video clips and images ranked by relevance.
 
-Provide your natural-language query in the `query.text` field. Use the `filter` parameter to choose which items to search: by type of item (the `asset_type` field) or by specific items (the `item_id` field). Use the optional `search_options` parameter to control how videos are matched (by visual content, audio, or both). If you omit it, videos are matched on their visual content. Images are always matched on their visual content.
+Use the `query.text` field to specify your natural-language query. Use the `filter` parameter to choose which items to search. Use the `search_options` parameter to choose how the platform matches videos.
 
 By default, each result is an individual match: a video clip or an image. Set the `group_by` parameter to `item` to group clips under their parent item.
 
@@ -2622,6 +2709,8 @@ await client.knowledgeStores.search("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
 <dd>
 
 This method returns a list of items in the specified knowledge store.
+
+Use the `status`, `metadata`, `enrichment`, `created_at_gte`, and `created_at_lte` parameters to choose which items to list. An item must match all of the parameters that you specify.
 </dd>
 </dl>
 </dd>
@@ -2639,9 +2728,13 @@ This method returns a list of items in the specified knowledge store.
 const response = await client.knowledgeStoreItems.list("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
     page: 1,
     pageLimit: 10,
-    sortBy: "created_at",
+    sortBy: "metadata.view_count",
     sortOption: "desc",
     status: ["queued"],
+    metadata: '{"hashtags":["summer","travel"],"verified":true}',
+    enrichment: '{"detected_topic":"cooking"}',
+    createdAtGte: "2026-09-01T00:00:00Z",
+    createdAtLte: "2026-09-30T23:59:59Z",
 });
 for await (const item of response) {
     console.log(item);
@@ -2651,9 +2744,13 @@ for await (const item of response) {
 const page = await client.knowledgeStoreItems.list("ks_069e9869-1ea3-7481-8000-dae72bf6be6e", {
     page: 1,
     pageLimit: 10,
-    sortBy: "created_at",
+    sortBy: "metadata.view_count",
     sortOption: "desc",
     status: ["queued"],
+    metadata: '{"hashtags":["summer","travel"],"verified":true}',
+    enrichment: '{"detected_topic":"cooking"}',
+    createdAtGte: "2026-09-01T00:00:00Z",
+    createdAtLte: "2026-09-30T23:59:59Z",
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();
@@ -2916,6 +3013,654 @@ await client.knowledgeStoreItems.delete(
 <dd>
 
 **requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItems.<a href="/src/api/resources/knowledgeStoreItems/client/Client.ts">replaceKnowledgeStoreItemMetadata</a>(knowledgeStoreId, itemId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItem</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method replaces the entire `item_metadata` of the specified knowledge store item and returns the item. Unlike the [`PATCH`](/v1.3/api-reference/knowledge-store-items/update-item-metadata) method, which merges your changes with the existing metadata, this method overwrites the stored value in full:
+
+- A key with a value creates or replaces that key.
+- A key you omit, or set to an empty string (`""`), an empty array (`[]`), or `null`, is removed.
+
+To clear all item metadata, send an empty object (`{}`) in the `item_metadata` field. The `metadata` field of the item does not change.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItems.replaceKnowledgeStoreItemMetadata(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        itemMetadata: {
+            creator_handle: "@jane.doe",
+            view_count: 48210,
+        },
+    },
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.ReplaceKnowledgeStoreItemMetadataRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItems.<a href="/src/api/resources/knowledgeStoreItems/client/Client.ts">updateKnowledgeStoreItemMetadata</a>(knowledgeStoreId, itemId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItem</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method updates the `item_metadata` of the specified knowledge store item and returns the item. The platform merges your changes with the existing metadata:
+
+- A key with a value creates or replaces that key.
+- A key set to `null` deletes that key.
+- A key set to an empty string (`""`) or an empty array (`[]`) is ignored.
+- A key you omit from the request keeps its current value.
+
+The `metadata` field of the item does not change. If the merged result contains more than 50 pairs, the request fails.
+
+To replace all item metadata in a single call, use the [`PUT`](/v1.3/api-reference/knowledge-store-items/replace-item-metadata) method of the `/knowledge-stores/{knowledge_store_id}/items/{item_id}/item-metadata` endpoint instead.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItems.updateKnowledgeStoreItemMetadata(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        itemMetadata: {
+            creator_handle: "@jane.doe",
+            view_count: 48210,
+            verified: undefined,
+        },
+    },
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.UpdateKnowledgeStoreItemMetadataRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItems.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Knowledge store item tags
+
+<details><summary><code>client.knowledgeStoreItemTags.<a href="/src/api/resources/knowledgeStoreItemTags/client/Client.ts">list</a>(knowledgeStoreId, itemId, { ...params }) -> core.Page&lt;TwelvelabsApi.KnowledgeStoreItemTag&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method returns the tags of the specified knowledge store item. The platform sorts the tags by `start_sec`, earliest first. Tags with the same `start_sec` are sorted by `_id`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+const response = await client.knowledgeStoreItemTags.list(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        page: 1,
+        pageLimit: 10,
+    },
+);
+for await (const item of response) {
+    console.log(item);
+}
+
+// Or you can manually iterate page-by-page
+const page = await client.knowledgeStoreItemTags.list(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        page: 1,
+        pageLimit: 10,
+    },
+);
+while (page.hasNextPage()) {
+    page = page.getNextPage();
+}
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.KnowledgeStoreItemTagsListRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemTags.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemTags.<a href="/src/api/resources/knowledgeStoreItemTags/client/Client.ts">create</a>(knowledgeStoreId, itemId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItemTag</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method tags a moment or a range of a video item and returns the tag. Set `start_sec` to tag a moment. Set `start_sec` and `end_sec` to tag a range. A video item holds up to 100 tags. The method returns a 422 error for an item that is not a video item, and when the item already holds 100 tags.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemTags.create(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        startSec: 12.5,
+        endSec: 18.25,
+        tagMetadata: {
+            event: "goal",
+            team: "home",
+        },
+    },
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.CreateKnowledgeStoreItemTagRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemTags.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemTags.<a href="/src/api/resources/knowledgeStoreItemTags/client/Client.ts">retrieve</a>(knowledgeStoreId, itemId, tagId) -> TwelvelabsApi.KnowledgeStoreItemTag</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method retrieves the details of a specific tag of a knowledge store item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemTags.retrieve(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    "ksit_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tagId:** `string` — The unique identifier of the item tag.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemTags.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemTags.<a href="/src/api/resources/knowledgeStoreItemTags/client/Client.ts">delete</a>(knowledgeStoreId, itemId, tagId) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method deletes the specified tag of a knowledge store item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemTags.delete(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    "ksit_069e9870-3c4d-7abc-9012-3456789abcde",
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tagId:** `string` — The unique identifier of the item tag.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemTags.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.knowledgeStoreItemTags.<a href="/src/api/resources/knowledgeStoreItemTags/client/Client.ts">update</a>(knowledgeStoreId, itemId, tagId, { ...params }) -> TwelvelabsApi.KnowledgeStoreItemTag</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This method updates the range or the `tag_metadata` of the specified tag and returns the tag. Send at least one field. A field you omit keeps its current value. To clear the end of the range, send `end_sec` as `null`. The tag becomes a single moment. The platform merges your changes to `tag_metadata` with the existing metadata:
+
+- A key with a value creates or replaces that key.
+- A key set to `null` deletes that key.
+- A key set to an empty string (`""`) or an empty array (`[]`) is ignored.
+- A key you omit from the request keeps its current value.
+
+The tag must keep at least one key in `tag_metadata`, and it holds up to 50 pairs. If the merged result breaks either limit, the request fails.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.knowledgeStoreItemTags.update(
+    "ks_069e9869-1ea3-7481-8000-dae72bf6be6e",
+    "ksi_069e9870-3c4d-7abc-9012-3456789abcde",
+    "ksit_069e9870-3c4d-7abc-9012-3456789abcde",
+    {
+        endSec: 18.25,
+        tagMetadata: {
+            replay: undefined,
+        },
+    },
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**knowledgeStoreId:** `string` — The unique identifier of the knowledge store.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**itemId:** `string` — The unique identifier of the knowledge store item.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tagId:** `string` — The unique identifier of the item tag.
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TwelvelabsApi.UpdateKnowledgeStoreItemTagRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `KnowledgeStoreItemTags.RequestOptions`
 
 </dd>
 </dl>
@@ -3629,7 +4374,7 @@ Parameters for embeddings:
 - The Marengo video understanding model generates embeddings for all modalities in the same latent space. This shared space enables any-to-any searches across different types of content.
 - You can create multiple types of embeddings in a single API call.
 - Audio embeddings combine generic sound and human speech in a single embedding. For videos with transcriptions, you can retrieve transcriptions and then [create text embeddings](/v1.3/api-reference/create-embeddings-v1/text-image-audio-embeddings/create-text-image-audio-embeddings) from these
-- This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
+- This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page. When a request exceeds the limit for one type of content, the platform can return `200` instead of `429`. The result for that type then contains the rate limit message in `error_message` and no embedding.
 </Note>
 </dd>
 </dl>
@@ -3873,6 +4618,8 @@ Before you use this method, you must create an asset, create a knowledge store, 
 
 **Streaming**: Set the `stream` parameter to `true` to receive the response as [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE). The reply streams in as a sequence of typed events and ends with a `data: [DONE]` message.
 
+**Web sources**: Jockey can search public web sources while it generates a response. To allow this, include `{ "type": "jockey:web_search" }` in the `tools` array. The response can then cite these sources alongside content from the knowledge store, as `url_citation` annotations. Jockey decides whether to use an available tool, so enabling web search does not guarantee a search. To make a search more likely, explicitly tell Jockey what information to look up in `input` or `instructions`. A prompt that asks Jockey to search the web does not enable web search by itself. If you omit `tools` or pass `[]`, Jockey cannot search public web sources, even when the prompt requests it.
+
 <Accordion title="Example response">
 ```json
 {
@@ -3911,9 +4658,9 @@ Before you use this method, you must create an asset, create a knowledge store, 
       ]
     }
   ],
-  "usage": {
-    "input_tokens": 12625,
-    "output_tokens": 289
+  "billing": {
+    "amount": "0.008118",
+    "currency": "USD"
   },
   "created_at": "2026-07-11T03:13:57Z"
 }
@@ -3941,10 +4688,10 @@ event: response.output_text.done
 data: {"type":"response.output_text.done","sequence_number":124,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1]."}
 
 event: response.content_part.done
-data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
+data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
 
 event: response.completed
-data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"usage":{"input_tokens":12625,"output_tokens":289},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
+data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"billing":{"amount":"0.020912","currency":"USD"},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
 
 data: [DONE]
 
@@ -3969,7 +4716,11 @@ const response = await client.responses.createStream({
     input: [{
             type: "message",
             role: "user",
-            content: "Give me the highlight."
+            content: "Summarize this collection and verify one claim using an official web source."
+        }],
+    include: ["intermediate_outputs"],
+    tools: [{
+            type: "jockey:web_search"
         }]
 });
 for await (const item of response) {
@@ -4032,6 +4783,8 @@ Before you use this method, you must create an asset, create a knowledge store, 
 
 **Streaming**: Set the `stream` parameter to `true` to receive the response as [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE). The reply streams in as a sequence of typed events and ends with a `data: [DONE]` message.
 
+**Web sources**: Jockey can search public web sources while it generates a response. To allow this, include `{ "type": "jockey:web_search" }` in the `tools` array. The response can then cite these sources alongside content from the knowledge store, as `url_citation` annotations. Jockey decides whether to use an available tool, so enabling web search does not guarantee a search. To make a search more likely, explicitly tell Jockey what information to look up in `input` or `instructions`. A prompt that asks Jockey to search the web does not enable web search by itself. If you omit `tools` or pass `[]`, Jockey cannot search public web sources, even when the prompt requests it.
+
 <Accordion title="Example response">
 ```json
 {
@@ -4070,9 +4823,9 @@ Before you use this method, you must create an asset, create a knowledge store, 
       ]
     }
   ],
-  "usage": {
-    "input_tokens": 12625,
-    "output_tokens": 289
+  "billing": {
+    "amount": "0.008118",
+    "currency": "USD"
   },
   "created_at": "2026-07-11T03:13:57Z"
 }
@@ -4100,10 +4853,10 @@ event: response.output_text.done
 data: {"type":"response.output_text.done","sequence_number":124,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1]."}
 
 event: response.content_part.done
-data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
+data: {"type":"response.content_part.done","sequence_number":125,"item_id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","output_index":0,"content_index":0,"part":{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}}
 
 event: response.completed
-data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"usage":{"input_tokens":12625,"output_tokens":289},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
+data: {"type":"response.completed","sequence_number":127,"response":{"id":"resp_019f4f2a-b69e-7812-b20f-6ea6d644ceff","type":"response","object":"response","status":"completed","incomplete_details":null,"output":[{"type":"message","id":"msg_sess_019f4f2a-b69b-7a01-9018-cc51681121ea_0","status":"completed","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":"The video captures a heated sideline moment during Super Bowl LVIII: after a fumble, Travis Kelce approaches head coach Andy Reid, visibly frustrated, and briefly bumps him before being restrained by a teammate [1].","annotations":[{"type":"url_citation","start_index":51,"end_index":66,"url":"https://example.com/news/super-bowl-lviii","title":"Super Bowl LVIII recap"},{"type":"video_citation","start_index":211,"end_index":213,"item_id":"ksi_069e9870-3c4d-7abc-9012-3456789abcde","start_sec":0.0,"end_sec":9.0,"title":"Super Bowl LVIII sideline","thumbnail_url":"https://example.com/thumbnail.jpg","hls_url":"https://example.com/stream.m3u8"}]}]}],"billing":{"amount":"0.020912","currency":"USD"},"session_id":"sess_019f4f2a-b69b-7a01-9018-cc51681121ea","knowledge_store_id":"ks_019ebcf4-7e08-7201-b69c-69e0c1e6ae56","created_at":"2026-07-11T03:13:57Z"}}
 
 data: [DONE]
 
@@ -4128,7 +4881,11 @@ await client.responses.create({
     input: [{
             type: "message",
             role: "user",
-            content: "Give me the highlight."
+            content: "Summarize this collection and verify one claim using an official web source."
+        }],
+    include: ["intermediate_outputs"],
+    tools: [{
+            type: "jockey:web_search"
         }]
 });
 
@@ -5027,10 +5784,6 @@ Analyzing content asynchronously requires three steps:
 3. When the status is `ready`, retrieve the results using the [`GET`](/v1.3/api-reference/analyze-videos/retrieve-analysis-task-status-results) method of the `/analyze/tasks/{task_id}` endpoint.
 
 On the Free plan, you have a total of 600 minutes (10 hours) shared across indexing, analysis, and segmentation. For details, see the [Video hours and video count limits](/v1.3/docs/concepts/indexes#video-hours-and-video-count-limits) section.
-
-<Note title="Note">
-This endpoint is rate-limited. For details, see the [Rate limits](/v1.3/docs/get-started/rate-limits) page.
-</Note>
 </dd>
 </dl>
 </dd>
@@ -6116,7 +6869,7 @@ Use this method to embed a query for retrieving matching content. With Marengo 3
 The content this method accepts depends on the model. With Marengo 3.5, this method accepts only the `multi_input` input type; provide text, images, audio, video, or documents as media sources. With Marengo 3.0, use the individual input types. For the formats, resolutions, file sizes, and duration limits each model accepts, see the input requirements for [Marengo 3.5](/v1.3/docs/concepts/models/marengo/marengo-3-5#input-requirements) or [Marengo 3.0](/v1.3/docs/concepts/models/marengo/marengo-3-0#input-requirements).
 
 <Note title="Note">
-This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A request can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
+This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A request can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/plans-and-billing/rate-limits/new-billing#input-token-limits-for-embedding).
 </Note>
 </dd>
 </dl>
@@ -6187,11 +6940,11 @@ await client.embed.v2.create({
 <dl>
 <dd>
 
-This method returns a list of the async embedding tasks in your account. The platform returns your async embedding tasks sorted by creation date, with the newest at the top of the list.
+This method returns a list of the async embedding tasks in your account. The platform returns tasks sorted by creation date, with the newest at the top of the list.
 
 <Note title="Notes">
 - Embeddings are stored for seven days.
-- When you invoke this method without specifying the `started_at` and `ended_at` parameters, the platform returns all the async embedding tasks created within the last seven days.
+- Without the `started_at` or `ended_at` query parameters, this method lists tasks created in the last seven days.
 </Note>
 </dd>
 </dl>
@@ -6212,7 +6965,7 @@ const response = await client.embed.v2.tasks.list({
     endedAt: "2024-03-01T00:00:00Z",
     status: "processing",
     page: 1,
-    pageLimit: 10,
+    pageLimit: 1,
 });
 for await (const item of response) {
     console.log(item);
@@ -6224,7 +6977,7 @@ const page = await client.embed.v2.tasks.list({
     endedAt: "2024-03-01T00:00:00Z",
     status: "processing",
     page: 1,
-    pageLimit: 10,
+    pageLimit: 1,
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();
@@ -6289,7 +7042,7 @@ Creating embeddings asynchronously requires three steps:
 
 <Note title="Notes">
 - Creating a task validates only basic metadata and, for audio and video sources, playability, not the full file. A file can pass this check but still fail later during embedding. When you retrieve the results, check the [`status`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.status) field. If it is `failed`, the [`error.message`](/v1.3/api-reference/create-embeddings-v2/retrieve-embeddings#response.body.error.message) field contains the reason.
-- This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/rate-limits#input-token-limits-for-embedding).
+- This method is rate-limited. With Marengo 3.5, the platform counts input tokens for each type of content. A task can exceed a limit before you see an error. For details, see [Input token limits for embedding](/v1.3/docs/get-started/plans-and-billing/rate-limits/new-billing#input-token-limits-for-embedding).
 - Embeddings are stored for seven days.
 </Note>
 </dd>
@@ -6318,9 +7071,6 @@ await client.embed.v2.tasks.create({
         segmentation: {
             temporal: {
                 strategy: "fixed",
-                fixed: {
-                    durationSec: 1,
-                },
             },
         },
         embeddingOption: ["audio"],

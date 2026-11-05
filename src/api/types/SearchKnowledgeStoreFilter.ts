@@ -5,9 +5,22 @@
 import * as TwelvelabsApi from "../index";
 
 /**
- * Narrows results to specific items in the knowledge store.
+ * Narrows results to specific items in the knowledge store. Omit the filter to search all items.
  *
- * Filter by type of item (the `asset_type` field) or by specific identifiers (the `item_id` field). Use `eq` to match a single value or `in` to match any value in a list. When you specify multiple fields, the platform applies all conditions together.
+ * You can filter with these fields:
+ *
+ * - `asset_type`: The type of item. Use `eq` to match one type. Use `in` to match any type in a list.
+ * - `item_id`: Specific items. Use `eq` to match one item or `in` to match any item in a list. Use `nin` to exclude any item in a list. You cannot use `eq` and `in` together. You can use `nin` on its own or with either `eq` or `in`. If an item is listed in `nin` and selected by `eq` or `in`, the platform excludes it.
+ * - `item_collection_id`: Specific item collections. Use `eq` to match the items in one item collection. Use `in` with a list of item collections to match the items in any of them. If an item collection is not in the knowledge store, the platform returns a `404` error with the `resource_not_exists` code. If the identifier of an item collection is not valid, the platform returns a `400` error with the `parameter_invalid` code.
+ * - `user_metadata`: Custom metadata. Map each key to `eq`, `in`, or inclusive numeric or date bounds with `gte` and `lte`.
+ * - `enrichment`: Enrichment values that the platform extracts. Map each key to the `eq` operator to match one value, or to the `in` operator to match any value in a list.
+ * - `created_at`: Creation time. Use `gte` to set the earliest time and `lte` to set the latest time. You can use one or both.
+ * - `location`: Capture location. Provide the center and the radius of a circle.
+ * - `tags`: Item tags. Map each key under `tags.metadata` to the `eq` operator to match one value, or to the `in` operator to match any value in a list.
+ *
+ * An item must match all of the fields and metadata keys that you specify. The `tags` field also limits which clips of an item the search returns.
+ *
+ * When you use any of the `item_collection_id`, `user_metadata`, `enrichment`, `created_at`, or `location` fields, the platform counts the items that match those conditions together, including metadata ranges and the items that you include or exclude with the `item_id` field. If more than 10,000 items match, the platform returns a `422` error with the `metadata_filter_too_broad` code. To reduce the count, add conditions or use the `item_id` field. The `asset_type` field does not reduce the count. When you use the `tags` field, the platform does not count items, and this limit does not apply. It counts the matching tags instead, as the `tags` field describes.
  *
  * Examples:
  * ```json
@@ -31,10 +44,46 @@ import * as TwelvelabsApi from "../index";
  *     }
  * }
  * ```
- *
- * Omit the filter to search all items.
+ * ```json
+ * {
+ *     "user_metadata": {
+ *         "category": {
+ *             "eq": "tutorial"
+ *         }
+ *     },
+ *     "created_at": {
+ *         "gte": "2026-09-01T00:00:00Z"
+ *     }
+ * }
+ * ```
+ * ```json
+ * {
+ *     "location": {
+ *         "latitude": 37.5665,
+ *         "longitude": 126.978,
+ *         "radius_meters": 5000
+ *     }
+ * }
+ * ```
+ * ```json
+ * {
+ *     "tags": {
+ *         "metadata": {
+ *             "event": {
+ *                 "eq": "goal"
+ *             }
+ *         }
+ *     }
+ * }
+ * ```
  */
 export interface SearchKnowledgeStoreFilter {
     assetType?: TwelvelabsApi.AssetTypeFilter;
     itemId?: TwelvelabsApi.ItemIdFilter;
+    itemCollectionId?: TwelvelabsApi.ItemCollectionIdFilter;
+    userMetadata?: TwelvelabsApi.UserMetadataFilter;
+    enrichment?: TwelvelabsApi.EnrichmentFilter;
+    createdAt?: TwelvelabsApi.CreatedAtFilter;
+    location?: TwelvelabsApi.GeoCircleFilter;
+    tags?: TwelvelabsApi.TagFilter;
 }

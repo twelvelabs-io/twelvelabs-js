@@ -3,7 +3,7 @@
  */
 
 /**
- * System-generated media metadata for an image item.
+ * System-generated metadata for an image item.
  */
 export interface ImageMetadata {
     /** The original filename of the image. */

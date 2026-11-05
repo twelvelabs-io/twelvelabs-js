@@ -10,7 +10,7 @@ import { ResponseObjectObject } from "./ResponseObjectObject";
 import { ResponseStatus } from "./ResponseStatus";
 import { ResponseIncompleteDetails } from "./ResponseIncompleteDetails";
 import { ResponseOutputItem } from "./ResponseOutputItem";
-import { ResponseUsage } from "./ResponseUsage";
+import { ResponseBilling } from "./ResponseBilling";
 
 export const ResponseObject: core.serialization.ObjectSchema<
     serializers.ResponseObject.Raw,
@@ -24,7 +24,7 @@ export const ResponseObject: core.serialization.ObjectSchema<
     status: ResponseStatus.optional(),
     incompleteDetails: core.serialization.property("incomplete_details", ResponseIncompleteDetails.optional()),
     output: core.serialization.list(ResponseOutputItem).optional(),
-    usage: ResponseUsage.optional(),
+    billing: ResponseBilling.optional(),
     createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
 });
 
@@ -38,7 +38,7 @@ export declare namespace ResponseObject {
         status?: ResponseStatus.Raw | null;
         incomplete_details?: ResponseIncompleteDetails.Raw | null;
         output?: ResponseOutputItem.Raw[] | null;
-        usage?: ResponseUsage.Raw | null;
+        billing?: ResponseBilling.Raw | null;
         created_at?: string | null;
     }
 }
