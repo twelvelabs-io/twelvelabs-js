@@ -5,12 +5,14 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { ResponseWebSearchOutputItemType } from "./ResponseWebSearchOutputItemType";
 import { WebSearchAction } from "./WebSearchAction";
 
 export const ResponseWebSearchOutputItem: core.serialization.ObjectSchema<
     serializers.ResponseWebSearchOutputItem.Raw,
     TwelvelabsApi.ResponseWebSearchOutputItem
 > = core.serialization.object({
+    type: ResponseWebSearchOutputItemType,
     id: core.serialization.string(),
     status: core.serialization.string().optional(),
     action: WebSearchAction.optional(),
@@ -18,6 +20,7 @@ export const ResponseWebSearchOutputItem: core.serialization.ObjectSchema<
 
 export declare namespace ResponseWebSearchOutputItem {
     export interface Raw {
+        type: ResponseWebSearchOutputItemType.Raw;
         id: string;
         status?: string | null;
         action?: WebSearchAction.Raw | null;

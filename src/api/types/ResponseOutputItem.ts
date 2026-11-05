@@ -9,26 +9,21 @@ import * as TwelvelabsApi from "../index";
  * function calls, function results, and hosted web-search calls.
  * An item has the same `id` in streaming events and the final response.
  */
-export type ResponseOutputItem =
-    | TwelvelabsApi.ResponseOutputItem.Message
-    | TwelvelabsApi.ResponseOutputItem.FunctionCall
-    | TwelvelabsApi.ResponseOutputItem.FunctionCallOutput
-    | TwelvelabsApi.ResponseOutputItem.JockeyWebSearch;
-
-export namespace ResponseOutputItem {
-    export interface Message extends TwelvelabsApi.ResponseStandardOutputItem {
-        type: "message";
-    }
-
-    export interface FunctionCall extends TwelvelabsApi.ResponseStandardOutputItem {
-        type: "function_call";
-    }
-
-    export interface FunctionCallOutput extends TwelvelabsApi.ResponseStandardOutputItem {
-        type: "function_call_output";
-    }
-
-    export interface JockeyWebSearch extends TwelvelabsApi.ResponseWebSearchOutputItem {
-        type: "jockey:web_search";
-    }
+export interface ResponseOutputItem {
+    /** The type of output item. */
+    type: string;
+    /** The unique identifier of this output item within the response. */
+    id: string;
+    /** The last reported lifecycle status of the output item. */
+    status?: string;
+    role?: TwelvelabsApi.ResponseOutputItemRole;
+    phase?: string;
+    content?: TwelvelabsApi.ResponseOutputContentPart[];
+    name?: string;
+    callId?: string;
+    arguments?: string;
+    output?: string;
+    action?: TwelvelabsApi.WebSearchAction;
+    /** Accepts any additional properties */
+    [key: string]: any;
 }
