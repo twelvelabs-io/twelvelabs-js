@@ -15,6 +15,7 @@ import * as TwelvelabsApi from "../index";
  * Use `session_id` to continue a conversation; this output item is not accepted in `input`.
  */
 export interface ResponseWebSearchOutputItem {
+    type: TwelvelabsApi.ResponseWebSearchOutputItemType;
     /**
      * A `ws_`-prefixed identifier for this call within the response.
      * The same identifier appears in the call's streaming events and the final response.

@@ -5,6 +5,7 @@
 import * as serializers from "../index";
 import * as TwelvelabsApi from "../../api/index";
 import * as core from "../../core";
+import { ResponseStandardOutputItemType } from "./ResponseStandardOutputItemType";
 import { ResponseStandardOutputItemStatus } from "./ResponseStandardOutputItemStatus";
 import { ResponseStandardOutputItemRole } from "./ResponseStandardOutputItemRole";
 import { ResponseOutputContentPart } from "./ResponseOutputContentPart";
@@ -13,6 +14,7 @@ export const ResponseStandardOutputItem: core.serialization.ObjectSchema<
     serializers.ResponseStandardOutputItem.Raw,
     TwelvelabsApi.ResponseStandardOutputItem
 > = core.serialization.object({
+    type: ResponseStandardOutputItemType,
     id: core.serialization.string(),
     status: ResponseStandardOutputItemStatus,
     role: ResponseStandardOutputItemRole.optional(),
@@ -26,6 +28,7 @@ export const ResponseStandardOutputItem: core.serialization.ObjectSchema<
 
 export declare namespace ResponseStandardOutputItem {
     export interface Raw {
+        type: ResponseStandardOutputItemType.Raw;
         id: string;
         status: ResponseStandardOutputItemStatus.Raw;
         role?: ResponseStandardOutputItemRole.Raw | null;
